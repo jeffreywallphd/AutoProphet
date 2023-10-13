@@ -1,0 +1,25 @@
+html {
+    background-color: #fffdd0;
+    font-size: large
+}
+
+header {
+    background-color: #fffdd0;
+    text-align: center;
+    font-size: xx-large;
+}
+
+form {
+    background-color: #002168;
+    text-align: center;
+    color: white;
+    font-size: large;
+    border-style: solid;
+    /*border-color: red;*/
+    max-width: 500px;
+    /*align-items: center;*/
+}
+
+body {
+    text-align: center;
+}
