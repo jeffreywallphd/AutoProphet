@@ -10,6 +10,7 @@ import {
 import Home from "./Home";
 import Portfolio from "./Portfolio";
 import Analysis from "./Analysis";
+import BuyReport from "./BuyReport";
 
 class App extends Component {
     render() {
@@ -31,6 +32,7 @@ class App extends Component {
                           <Route path="/" element={<Home />}/>
                           <Route path="/portfolio" element={<Portfolio />}/>
                           <Route path="/analysis" element={<Analysis />}/>
+                          <Route path="/buy-report" element={<BuyReport />}/>
                         </Routes>
                     </div>
                 </div>

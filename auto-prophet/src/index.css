@@ -42,3 +42,37 @@ ul.navigation li a {
   margin: 0;
   padding-left: 20px;
 }
+
+.cardRow {
+    width: fit-content;
+    block-size: fit-content;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 40px;
+    margin-top: 30px;
+}
+
+.cardRow a {
+    text-decoration: none;
+    color: #000;
+}
+
+.card {
+  max-width: 300px;
+  min-height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.cardHeader {
+  background-color: #CCC;
+  padding: 20px;
+}
+
+.cardContainer {
+  padding: 20px;
+}
