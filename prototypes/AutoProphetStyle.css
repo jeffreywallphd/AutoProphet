@@ -15,9 +15,8 @@ form {
     color: white;
     font-size: large;
     border-style: solid;
-    /*border-color: red;*/
     max-width: 500px;
-    /*align-items: center;*/
+    margin: auto;
 }
 
 body {
