@@ -12,6 +12,25 @@ class BuyReport extends Component {
         return (
             <div className="page">
                 <h2>Buy Report</h2>
+
+                <form action="report.html" method="post">
+                    <label for="CIKNum">CIK Number: </label>
+                    <input type="text" id="CIKNum" name="CIKNum"/><br/><br/>
+
+                    <input type="radio" id="10-K" name="filingType"/>
+                    <label for="10-K">10-K</label><br/>
+                    <input type="radio" id="10-Q" name="filingType"/>
+                    <label for="10-Q">10-Q</label><br/><br/>
+
+                    <label for="start">Start Date: </label>
+                    <input type="date" id="start" name="start"/><br/>
+
+                    <label for="end">End Date: </label>
+                    <input type="date" id="end" name="end"/><br/><br/>
+
+                    <input type="submit" value="Submit"/>
+                </form>
+
             </div>
         );
     }

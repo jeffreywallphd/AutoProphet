@@ -1,17 +1,16 @@
 html {
     background-color: #fffdd0;
-    font-size: large
+    font-size: large;
+    text-align: center;
 }
 
 header {
     background-color: #fffdd0;
-    text-align: center;
     font-size: xx-large;
 }
 
 form {
     background-color: #002168;
-    text-align: center;
     color: white;
     font-size: large;
     border-style: solid;
@@ -21,4 +20,10 @@ form {
 
 body {
     text-align: center;
+}
+
+table, th, td {
+    margin: auto;
+    border-style: solid;
+    border-color: #002168;
 }
