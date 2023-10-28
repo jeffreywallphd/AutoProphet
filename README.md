@@ -7,5 +7,24 @@ This software is provided "as is" without any warranty of any kind, express or i
 ### Disclaimer of Liability
 The authors and copyright holders of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
+#### Contribution
+We welcome contributions! 
+
+### Acknowledgments
+All gratitude to the authors of this project for their valuable input and assistance.
+
+#### Authors
+Daron Hebeler
+Trent Bennett
+Josh Breitenbach
+Tracy Gaolese
+Hanna Hiltunen
+Donovan Korth
+Bester Mangisoni
+Lizzie Schnell
+Zack Stone
+Maggie Zimmermann
+
+
 
 
