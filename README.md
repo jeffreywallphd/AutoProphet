@@ -14,6 +14,7 @@ We welcome contributions!
 All gratitude to the authors of this project for their valuable input and assistance.
 
 #### Authors
+Jeffrey Wall
 Daron Hebeler
 Trent Bennett
 Josh Breitenbach
