@@ -8,7 +8,10 @@ This software is provided "as is" without any warranty of any kind, express or i
 The authors and copyright holders of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 #### Contribution
-We welcome contributions! 
+We welcome contributions!
+
+### Future Feature Ideas
+Utilize the Recharts React visualization library: https://recharts.org/en-US
 
 ### Acknowledgments
 All gratitude to the authors of this project for their valuable input and assistance.
