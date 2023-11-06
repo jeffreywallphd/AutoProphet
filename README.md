@@ -26,6 +26,9 @@ Lizzie Schnell
 Zack Stone
 Maggie Zimmermann
 
+### Dependencies
+Node js
+NPM
 
 
 
