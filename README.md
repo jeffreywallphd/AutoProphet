@@ -11,23 +11,23 @@ The authors and copyright holders of this software disclaim all liability for an
 We welcome contributions!
 
 ### Future Feature Ideas
-Utilize the Recharts React visualization library: https://recharts.org/en-US
+* Utilize the Recharts React visualization library: https://recharts.org/en-US
 
 ### Acknowledgments
 All gratitude to the authors of this project for their valuable input and assistance.
 
 #### Authors
-Jeffrey Wall
-Daron Hebeler
-Trent Bennett
-Josh Breitenbach
-Tracy Gaolese
-Hanna Hiltunen
-Donovan Korth
-Bester Mangisoni
-Lizzie Schnell
-Zack Stone
-Maggie Zimmermann
+* Jeffrey Wall
+* Daron Hebeler
+* Trent Bennett
+* Josh Breitenbach
+* Tracy Gaolese
+* Hanna Hiltunen
+* Donovan Korth
+* Bester Mangisoni
+* Lizzie Schnell
+* Zack Stone
+* Maggie Zimmermann
 
 ### Dependencies
 Node js
