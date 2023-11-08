@@ -17,7 +17,7 @@ We welcome contributions!
 All gratitude to the authors of this project for their valuable input and assistance.
 
 #### Authors
-* Jeffrey Wall
+* Jeffrey Wall - Faculty Advisor
 * Daron Hebeler
 * Trent Bennett
 * Josh Breitenbach
@@ -30,8 +30,8 @@ All gratitude to the authors of this project for their valuable input and assist
 * Maggie Zimmermann
 
 ### Dependencies
-Node js
-NPM
+* Node js
+* NPM
 
 
 
