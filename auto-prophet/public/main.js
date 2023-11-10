@@ -15,7 +15,7 @@
   \*********************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const {\n  app,\n  BrowserWindow\n} = __webpack_require__(/*! electron */ \"electron\");\nconst createWindow = () => {\n  const win = new BrowserWindow({\n    width: 800,\n    height: 600\n  });\n  win.loadFile('./public/index.html');\n};\napp.whenReady().then(() => {\n  createWindow();\n  app.on('activate', () => {\n    if (BrowserWindow.getAllWindows().length === 0) createWindow();\n  });\n});\napp.on('window-all-closed', () => {\n  if (process.platform !== 'darwin') app.quit();\n});\n\n//# sourceURL=webpack://auto-prophet/./src/main.js?");
+eval("// No Warranty\n// This software is provided \"as is\" without any warranty of any kind, express or implied. This includes, but is not limited to, the warranties of merchantability, fitness for a particular purpose, and non-infringement.\n//\n// Disclaimer of Liability\n// The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.\n\nconst {\n  app,\n  BrowserWindow\n} = __webpack_require__(/*! electron */ \"electron\");\nconst createWindow = () => {\n  const win = new BrowserWindow({\n    width: 800,\n    height: 600\n  });\n  win.loadFile('./public/index.html');\n};\napp.whenReady().then(() => {\n  createWindow();\n  app.on('activate', () => {\n    if (BrowserWindow.getAllWindows().length === 0) createWindow();\n  });\n});\napp.on('window-all-closed', () => {\n  if (process.platform !== 'darwin') app.quit();\n});\n\n//# sourceURL=webpack://auto-prophet/./src/main.js?");
 
 /***/ }),
 
