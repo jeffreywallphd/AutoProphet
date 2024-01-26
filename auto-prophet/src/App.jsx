@@ -18,6 +18,7 @@ import Home from "./Home";
 import Portfolio from "./Portfolio";
 import Analysis from "./Analysis";
 import BuyReport from "./BuyReport";
+import Price from "./Price";
 
 class App extends Component {
     render() {
@@ -32,6 +33,7 @@ class App extends Component {
                             <li><NavLink to="/">Home</NavLink></li>
                             <li><NavLink to="/portfolio">Portfolio</NavLink></li>
                             <li><NavLink to="/analysis">Analysis</NavLink></li>
+                            <li><NavLink to="/price">Price/Volume</NavLink></li>
                         </ul>
                     </nav>
                     <div className="content">
@@ -40,6 +42,7 @@ class App extends Component {
                           <Route path="/portfolio" element={<Portfolio />}/>
                           <Route path="/analysis" element={<Analysis />}/>
                           <Route path="/buy-report" element={<BuyReport />}/>
+                          <Route path="/price" element={<Price />}/>
                         </Routes>
                     </div>
                 </div>
