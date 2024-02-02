@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Component } from "react";
+import React, { useState, useRef, Component } from "react";
 import { GetSearchData } from '../AlphaVantage';
 import { FaSearch } from "react-icons/fa";
 import "./Price.css";
@@ -6,43 +6,52 @@ import "./Price.css";
 function SearchBar() {
     const [securityList, setList] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [ticker, setTicker] = useState(null);
     const searchRef = useRef("META");
 
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const searchData = await GetSearchData(searchRef.current.value);
-            setList(searchData);
-        } finally {
-            setLoading(false);
+    const fetchSearchData = async () => {
+        if (searchRef.current.value != "") {
+            try {
+                setLoading(true);
+                const searchData = await GetSearchData(searchRef.current.value);
+                setList(searchData);
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            setList(null);
         }
+        
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const fetchTickerData = async () => {
+        setTicker(searchRef.current.value);
+    }
+
 
     return (
         <>
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
                     e.preventDefault();
-                    fetchData();
+                    fetchTickerData();
                 }}>
-                    <input className="priceSearchBar" type="text" ref={searchRef} placeholder="Please enter your security"></input>
+                    <input className="priceSearchBar" type="text" list="tickers" ref={searchRef} onChange={async () => fetchSearchData()} placeholder="Please enter your security"></input>
+                    {securityList ?
+                        <datalist id="tickers">
+                            {securityList.map((data) => (
+                                <option value={data.ticker}>
+                                    {data.name}
+                                </option>
+                            ))}
+                        </datalist> : null
+                    }
                     <button className="priceSearchButton" type="submit" disabled={loading}><FaSearch/></button>
                 </form>
             </div>
-
-            {securityList && (
-                <ul>
-                    {securityList.map((data) => (
-                        <li key={data.ticker}>
-                            {data.ticker} - {data.name}
-                        </li>
-                    ))}
-                </ul>
-            )}
+            <div>
+                    {ticker ? <p>Searched for {ticker}</p> : null}
+            </div>
         </>
     );
 }
