@@ -1,4 +1,4 @@
-import React, { useState, useRef, Component } from "react";
+import React, { useState, useRef, Component, useEffect } from "react";
 import { GetSearchData } from '../AlphaVantage';
 import { FaSearch } from "react-icons/fa";
 import "./Price.css";
@@ -9,6 +9,17 @@ function SearchBar() {
     const [ticker, setTicker] = useState(null);
     const searchRef = useRef("META");
 
+    //Checks the keyUp event to determine if a key was hit or a datalist option was selected
+    const checkInput = async (e) => {
+        //Unidentified means datalist option was selected, otherwise a key was hit
+        if (e.key == "Unidentified"){
+            await fetchTickerData();
+        } else {
+            await fetchSearchData();
+        }
+    }
+
+    //Gets potential tickers based on the current input in the search bar
     const fetchSearchData = async () => {
         if (searchRef.current.value != "") {
             try {
@@ -24,10 +35,10 @@ function SearchBar() {
         
     };
 
+    //Gets ticker data
     const fetchTickerData = async () => {
         setTicker(searchRef.current.value);
     }
-
 
     return (
         <>
@@ -36,15 +47,19 @@ function SearchBar() {
                     e.preventDefault();
                     fetchTickerData();
                 }}>
-                    <input className="priceSearchBar" type="text" list="tickers" ref={searchRef} onChange={async () => fetchSearchData()} placeholder="Please enter your security"></input>
-                    {securityList ?
+                    <input className="priceSearchBar" type="text" list="tickers" ref={searchRef} 
+                        onKeyUp={(e) => checkInput(e)} placeholder="Please enter your security"></input>
+                    
+                    {securityList ? 
                         <datalist id="tickers">
                             {securityList.map((data) => (
-                                <option value={data.ticker}>
+                                <option key={data.ticker} value={data.ticker}>
                                     {data.name}
                                 </option>
                             ))}
-                        </datalist> : null
+                            
+                        </datalist>
+                         : null
                     }
                     <button className="priceSearchButton" type="submit" disabled={loading}><FaSearch/></button>
                 </form>
