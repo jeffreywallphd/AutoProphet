@@ -1,19 +1,19 @@
 import React, { useState, useRef, Component, useEffect } from "react";
-import { GetSearchData } from '../AlphaVantage';
+import { GetSearchData, GetHourlyData } from '../AlphaVantage';
 import { FaSearch } from "react-icons/fa";
 import "./Price.css";
 
 function SearchBar() {
     const [securityList, setList] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [ticker, setTicker] = useState(null);
+    const [tickerData, setTickerData] = useState(null);
     const searchRef = useRef("META");
 
     //Checks the keyUp event to determine if a key was hit or a datalist option was selected
     const checkInput = async (e) => {
         //Unidentified means datalist option was selected, otherwise a key was hit
         if (e.key == "Unidentified"){
-            await fetchTickerData();
+            await fetchHourlyData();
         } else {
             await fetchSearchData();
         }
@@ -36,8 +36,13 @@ function SearchBar() {
     };
 
     //Gets ticker data
-    const fetchTickerData = async () => {
-        setTicker(searchRef.current.value);
+    const fetchHourlyData = async () => {
+        try {
+            const data = await GetHourlyData(searchRef.current.value);
+            console.log(data);
+            setTickerData(data);
+        } finally {
+        }
     }
 
     return (
@@ -45,7 +50,7 @@ function SearchBar() {
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
                     e.preventDefault();
-                    fetchTickerData();
+                    fetchHourlyData();
                 }}>
                     <input className="priceSearchBar" type="text" list="tickers" ref={searchRef} 
                         onKeyUp={(e) => checkInput(e)} placeholder="Please enter your security"></input>
@@ -65,7 +70,7 @@ function SearchBar() {
                 </form>
             </div>
             <div>
-                    {ticker ? <p>Searched for {ticker}</p> : null}
+                    
             </div>
         </>
     );
