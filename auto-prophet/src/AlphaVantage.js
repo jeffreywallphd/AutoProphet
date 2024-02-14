@@ -7,11 +7,7 @@ async function GetSearchData(keyword) {
     const response = await fetch(url);
     const data = await response.json();
 
-    //console.log(data);
-
-    var arrayData = FormatSearchData(data.bestMatches);
-
-    //console.log(arrayData);
+    var arrayData = FormatSearchData(data["bestMatches"]);
 
     return arrayData;
 }
@@ -21,21 +17,15 @@ function FormatSearchData(data) {
     var array = [];
     
     Object.entries(data).forEach((entry) => {
-        //console.log(entry);
         const security = {
-            ticker: (Object.entries(entry[1])[0])[1],
-            name: (Object.entries(entry[1])[1])[1]
+            ticker: entry[1]["1. symbol"],
+            name: entry[1]["2. name"]
         }
-
-        //console.log(security);
 
         array.push(security);
     });
 
-    //console.log(array);
-
     return array;
-
 }
 
 export {GetSearchData}
