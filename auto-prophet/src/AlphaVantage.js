@@ -1,4 +1,4 @@
-const APIKey = BQWCPFV1XJFJ7ZPH;
+const APIKey = "BQWCPFV1XJFJ7ZPH";
 
 
 //Takes a security keyword and returns an array of objects of matching securities with their metadata
