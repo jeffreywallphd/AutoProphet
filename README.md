@@ -23,6 +23,14 @@ To begin contributing to the repository:
    2. Once you have selected the directory, to install the NodeJS packages used for the project, run the command: npm install
 4. After installing the npm packages, run the following command to launch the Electron application: npm start
    1. After the startup finishes, you should see the desktop interface for the application 
+5. TO UTILIZE PRICE/VOLUME FEATURES: Store an API key in a .env file.
+   1. If you do not have one already, get a free Alpha Vantage API key from https://www.alphavantage.co/support/#api-key.
+   2. Create a file called ".env" in the auto-prophet folder.
+   3. In that .env file, create a JSON object in the following form:
+        {
+            "ALPHAVANTAGE_API_KEY": "your key here"
+        }
+   4. Save your .env file and now you can use price/volume features that pull data from the Alpha Vantage API.
 
 #### Contribution
 We welcome contributions!
