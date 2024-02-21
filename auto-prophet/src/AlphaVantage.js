@@ -1,5 +1,5 @@
 //Alphavantage API key pulled from the user's .env file
-const APIKey = GetAPIKey();
+const APIKey = await GetAPIKey();
 
 //Gets the api key from the .env file in the auto-prophet folder
 async function GetAPIKey() {
@@ -17,13 +17,12 @@ async function GetAPIKey() {
 
 //Takes a security keyword and returns an array of objects of matching securities with their metadata
 async function GetSearchData(keyword) {
-
     const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keyword}&apikey=${APIKey}&datatype=json`;
 
     const response = await fetch(url);
     const data = await response.json();
 
-    //console.log(data["bestMatches"][0]["1. symbol"]);
+    //console.log(data);
 
     var arrayData = FormatSearchData(data["bestMatches"]);
 

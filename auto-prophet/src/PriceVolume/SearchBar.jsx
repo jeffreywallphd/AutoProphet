@@ -1,9 +1,9 @@
-import React, { useState, useRef, Component, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { GetSearchData, GetHourlyData } from '../AlphaVantage';
 import { FaSearch } from "react-icons/fa";
 import "./Price.css";
 
-function SearchBar() {
+function SearchBar(props) {
     const [securityList, setList] = useState(null);
     const [loading, setLoading] = useState(false);
     const [tickerData, setTickerData] = useState(null);
@@ -41,6 +41,7 @@ function SearchBar() {
             const data = await GetHourlyData(searchRef.current.value);
             console.log(data);
             setTickerData(data);
+            props.onDataChange(data);
         } finally {
         }
     }
