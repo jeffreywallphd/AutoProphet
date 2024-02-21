@@ -47,30 +47,34 @@ function SearchBar() {
 
     return (
         <>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <div>
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
                     e.preventDefault();
                     fetchHourlyData();
                 }}>
-                    <input className="priceSearchBar" type="text" list="tickers" ref={searchRef} 
-                        onKeyUp={(e) => checkInput(e)} placeholder="Please enter your security"></input>
-                    
-                    {securityList ? 
+                    <input className="priceSearchBar" type="text" list="tickers" ref={searchRef}
+                           onKeyUp={(e) => checkInput(e)} placeholder="Please enter your security"></input>
+
+                    {securityList ?
                         <datalist id="tickers">
                             {securityList.map((data) => (
                                 <option key={data.ticker} value={data.ticker}>
                                     {data.name}
                                 </option>
                             ))}
-                            
+
                         </datalist>
-                         : null
+                        : null
                     }
                     <button className="priceSearchButton" type="submit" disabled={loading}><FaSearch/></button>
                 </form>
             </div>
             <div>
-                    
+
             </div>
         </>
     );
