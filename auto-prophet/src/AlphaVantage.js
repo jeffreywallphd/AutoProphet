@@ -1,4 +1,18 @@
-const APIKey = "BQWCPFV1XJFJ7ZPH";
+//Alphavantage API key pulled from the user's .env file
+const APIKey = GetAPIKey();
+
+//Gets the api key from the .env file in the auto-prophet folder
+async function GetAPIKey() {
+    var ENVContents;
+
+    await fetch("../.env")
+        .then((response) => response.text() )
+        .then((contents) => ENVContents = contents);
+    
+    ENVContents = JSON.parse(ENVContents);
+
+    return ENVContents["ALPHAVANTAGE_API_KEY"];
+}
 
 
 //Takes a security keyword and returns an array of objects of matching securities with their metadata
@@ -45,15 +59,10 @@ function FormatSearchData(data) {
             name: entry[1]["2. name"]
         }
 
-        //console.log(security);
-
         array.push(security);
     });
 
-    //console.log(array);
-
     return array;
-
 }
 
 //Takes json object of security price and volume data and turns it into a parsable array
