@@ -3,6 +3,7 @@ The following style guide should be used when updating the user interface. Chang
 
 ### Color Palette
 The color palette depicted below is to be the exclusive color palette used in the AutoProfit program.
+![image](/documentation/palette.png)
 
 #### General Color Palette:
 add image here
