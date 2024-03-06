@@ -78,10 +78,7 @@ function FormatHourlyData(data) {
     array["MetaData"] = metaData;
     
     Object.entries(data["Time Series (1min)"]).forEach((entry) => {
-        //console.log(entry);
         var dateTime = new Date(Date.parse(entry[0]));
-        //console.log(dateTime);
-        //console.log(dateTime.toLocaleDateString());
         const price = {
             date: dateTime.toLocaleDateString(),
             time: dateTime.toLocaleTimeString(),
@@ -92,8 +89,6 @@ function FormatHourlyData(data) {
     });
 
     array["Data"] = priceData;
-
-    //console.log(array);
 
     return array;
 

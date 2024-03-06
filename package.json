@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "react-icons": "^5.0.1"
+    "react-icons": "^5.0.1",
+    "recharts": "^2.12.2"
   }
 }

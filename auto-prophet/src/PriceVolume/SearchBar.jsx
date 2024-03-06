@@ -37,13 +37,9 @@ function SearchBar(props) {
 
     //Gets ticker data
     const fetchHourlyData = async () => {
-        try {
-            const data = await GetHourlyData(searchRef.current.value);
-            console.log(data);
-            setTickerData(data);
-            props.onDataChange(data);
-        } finally {
-        }
+        const data = await GetHourlyData(searchRef.current.value);
+        console.log(data);
+        props.onDataChange(data);
     }
 
     return (

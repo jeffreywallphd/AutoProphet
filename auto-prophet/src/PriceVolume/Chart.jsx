@@ -1,47 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { LineChart, XAxis, YAxis, Tooltip, Line } from "recharts";
 
 function DataCharts(props) {
 
-    useEffect(() => {
-        console.log(props);
-    }, [props])
-
     return(<>
-        {
-            props.data ?
-            <p>From Chart File: Selected {props.data["MetaData"]["ticker"]}</p> 
-            : null
-        }
+        <div> 
+                <p>From Chart File: Selected {props.data["MetaData"]["ticker"]}</p>
+
+                {/* Edit this section below to change the chart. All info about the charts can be found on recharts website. */}
+                <LineChart width={730} height={250} data={props.data["Data"]}>
+                    <XAxis dataKey="time" />
+                    <YAxis type="number" domain={['dataMin', 'dataMax']}/>
+                    <Tooltip />
+                    <Line type="monotone" dataKey="price" stroke="#8884d8" />
+                </LineChart>
+            </div>
     </>);
 } 
-
-// const ctx = document.getElementById('myChart').getContext('2d');
-
-// new Chart(ctx, {
-//     type: 'bar',
-//     data: {
-//         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-//         datasets: [{
-//             label: '# of Votes',
-//             data: [12, 19, 3, 5, 2, 3],
-//             backgroundColor: [
-//                 'red',
-//                 'blue',
-//                 'yellow',
-//                 'green',
-//                 'purple',
-//                 'orange'
-//             ],
-//             borderWidth: 1
-//         }]
-//     },
-//     options: {
-//         scales: {
-//             y: {
-//                 beginAtZero: true
-//             }
-//         }
-//     }
-// });
 
 export { DataCharts }
