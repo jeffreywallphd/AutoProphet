@@ -1,13 +1,18 @@
 # AutoProphet
 A repository for code and documentation for the open-source Auto Prophet financial analytics tool
 
+## Disclaimers
+
 ### No Warranty
 This software is provided "as is" without any warranty of any kind, express or implied. This includes, but is not limited to, the warranties of merchantability, fitness for a particular purpose, and non-infringement.
 
 ### Disclaimer of Liability
 The authors and copyright holders of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-### Installation
+### General Use Disclaimer
+The authors of this software are not financial experts. This software should not be used to replace the expert advice of financial professionals. The information and functionality of this software is for research and educational purposes. Consult a licensed professional for investing advice.
+
+## Installation
 To begin contributing to the repository:
 
 1. Clone the repository using git into a folder on your computer where you want to store the code locally
@@ -32,16 +37,18 @@ To begin contributing to the repository:
         }
    4. Save your .env file and now you can use price/volume features that pull data from the Alpha Vantage API.
 
-#### Contribution
-We welcome contributions!
+## Collaboration Practices
+Please be sure to read through the [Best Coding Practices](BestCodingPractices.md) document before you start collaborating.
 
-### Future Feature Ideas
+As you use git and GitHub to manager your contributions, follow the guidelines outlined in the [Git Practices](GitPractices.md) document. Remember to pull from main regularly to avoid code conflicts.
+
+## Future Feature Ideas
 * Utilize the Recharts React visualization library: https://recharts.org/en-US
 
-### Acknowledgments
+## Acknowledgments
 All gratitude to the authors of this project for their valuable input and assistance.
 
-#### Authors
+### Authors
 * Jeffrey Wall - Faculty Advisor
 * Daron Hebeler
 * Trent Bennett
