@@ -12,7 +12,7 @@ In the description of the change request, please document the following:
 
 ## Checklist before requesting a review
 - [ ] I have followed the git practices outlined [here](GitPractices.md) to ensure code conflicts are minimized
-- [ ] My code follows the style guidelines of this project outlined [here](documentation/UIGuidelines.md)
+- [ ] My code follows the style guidelines of this project outlined [here](documentation/StyleGuide.md)
 - [ ] I have performed a self-review of my code. It runs without errors and follows the [Best Coding Practices](BestCodingPractices.md)
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
