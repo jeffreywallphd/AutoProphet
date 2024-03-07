@@ -1,5 +1,5 @@
 # AutoProphet
-A repository for code and documentation for the open-source Auto Prophet financial analytics tool
+AutoProphet is an open source financial analytics tool designed to provide financial analytics capabilties at a low cost. The tool is meant to provide novice investors with the opportunity to learn and explore financial analytics capabilities, beginning with a simple set of analytics tools and gradually learning more complex tools and models.
 
 ## Disclaimers
 
