@@ -36,10 +36,15 @@ function SearchBar(props) {
 
     //Gets ticker data
     const fetchHourlyData = async () => {
+        //Take away preious data
+        props.onDataChange("Loading");
+
+        //Get new data
         const data = await Get1DHourlyData(searchRef.current.value);
 
         console.log(data);
 
+        //Get new ticker
         var ticker = (searchRef.current.value).toUpperCase();
 
         //Capitalize the ticker in the search bar if not done already
