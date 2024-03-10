@@ -1,12 +1,11 @@
 import React, { useState, useRef } from "react";
-import { GetSearchData, GetHourlyData } from '../AlphaVantage';
+import { GetSearchBarData, Get1DHourlyData } from '../AlphaVantage';
 import { FaSearch } from "react-icons/fa";
 import "./Price.css";
 
 function SearchBar(props) {
     const [securityList, setList] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [tickerData, setTickerData] = useState(null);
     const searchRef = useRef("META");
 
     //Checks the keyUp event to determine if a key was hit or a datalist option was selected
@@ -24,7 +23,7 @@ function SearchBar(props) {
         if (searchRef.current.value != "") {
             try {
                 setLoading(true);
-                const searchData = await GetSearchData(searchRef.current.value);
+                const searchData = await GetSearchBarData(searchRef.current.value);
                 setList(searchData);
             } finally {
                 setLoading(false);
@@ -37,8 +36,22 @@ function SearchBar(props) {
 
     //Gets ticker data
     const fetchHourlyData = async () => {
-        const data = await GetHourlyData(searchRef.current.value);
+        const data = await Get1DHourlyData(searchRef.current.value);
+
         console.log(data);
+
+        var ticker = (searchRef.current.value).toUpperCase();
+
+        //Capitalize the ticker in the search bar if not done already
+        searchRef.current.value = ticker;
+
+        //Update some meta data
+        data["MetaData"]["ticker"] = ticker;
+        data["MetaData"]["company"] = securityList.find((element) => {
+            return element.ticker == ticker;
+        }).name;
+
+        //Give the data back to the price page
         props.onDataChange(data);
     }
 
