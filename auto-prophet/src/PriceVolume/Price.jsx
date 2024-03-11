@@ -18,6 +18,8 @@ class Price extends Component {
         var chartDisplay = null;
         if (this.state.ChartData == "Loading") {
             chartDisplay = <p>Loading...</p>;
+        } else if (this.state.ChartData == "Error") {
+            chartDisplay = <p>Error! Invalid ticker!</p>
         } else if (this.state.ChartData) {
             chartDisplay = <DataCharts data={this.state.ChartData}/>;
         } else {

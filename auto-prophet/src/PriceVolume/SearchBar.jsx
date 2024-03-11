@@ -44,20 +44,26 @@ function SearchBar(props) {
 
         console.log(data);
 
-        //Get new ticker
-        var ticker = (searchRef.current.value).toUpperCase();
+        if (data == "Error") {
+            console.log("giving back");
+            //Give the data back to the price page
+            props.onDataChange(data);
+        } else {
+            //Get new ticker
+            var ticker = (searchRef.current.value).toUpperCase();
 
-        //Capitalize the ticker in the search bar if not done already
-        searchRef.current.value = ticker;
+            //Capitalize the ticker in the search bar if not done already
+            searchRef.current.value = ticker;
 
-        //Update some meta data
-        data["MetaData"]["ticker"] = ticker;
-        data["MetaData"]["company"] = securityList.find((element) => {
-            return element.ticker == ticker;
-        }).name;
+            //Update some meta data
+            data["MetaData"]["ticker"] = ticker;
+            data["MetaData"]["company"] = securityList.find((element) => {
+                return element.ticker == ticker;
+            }).name;
 
-        //Give the data back to the price page
-        props.onDataChange(data);
+            //Give the data back to the price page
+            props.onDataChange(data);
+        }
     }
 
     return (

@@ -25,9 +25,11 @@ async function Get1DHourlyData(ticker) {
     const data = await response.json();
     console.log(data);
 
-    var arrayData = Format1DHourlyData(data);
-
-    return arrayData;
+    if (data.hasOwnProperty("Error Message")){
+        return "Error";
+    } else {
+        return Format1DHourlyData(data);
+    }
 }
 
 /* 
