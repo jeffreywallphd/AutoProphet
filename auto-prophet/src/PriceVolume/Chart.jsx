@@ -6,8 +6,8 @@ function DataCharts(props) {
     return(<>
         <div> 
                 <h1>{props.data["MetaData"]["company"]} ({props.data["MetaData"]["ticker"]})</h1>
-                <div class="btn-group">
-                    <button disabled="true">1D</button>
+                <div className="btn-group">
+                    <button disabled={true}>1D</button>
                     <button>5D</button>
                     <button>1M</button>
                     <button>6M</button>

@@ -42,10 +42,7 @@ function SearchBar(props) {
         //Get new data
         const data = await Get1DHourlyData(searchRef.current.value);
 
-        console.log(data);
-
         if (data == "Error") {
-            console.log("giving back");
             //Give the data back to the price page
             props.onDataChange(data);
         } else {

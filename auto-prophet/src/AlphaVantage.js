@@ -20,10 +20,8 @@ async function GetSearchBarData(keyword) {
 async function Get1DHourlyData(ticker) {
     const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=1min&apikey=${APIKey}&extended_hours=false&outputsize=full&datatype=json`;
 
-    console.log("Getting data");
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
 
     if (data.hasOwnProperty("Error Message")){
         return "Error";
@@ -53,7 +51,6 @@ function FormatSearchBarData(data) {
     var array = [];
     
     Object.entries(data).forEach((entry) => {
-        //console.log(entry[1]["1. symbol"]);
         const security = {
             ticker: entry[1]["1. symbol"],
             name: entry[1]["2. name"]

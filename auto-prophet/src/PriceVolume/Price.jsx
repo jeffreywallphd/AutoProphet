@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { SearchBar } from "./SearchBar";
 import { DataCharts } from "./Chart";
-import {ProgressBar} from 'react-loader-spinner'
 
 class Price extends Component {
     //Used to pass data from the search bar to the chart
