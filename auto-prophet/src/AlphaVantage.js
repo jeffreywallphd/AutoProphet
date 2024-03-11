@@ -17,7 +17,7 @@ async function GetSearchBarData(keyword) {
 }
 
 //Gets hourly data from AlphaVantage for a given ticker
-async function Get1DHourlyData(ticker) {
+async function Get1DMinuteData(ticker) {
     const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=1min&apikey=${APIKey}&extended_hours=false&outputsize=full&datatype=json`;
 
     const response = await fetch(url);
@@ -26,7 +26,7 @@ async function Get1DHourlyData(ticker) {
     if (data.hasOwnProperty("Error Message")){
         return "Error";
     } else {
-        return Format1DHourlyData(data);
+        return Format1DMinuteData(data);
     }
 }
 
@@ -63,7 +63,7 @@ function FormatSearchBarData(data) {
 }
 
 //Takes json object of security price and volume data and turns it into a parsable array of minute by minute data for one day
-function Format1DHourlyData(data) {
+function Format1DMinuteData(data) {
     var array = [];
     var metaData = [];
     var priceData = [];
@@ -95,4 +95,4 @@ function Format1DHourlyData(data) {
     return array;
 }
 
-export {GetSearchBarData, Get1DHourlyData}
+export {GetSearchBarData, Get1DMinuteData}

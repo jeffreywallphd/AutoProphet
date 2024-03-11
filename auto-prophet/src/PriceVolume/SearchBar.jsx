@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { GetSearchBarData, Get1DHourlyData } from '../AlphaVantage';
+import { GetSearchBarData, Get1DMinuteData } from '../AlphaVantage';
 import { FaSearch } from "react-icons/fa";
 import "./Price.css";
 
@@ -12,7 +12,7 @@ function SearchBar(props) {
     const checkInput = async (e) => {
         //Unidentified means datalist option was selected, otherwise a key was hit
         if (e.key == "Unidentified"){
-            await fetchHourlyData();
+            await fetch1DMinuteData();
         } else {
             await fetchSearchData();
         }
@@ -35,12 +35,12 @@ function SearchBar(props) {
     };
 
     //Gets ticker data
-    const fetchHourlyData = async () => {
+    const fetch1DMinuteData = async () => {
         //Take away preious data
         props.onDataChange("Loading");
 
         //Get new data
-        const data = await Get1DHourlyData(searchRef.current.value);
+        const data = await Get1DMinuteData(searchRef.current.value);
 
         if (data == "Error") {
             //Give the data back to the price page
@@ -68,7 +68,7 @@ function SearchBar(props) {
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
                     e.preventDefault();
-                    fetchHourlyData();
+                    fetch1DMinuteData();
                 }}>
                     <input className="priceSearchBar" type="text" list="tickers" ref={searchRef}
                            onKeyUp={(e) => checkInput(e)} placeholder="Please enter your security"></input>

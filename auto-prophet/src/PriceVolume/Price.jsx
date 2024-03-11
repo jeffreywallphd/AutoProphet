@@ -14,6 +14,7 @@ class Price extends Component {
     }
 
     render() {
+        //Different dispaly options other than a blank screen while waiting for data or if we get an error from the API
         var chartDisplay = null;
         if (this.state.ChartData == "Loading") {
             chartDisplay = <p>Loading...</p>;
