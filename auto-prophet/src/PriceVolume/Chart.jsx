@@ -24,7 +24,7 @@ function DataCharts(props) {
                     <XAxis dataKey="time" />
                     <YAxis type="number" domain={['dataMin', 'dataMax']}/>
                     <Tooltip />
-                    <Line type="monotone" dataKey="price" stroke="#8884d8" />
+                    <Line type="monotone" dataKey="price" stroke="#8884d8" dot={false}/>
                 </LineChart>
             </div>
     </>);
