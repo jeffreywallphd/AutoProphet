@@ -11,7 +11,7 @@ function SearchBar(props) {
     //Checks the keyUp event to determine if a key was hit or a datalist option was selected
     const checkInput = async (e) => {
         //Unidentified means datalist option was selected, otherwise a key was hit
-        if (e.key == "Unidentified"){
+        if (e.key == "Unidentified" || e.key == "Enter"){
             await fetch1DMinuteData();
         } else {
             await fetchSearchData();
@@ -52,9 +52,9 @@ function SearchBar(props) {
             //Capitalize the ticker in the search bar if not done already
             searchRef.current.value = ticker;
 
-            //Update some meta data
+            //Update meta data about the company
             data["MetaData"]["ticker"] = ticker;
-            data["MetaData"]["company"] = securityList.find((element) => {
+            data["MetaData"]["company"] = (await GetSearchBarData(searchRef.current.value)).find((element) => {
                 return element.ticker == ticker;
             }).name;
 
