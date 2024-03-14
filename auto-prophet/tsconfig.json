@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "module": "ESNext",
+      "target": "ES2022",
+      "noImplicitAny": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "sourceMap": true,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "moduleResolution": "node",
+      "importHelpers": true,
+      "types": ["node"],
+      "baseUrl": "./src",
+      "paths": {
+        "@Entity/*": ["Entity/*"],
+        "@DataGateway/*": ["Gateway/Data/*"],
+        "@Interactor/*": ["Interactor/*"],
+        "@View/*": ["View/*"]
+    }
+    }
+  }

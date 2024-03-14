@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { SearchBar } from "./SearchBar";
 import { DataCharts } from "./Chart";
+import { SearchBarNew } from "../View/SearchBarNew";
 
 class Price extends Component {
     //Used to pass data from the search bar to the chart
@@ -28,7 +29,7 @@ class Price extends Component {
 
         return (
             <div className="page">
-                <SearchBar data={this.state.ChartData} onDataChange={this.handleDataChange}/>
+                <SearchBarNew data={this.state.ChartData} onDataChange={this.handleDataChange}/>
                 {chartDisplay}
             </div>
         );

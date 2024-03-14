@@ -33,6 +33,10 @@ const config = {
                 loader: 'babel-loader',
             },
             {
+                test: /\.(ts|tsx)$/i,
+                loader: 'ts-loader',
+            },
+            {
                 test: /\.css$/i,
                 use: [stylesHandler,'css-loader'],
             },
@@ -44,6 +48,9 @@ const config = {
     },
     resolve: {
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
+        alias: {
+            '@DataGateway': path.resolve(__dirname, './src/Gateway/Data')
+        }
     }
 
 };
