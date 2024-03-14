@@ -46,7 +46,7 @@
 * It covers linear algebra, statistics, calculus, and more, making it a strong contender for NumPy-like capabilities.
 
 
-# Node.js itself doesn't directly handle visualization, but it excels in working with data for those visualizations. Here are some popular data visualization libraries you can use with Node.js:
+## Node.js itself doesn't directly handle visualization, but it excels in working with data for those visualizations. Here are some popular data visualization libraries you can use with Node.js:
 
 ## 1.Chart.js:
 
