@@ -77,3 +77,28 @@
 * [Documentation](https://recharts.org/en-US/)
 * Another React-based library built on top of D3.js, providing pre-built components for common chart types.
 * Recharts simplifies working with D3.js by offering a higher-level abstraction.
+
+## Node.js offers limited libraries with functionalities for machine learning tasks. Morever, there is no direct equivalent of scikit-learn. Additionally, tracking the stability of these libraries can be challenging, as they could potentially be discontinued in the future, requiring developers to rewrite their code. However, here are some good libraries that we can use: 
+
+## 1.TensorFlow.js:
+
+* [Documentation](https://www.tensorflow.org/js)
+* This is a popular open-source library from Google, offering a JavaScript implementation of the TensorFlow framework.
+* It allows you to build, train, and deploy machine learning models directly in Node.js or even in the browser.
+* TensorFlow.js supports a wide range of machine learning algorithms, including deep learning.
+
+## 2.Brain.js:
+
+* [Documentation](https://www.npmjs.com/package/brain.js?activeTab=readme)
+* This is a user-friendly library designed to make neural networks and machine learning more approachable.
+* It offers various neural network architectures for tasks like classification, regression, and time series forecasting.
+* Brain.js is a good choice for beginners or projects that require simpler models.
+
+## 3.Synaptic.js:
+
+* [Documentation](https://www.npmjs.com/package/synaptic/v/0.1.0)
+* Another JavaScript library for building neural networks.
+* Synaptic.js provides a flexible architecture that allows you to define custom neural network structures.
+* It also offers features like automatic differentiation for training models.
+
+## TensorFlow.js stands out as the most stable option due to its strong backing from Google and a large community. This makes it a reliable choice for production use. Brain.js and Synaptic.js, while user-friendly, have smaller communities and receive less frequent updates. These are critical factors to consider before implementing them in a website.
