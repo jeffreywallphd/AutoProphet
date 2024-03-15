@@ -30,9 +30,15 @@ export class StockInteractor implements IInputBoundary {
         //search for the requested information via the API gateway
         var results = await stockGateway.read(stock);
 
-        throw new Error("Method not implemented.");
+        //convert the API gateway response to a JSON reponse object
+        var response = new JSONResponse();
+        response.convertFromEntity(results, false);
+
+        return response.response;
     }
 
+    //TODO: remove search from the list because it is the same as get.
+    //TODO: add "method", "action", or something similar to the request model
     async search(requestModel: IRequestModel): Promise<IResponseModel> {
         //create stock request object and fill with request model
         var stock = new StockRequest();

@@ -1,12 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {StockInteractor} from "../Interactor/StockInteractor";
 import {JSONRequest} from "../Gateway/Request/JSONRequest";
-import { GetSearchBarData, Get1DMinuteData } from '../AlphaVantage';
 import { FaSearch } from "react-icons/fa";
-import "../PriceVolume/Price.css";
-import { JSONResponse } from "../Gateway/Response/JSONResponse";
+//import "../PriceVolume/Price.css";
 
-function SearchBarNew(props) {
+function TickerSearchBar(props) {
     const [securityList, setList] = useState(null);
     const [loading, setLoading] = useState(false);
     const searchRef = useRef("META");
@@ -15,7 +13,7 @@ function SearchBarNew(props) {
     const checkInput = async (e) => {
         //Unidentified means datalist option was selected, otherwise a key was hit
         if (e.key == "Unidentified" || e.key == "Enter"){
-            await fetch1DMinuteData();
+            await fetchIntraDayData();
         } else {
             await fetchSearchData();
         }
@@ -26,17 +24,20 @@ function SearchBarNew(props) {
         if (searchRef.current.value != "") {
             try {
                 setLoading(true);
+                
+                //get data through stock interactor
                 var interactor = new StockInteractor();
                 var requestObj = new JSONRequest(`{ 
                     "request": { 
                         "stock": {
+                            "action": "lookup",
                             "keyword": "${searchRef.current.value}"
                         }
                     }
                 }`);
 
                 const searchData = await interactor.search(requestObj);
-                
+
                 setList(searchData.response.results);
             } finally {
                 setLoading(false);
@@ -46,44 +47,36 @@ function SearchBarNew(props) {
         }
     };
 
+    //TODO: implement error handling
     //Gets ticker data
-    const fetch1DMinuteData = async () => {
+    const fetchIntraDayData = async () => {
         //Take away preious data
         props.onDataChange("Loading");
 
+        var companyName = "";
+
+        //get company name from securities list data
+        securityList.find((element) => {
+            if(element.ticker === (searchRef.current.value).toUpperCase()) {
+                companyName = element.companyName;
+            }
+        });
+
+        //get data through stock interactor
         var interactor = new StockInteractor();
         var requestObj = new JSONRequest(`{ 
             "request": { 
                 "stock": {
-                    "ticker": "${searchRef.current.value}"
+                    "action": "intraday",
+                    "ticker": "${searchRef.current.value}",
+                    "companyName": "${companyName}"
                 }
             }
         }`);
 
-        const searchData = await interactor.get(requestObj);
+        const data = await interactor.get(requestObj);
 
-        //Get new data
-        const data = await Get1DMinuteData(searchRef.current.value);
-
-        if (data == "Error") {
-            //Give the data back to the price page
-            props.onDataChange(data);
-        } else {
-            //Get new ticker
-            var ticker = (searchRef.current.value).toUpperCase();
-
-            //Capitalize the ticker in the search bar if not done already
-            searchRef.current.value = ticker;
-
-            //Update meta data about the company
-            data["MetaData"]["ticker"] = ticker;
-            data["MetaData"]["company"] = (await GetSearchBarData(searchRef.current.value)).find((element) => {
-                return element.ticker == ticker;
-            }).name;
-
-            //Give the data back to the price page
-            props.onDataChange(data);
-        }
+        props.onDataChange(data);
     }
 
     return (
@@ -91,16 +84,16 @@ function SearchBarNew(props) {
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
                     e.preventDefault();
-                    fetch1DMinuteData();
+                    fetchIntraDayData();
                 }}>
                     <input className="priceSearchBar" type="text" list="tickers" ref={searchRef}
-                           onKeyUp={(e) => checkInput(e)} placeholder="Please enter your security"></input>
+                           onKeyUp={(e) => checkInput(e)} placeholder="Please enter a ticker symbol"></input>
 
                     {securityList ?
                         <datalist id="tickers">
                             {securityList.map((data) => (
                                 <option key={data.ticker} value={data.ticker}>
-                                    {data.name}
+                                    {data.companyName}
                                 </option>
                             ))}
 
@@ -117,4 +110,4 @@ function SearchBarNew(props) {
     );
 }
 
-export { SearchBarNew }
+export { TickerSearchBar }

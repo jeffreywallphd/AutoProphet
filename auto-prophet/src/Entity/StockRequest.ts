@@ -28,7 +28,7 @@ export class StockRequest implements IEntity {
         var endDate = new Field("endDate", "date", null);
         this.fields.set("endDate", endDate);
 
-        var data = new Field("data", "json", null);
+        var data = new Field("data", "array", null);
         this.fields.set("data", data);
 
         var key = new Field("key", "string", null);
@@ -40,6 +40,10 @@ export class StockRequest implements IEntity {
 
         if(!json.request.hasOwnProperty("stock")) {
             throw new Error("Making a request about a stock requires a stock property");
+        }
+
+        if(json.request.stock.hasOwnProperty("key")) {
+            this.setFieldValue("key", json.request.stock.key);
         }
 
         //set properties of Stock entity based on request model
@@ -65,10 +69,6 @@ export class StockRequest implements IEntity {
         
         if(json.request.stock.hasOwnProperty("endDate")) {
             this.setFieldValue("endDate", json.request.stock.endDate);
-        }
-
-        if(json.request.stock.hasOwnProperty("key")) {
-            this.setFieldValue("key", json.request.stock.key);
         }
     }
 

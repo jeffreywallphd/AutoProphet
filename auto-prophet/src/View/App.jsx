@@ -18,7 +18,7 @@ import Home from "./Home";
 import Portfolio from "./Portfolio";
 import Analysis from "./Analysis";
 import BuyReport from "./BuyReport";
-import Price from "./PriceVolume/Price";
+import TimeSeriesPage from "./TimeSeriesPage";
 
 class App extends Component {
     render() {
@@ -42,7 +42,7 @@ class App extends Component {
                           <Route path="/portfolio" element={<Portfolio />}/>
                           <Route path="/analysis" element={<Analysis />}/>
                           <Route path="/buy-report" element={<BuyReport />}/>
-                          <Route path="/price" element={<Price />}/>
+                          <Route path="/price" element={<TimeSeriesPage />}/>
                         </Routes>
                     </div>
                 </div>
