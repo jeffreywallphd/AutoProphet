@@ -101,4 +101,10 @@
 * Synaptic.js provides a flexible architecture that allows you to define custom neural network structures.
 * It also offers features like automatic differentiation for training models.
 
+## 4.ML.js
+
+* [Documentatioin](https://www.npmjs.com/package/ml)
+* This is a modular machine learning library offering a variety of algorithms for classification, regression, and clustering tasks.
+* ML.js provides a clean API and can be a good choice for implementing specific machine learning algorithms in your Node.js projects.
+
 ## TensorFlow.js stands out as the most stable option due to its strong backing from Google and a large community. This makes it a reliable choice for production use. Brain.js and Synaptic.js, while user-friendly, have smaller communities and receive less frequent updates. These are critical factors to consider before implementing them in a website.
