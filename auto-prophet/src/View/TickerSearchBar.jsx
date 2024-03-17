@@ -104,7 +104,7 @@ function TickerSearchBar(props) {
                 </form>
             </div>
             <div>
-
+                
             </div>
         </>
     );

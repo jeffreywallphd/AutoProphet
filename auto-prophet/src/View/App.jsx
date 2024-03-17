@@ -19,32 +19,41 @@ import Portfolio from "./Portfolio";
 import Analysis from "./Analysis";
 import BuyReport from "./BuyReport";
 import TimeSeriesPage from "./TimeSeriesPage";
+import logo from "../Asset/Image/logo.png";
+import icon from "../Asset/Image/icon.png";
 
 class App extends Component {
     render() {
         return (
             <HashRouter>
-                <div className="main">
-                    <header className="header">
-                        <h1>Auto Prophet</h1>
-                    </header>
-                    <nav>
-                        <ul className="navigation">
-                            <li><NavLink to="/">Home</NavLink></li>
-                            <li><NavLink to="/portfolio">Portfolio</NavLink></li>
-                            <li><NavLink to="/analysis">Analysis</NavLink></li>
-                            <li><NavLink to="/price">Price/Volume</NavLink></li>
-                        </ul>
-                    </nav>
-                    <div className="content">
-                        <Routes>
-                          <Route path="/" element={<Home />}/>
-                          <Route path="/portfolio" element={<Portfolio />}/>
-                          <Route path="/analysis" element={<Analysis />}/>
-                          <Route path="/buy-report" element={<BuyReport />}/>
-                          <Route path="/price" element={<TimeSeriesPage />}/>
-                        </Routes>
+                <div>
+                    <div className="main">
+                        <div className="sidebar">
+                            <header className="header">
+                                <img src={logo} alt="Logo" width="150" />
+                            </header>
+                            <nav>
+                                <ul className="navigation">
+                                    <li><NavLink to="/">Home</NavLink></li>
+                                    <li><NavLink to="/price">Stock & Fund</NavLink></li>
+                                    <li><NavLink to="/portfolio">Portfolio</NavLink></li>
+                                    <li><NavLink to="/analysis">Risk Analysis</NavLink></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div className="content">
+                            <Routes>
+                            <Route path="/" element={<Home />}/>
+                            <Route path="/portfolio" element={<Portfolio />}/>
+                            <Route path="/analysis" element={<Analysis />}/>
+                            <Route path="/buy-report" element={<BuyReport />}/>
+                            <Route path="/price" element={<TimeSeriesPage />}/>
+                            </Routes>
+                        </div>
                     </div>
+                    <footer>
+                        This software is licensed under the GPL-3.0 license. 
+                    </footer>
                 </div>
             </HashRouter>
         );

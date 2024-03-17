@@ -20,7 +20,7 @@ import BuyReport from "./BuyReport";
 class Home extends Component {
     render() {
         return (
-            <div>
+            <div className="page">
                 <h2>Welcome!</h2>
                 <p>
                     AutoProphet is an open-source AI-enabled tool that seeks to democratize financial analysis by providing you with advanced analytics tools to help you make wise financial decisions.

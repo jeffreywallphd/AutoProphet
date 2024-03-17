@@ -28,6 +28,7 @@ class TimeSeriesPage extends Component {
 
         return (
             <div className="page">
+                <h2>Price and Volume Trends</h2>
                 <TickerSearchBar data={this.state.ChartData} onDataChange={this.handleDataChange}/>
                 {chartDisplay}
             </div>
