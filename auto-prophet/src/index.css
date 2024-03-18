@@ -12,21 +12,14 @@
   --text-color-medium: #333333;
 }
 
-
 body {
   background-color: var(--secondary-color);
   margin: 0;
-  margin-left: 150px;
-  padding: 10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.header {
-  text-align: center;
 }
 
 footer {
@@ -60,95 +53,77 @@ button {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .main {
   display: flex;
+  min-height: 500px;
 }
 
-.sidebar {
-  width: 200px;
+.sidebar { 
+  width: 200px; 
+  min-height: 500px;
   background-color: var(--primary-color);
-  padding: 20px;
-}
-
-.header {
-  padding: 0;
-}
-
-.vertical-menu { 
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 150px; 
-  height: 100%;
-  background-color: #2B388F;
-  overflow-y: auto;
   transition: width 0.5s ease;
 }
 
-.menu-collapsed .vertical-menu {
-  width: 60px; /* Width of menu when collapsed */
+.sidebar.collapsed { 
+  width: 40px;
+}
+
+.header {
+  text-align: center;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.header.collapsed {
+  display: none;
+}
+
+.menu-items a:hover {
+  background-color: var(--accent-color);
 }
 
 .menu-items.collapsed a {
   display: none;
 }
 
-.vertical-menu a {
-  color: white;
+.sidebar a {
+  color: var(--text-color-light);
   font-weight: bold;
   display: block;
   padding: 12px;
   text-decoration: none;
 }
 
-.menu-items a:hover {
-  background-color: #AFD3E4;
-}
-
-.toggle-menu {
-  color: white;
-  background-color: #2B388F;
+.toggle-sidebar {
+  color: var(--text-color-light);
+  background-color: var(--primary-color);
   border: none;
   cursor: pointer;
   padding: 10px;
   text-align: left;
-  width: 60px;
+  width: 40px;
 }
 
-.toggle-menu:hover {
-  background-color: #5086FF;
+.toggle-sidebar:hover {
+  background-color: var(--tertiary-color);
 }
 
 .isActive{
-  background-color: #00878E;
-  color: #ffffff;
-}
-
-.main{
-  display: flex;
-}
-
-.header {
-  margin-left: 20px;
-  transition: margin-left 0.5s ease; 
-}
-
-.header-collapsed {
-  margin-left: -75px; /* Adjust the margin when menu is collapsed */
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
 }
 
 .content {
-  background-color: #FFF;
-  margin-left: 20px;
-  transition: margin-left 0.5s ease;
+  background-color: var(--background-color);
+  flex: 1;
 }
 
-.content-collapsed {
-  margin-left: -75px; /* Adjust the margin when menu is collapsed */
+.page {
+  padding: 20px;
 }
 
 .cardRow {
@@ -187,7 +162,6 @@ code {
 
 .priceSearchFormContainer{
   display: flex;
-  
   gap: 15px;
   margin: 0;
   padding: 0;
@@ -207,7 +181,7 @@ code {
   width: 50px;
   border-radius: 4px;
   background-color: var(--accent-color);
-  color: white;
+  color: var(--text-color-light);
   transition: 0.2s;
 }
 

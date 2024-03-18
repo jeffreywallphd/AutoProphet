@@ -23,23 +23,42 @@ import logo from "../Asset/Image/logo.png";
 import icon from "../Asset/Image/icon.png";
 
 class App extends Component {
+    // --Code for collapsable sidebar menu--
+    constructor(props) {
+        super(props);
+        this.state = {
+            menuCollapsed: false
+        };
+        this.toggleMenu = this.toggleMenu.bind(this);
+    }
+
+    toggleMenu() {
+        this.setState(prevState => ({
+            menuCollapsed: !prevState.menuCollapsed
+        }));
+    }
+    // --End: Code for collapsable sidebar menu--
+
     render() {
+        const { menuCollapsed } = this.state;
+
         return (
             <HashRouter>
                 <div>
                     <div className="main">
-                        <div className="sidebar">
-                            <header className="header">
+                        <div class={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
+                            <button className="toggle-sidebar" onClick={this.toggleMenu}>
+                                {menuCollapsed ? '>>' : '<<'}
+                            </button>
+                            <header className={`header ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <img src={logo} alt="Logo" width="150" />
                             </header>
-                            <nav>
-                                <ul className="navigation">
-                                    <li><NavLink to="/">Home</NavLink></li>
-                                    <li><NavLink to="/price">Stock & Fund</NavLink></li>
-                                    <li><NavLink to="/portfolio">Portfolio</NavLink></li>
-                                    <li><NavLink to="/analysis">Risk Analysis</NavLink></li>
-                                </ul>
-                            </nav>
+                            <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
+                                <NavLink to="/" activeClassName="activeNav">Home</NavLink>
+                                <NavLink to="/price" activeClassName="activeNav">Stock & Fund</NavLink>
+                                <NavLink to="/portfolio" activeClassName="activeNav">Portfolio</NavLink>
+                                <NavLink to="/analysis" activeClassName="activeNav">Risk Analysis</NavLink>
+                            </div>
                         </div>
                         <div className="content">
                             <Routes>
