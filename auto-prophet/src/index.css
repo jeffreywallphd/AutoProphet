@@ -16,6 +16,8 @@
 body {
   background-color: var(--secondary-color);
   margin: 0;
+  margin-left: 150px;
+  padding: 10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -76,41 +78,77 @@ code {
   padding: 0;
 }
 
-ul.navigation li {
-  list-style-type: none;
-  margin: 0;
+.vertical-menu { 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 150px; 
+  height: 100%;
+  background-color: #2B388F;
+  overflow-y: auto;
+  transition: width 0.5s ease;
 }
 
-ul.navigation {
-  padding: 0px;
+.menu-collapsed .vertical-menu {
+  width: 60px; /* Width of menu when collapsed */
 }
 
-ul.navigation li a {
-  color: var(--text-color-light);
+.menu-items.collapsed a {
+  display: none;
+}
+
+.vertical-menu a {
+  color: white;
   font-weight: bold;
+  display: block;
+  padding: 12px;
   text-decoration: none;
-  padding: 20px;
-  display: inline-block;
+}
+
+.menu-items a:hover {
+  background-color: #AFD3E4;
+}
+
+.toggle-menu {
+  color: white;
+  background-color: #2B388F;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  text-align: left;
+  width: 60px;
+}
+
+.toggle-menu:hover {
+  background-color: #5086FF;
+}
+
+.isActive{
+  background-color: #00878E;
+  color: #ffffff;
+}
+
+.main{
+  display: flex;
+}
+
+.header {
+  margin-left: 20px;
+  transition: margin-left 0.5s ease; 
+}
+
+.header-collapsed {
+  margin-left: -75px; /* Adjust the margin when menu is collapsed */
 }
 
 .content {
-  flex: 1;
-  background-color: var(--background-color);
-  padding: 0;
-  margin: 0;
+  background-color: #FFF;
+  margin-left: 20px;
+  transition: margin-left 0.5s ease;
 }
 
-.page {
-  padding: 20px;
-}
-
-.card {
-  max-width: 300px;
-  min-height: 300px;
-  background-color: var(--tertiary-color);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
+.content-collapsed {
+  margin-left: -75px; /* Adjust the margin when menu is collapsed */
 }
 
 .cardRow {
