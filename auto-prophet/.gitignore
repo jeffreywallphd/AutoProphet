@@ -13,6 +13,9 @@ package-lock.json
 /build
 /public
 
+#configuration
+/config
+
 # misc
 .DS_Store
 .env.local
