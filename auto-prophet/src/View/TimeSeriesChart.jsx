@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 function TimeSeriesChart(props) {
@@ -24,15 +24,9 @@ function TimeSeriesChart(props) {
     var volumeMax;
 
     useEffect(() => {
-
-        for(price in props.state.data.response.results[0]["data"]["price"]) {
-            alert(price);
-        }
-
-
-        priceMin = Math.min(props.state.data.response.results[0]["data"]["price"]);
-        priceMax = Math.max(props.state.data.response.results[0]["data"]["price"]);
-        volumeMax = Math.max(props.state.data.response.results[0]["data"]["volume"]);
+        priceMin = Math.min(...props.state.data.response.results[0]["data"].map(data => data.price));
+        priceMax = Math.max(...props.state.data.response.results[0]["data"].map(data => data.price));
+        volumeMax = Math.max(...props.state.data.response.results[0]["data"].map(data => data.volume));
         alert(`Price Min: ${priceMin} Price Max: ${priceMax} Volume Max: ${volumeMax}`);
     }, [props.state.data]);
 
@@ -57,7 +51,7 @@ function TimeSeriesChart(props) {
                 <p>{props.state.interval} Price data for {props.state.data.response.results[0]["data"][0].date}</p>
 
                 {/* The actual chart displaying the data from recharts */}
-                <AreaChart width={600} height={400} data={props.state.data.response.results[0]["data"]} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <AreaChart width={600} height={400} key="timeSeries" data={props.state.data.response.results[0]["data"]} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                     <defs>
                         <linearGradient id="colorArea" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#62C0C2" stopOpacity={0.8}/>

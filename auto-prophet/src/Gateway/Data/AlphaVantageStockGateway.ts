@@ -75,6 +75,19 @@ export class AlphaVantageStockGateway implements IDataGateway {
         }
 
         const mostRecentDate = new Date(Object.keys(timeSeries)[0]);
+        var pastDate = null;
+
+        if(entity.getFieldValue("interval") === "5D") {
+            pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "1M") {
+            pastDate = new Date(mostRecentDate.getTime() - (30 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "6M") {
+            pastDate = new Date(mostRecentDate.getTime() - (6 * 30 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "1Y") {
+            pastDate = new Date(mostRecentDate.getTime() - (365 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "5Y") {
+            pastDate = new Date(mostRecentDate.getTime() - (5 * 365 * 24 * 60 * 60 * 1000));
+        }
         
         const formattedData: Array<{ [key: string]: any }> = [];
         for (var key in timeSeries) {
@@ -84,6 +97,10 @@ export class AlphaVantageStockGateway implements IDataGateway {
             if(action === "interday") {
                 item = this.createDataItem(date, timeSeries[key]);
                 formattedData.push(item);
+                if(date !== null && date < pastDate) {
+                    //stop the loop at the designated interval for the interday data
+                    break;
+                }
             } else {
                 if(mostRecentDate.getDate() === date.getDate()) {
                     item = this.createDataItem(date, timeSeries[key]);
