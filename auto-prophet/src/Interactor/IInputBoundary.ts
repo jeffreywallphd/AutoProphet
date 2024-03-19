@@ -8,5 +8,4 @@ export interface IInputBoundary {
     get(requestModel: IRequestModel): Promise<IResponseModel>;
     put(requestModel: IRequestModel): Promise<IResponseModel>;
     delete(requestModel: IRequestModel): Promise<IResponseModel>;
-    search(requestModel: IRequestModel): Promise<IResponseModel>;
 }
