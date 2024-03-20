@@ -73,9 +73,12 @@ function TickerSearchBar(props) {
 
         var companyName = "";
 
+        //Make sure ticker is in upper case
+        searchRef.current.value = (searchRef.current.value).toUpperCase();
+
         //get company name from securities list data
         securityList.find((element) => {
-            if(element.ticker === (searchRef.current.value).toUpperCase()) {
+            if(element.ticker === searchRef.current.value) {
                 companyName = element.companyName;
             }
         });
