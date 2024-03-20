@@ -11,15 +11,12 @@ A Pull Request is an action in GitHub that involves submitting a file or some fo
 * After clicking on the "Add File" button you will get a dropdown menu asking if you would like to "Create new file" or "Upload files" , click on either option that applies to your case.
 ![Createupload(Final)](https://github.com/jeffreywallphd/AutoProphet/assets/124594281/205369a3-c946-4839-937f-d5bfe52ff54a)
 
-* If you select the "Create new file" button you'll be brought to a new page containing two boxes. The upper box will be to name your file
-<img src="https://github.com/jeffreywallphd/AutoProphet/assets/124594281/9b4a3819-0883-4a82-a1e5-c51ad5eb3f81" width="640" height="360">
+* If you select the "Create new file" button you'll be brought to a new page containing two boxes. The upper box will be to name your file and the next box will be where your syntax will go. After filling out the title box and the content / syntax box you can press the green "Commit changes..." button in the upper right hand corner.
+![3 steps](https://github.com/jeffreywallphd/AutoProphet/assets/124594281/11d22595-da03-4b37-8e35-bdf454dff8a6)
 
-* and the next box will be where your syntax will go
+* This next section will contain the final propose changes popup from here you will write your commit message in the top box, then you may expand on what your file contains, and lastly you will press the "Propose changes" button.
+  
+![ProposeChangesButton2](https://github.com/jeffreywallphd/AutoProphet/assets/124594281/0157962e-7aaa-4c0e-8607-b280dbb65494)
 
-![typingsyntaxhere](https://github.com/jeffreywallphd/AutoProphet/assets/124594281/f1b420b7-c9ca-42fa-8718-569a64fb421a)
-
-* After filling out the title box and the content / syntax box you can press the green "Commit changes..." button in the upper right hand corner
-
-![pressthisbutton](https://github.com/jeffreywallphd/AutoProphet/assets/124594281/9b2c0ef0-8221-4414-9806-0796d4e9c914)
-
-* This next section will contain the final propose changes popup (Incomplete)
+* If you selected the "Upload files" button you'll be brought to a new page containing a section to upload a file from your computer and a title and description box below that.
+![4 steps](https://github.com/jeffreywallphd/AutoProphet/assets/124594281/e6213735-254f-458f-a223-c5d8cb962789)
