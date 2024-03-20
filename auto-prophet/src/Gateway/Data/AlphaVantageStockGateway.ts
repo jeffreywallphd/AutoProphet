@@ -75,8 +75,10 @@ export class AlphaVantageStockGateway implements IDataGateway {
         }
 
         const mostRecentDate = new Date(Object.keys(timeSeries)[0]);
+        
+        //calculate the pate date based on the interval specified by the user
+        //currently, intervals are 5 day, 1 month, 6 months, 1 year, 5 years, and max
         var pastDate = null;
-
         if(entity.getFieldValue("interval") === "5D") {
             pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));
         } else if(entity.getFieldValue("interval") === "1M") {

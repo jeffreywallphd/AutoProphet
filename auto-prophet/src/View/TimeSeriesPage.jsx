@@ -8,11 +8,17 @@ class TimeSeriesPage extends Component {
     }
 
     state = {
+        initializing: true,
         data: null,
         error: null,
         type: 'intraday',
         interval: '1D',
         isLoading: false,
+        minPrice: null,
+        maxPrice: null,
+        maxVolume: null,
+        yAxisStart: null,
+        yAxisEnd: null
     };
 
     //Used to pass data from the search bar to the chart

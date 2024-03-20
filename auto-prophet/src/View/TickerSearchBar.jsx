@@ -20,7 +20,10 @@ function TickerSearchBar(props) {
 
     //Checks if the interval has been changed in the TimeSeriesChart. If so, the fetchData is triggered again.
     useEffect(() => {
-        fetchData();
+        if(props.state.initializing !== true) {
+            //stop fetchData() from running on startup
+            fetchData();
+        }
     }, [props.state.interval]);
     
 
@@ -55,11 +58,17 @@ function TickerSearchBar(props) {
     const fetchData = async () => {
         //Take away previous data
         props.onDataChange({
+            initializing: false,
             data: null,
             error: props.state.error,
             type: props.state.type,
             interval: props.state.interval,
-            isLoading: true
+            isLoading: true,
+            priceMin: null,
+            priceMax: null,
+            volumeMax: null,
+            yAxisStart: null,
+            yAxisEnd: null
         });
 
         var companyName = "";
@@ -70,7 +79,7 @@ function TickerSearchBar(props) {
                 companyName = element.companyName;
             }
         });
-        
+
         //get data through stock interactor
         var interactor = new StockInteractor();
         var requestObj = new JSONRequest(`{ 
@@ -85,15 +94,35 @@ function TickerSearchBar(props) {
         }`);
 
         const results = await interactor.get(requestObj);
-        
+
         props.onDataChange({
+            initializing: false,
             data: results,
             error: props.state.error,
             type: props.state.type,
             interval: props.state.interval,
-            isLoading: false
+            isLoading: false,
+            priceMin: Math.min(...results.response.results[0]["data"].map(data => data.price)),
+            priceMax: Math.max(...results.response.results[0]["data"].map(data => data.price)),
+            volumeMax: Math.max(...results.response.results[0]["data"].map(data => data.volume)),
+            yAxisStart: dateTimeFormatter(results.response.results[0]["data"][0]),
+            yAxisEnd: dateTimeFormatter(results.response.results[0]["data"][-1])
         });
     }
+
+    const dateTimeFormatter = (value) => {
+        const date = new Date(value);
+        
+        if( props.state.type === "intraday") {
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+        } else {
+            const dateNoMinutes = date.getDate().toString();
+            return dateNoMinutes;
+        }
+        
+    };
 
     return (
         <>
