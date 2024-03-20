@@ -18,9 +18,10 @@ import Home from "./Home";
 import Portfolio from "./Portfolio";
 import Analysis from "./Analysis";
 import BuyReport from "./BuyReport";
-import TimeSeriesPage from "./TimeSeriesPage";
+//import TimeSeriesPage from "./TimeSeriesPage";
+import { TimeSeries } from "./TimeSeriesPage";
 import logo from "../Asset/Image/logo.png";
-import icon from "../Asset/Image/icon.png";
+//import icon from "../Asset/Image/icon.png";
 
 class App extends Component {
     // --Code for collapsable sidebar menu--
@@ -46,7 +47,7 @@ class App extends Component {
             <HashRouter>
                 <div>
                     <div className="main">
-                        <div class={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
+                        <div className={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
                             <button className="toggle-sidebar" onClick={this.toggleMenu}>
                                 {menuCollapsed ? '>>' : '<<'}
                             </button>
@@ -54,10 +55,10 @@ class App extends Component {
                                 <img src={logo} alt="Logo" width="150" />
                             </header>
                             <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
-                                <NavLink to="/" activeClassName="activeNav">Home</NavLink>
-                                <NavLink to="/price" activeClassName="activeNav">Stock & Fund</NavLink>
-                                <NavLink to="/portfolio" activeClassName="activeNav">Portfolio</NavLink>
-                                <NavLink to="/analysis" activeClassName="activeNav">Risk Analysis</NavLink>
+                                <NavLink to="/">Home</NavLink>
+                                <NavLink to="/price">Stock & Fund</NavLink>
+                                <NavLink to="/portfolio">Portfolio</NavLink>
+                                <NavLink to="/analysis">Risk Analysis</NavLink>
                             </div>
                         </div>
                         <div className="content">
@@ -66,7 +67,7 @@ class App extends Component {
                             <Route path="/portfolio" element={<Portfolio />}/>
                             <Route path="/analysis" element={<Analysis />}/>
                             <Route path="/buy-report" element={<BuyReport />}/>
-                            <Route path="/price" element={<TimeSeriesPage />}/>
+                            <Route path="/price" element={<TimeSeries />}/>
                             </Routes>
                         </div>
                     </div>

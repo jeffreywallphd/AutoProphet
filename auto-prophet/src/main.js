@@ -9,7 +9,7 @@ const { app, BrowserWindow } = require('electron')
 
 const createWindow = () => {
   win = new BrowserWindow({ show: false });
-  win.setMenu(null);
+  //win.setMenu(null);
   win.maximize();
   win.show();
 

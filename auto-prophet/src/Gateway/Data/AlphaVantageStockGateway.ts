@@ -19,46 +19,98 @@ export class AlphaVantageStockGateway implements IDataGateway {
         //no disconnection needed for this data gateway
     }
 
-    create(entity: IEntity): Promise<Boolean> {
+    create(entity: IEntity, action: string): Promise<Boolean> {
         throw new Error("Method not implemented.");
     }
 
-    async read(entity: IEntity): Promise<Array<IEntity>> { 
-        const url = `${this.baseURL}?function=TIME_SERIES_INTRADAY&symbol=${entity.getFieldValue("ticker")}&interval=1min&apikey=${entity.getFieldValue("key")}&extended_hours=false&outputsize=full&datatype=json`;
+    async read(entity: IEntity, action: string): Promise<Array<IEntity>> { 
+        var url;
+        if (action === "lookup") {
+            url = this.getSymbolLookupUrl(entity);    
+        } else if (action === "intraday") {
+            url = this.getIntradayUrl(entity);
+        } else if (action === "interday") {
+            url = this.getInterdayUrl(entity);
+        } else {
+            throw Error("Either no action was sent in the request or an incorrect action was used.");
+        }     
 
         const response = await fetch(url);
         const data = await response.json();
 
-        const entities = this.formatPriceVolumeResponse(data, entity);
+        if("Information" in data) {
+            throw Error("The API key used for Alpha Vantage has reached its daily limit");
+        }
+
+        var entities;
+        if (action === "lookup") {
+            entities = this.formatLookupResponse(data);
+        } else {
+            entities = this.formatDataResponse(data, entity, action);
+        }
 
         return entities;
     }
 
-    private formatPriceVolumeResponse(data: { [key: string]: any }, entity:IEntity) {
+    private getSymbolLookupUrl(entity: IEntity) {
+        return `${this.baseURL}?function=SYMBOL_SEARCH&keywords=${entity.getFieldValue("keyword")}&apikey=${entity.getFieldValue("key")}&datatype=json`;
+    }
+
+    private getIntradayUrl(entity: IEntity) {
+        return `${this.baseURL}?function=TIME_SERIES_INTRADAY&symbol=${entity.getFieldValue("ticker")}&interval=1min&apikey=${entity.getFieldValue("key")}&extended_hours=false&outputsize=full&datatype=json`;
+    }
+
+    private getInterdayUrl(entity: IEntity) {
+        return `${this.baseURL}?function=TIME_SERIES_DAILY&symbol=${entity.getFieldValue("ticker")}&apikey=${entity.getFieldValue("key")}&outputsize=full&datatype=json`;
+    }
+
+    private formatDataResponse(data: { [key: string]: any }, entity:IEntity, action:string) {
         var array: Array<IEntity> = [];
         
-        const timeSeries = data["Time Series (1min)"];
+        var timeSeries;
+        if(action === "interday") { 
+            timeSeries = data["Time Series (Daily)"];
+        } else {
+            timeSeries = data["Time Series (1min)"];    
+        }
+
         const mostRecentDate = new Date(Object.keys(timeSeries)[0]);
         
+        //calculate the pate date based on the interval specified by the user
+        //currently, intervals are 5 day, 1 month, 6 months, 1 year, 5 years, and max
+        var pastDate = null;
+        if(entity.getFieldValue("interval") === "5D") {
+            pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "1M") {
+            pastDate = new Date(mostRecentDate.getTime() - (30 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "6M") {
+            pastDate = new Date(mostRecentDate.getTime() - (6 * 30 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "1Y") {
+            pastDate = new Date(mostRecentDate.getTime() - (365 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "5Y") {
+            pastDate = new Date(mostRecentDate.getTime() - (5 * 365 * 24 * 60 * 60 * 1000));
+        }
+        
         const formattedData: Array<{ [key: string]: any }> = [];
-
         for (var key in timeSeries) {
             var date = new Date(key);           
+            var item;
 
-            if(mostRecentDate.getDate() === date.getDate()) {
-                var item = {
-                    date: date.toLocaleDateString(),
-                    time: date.toLocaleTimeString(),
-                    price: timeSeries[key]["4. close"],
-                    volume: timeSeries[key]["5. volume"],
-                };
-
+            if(action === "interday") {
+                item = this.createDataItem(date, timeSeries[key]);
                 formattedData.push(item);
-            }
-
-            //stop the loop once the date is less than the most recent date
-            if(date.getDate() < mostRecentDate.getDate()) {
-                break;
+                if(date !== null && date < pastDate) {
+                    //stop the loop at the designated interval for the interday data
+                    break;
+                }
+            } else {
+                if(mostRecentDate.getDate() === date.getDate()) {
+                    item = this.createDataItem(date, timeSeries[key]);
+                    formattedData.push(item);
+                } else {
+                    //stop the loop for intraday data once the date is less than the most recent date
+                    break;
+                }
             }
         }
 
@@ -69,19 +121,15 @@ export class AlphaVantageStockGateway implements IDataGateway {
         return array;
     }
 
-    async search(entity: IEntity): Promise<Array<IEntity>> {
-        const url = `${this.baseURL}?function=SYMBOL_SEARCH&keywords=${entity.getFieldValue("keyword")}&apikey=${entity.getFieldValue("key")}&datatype=json`;
+    private createDataItem(date: Date, timeSeries: any) {
+        const item = {
+            date: date.toLocaleDateString(),
+            time: date.toLocaleTimeString(),
+            price: timeSeries["4. close"],
+            volume: timeSeries["5. volume"],
+        };
 
-        const response = await fetch(url);
-        const data: { [key: string]: any } = await response.json();
-        
-        if("Information" in data) {
-            throw Error("The API key used for Alpha Vantage has reached its daily limit");
-        }
-
-        const entities = this.formatLookupResponse(data);
-
-        return entities;
+        return item;
     }
 
     private formatLookupResponse(data: { [key: string]: any }) {
@@ -101,11 +149,11 @@ export class AlphaVantageStockGateway implements IDataGateway {
         return array
     }
 
-    update(entity: IEntity): Promise<number> {
+    update(entity: IEntity, action: string): Promise<number> {
         throw new Error("Method not implemented.");
     }
 
-    delete(entity: IEntity): Promise<number> {
+    delete(entity: IEntity, action: string): Promise<number> {
         throw new Error("Method not implemented.");
     }    
 }

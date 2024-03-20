@@ -4,9 +4,8 @@ export interface IDataGateway {
     key: string;
     connect(): void;
     disconnect(): void;
-    create(entity: IEntity): Promise<Boolean>;
-    read(entity: IEntity): Promise<Array<IEntity>>;
-    update(entity: IEntity): Promise<number>;
-    delete(entity: IEntity): Promise<number>;
-    search(entity: IEntity): Promise<Array<IEntity>>;
+    create(entity: IEntity, action: string): Promise<Boolean>;
+    read(entity: IEntity, action: string): Promise<Array<IEntity>>;
+    update(entity: IEntity, action: string): Promise<number>;
+    delete(entity: IEntity, action: string): Promise<number>;
 }
