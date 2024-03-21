@@ -6,12 +6,14 @@ import { FaSearch } from "react-icons/fa";
 function TickerSearchBar(props) {
     const [securityList, setList] = useState(null);
     const [loading, setLoading] = useState(false);
+    var newSearch = false;
     const searchRef = useRef("META");
     
     //Checks the keyUp event to determine if a key was hit or a datalist option was selected
     const checkInput = async (e) => {
         //Unidentified means datalist option was selected, otherwise a key was hit
         if (e.key == "Unidentified" || e.key == "Enter"){
+            newSearch = true;
             await fetchData();
         } else {
             await fetchSymbol();
@@ -56,13 +58,25 @@ function TickerSearchBar(props) {
     //TODO: implement error handling
     //Gets ticker data
     const fetchData = async () => {
+        //set type and interval based on if this is a new search
+        var type;
+        var interval;
+        if (newSearch) {
+            interval = "1D";
+            type = "intraday";
+            newSearch = false;
+        } else {
+            type = props.state.type;
+            interval = props.state.interval;
+        }
+
         //Take away previous data
         props.onDataChange({
-            initializing: false,
+            initializing: true,
             data: null,
             error: props.state.error,
-            type: props.state.type,
-            interval: props.state.interval,
+            type: type,
+            interval: interval,
             isLoading: true,
             priceMin: null,
             priceMax: null,
@@ -88,10 +102,10 @@ function TickerSearchBar(props) {
         var requestObj = new JSONRequest(`{ 
             "request": { 
                 "stock": {
-                    "action": "${props.state.type}",
+                    "action": "${type}",
                     "ticker": "${searchRef.current.value}",
                     "companyName": "${companyName}",
-                    "interval": "${props.state.interval}"
+                    "interval": "${interval}"
                 }
             }
         }`);
@@ -102,8 +116,8 @@ function TickerSearchBar(props) {
             initializing: false,
             data: results,
             error: props.state.error,
-            type: props.state.type,
-            interval: props.state.interval,
+            type: type,
+            interval: interval,
             isLoading: false,
             priceMin: Math.min(...results.response.results[0]["data"].map(data => data.price)),
             priceMax: Math.max(...results.response.results[0]["data"].map(data => data.price)),
@@ -131,6 +145,7 @@ function TickerSearchBar(props) {
         <>
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
+                    newSearch = true;
                     e.preventDefault();
                     fetchData();
                 }}>
