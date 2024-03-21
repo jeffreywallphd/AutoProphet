@@ -1,68 +1,27 @@
-import React, { useState, useRef, useEffect } from "react";
-import {StockInteractor} from "../Interactor/StockInteractor";
-import {JSONRequest} from "../Gateway/Request/JSONRequest";
-import { FaSearch } from "react-icons/fa";
+// No Warranty
+// This software is provided "as is" without any warranty of any kind, express or implied. This includes, but is not limited to, the warranties of merchantability, fitness for a particular purpose, and non-infringement.
+//
+// Disclaimer of Liability
+// The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
+
+import React, { useEffect } from "react";
+import { StockInteractor } from "../Interactor/StockInteractor";
+import { JSONRequest } from "../Gateway/Request/JSONRequest";
+import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 
 function TickerSearchBar(props) {
-    const [securityList, setList] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const searchRef = useRef("META");
-    
-    //Checks the keyUp event to determine if a key was hit or a datalist option was selected
-    const checkInput = async (e) => {
-        //Unidentified means datalist option was selected, otherwise a key was hit
-        if (e.key == "Unidentified" || e.key == "Enter"){
-            await fetchData();
-        } else {
-            await fetchSymbol();
-        }
-    }
-
-    //Checks if the interval has been changed in the TimeSeriesChart. If so, the fetchData is triggered again.
-    useEffect(() => {
-        if(props.state.initializing !== true) {
-            //stop fetchData() from running on startup
-            fetchData();
-        }
-    }, [props.state.interval]);
-    
-
-    //Gets potential tickers based on the current input in the search bar
-    const fetchSymbol = async () => {
-        if (searchRef.current.value != "") {
-            try {
-                setLoading(true);
-                
-                //get data through stock interactor
-                var interactor = new StockInteractor();
-                var requestObj = new JSONRequest(`{ 
-                    "request": { 
-                        "stock": {
-                            "action": "lookup",
-                            "keyword": "${searchRef.current.value}"
-                        }
-                    }
-                }`);
-
-                const searchData = await interactor.get(requestObj);
-                
-                setList(searchData.response.results);
-            } finally {
-                setLoading(false);
-            }
-        } 
-    };
-
     //TODO: implement error handling
     //Gets ticker data
     const fetchData = async () => {
-        //Take away previous data
+        //Reset data parts of the state object
         props.onDataChange({
             initializing: false,
-            data: null,
             error: props.state.error,
+            data: null,
             type: props.state.type,
             interval: props.state.interval,
+            securitiesList: props.state.securitiesList,
+            searchRef: props.state.searchRef,
             isLoading: true,
             priceMin: null,
             priceMax: null,
@@ -71,11 +30,11 @@ function TickerSearchBar(props) {
             yAxisEnd: null
         });
 
-        var companyName = "";
-
         //get company name from securities list data
-        securityList.find((element) => {
-            if(element.ticker === (searchRef.current.value).toUpperCase()) {
+        var companyName = "";
+        
+        props.state.securitiesList.find((element) => {
+            if(element.ticker === (props.state.searchRef.current.value).toUpperCase()) {
                 companyName = element.companyName;
             }
         });
@@ -86,7 +45,7 @@ function TickerSearchBar(props) {
             "request": { 
                 "stock": {
                     "action": "${props.state.type}",
-                    "ticker": "${searchRef.current.value}",
+                    "ticker": "${props.state.searchRef.current.value}",
                     "companyName": "${companyName}",
                     "interval": "${props.state.interval}"
                 }
@@ -95,12 +54,15 @@ function TickerSearchBar(props) {
 
         const results = await interactor.get(requestObj);
 
+        //set the new data state with the updated search results
         props.onDataChange({
             initializing: false,
             data: results,
             error: props.state.error,
             type: props.state.type,
             interval: props.state.interval,
+            securitiesList: props.state.securitiesList,
+            searchRef: props.state.searchRef,
             isLoading: false,
             priceMin: Math.min(...results.response.results[0]["data"].map(data => data.price)),
             priceMax: Math.max(...results.response.results[0]["data"].map(data => data.price)),
@@ -110,6 +72,7 @@ function TickerSearchBar(props) {
         });
     }
 
+    //format the date and time for chart
     const dateTimeFormatter = (value) => {
         const date = new Date(value);
         
@@ -124,35 +87,20 @@ function TickerSearchBar(props) {
         
     };
 
+    //fetch data when the interval is changed by the interval buttons in TimeSeriesChart
+    useEffect(() => {
+        if(props.state.initializing === false) {
+            //stops fetchData() from being called upon page start 
+            fetchData();
+        }
+    }, [props.state.interval]);
+
+    const handleSymbolChange = (state) => {
+        props.onDataChange(state);
+    };
+   
     return (
-        <>
-            <div className="priceSearchFormContainer">
-                <form onSubmit={async (e) => {
-                    e.preventDefault();
-                    fetchData();
-                }}>
-                    {/*alert("From TickerSearchBar: " + type)*/}
-                    <input className="priceSearchBar" type="text" list="tickers" ref={searchRef}
-                           onKeyUp={(e) => checkInput(e)} placeholder="Please enter a ticker symbol"></input>
-
-                    {securityList ?
-                        <datalist id="tickers">
-                            {securityList.map((listData) => (
-                                <option key={listData.ticker} value={listData.ticker}>
-                                    {listData.companyName}
-                                </option>
-                            ))}
-
-                        </datalist>
-                        : null
-                    }
-                    <button className="priceSearchButton" type="submit" disabled={loading}><FaSearch/></button>
-                </form>
-            </div>
-            <div>
-
-            </div>
-        </>
+        <SymbolSearchBar fetchData={fetchData} state={props.state} onSymbolChange={handleSymbolChange}/>
     );
 }
 

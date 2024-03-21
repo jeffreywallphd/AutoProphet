@@ -1,3 +1,9 @@
+// No Warranty
+// This software is provided "as is" without any warranty of any kind, express or implied. This includes, but is not limited to, the warranties of merchantability, fitness for a particular purpose, and non-infringement.
+//
+// Disclaimer of Liability
+// The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
+
 import React, { Component } from "react";
 import { TimeSeriesChart } from "./TimeSeriesChart";
 import { TickerSearchBar } from "./TickerSearchBar";
@@ -7,12 +13,15 @@ class TimeSeriesPage extends Component {
         super(props);
     }
 
+    //set default state for search bar and chart
     state = {
         initializing: true,
         data: null,
         error: null,
         type: 'intraday',
         interval: '1D',
+        securitiesList: null,
+        searchRef: null,
         isLoading: false,
         minPrice: null,
         maxPrice: null,
@@ -26,6 +35,7 @@ class TimeSeriesPage extends Component {
         this.setState(state);
     }
 
+    //used to pass interval changes from button clicks on chart
     handleIntervalChange = (state) => {
         this.setState(state);
     }
