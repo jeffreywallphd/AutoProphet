@@ -54,17 +54,17 @@ Once you have completed any work on your branch and have tested it on your local
 ## Above methods are using CMD however if you don't want to remember all those commands and want to use more modern approach you can consider below instructions:
 
 * Once you have successfully cloned repository in your system you will be in main branch by default. You can check it in left bottom part of your VS code window as shown in below image.
-* [Check Main Branch](auto-prophet\src\Asset\Image\image.png)
+* ![Check Main Branch](auto-prophet\src\Asset\Image\image.png)
 * Moreover, it shows the name of the branch that is currently in use. If you are going to click on it there will be a popup as shown in below image and you can choose any other branch to switch from that popup.
-* [Branch Options](auto-prophet\src\Asset\Image\image_2.png)
+* ![Branch Options](auto-prophet\src\Asset\Image\image_2.png)
 
 ## Create a new branch:
 * You can always create a branch using git checkout -b  NEW_BRANCH_NAME command however here is an alternative method:
 * Step - 1 : Click on link below:
-* [Repository Link](https://github.com/jeffreywallphd/AutoProphet)
+* ![Repository Link](https://github.com/jeffreywallphd/AutoProphet)
 * Step - 2 : Click on highlighted option (Branches) in below image:
-* [Branches](auto-prophet\src\Asset\Image\image_3.png)
+* ![Branches](auto-prophet\src\Asset\Image\image_3.png)
 * Step - 3 : Now you will be redirected to branches page as shown in below image then select new branch option and there will be a popup asking you to create a new branch and always make sure that source branch is main (by default it always be main).
-* [Branches Page](auto-prophet\src\Asset\Image\image_4.png)
-* [Creat Branch Option](auto-prophet\src\Asset\Image\image_5.png)   
+* ![Branches Page](auto-prophet\src\Asset\Image\image_4.png)
+* ![Creat Branch Option](auto-prophet\src\Asset\Image\image_5.png)   
 * This way it will be ensured that you have created new branch without having any issues with main branch. 
