@@ -18,10 +18,9 @@ import Home from "./Home";
 import Portfolio from "./Portfolio";
 import Analysis from "./Analysis";
 import BuyReport from "./BuyReport";
-//import TimeSeriesPage from "./TimeSeriesPage";
 import { TimeSeries } from "./TimeSeriesPage";
+import { News } from "./NewsPage";
 import logo from "../Asset/Image/logo.png";
-//import icon from "../Asset/Image/icon.png";
 
 class App extends Component {
     // --Code for collapsable sidebar menu--
@@ -59,6 +58,7 @@ class App extends Component {
                                 <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/portfolio">Portfolio</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
+                                <NavLink to="/news">Investment News</NavLink>
                             </div>
                         </div>
                         <div className="content">
@@ -68,6 +68,7 @@ class App extends Component {
                             <Route path="/analysis" element={<Analysis />}/>
                             <Route path="/buy-report" element={<BuyReport />}/>
                             <Route path="/price" element={<TimeSeries />}/>
+                            <Route path="/news" element={<News />}/>
                             </Routes>
                         </div>
                     </div>

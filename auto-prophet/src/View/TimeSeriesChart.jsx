@@ -1,3 +1,9 @@
+// No Warranty
+// This software is provided "as is" without any warranty of any kind, express or implied. This includes, but is not limited to, the warranties of merchantability, fitness for a particular purpose, and non-infringement.
+//
+// Disclaimer of Liability
+// The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
+
 import React, { useState, useEffect } from "react";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
@@ -10,12 +16,21 @@ function TimeSeriesChart(props) {
             type = "interday";
         }
 
+        //set internval properties reset data properties
         props.onIntervalChange({
+            initializing: false,
             data: null,
             error: props.state.error,
             type: type,
             interval: selectedInterval,
-            isLoading: false
+            securitiesList: props.state.securitiesList,
+            searchRef: props.state.searchRef,
+            isLoading: false,
+            minPrice: null,
+            maxPrice: null,
+            maxVolume: null,
+            yAxisStart: null,
+            yAxisEnd: null
         });
     };
 
@@ -23,14 +38,8 @@ function TimeSeriesChart(props) {
     var priceMax;
     var volumeMax;
 
-    //TODO: TRY MOVING THESE VARIABLES TO THE STATE TO USE THE PROPS IN THE CHART
-    useEffect(() => {
-        
-    }, [props.state.data]);
-
-
     //TODO: calculate a max value for the y-axis that adds a little padding to top of graph    
-    //TODO: set the min value for the x-axis to 9:00 AM and the max value to 5:00 PM
+    //TODO: set the min value for the x-axis to 9:00 AM and the max value to 5:00 PM when intraday data
     return(<>
             <div>
                 <h3>{props.state.data.response.results[0]["companyName"]} ({props.state.data.response.results[0]["ticker"]})</h3>
@@ -49,7 +58,7 @@ function TimeSeriesChart(props) {
                 <p>Price and volume data for date starting {props.state.data.response.results[0]["data"][0].date}</p>
 
                 {/* The actual chart displaying the data from recharts */}
-                <AreaChart width={700} height={400} key="timeSeries" data={props.state.data.response.results[0]["data"]} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <AreaChart width={700} height={300} key="timeSeries" data={props.state.data.response.results[0]["data"]} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                     <defs>
                         <linearGradient id="colorArea" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#62C0C2" stopOpacity={0.8}/>
