@@ -54,19 +54,19 @@ Once you have completed any work on your branch and have tested it on your local
 ## Above methods are using CMD however if you don't want to remember all those commands and want to use more modern approach you can consider below instructions:
 
 * Once you have successfully cloned repository in your system you will be in main branch by default. You can check it in left bottom part of your VS code window as shown in below image.
-* ![Check Main Branch](auto-prophet\src\Asset\Image\check_branch.png)
+* ![Check Main Branch](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/check_branch.png)
 * Moreover, it shows the name of the branch that is currently in use. If you are going to click on it there will be a popup as shown in below image and you can choose any other branch to switch from that popup.
-* ![Branch Options](auto-prophet\src\Asset\Image\branch_options.png)
+* ![Branch Options](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/branch_options.png)
 
 ## Create a new branch:
 * You can always create a branch using git checkout -b  NEW_BRANCH_NAME command however here is an alternative method:
 * Step - 1 : Click on link below:
 * [Repository Link](https://github.com/jeffreywallphd/AutoProphet)
 * Step - 2 : Click on highlighted option (Branches) in below image:
-* ![Branches](auto-prophet\src\Asset\Image\branches.png)
+* ![Branches](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/branches.png)
 * Step - 3 : Now you will be redirected to branches page as shown in below image then select new branch option and there will be a popup asking you to create a new branch and always make sure that source branch is main (by default it always be main).
-* ![Branches Page](auto-prophet\src\Asset\Image\branches_page.png)
-* ![Create Branch Option](auto-prophet\src\Asset\Image\create_branch.png)   
+* ![Branches Page](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/branches_page.png)
+* ![Create Branch Option](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/create_branch.png)   
 * This way it will be ensured that you have created new branch without having any issues with main branch. 
 
 ## Changes from other teams:
@@ -74,22 +74,20 @@ Once you have completed any work on your branch and have tested it on your local
 
 * Here is the way to do it using VS code when you are already in main barnch:
 * Step - 1 : Click on the source control:
-* ![Source Control](auto-prophet\src\Asset\Image\Source_control.png)
+* ![Source Control](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/Source_control.png)
 * Step - 2 : Then you will be able to see below option in your side panel choose highlighted option:
-* ![Three Dots](auto-prophet\src\Asset\Image\three_dots.png)  
+* ![Three Dots](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/three_dots.png)  
 * Step - 3 : Then you will be able to see popup just like shown in below image and select pull option and you are good to go.
-* ![Pull Option](auto-prophet\src\Asset\Image\pull.png)
+* ![Pull Option](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/pull.png)
 
 * Now suppose that you are in your working branch and you want to take pull from main branch into your branch or in other words you want to merge changes from main branch into your working branch to keep your working branch up to date follow below steps:
 * Step - 1 : Click on the source control:
-* ![Source Control](auto-prophet\src\Asset\Image\Source_control.png)
+* ![Source Control](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/Source_control.png)
 * Step - 2 : Then you will be able to see below option in your side panel choose highlighted option:
-* ![Three Dots](auto-prophet\src\Asset\Image\three_dots.png)  
-* Step - 2 : Then you will be able to see below option in your side panel choose highlighted option:
-* ![Three Dots](auto-prophet\src\Asset\Image\three_dots.png)  
+* ![Three Dots](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/three_dots.png)  
 * Step - 3 : Then you will be able to see popup just like shown in below image and select pull,push option.
-* ![Pull Option](auto-prophet\src\Asset\Image\pull.png)
+* ![Pull Option](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/pull.png)
 * Step - 4 : Then you will be able to see popup just like shown in below image and select pull from option.
-* ![Pull,Push Option](auto-prophet\src\Asset\Image\pull_from.png)
+* ![Pull,Push Option](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/pull_from.png)
 * Step - 5 : Then there will be another popup just like shown in below image and choose main branch out all branches and you are done.
-* ![Branch Selection](auto-prophet\src\Asset\Image\three_dots.png) 
+* ![Branch Selection](https://github.com/jeffreywallphd/AutoProphet/blob/Git_Dco_Update/auto-prophet/src/Asset/Image/branch_select.png) 
