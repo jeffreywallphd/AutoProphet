@@ -30,6 +30,9 @@ function SymbolSearchBar(props) {
             try {
                 setSearching(true);
 
+                //make sure the symbol is all caps
+                searchRef.current.value = (searchRef.current.value).toUpperCase();
+
                 //get data through stock interactor
                 var interactor = new StockInteractor();
                 var requestObj = new JSONRequest(`{ 
