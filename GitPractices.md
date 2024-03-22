@@ -68,3 +68,28 @@ Once you have completed any work on your branch and have tested it on your local
 * ![Branches Page](auto-prophet\src\Asset\Image\image_4.png)
 * ![Creat Branch Option](auto-prophet\src\Asset\Image\image_5.png)   
 * This way it will be ensured that you have created new branch without having any issues with main branch. 
+
+## Changes from other teams:
+* As discussed above everyone involved should take frequent pulls in main branch to keep repository up to date in your local systems.
+
+* Here is the way to do it using VS code when you are already in main barnch:
+* Step - 1 : Click on the source control:
+* ![Source Control](auto-prophet\src\Asset\Image\Source_control.png)
+* Step - 2 : Then you will be able to see below option in your side panel choose highlighted option:
+* ![Three Dots](auto-prophet\src\Asset\Image\three_dots.png)  
+* Step - 3 : Then you will be able to see popup just like shown in below image and select pull option and you are good to go.
+* ![Pull Option](auto-prophet\src\Asset\Image\pull.png)
+
+* Now suppose that you are in your working branch and you want to take pull from main branch into your branch or in other words you want to merge changes from main branch into your working branch to keep your working branch up to date follow below steps:
+* Step - 1 : Click on the source control:
+* ![Source Control](auto-prophet\src\Asset\Image\Source_control.png)
+* Step - 2 : Then you will be able to see below option in your side panel choose highlighted option:
+* ![Three Dots](auto-prophet\src\Asset\Image\three_dots.png)  
+* Step - 2 : Then you will be able to see below option in your side panel choose highlighted option:
+* ![Three Dots](auto-prophet\src\Asset\Image\three_dots.png)  
+* Step - 3 : Then you will be able to see popup just like shown in below image and select pull,push option.
+* ![Pull Option](auto-prophet\src\Asset\Image\pull.png)
+* Step - 4 : Then you will be able to see popup just like shown in below image and select pull from option.
+* ![Pull,Push Option](auto-prophet\src\Asset\Image\pull_from.png)
+* Step - 5 : Then there will be another popup just like shown in below image and choose main branch out all branches and you are done.
+* ![Branch Selection](auto-prophet\src\Asset\Image\three_dots.png) 
