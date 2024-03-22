@@ -27,14 +27,21 @@ Download the follow software
      ![Screenshot 2024-03-21 004125](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/9f1cba35-5de3-4664-8b27-99f3d81a12e3)
 
 
-5. Download & Unzip the following files by right clicking and then selecting "Extract All":
+5. Download & Unzip the following file by right clicking and then selecting "Extract All":
    
-   a. [env.zip](https://github.com/jeffreywallphd/AutoProphet/files/14721687/env.zip)
+   a. [env.zip](https://github.com/jeffreywallphd/AutoProphet/files/14723882/env.zip)
+
+   Note: Ask the professor for the specific key needed for this file.
+   
+   b. Make sure to add the key into this file by editing it. Then make sure to "save all" or "save as". You can double check that it was updated correctly by exiting out and clicking on the file once again.
+   ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/ff66e719-0992-4eb6-9fcf-4cb842df9016)
+
+   
  
-   b. [default.zip](https://github.com/jeffreywallphd/AutoProphet/files/14721696/default.zip)
+   c. [default.zip](https://github.com/jeffreywallphd/AutoProphet/files/14721696/default.zip)
 
 
-6. Click on the "env folder" that was extracted and copy the file inside.
+7. Click on the "env folder" that was extracted and copy the file inside.
 
    a. Then follow this file path or find a way to get to your GitHub folder in your file explorer: C:\Users\"your username"\OneDrive\Documents\GitHub  
   
@@ -47,7 +54,7 @@ Download the follow software
    c. Paste the ".env" file into the AutoProphet folder by using the "Ctrl V" shortcup or the paste button in the upper left-hand corner.
 
 
-7. Create a new folder in the "AutoProphet" folder and name it "config".
+8. Create a new folder in the "AutoProphet" folder and name it "config".
       a. <img width="494" alt="image" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/a8d6f972-ce28-467f-b3e8-62a247217ddb">
 
       b. ![Screenshot 2024-03-21 004551](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/972be37b-c777-45ef-b49b-52d00dcfa4ce)
@@ -56,11 +63,11 @@ Download the follow software
       e. Paste the file into the new "config" folder you just created.
       ![Screenshot 2024-03-21 004616](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/af607bd5-d1c8-4011-b060-f00e7cc86d25)
 
-8.  Return to the "AutoProphet" folder and rename the folder to "auto-prophet" .
+9.  Return to the "AutoProphet" folder and rename the folder to "auto-prophet" .
 
     ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/01cb5b3d-b7ec-4024-9d82-98682ccbfc67)
 
-9. Open your command prompt by typing cmd .
+10. Open your command prompt by typing cmd .
        ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/41a4db2e-e70f-42a6-9121-2e6d1b43cefc)
 
       b. Type in "cd" and then past the file path to the GitHub folder:
