@@ -19,6 +19,7 @@ import Portfolio from "./Portfolio";
 import Analysis from "./Analysis";
 import BuyReport from "./BuyReport";
 import Price from "./PriceVolume/Price";
+import Learn from "./Learn";
 
 class App extends Component {
     // --Code for collapsable menu--
@@ -51,6 +52,7 @@ class App extends Component {
                             <NavLink to="/portfolio" activeClassName="activeNav">Portfolio</NavLink>
                             <NavLink to="/analysis" activeClassName="activeNav">Analysis</NavLink>
                             <NavLink to="/price" activeClassName="activeNav">Price/Volume</NavLink>
+                            <NavLink to="/learn" activeClassName="activeNav">Learn</NavLink>
                         </div>
                     </div>
                 </div>
@@ -66,6 +68,7 @@ class App extends Component {
                         <Route path="/analysis" element={<Analysis />}/>
                         <Route path="/buy-report" element={<BuyReport />}/>
                         <Route path="/price" element={<Price />}/>
+                        <Route path="/learn" element={<Learn />}/>
                     </Routes>
                 </div>
             </HashRouter>

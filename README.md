@@ -29,7 +29,8 @@ To begin contributing to the repository:
 4. Now you need to configure the application. Configuration is currently limited.
    1. Create a folder named config in the folder containing the package.json file (this is currently the auto-prophet folder).
    2. Within the config folder, create a file named default.json
-   3. Paste the following into the default.json file: { "StockGateway": "AlphaVantageStockGateway" }
+   3. Paste the following into the default.json file:
+      {"StockGateway": "AlphaVantageStockGateway","NewsGateway": "AlphaVantageNewsGateway"}
 5. TO UTILIZE PRICE/VOLUME FEATURES: Store an API key in a .env file.
    1. If you do not have one already, get a free Alpha Vantage API key from https://www.alphavantage.co/support/#api-key.
    2. Create a file called ".env" in the auto-prophet folder.
