@@ -10,10 +10,22 @@ import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 
 function TickerSearchBar(props) {
+    //Variables to reset the chart view
+    var type;
+    var interval;
+
     //TODO: implement error handling
+    //When fetching data for a new ticker fromt he search bar, get 1D data
+    const fetch1DData = async () => {
+        type = "intraday";
+        interval = "1D";
+        fetchData();
+    }
+
+
     //Gets ticker data
     const fetchData = async () => {
-        //Reset data parts of the state object
+        //Take away previous data
         props.onDataChange({
             initializing: false,
             error: props.state.error,
@@ -32,9 +44,8 @@ function TickerSearchBar(props) {
 
         //get company name from securities list data
         var companyName = "";
-        
         props.state.securitiesList.find((element) => {
-            if(element.ticker === (props.state.searchRef.current.value).toUpperCase()) {
+            if(element.ticker === props.state.searchRef.current.value) {
                 companyName = element.companyName;
             }
         });
@@ -44,10 +55,10 @@ function TickerSearchBar(props) {
         var requestObj = new JSONRequest(`{ 
             "request": { 
                 "stock": {
-                    "action": "${props.state.type}",
+                    "action": "${type}",
                     "ticker": "${props.state.searchRef.current.value}",
                     "companyName": "${companyName}",
-                    "interval": "${props.state.interval}"
+                    "interval": "${interval}"
                 }
             }
         }`);
@@ -56,11 +67,11 @@ function TickerSearchBar(props) {
 
         //set the new data state with the updated search results
         props.onDataChange({
-            initializing: false,
+            initializing: true,
             data: results,
             error: props.state.error,
-            type: props.state.type,
-            interval: props.state.interval,
+            type: type,
+            interval: interval,
             securitiesList: props.state.securitiesList,
             searchRef: props.state.searchRef,
             isLoading: false,
@@ -89,8 +100,12 @@ function TickerSearchBar(props) {
 
     //fetch data when the interval is changed by the interval buttons in TimeSeriesChart
     useEffect(() => {
+        //stops fetchData() from being called upon page start
         if(props.state.initializing === false) {
-            //stops fetchData() from being called upon page start 
+            //Get new type and interval for which to format data
+            type = props.state.type;
+            interval = props.state.interval;
+            
             fetchData();
         }
     }, [props.state.interval]);
@@ -100,7 +115,7 @@ function TickerSearchBar(props) {
     };
    
     return (
-        <SymbolSearchBar fetchData={fetchData} state={props.state} onSymbolChange={handleSymbolChange}/>
+        <SymbolSearchBar fetchData={fetch1DData} state={props.state} onSymbolChange={handleSymbolChange}/>
     );
 }
 
