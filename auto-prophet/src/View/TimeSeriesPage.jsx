@@ -18,6 +18,8 @@ class TimeSeriesPage extends Component {
         initializing: true,
         data: null,
         error: null,
+        ticker: null,
+        cik: null,
         type: 'intraday',
         interval: '1D',
         securitiesList: null,

@@ -20,6 +20,8 @@ function TimeSeriesChart(props) {
         props.onIntervalChange({
             initializing: false,
             data: null,
+            ticker: props.state.ticker,
+            cik: props.state.cik,
             error: props.state.error,
             type: type,
             interval: selectedInterval,

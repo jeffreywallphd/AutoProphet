@@ -1,9 +1,9 @@
 import {StockRequest} from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
-import {IDataGateway} from "../Data/IDataGateway";
+import {IDataGateway} from "./IDataGateway";
 
-export class AlphaVantageStockGateway implements IDataGateway {
-    baseURL: string = "https://www.alphavantage.co/query";
+export class SecAPIGateway implements IDataGateway {
+    baseURL: string = "https://data.sec.gov/";
     key: string;
 
     constructor(key: string) {
@@ -26,12 +26,12 @@ export class AlphaVantageStockGateway implements IDataGateway {
 
     async read(entity: IEntity, action: string): Promise<Array<IEntity>> { 
         var url;
-        if (action === "lookup") {
-            url = this.getSymbolLookupUrl(entity);    
-        } else if (action === "intraday") {
-            url = this.getIntradayUrl(entity);
-        } else if (action === "interday") {
-            url = this.getInterdayUrl(entity);
+        if (action === "companyLookup") {
+            url = this.getCompanyLookupUrl(entity);    
+        } else if (action === "conceptLookup") {
+            url = this.getConceptLookupUrl(entity);
+        } else if (action === "submissionsLookup") {
+            url = this.getSubmissionsLookupUrl(entity);
         } else {
             throw Error("Either no action was sent in the request or an incorrect action was used.");
         }     
@@ -39,30 +39,22 @@ export class AlphaVantageStockGateway implements IDataGateway {
         const response = await fetch(url);
         const data = await response.json();
 
-        if("Information" in data) {
-            throw Error("The API key used for Alpha Vantage has reached its daily limit");
-        }
-
         var entities;
-        if (action === "lookup") {
-            entities = this.formatLookupResponse(data);
-        } else {
-            entities = this.formatDataResponse(data, entity, action);
-        }
+        //add formatting here if needed
 
         return entities;
     }
 
-    private getSymbolLookupUrl(entity: IEntity) {
-        return `${this.baseURL}?function=SYMBOL_SEARCH&keywords=${entity.getFieldValue("keyword")}&apikey=${entity.getFieldValue("key")}&datatype=json`;
+    private getSubmissionsLookupUrl(entity: IEntity) {
+        return `${this.baseURL}/submissions/CIK${entity.getFieldValue("CIK")}.json`;
     }
 
-    private getIntradayUrl(entity: IEntity) {
-        return `${this.baseURL}?function=TIME_SERIES_INTRADAY&symbol=${entity.getFieldValue("ticker")}&interval=1min&apikey=${entity.getFieldValue("key")}&extended_hours=false&outputsize=full&datatype=json`;
+    private getConceptLookupUrl(entity: IEntity) {
+        return `${this.baseURL}api/xbrl/companyconcept/CIK${entity.getFieldValue("CIK")}/${entity.getFieldValue("accountingStandard")}/${entity.getFieldValue("concept")}.json`;
     }
 
-    private getInterdayUrl(entity: IEntity) {
-        return `${this.baseURL}?function=TIME_SERIES_DAILY&symbol=${entity.getFieldValue("ticker")}&apikey=${entity.getFieldValue("key")}&outputsize=full&datatype=json`;
+    private getCompanyLookupUrl(entity: IEntity) {
+        return `${this.baseURL}api/xbrl/companyfacts/CIK${entity.getFieldValue("CIK")}.json`;
     }
 
     private formatDataResponse(data: { [key: string]: any }, entity:IEntity, action:string) {

@@ -48,6 +48,8 @@ function SymbolSearchBar(props) {
                 props.onSymbolChange({
                     initializing: false,
                     data: props.state.data,
+                    ticker: props.state.ticker,
+                    cik: props.state.cik,
                     error: props.state.error,
                     type: props.state.type,
                     interval: props.state.interval,

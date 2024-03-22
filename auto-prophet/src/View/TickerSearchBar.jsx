@@ -6,8 +6,10 @@
 
 import React, { useEffect } from "react";
 import { StockInteractor } from "../Interactor/StockInteractor";
+import { SecInteractor } from "../Interactor/SecInteractor";
 import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
+import { CacheManager } from "../Utility/CacheManager";
 
 function TickerSearchBar(props) {
     //TODO: implement error handling
@@ -18,6 +20,8 @@ function TickerSearchBar(props) {
             initializing: false,
             error: props.state.error,
             data: null,
+            ticker: null,
+            cik: null,
             type: props.state.type,
             interval: props.state.interval,
             securitiesList: props.state.securitiesList,
@@ -39,7 +43,7 @@ function TickerSearchBar(props) {
             }
         });
 
-        //get data through stock interactor
+        //get price and volume data through stock interactor
         var interactor = new StockInteractor();
         var requestObj = new JSONRequest(`{ 
             "request": { 
@@ -58,6 +62,8 @@ function TickerSearchBar(props) {
         props.onDataChange({
             initializing: false,
             data: results,
+            ticker: props.state.searchRef.current.value,
+            cik: null,
             error: props.state.error,
             type: props.state.type,
             interval: props.state.interval,
@@ -70,6 +76,27 @@ function TickerSearchBar(props) {
             yAxisStart: dateTimeFormatter(results.response.results[0]["data"][0]),
             yAxisEnd: dateTimeFormatter(results.response.results[0]["data"][-1])
         });
+
+        //get CIK from cache based on ticker symbol
+        const cacheManager = new CacheManager();
+        const cachedTickerCikMap = JSON.parse(await cacheManager.extract("sec.json"));
+
+        const cik = cachedTickerCikMap["data"][props.state.searchRef.current.value];
+
+        //TODO: create a parent interactor that can send a single request and dispatch
+        //get SEC data through SEC interactor
+        var secInteractor = new SecInteractor();
+        var secRequestObj = new JSONRequest(`{ 
+            "request": { 
+                "sec": {
+                    "action": "companyLookup",
+                    "cik": "${cik}",
+                    "companyName": "${companyName}"
+                }
+            }
+        }`);
+
+        const secResults = await secInteractor.get(secRequestObj);
     }
 
     //format the date and time for chart
@@ -84,7 +111,6 @@ function TickerSearchBar(props) {
             const dateNoMinutes = date.getDate().toString();
             return dateNoMinutes;
         }
-        
     };
 
     //fetch data when the interval is changed by the interval buttons in TimeSeriesChart
