@@ -11,6 +11,7 @@ import {
   NavLink,
   HashRouter
 } from "react-router-dom";
+import { CacheManager } from "../Utility/CacheManager";
 
 //Imports for react pages and assets
 import Home from "./Home";
@@ -21,7 +22,7 @@ import { TimeSeries } from "./TimeSeriesPage";
 import { News } from "./NewsPage";
 import Learn from "./Learn";
 import logo from "../Asset/Image/logo.png";
-import secCache from "../Cache/sec.json"; //TODO: load this through the new preload.js script
+//import secCache from "../Cache/sec.json"; //TODO: load this through the new preload.js script
 
 class AppContainer extends Component {
     // --Code for collapsable sidebar menu--
@@ -87,15 +88,19 @@ class AppContainer extends Component {
 //dynamic functional react required for useEffect
 export function App() {
     const parsedData = null;
-
+    /*
     //check daily for new IPOs and create/update cache map
     useEffect(() => {
         const cacheSecTickerCikMap = async () => {
             const date = new Date();
+            const cacheManager = new CacheManager();
             
             try {
                 //check if data has been cached for the day
                 //TODO: add date logic to see when lastCached
+                const cacheFilePath = `/Cache/sec/`;
+                const secCache = cacheManager.extract();
+
                 parsedData = JSON.parse(secCache);
                 if (parsedData.lastCached === undefined) {
                     throw Error("The cache of mapping between ticker symbols and CIK numbers is empty");
@@ -106,7 +111,8 @@ export function App() {
                 const timeDiff = Math.abs(date.getTime() - lastCachedDate.getTime());
                 const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
   
-                if (dayDiff > 1) {
+                // Re-cache data map once per week
+                if (dayDiff > 7) {
                     throw Error("The cache is outdated");
                 }
             } catch (error) {
@@ -118,26 +124,38 @@ export function App() {
 
                 // Parse the text data
                 const lines = secTextData.split('\n');
-                const parsedData = lines.map((line) => {
+                const parsedData = lines.map(async (line) => {
                     const [ticker, cik] = line.split('\t');
-                    secData.data[ticker] = cik;
+                    
+                    //Create folders based on starting letter of ticker to split SEC
+                    //Used to minimzie memory and compute once cached
+                    const folder = "Cache/sec/" + ticker.charAt(0).toLowerCase();
+                    
+                    //Store ticker:CIK pairs in folder names by starting letter of ticker
+                    if(await cacheManager.makeDirectoryIfNotExists(folder)) {
+                        secData.data[ticker.charAt(0).toLowerCase()][ticker] = cik;
+                    } else {
+                        throw Error("Failed to create folder sec cache folder " + ticker.charAt(0).toLowerCase());
+                    }
                 });
         
-                // Cache the parsed data
-                try {
-                    if(window.fsApi && window.fsApi.writeFile) {
-                        const filePath = 'Cache/sec.json';
-                        await window.fsApi.writeFile(filePath, JSON.stringify(secData));
-                    } 
-                } catch (error) {
-                    console.error('Error caching data:', error);
-                }
+                // Cache the parsed data into the created folders
+                secData.data.map(async (folder) => {
+                    var folderData = {lastCached: date.toLocaleDateString(), data: {}}
+
+                    secData.data[folder].map((ticker) => {
+                        folderData["data"][ticker] = secData.data[folder][ticker];
+                    });
+
+                    var filePath = `Cache/sec/${folder}/sec.json`;
+                    await cacheManager.cache(filePath, JSON.stringify(folderData));
+                }); 
             }
         };
 
         cacheSecTickerCikMap();
     }, []);
-
+    */
     return(
         <AppContainer/>
     );

@@ -12,6 +12,22 @@ export class CacheManager {
             }
         } catch (error) {
             console.error('Error retreiving cached data:', error);
+            return null;
+        }
+    }
+
+    async extractSync(cacheFilePath) {    
+        try {
+            if(window.fsApi && window.fsApi.readFileSync) {
+                const filePath = `Cache/${cacheFilePath}`;
+                const contents = window.fsApi.readFileSync(filePath);
+                return contents;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error('Error retreiving cached data:', error);
+            return null;
         }
     }
 
@@ -30,29 +46,31 @@ export class CacheManager {
         }
     }
 
-    // TODO: Finish this logic in preload.js
-    async makeDirectory(cachePath, folder) {
+    cacheSync(cachePath, data) {
         try {
-            if(window.fsApi && window.fsApi.directoryExists && window.fsApi.makeDirectory) {
-                const folderPath = `Cache/${cachePath}/${folder}`;
-
-                if(window.fsApi.directoryExists(folderPath)) {
-                    return true;
-                } else {
-                    try {
-                        await window.fsApi.makeDirectory(folderPath);
-                        return true;
-                    } catch(error) {
-                        console.error("Failed to make the directory: ", error);
-                        return false;
-                    }
-                }
+            if(window.fsApi && window.fsApi.writeFileSync) {
+                const filePath = `Cache/${cachePath}`;
+                window.fsApi.writeFileSync(filePath, data);
+                return true;
             } else {
                 return false;
             }
         } catch (error) { 
             console.error('Error caching data:', error);
             return false;
+        }
+    }
+
+    makeDirectorySync(cachePath, folder) {
+        try {
+            if(window.fsApi && window.fsApi.makeDirectorySync) {
+                const folderPath = `Cache/${cachePath}/${folder}`;
+                window.fsApi.makeDirectorySync(folderPath);
+            } else {
+                throw Error("The filesystem is not yet ready");
+            }
+        } catch (error) { 
+            console.error('Error caching data:', error);
         }
     }
 }

@@ -77,26 +77,29 @@ function TickerSearchBar(props) {
             yAxisEnd: dateTimeFormatter(results.response.results[0]["data"][-1])
         });
 
-        //get CIK from cache based on ticker symbol
-        const cacheManager = new CacheManager();
-        const cachedTickerCikMap = JSON.parse(await cacheManager.extract("sec.json"));
+        //check to make sure ticker:CIK map cache exists and is up-to-date
+        await props.cacheManager(props.state.searchRef.current.value).then(async () => {
+            //get CIK from cache based on ticker symbol
+            const cacheManager = new CacheManager();
+            const tikerCikMap = JSON.parse(cacheManager.extract(`Cache/sec/${props.state.searchRef.current.value.charAt(0).toLowerCase()}/sec.json`));
+            const cik = tikerCikMap["data"][props.state.searchRef.current.value];
 
-        const cik = cachedTickerCikMap["data"][props.state.searchRef.current.value];
-
-        //TODO: create a parent interactor that can send a single request and dispatch
-        //get SEC data through SEC interactor
-        var secInteractor = new SecInteractor();
-        var secRequestObj = new JSONRequest(`{ 
-            "request": { 
-                "sec": {
-                    "action": "companyLookup",
-                    "cik": "${cik}",
-                    "companyName": "${companyName}"
+            //TODO: create a parent interactor that can send a single request and dispatch
+            //get SEC data through SEC interactor
+            var secInteractor = new SecInteractor();
+            var secRequestObj = new JSONRequest(`{ 
+                "request": { 
+                    "sec": {
+                        "action": "companyLookup",
+                        "cik": "${cik}",
+                        "companyName": "${companyName}"
+                    }
                 }
-            }
-        }`);
+            }`);
 
-        const secResults = await secInteractor.get(secRequestObj);
+            const secResults = await secInteractor.get(secRequestObj);
+            alert(JSON.stringify(secResults));
+        });
     }
 
     //format the date and time for chart
