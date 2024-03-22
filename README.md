@@ -35,6 +35,7 @@ Download the follow software
    Note: Ask the professor for the specific key needed for this file.
    
    b. Make sure to add the key into this file by editing it. Then make sure to "save all" or "save as". You can double check that it was updated correctly by exiting out and clicking on the file once again.
+
    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/ff66e719-0992-4eb6-9fcf-4cb842df9016)
 
    
