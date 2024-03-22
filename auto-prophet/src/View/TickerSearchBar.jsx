@@ -10,10 +10,12 @@ import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 
 function TickerSearchBar(props) {
+    //Variables to reset the chart view
     var type;
     var interval;
 
     //TODO: implement error handling
+    //When fetching data for a new ticker fromt he search bar, get 1D data
     const fetch1DData = async () => {
         type = "intraday";
         interval = "1D";
@@ -98,10 +100,12 @@ function TickerSearchBar(props) {
 
     //fetch data when the interval is changed by the interval buttons in TimeSeriesChart
     useEffect(() => {
+        //stops fetchData() from being called upon page start
         if(props.state.initializing === false) {
-            //stops fetchData() from being called upon page start 
+            //Get new type and interval for which to format data
             type = props.state.type;
             interval = props.state.interval;
+            
             fetchData();
         }
     }, [props.state.interval]);
