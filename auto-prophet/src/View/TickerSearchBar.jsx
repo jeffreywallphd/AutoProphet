@@ -10,25 +10,22 @@ import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 
 function TickerSearchBar(props) {
+    var type;
+    var interval;
+
     //TODO: implement error handling
+    const fetch1DData = async () => {
+        type = "intraday";
+        interval = "1D";
+        fetchData();
+    }
+
+
     //Gets ticker data
     const fetchData = async () => {
-        //set type and interval based on if this is a new search
-        var type;
-        var interval;
-        if (newSearch) {
-            interval = "1D";
-            type = "intraday";
-            newSearch = false;
-        } else {
-            type = props.state.type;
-            interval = props.state.interval;
-        }
-
         //Take away previous data
         props.onDataChange({
-            initializing: true,
-            data: null,
+            initializing: false,
             error: props.state.error,
             data: null,
             type: props.state.type,
@@ -45,13 +42,8 @@ function TickerSearchBar(props) {
 
         //get company name from securities list data
         var companyName = "";
-
-        //Make sure ticker is in upper case
-        searchRef.current.value = (searchRef.current.value).toUpperCase();
-
-        //get company name from securities list data
-        securityList.find((element) => {
-            if(element.ticker === searchRef.current.value) {
+        props.state.securitiesList.find((element) => {
+            if(element.ticker === props.state.searchRef.current.value) {
                 companyName = element.companyName;
             }
         });
@@ -73,7 +65,7 @@ function TickerSearchBar(props) {
 
         //set the new data state with the updated search results
         props.onDataChange({
-            initializing: false,
+            initializing: true,
             data: results,
             error: props.state.error,
             type: type,
@@ -108,6 +100,8 @@ function TickerSearchBar(props) {
     useEffect(() => {
         if(props.state.initializing === false) {
             //stops fetchData() from being called upon page start 
+            type = props.state.type;
+            interval = props.state.interval;
             fetchData();
         }
     }, [props.state.interval]);
@@ -117,7 +111,7 @@ function TickerSearchBar(props) {
     };
    
     return (
-        <SymbolSearchBar fetchData={fetchData} state={props.state} onSymbolChange={handleSymbolChange}/>
+        <SymbolSearchBar fetchData={fetch1DData} state={props.state} onSymbolChange={handleSymbolChange}/>
     );
 }
 
