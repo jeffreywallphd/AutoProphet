@@ -15,6 +15,7 @@ function TickerSearchBar(props) {
     //Variables to reset the chart view
     var type;
     var interval;
+    var priceData;
 
     //TODO: implement error handling
     //When fetching data for a new ticker fromt he search bar, get 1D data
@@ -32,6 +33,7 @@ function TickerSearchBar(props) {
             initializing: false,
             error: props.state.error,
             data: null,
+            secData: null,
             ticker: null,
             cik: null,
             type: props.state.type,
@@ -68,11 +70,13 @@ function TickerSearchBar(props) {
         }`);
 
         const results = await interactor.get(requestObj);
+        priceData = results;
 
         //set the new data state with the updated search results
         props.onDataChange({
             initializing: true,
             data: results,
+            secData: null,
             ticker: props.state.searchRef.current.value,
             cik: null,
             error: props.state.error,
@@ -88,13 +92,42 @@ function TickerSearchBar(props) {
             yAxisEnd: dateTimeFormatter(results.response.results[0]["data"][-1])
         });
 
+        await fetchSecData();
+    }
+
+    const fetchSecData = async () => {
+        //TODO: consider whether the cachManager needs to be called here 
+        //or if it could be called on cache extraction error
+
         //check to make sure ticker:CIK map cache exists and is up-to-date
-        await props.cacheManager(props.state.searchRef.current.value).then(async () => {
+        await props.cacheHandler(props.state.searchRef.current.value).then(async () => {
+            //add a momentary pause to allow cache to create on initial startup
+            // TODO: create a better way to wait for cache to completely resolve. Possibly useEffect()
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+            await delay(1000);
+            
             //get CIK from cache based on ticker symbol
             const cacheManager = new CacheManager();
-            const tikerCikMap = JSON.parse(cacheManager.extract(`Cache/sec/${props.state.searchRef.current.value.charAt(0).toLowerCase()}/sec.json`));
-            const cik = tikerCikMap["data"][props.state.searchRef.current.value];
+            
+            const tickerFolder = props.state.searchRef.current.value.toString().charAt(0).toLowerCase();
+            var data = cacheManager.extractSync(`sec/${tickerFolder}/sec.json`);
+            const tickerCikMap = JSON.parse(data);
 
+             // remove the data to free memory
+             data = null;
+
+            // Make sure the ticker exists in the ticker:CIK mapping
+            var cik;
+            if(tickerCikMap["data"] !== undefined && tickerCikMap["data"].hasOwnProperty(props.state.searchRef.current.value.toLowerCase())) {
+                cik = tickerCikMap["data"][props.state.searchRef.current.value.toLowerCase()];
+            } else {
+                // either the cache isn't set up or
+                //the requested ticker is not from a company tracked by the SEC
+
+                // TODO: come up with a better way than timeout above to wait for cache creation
+                return;
+            }
+            
             //TODO: create a parent interactor that can send a single request and dispatch
             //get SEC data through SEC interactor
             var secInteractor = new SecInteractor();
@@ -102,14 +135,33 @@ function TickerSearchBar(props) {
                 "request": { 
                     "sec": {
                         "action": "companyLookup",
-                        "cik": "${cik}",
-                        "companyName": "${companyName}"
+                        "cik": "${cik}"
                     }
                 }
             }`);
 
             const secResults = await secInteractor.get(secRequestObj);
-            alert(JSON.stringify(secResults));
+            window.fsApi.logData(JSON.stringify(secResults));
+
+            //set the new secData state with the SEC API results
+            props.onDataChange({
+                initializing: true,
+                data: priceData,
+                secData: secResults,
+                ticker: props.state.searchRef.current.value,
+                cik: cik,
+                error: props.state.error,
+                type: type,
+                interval: interval,
+                securitiesList: props.state.securitiesList,
+                searchRef: props.state.searchRef,
+                isLoading: false,
+                priceMin: props.state.priceMin,
+                priceMax: props.state.priceMax,
+                volumeMax: props.state.volumeMax,
+                yAxisStart: props.state.yAxisState,
+                yAxisEnd: props.state.yAxisEnd
+            });
         });
     }
 

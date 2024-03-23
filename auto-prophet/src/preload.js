@@ -7,18 +7,6 @@ contextBridge.exposeInMainWorld('fsApi', {
     logData: (data) => {
         console.log(data);
     },
-    readFile: async (filePath) => {
-        try {
-            const fullPath = path.join(__dirname, filePath);
-            await fsPromises.readFile(fullPath, 'utf-8').then(data => {
-                return data;
-            }).catch(error => {
-                console.log("Could not read the file: ", error);
-            });
-        } catch(error) {
-            console.error("Could not read file: ", error);
-        }
-    },
     readFileSync: (filePath) => {
         try {
             const fullPath = path.join(__dirname, filePath);
@@ -26,38 +14,16 @@ contextBridge.exposeInMainWorld('fsApi', {
             return data;
         } catch(error) {
             console.error("Could not read file: ", error);
-        }
-    },
-    writeFile: async (filePath, data) => {
-        try {
-            const fullPath = path.join(__dirname, filePath);
-            await fsPromises.writeFile(fullPath, data, 'utf-8');
-        } catch(error) {
-            console.error("Could not write file: ", error);
+            return false;
         }
     },
     writeFileSync: (filePath, data) => {
         try {
             const fullPath = path.join(__dirname, filePath);
             fs.writeFileSync(fullPath, data);
-        } catch(error) {
-            console.error("Could not write file: ", error);
-        }
-    },
-    directoryExistsSync: (folderPath) => {
-        try {
-            fs.accessSync(folderPath);
             return true;
         } catch(error) {
-            console.error("An error occurred while trying to check if the directory exists: ", error);
-            return false;
-        }
-    },
-    directoryExists: async (folderPath) => {
-        try {
-            await fsPromises.access(folderPath);
-            return true;
-        } catch(error) {
+            //console.error("Could not write file: ", error);
             return false;
         }
     },
@@ -65,16 +31,10 @@ contextBridge.exposeInMainWorld('fsApi', {
         try {
             const fullPath = path.join(__dirname, folderPath);
             fs.mkdirSync(fullPath);
+            return true;
         } catch(error) {
-            console.error("Could not create the directory", error);
-        }
-    },
-    makeDirectory: async (folderPath) => {
-        try {
-            const fullPath = path.join(__dirname, folderPath);
-            await fsPromises.mkdir(fullPath);
-        } catch(error) {
-            console.error("Could not create the directory", error);
+            //console.error("Could not create the directory", error);
+            return false;
         }
     },
     // Restrict exposed functions to accept only strings and return only strings

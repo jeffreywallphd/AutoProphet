@@ -4,15 +4,16 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './View/App';
+import React from "react";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+function TickerSidePanel(props) {
+    return (
+        <div>
+            <h2>Side Panel</h2>
+            <p>CIK: {props.state.secData.response.results[0]["cik"]}</p>
+            <p>Revenues: {props.state.secData.response.results[0]["data"]["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]}</p>
+        </div>
+    );
+}
 
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export { TickerSidePanel }

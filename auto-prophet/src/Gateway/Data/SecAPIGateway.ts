@@ -39,107 +39,22 @@ export class SecAPIGateway implements IDataGateway {
         const response = await fetch(url);
         const data = await response.json();
 
-        var entities;
-        //add formatting here if needed
+        entity.setFieldValue("data", data);
 
+        const entities = [entity];
         return entities;
     }
 
     private getSubmissionsLookupUrl(entity: IEntity) {
-        return `${this.baseURL}/submissions/CIK${entity.getFieldValue("CIK")}.json`;
+        return `${this.baseURL}/submissions/CIK${entity.getFieldValue("cik")}.json`;
     }
 
     private getConceptLookupUrl(entity: IEntity) {
-        return `${this.baseURL}api/xbrl/companyconcept/CIK${entity.getFieldValue("CIK")}/${entity.getFieldValue("accountingStandard")}/${entity.getFieldValue("concept")}.json`;
+        return `${this.baseURL}api/xbrl/companyconcept/CIK${entity.getFieldValue("cik")}/${entity.getFieldValue("accountingStandard")}/${entity.getFieldValue("concept")}.json`;
     }
 
     private getCompanyLookupUrl(entity: IEntity) {
-        return `${this.baseURL}api/xbrl/companyfacts/CIK${entity.getFieldValue("CIK")}.json`;
-    }
-
-    private formatDataResponse(data: { [key: string]: any }, entity:IEntity, action:string) {
-        var array: Array<IEntity> = [];
-        
-        var timeSeries;
-        if(action === "interday") { 
-            timeSeries = data["Time Series (Daily)"];
-        } else {
-            timeSeries = data["Time Series (1min)"];    
-        }
-
-        const mostRecentDate = new Date(Object.keys(timeSeries)[0]);
-        
-        //calculate the pate date based on the interval specified by the user
-        //currently, intervals are 5 day, 1 month, 6 months, 1 year, 5 years, and max
-        var pastDate = null;
-        if(entity.getFieldValue("interval") === "5D") {
-            pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));
-        } else if(entity.getFieldValue("interval") === "1M") {
-            pastDate = new Date(mostRecentDate.getTime() - (30 * 24 * 60 * 60 * 1000));
-        } else if(entity.getFieldValue("interval") === "6M") {
-            pastDate = new Date(mostRecentDate.getTime() - (6 * 30 * 24 * 60 * 60 * 1000));
-        } else if(entity.getFieldValue("interval") === "1Y") {
-            pastDate = new Date(mostRecentDate.getTime() - (365 * 24 * 60 * 60 * 1000));
-        } else if(entity.getFieldValue("interval") === "5Y") {
-            pastDate = new Date(mostRecentDate.getTime() - (5 * 365 * 24 * 60 * 60 * 1000));
-        }
-        
-        const formattedData: Array<{ [key: string]: any }> = [];
-        for (var key in timeSeries) {
-            var date = new Date(key);           
-            var item;
-
-            if(action === "interday") {
-                item = this.createDataItem(date, timeSeries[key]);
-                formattedData.push(item);
-                if(date !== null && date < pastDate) {
-                    //stop the loop at the designated interval for the interday data
-                    break;
-                }
-            } else {
-                if(mostRecentDate.getDate() === date.getDate()) {
-                    item = this.createDataItem(date, timeSeries[key]);
-                    formattedData.push(item);
-                } else {
-                    //stop the loop for intraday data once the date is less than the most recent date
-                    break;
-                }
-            }
-        }
-
-        entity.setFieldValue("data", formattedData.reverse());
-
-        array.push(entity);
-
-        return array;
-    }
-
-    private createDataItem(date: Date, timeSeries: any) {
-        const item = {
-            date: date.toLocaleDateString(),
-            time: date.toLocaleTimeString(),
-            price: timeSeries["4. close"],
-            volume: timeSeries["5. volume"],
-        };
-
-        return item;
-    }
-
-    private formatLookupResponse(data: { [key: string]: any }) {
-        var array: Array<IEntity> = [];
-        
-        const bestMatches = data["bestMatches"];
-
-        for (const match of bestMatches) {           
-            var entity = new StockRequest();
-            
-            entity.setFieldValue("ticker", match["1. symbol"]);
-            entity.setFieldValue("companyName", match["2. name"]);
-            
-            array.push(entity);
-        }
-
-        return array
+        return `${this.baseURL}api/xbrl/companyfacts/CIK${entity.getFieldValue("cik")}.json`;
     }
 
     update(entity: IEntity, action: string): Promise<number> {

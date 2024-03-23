@@ -13,6 +13,15 @@ export class SecRequest implements IEntity {
         var ticker = new Field("ticker", "string", null);
         this.fields.set("ticker", ticker);
 
+        var cik = new Field("cik", "string", null);
+        this.fields.set("cik", cik);
+
+        var accountingStandard = new Field("accountingStandard", "string", "us-gaap");
+        this.fields.set("accountingStandard", accountingStandard);
+
+        var concept = new Field("concept", "string", null);
+        this.fields.set("concept", concept);
+
         var companyName = new Field("companyName", "string", null);
         this.fields.set("companyName", companyName);
 
