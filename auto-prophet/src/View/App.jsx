@@ -4,23 +4,25 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-
-import React, { Component } from "react";
-import * as ReactDOM from 'react-dom';
+import React, { Component, useEffect } from "react";
 import {
   Routes,
   Route,
   NavLink,
   HashRouter
 } from "react-router-dom";
+import { CacheManager } from "../Utility/CacheManager";
 
+//Imports for react pages and assets
 import Home from "./Home";
 import Portfolio from "./Portfolio";
 import Analysis from "./Analysis";
 import BuyReport from "./BuyReport";
 import { TimeSeries } from "./TimeSeriesPage";
 import { News } from "./NewsPage";
+import Learn from "./Learn";
 import logo from "../Asset/Image/logo.png";
+//import secCache from "../Cache/sec.json"; //TODO: load this through the new preload.js script
 
 class App extends Component {
     // --Code for collapsable sidebar menu--
@@ -59,6 +61,7 @@ class App extends Component {
                                 <NavLink to="/portfolio">Portfolio</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
                                 <NavLink to="/news">Investment News</NavLink>
+                                <NavLink to="/learn">Learn</NavLink>
                             </div>
                         </div>
                         <div className="content">
@@ -69,6 +72,7 @@ class App extends Component {
                             <Route path="/buy-report" element={<BuyReport />}/>
                             <Route path="/price" element={<TimeSeries />}/>
                             <Route path="/news" element={<News />}/>
+                            <Route path="/learn" element={<Learn />}/>
                             </Routes>
                         </div>
                     </div>

@@ -1,7 +1,6 @@
 import {StockRequest} from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
 import {IDataGateway} from "../Data/IDataGateway";
-import { time } from "console";
 
 export class AlphaVantageStockGateway implements IDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";
