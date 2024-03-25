@@ -1,12 +1,12 @@
 body {
   margin: 0;
   margin-left: 150px;
-  padding: 10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #AFD3E4;
 }
 
 code {
@@ -55,36 +55,62 @@ code {
   width: 60px;
 }
 
-.toggle-menu:hover {
-  background-color: #5086FF;
+#navIcon{
+  border-image: 0;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  margin: 0;
 }
 
-.isActive{
-  background-color: #00878E;
-  color: #ffffff;
+#navButton{
+  padding:0;
+  margin: 0;
+  border: 0;
+  padding-block:0;
+  padding-inline:0;
+  background-color: #2B388F;
+}
+
+.toggle-menu:hover {
+  background-color: #5086FF;
 }
 
 .main{
   display: flex;
 }
 
+#headerDiv{
+  background-color: #00878E;
+  color: #fff;
+  margin: 0;
+}
+
 .header {
-  margin-left: 20px;
+  margin: o;
+  padding: 20px;
   transition: margin-left 0.5s ease; 
+  background-color: #00878E;
 }
 
 .header-collapsed {
-  margin-left: -75px; /* Adjust the margin when menu is collapsed */
+  margin-left: -90px; /* Adjust the margin when menu is collapsed */
+  background-color: #00878E;
+}
+
+#mainHeader{
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .content {
-  background-color: #FFF;
+  background-color: #AFD3E4;
   margin-left: 20px;
   transition: margin-left 0.5s ease;
 }
 
 .content-collapsed {
-  margin-left: -75px; /* Adjust the margin when menu is collapsed */
+  margin-left: -70px; /* Adjust the margin when menu is collapsed */
 }
 
 .cardRow {
@@ -106,6 +132,7 @@ code {
   min-height: 300px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
+  background-color: #C3FBF1;
 }
 
 .card:hover {
@@ -113,7 +140,8 @@ code {
 }
 
 .cardHeader {
-  background-color: #CCC;
+  color: #fff;
+  background-color: #00878E;
   padding: 20px;
 }
 

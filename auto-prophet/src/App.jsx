@@ -13,6 +13,7 @@ import {
   NavLink,
   HashRouter
 } from "react-router-dom";
+import navIcon from "./Asset/Image/navIcon.png"
 
 import Home from "./Home";
 import Portfolio from "./Portfolio";
@@ -21,7 +22,7 @@ import BuyReport from "./BuyReport";
 import Price from "./PriceVolume/Price";
 
 class App extends Component {
-    // --Code for collapsable menu--
+    // --Code for collapsible menu--
     constructor(props) {
         super(props);
         this.state = {
@@ -35,7 +36,7 @@ class App extends Component {
             menuCollapsed: !prevState.menuCollapsed
         }));
     }
-    // --End: Code for collapsable menu--
+    // --End: Code for collapsible menu--
     render() {
         const { menuCollapsed } = this.state;
 
@@ -43,8 +44,9 @@ class App extends Component {
             <HashRouter>
                 <div className={`main ${menuCollapsed ? 'menu-collapsed' : ''}`}>
                     <div class="vertical-menu">
-                        <button className="toggle-menu" onClick={this.toggleMenu}>
-                            {menuCollapsed ? 'Show Menu' : 'Hide Menu'}
+                        <button id="navButton">
+                            {/* {menuCollapsed ? "./Asset/Image/navIcon.png" : "./Asset/Image/navIcon.png"} */}
+                            <img className="toggle-menu" id="navIcon" onClick={this.toggleMenu} src={menuCollapsed ? navIcon : navIcon} alt="navIcon" />
                         </button>
                         <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
                             <NavLink to="/" activeClassName="activeNav">Home</NavLink>
@@ -54,9 +56,9 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
-                <div>
+                <div id="headerDiv">
                     <header className={`header ${menuCollapsed ? 'header-collapsed' : ''}`}>
-                        <h1>Auto Prophet</h1>
+                        <h1 id="mainHeader">Auto Prophet</h1>
                     </header>
                 </div>
                 <div className={`content ${menuCollapsed ? 'content-collapsed' : ''}`}>
