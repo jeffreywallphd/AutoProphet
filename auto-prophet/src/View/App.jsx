@@ -11,7 +11,6 @@ import {
   NavLink,
   HashRouter
 } from "react-router-dom";
-import { CacheManager } from "../Utility/CacheManager";
 
 //Imports for react pages and assets
 import Home from "./Home";
@@ -20,9 +19,10 @@ import Analysis from "./Analysis";
 import BuyReport from "./BuyReport";
 import { TimeSeries } from "./TimeSeriesPage";
 import { News } from "./NewsPage";
-import Learn from "./Learn";
+import { Learn } from "./Learn";
+import { LearningModuleDetails } from "./LearningModuleDetails";
+import { LearningModulePage } from "./LearningModulePage";
 import logo from "../Asset/Image/logo.png";
-//import secCache from "../Cache/sec.json"; //TODO: load this through the new preload.js script
 
 class App extends Component {
     // --Code for collapsable sidebar menu--
@@ -66,13 +66,15 @@ class App extends Component {
                         </div>
                         <div className="content">
                             <Routes>
-                            <Route path="/" element={<Home />}/>
-                            <Route path="/portfolio" element={<Portfolio />}/>
-                            <Route path="/analysis" element={<Analysis />}/>
-                            <Route path="/buy-report" element={<BuyReport />}/>
-                            <Route path="/price" element={<TimeSeries />}/>
-                            <Route path="/news" element={<News />}/>
-                            <Route path="/learn" element={<Learn />}/>
+                                <Route path="/" element={<Home />}/>
+                                <Route path="/portfolio" element={<Portfolio />}/>
+                                <Route path="/analysis" element={<Analysis />}/>
+                                <Route path="/buy-report" element={<BuyReport />}/>
+                                <Route path="/price" element={<TimeSeries />}/>
+                                <Route path="/news" element={<News />}/>
+                                <Route path="/learn" element={<Learn />}/>
+                                <Route path="/learningModule" element={<LearningModuleDetails />}/>
+                                <Route path="/learningModulePage" element={<LearningModulePage />}/>
                             </Routes>
                         </div>
                     </div>

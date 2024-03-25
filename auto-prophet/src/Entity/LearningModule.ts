@@ -14,6 +14,9 @@ export class LearningModule implements IEntity {
         var title = new Field("title", "string", null);
         this.fields.set("title", title);
 
+        var description = new Field("description", "string", null);
+        this.fields.set("description", description);
+
         var keywords = new Field("keywords", "string", null);
         this.fields.set("keywords", keywords);
 
@@ -51,6 +54,10 @@ export class LearningModule implements IEntity {
 
         if(json.request.learningModule.hasOwnProperty("title")) {
             this.setFieldValue("title", json.request.learningModule.title);
+        }
+
+        if(json.request.learningModule.hasOwnProperty("description")) {
+            this.setFieldValue("description", json.request.learningModule.description);
         }
 
         if(json.request.learningModule.hasOwnProperty("timeEstimate")) {

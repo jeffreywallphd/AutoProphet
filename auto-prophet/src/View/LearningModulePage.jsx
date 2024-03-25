@@ -8,23 +8,32 @@ import React, { Component } from "react";
 import {
     NavLink,
     useLocation
-} from "react-router-dom";
+  } from "react-router-dom";
 
-export function Learn() {
+export function LearningModulePage(props) {
+    const state = {
+        "title": null,
+        "pages": null,
+        "currentPage": null,
+    };
+
     const location = useLocation();
 
     return (
         <div className="page">
-            <h2>Financial Learning Modules</h2>
-            <h3>Example Module</h3>
-            <p>Description: this is an example module description</p>
-            <p>Estimated Time: 15 minutes</p>
-            <NavLink to="/learningModule" state={{
-                "title": "Test Module",
-                "description": "this is a description of the test module",
-                "estimatedTime": 25,
-                "dataCreated": "01/02/23",
-                "pages": null}}>View Module</NavLink>
+            <div>
+                <h2>{location.state.title}</h2>
+            </div>
+            <div>
+                <NavLink to="/learningModulePage" state={{
+                    "title": "Dividend Example 2",
+                    "pages": null,
+                    "currentPage": 2,
+                }}>Next Page</NavLink>
+            </div>
+            <div>Page {location.state.currentPage}</div>
         </div>
-    );
+        );
 }
+
+export default LearningModulePage;

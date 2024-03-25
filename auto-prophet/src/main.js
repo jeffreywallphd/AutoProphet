@@ -15,7 +15,7 @@ const createWindow = () => {
       nodeIntegration: true
     } 
   });
-  //win.setMenu(null);
+  //win.setMenu(null); // this doesn't allow opening developer tools
   win.maximize();
   win.show();
 
