@@ -43,7 +43,7 @@ function TickerSearchBar(props) {
             isLoading: true,
             priceMin: null,
             priceMax: null,
-            volumeMax: null,
+            maxVolume: null,
             yAxisStart: null,
             yAxisEnd: null
         });
@@ -85,11 +85,11 @@ function TickerSearchBar(props) {
             securitiesList: props.state.securitiesList,
             searchRef: props.state.searchRef,
             isLoading: false,
-            priceMin: Math.min(...results.response.results[0]["data"].map(data => data.price)),
-            priceMax: Math.max(...results.response.results[0]["data"].map(data => data.price)),
-            volumeMax: Math.max(...results.response.results[0]["data"].map(data => data.volume)),
-            yAxisStart: dateTimeFormatter(results.response.results[0]["data"][0]),
-            yAxisEnd: dateTimeFormatter(results.response.results[0]["data"][-1])
+            priceMin: Math.min(...priceData.response.results[0]["data"].map(data => data.price)),
+            priceMax: Math.max(...priceData.response.results[0]["data"].map(data => data.price)),
+            maxVolume: Math.max(...priceData.response.results[0]["data"].map(data => data.volume)),
+            yAxisStart: dateTimeFormatter(priceData.response.results[0]["data"][0]),
+            yAxisEnd: dateTimeFormatter(priceData.response.results[0]["data"][-1])
         });
 
         await fetchSecData();
@@ -98,7 +98,7 @@ function TickerSearchBar(props) {
     const fetchSecData = async () => {
         //TODO: consider whether the cachManager needs to be called here 
         //or if it could be called on cache extraction error
-
+        
         //check to make sure ticker:CIK map cache exists and is up-to-date
         await props.cacheHandler(props.state.searchRef.current.value).then(async () => {
             //add a momentary pause to allow cache to create on initial startup
@@ -156,11 +156,11 @@ function TickerSearchBar(props) {
                 securitiesList: props.state.securitiesList,
                 searchRef: props.state.searchRef,
                 isLoading: false,
-                priceMin: props.state.priceMin,
-                priceMax: props.state.priceMax,
-                volumeMax: props.state.volumeMax,
-                yAxisStart: props.state.yAxisState,
-                yAxisEnd: props.state.yAxisEnd
+                priceMin: Math.min(...priceData.response.results[0]["data"].map(data => data.price)),
+                priceMax: Math.max(...priceData.response.results[0]["data"].map(data => data.price)),
+                maxVolume: Math.max(...priceData.response.results[0]["data"].map(data => data.volume)),
+                yAxisStart: dateTimeFormatter(priceData.response.results[0]["data"][0]),
+                yAxisEnd: dateTimeFormatter(priceData.response.results[0]["data"][-1])
             });
         });
     }

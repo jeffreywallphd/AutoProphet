@@ -61,7 +61,7 @@ function SymbolSearchBar(props) {
                     isLoading: false,
                     priceMin: props.state.priceMin,
                     priceMax: props.state.priceMax,
-                    volumeMax: props.state.volumeMax,
+                    maxVolume: props.state.maxVolume,
                     yAxisStart: props.state.yAxisStart,
                     yAxisEnd: props.state.yAxisEnd
                 });
