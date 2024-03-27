@@ -4,11 +4,17 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
 
 const createWindow = () => {
-  win = new BrowserWindow({ show: false });
+  win = new BrowserWindow({ 
+    show: false,
+    webPreferences: {
+      preload: path.join(app.getAppPath(), 'src/preload.js'),
+      nodeIntegration: true
+    } 
+  });
   //win.setMenu(null);
   win.maximize();
   win.show();
@@ -27,3 +33,4 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
+
