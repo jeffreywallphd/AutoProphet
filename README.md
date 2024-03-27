@@ -7,7 +7,7 @@ AutoProphet is an open source financial analytics tool designed to provide finan
 ## Installation
 To begin contributing to the repository:
 
-Download the follow software
+## Download the following software
 1. Download GitHub Desktop: https://desktop.github.com/
    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/6a62cd50-258f-4d9f-b302-d8e2880579ff)
 
@@ -43,7 +43,7 @@ Download the follow software
    c. [default.zip](https://github.com/jeffreywallphd/AutoProphet/files/14721696/default.zip)
 
 
-7. Click on the "env folder" that was extracted and copy the file inside.
+6. Click on the "env folder" that was extracted and copy the file inside.
 
    a. Then follow this file path or find a way to get to your GitHub folder in your file explorer: C:\Users\"your username"\OneDrive\Documents\GitHub  
   
@@ -53,30 +53,58 @@ Download the follow software
 
    ![Screenshot 2024-03-21 004359](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/b2f27373-57df-4e67-9cd9-ba9b3e2a9916)
 
-   c. Paste the ".env" file into the AutoProphet folder by using the "Ctrl V" shortcup or the paste button in the upper left-hand corner.
+   c. Paste the ".env" file into the AutoProphet folder by using the "Ctrl V" shortcut or the paste button in the upper left-hand corner.
 
 
-8. Create a new folder in the "AutoProphet" folder and name it "config".
-      a. <img width="494" alt="image" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/a8d6f972-ce28-467f-b3e8-62a247217ddb">
+7. Create a new folder in the "AutoProphet" folder and name it "config".
+   
+   a. ![Screenshot 2024-03-21 004551](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/6534f348-de7e-4033-b5e4-e395fa5b577b)
 
-      b. ![Screenshot 2024-03-21 004551](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/972be37b-c777-45ef-b49b-52d00dcfa4ce)
-      c. Return to your downloads folder in your file explorer and go to the "json" folder that was extracted.
-      d. Click on the folder and copy the file inside.
-      e. Paste the file into the new "config" folder you just created.
+   b. Return to your downloads folder in your file explorer and go to the "json" folder that was extracted.
+   
+   c. Click on the folder and copy the file inside.
+   
+   d. Paste the file into the new "config" folder you just created.
       ![Screenshot 2024-03-21 004616](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/af607bd5-d1c8-4011-b060-f00e7cc86d25)
 
-9.  Return to the "AutoProphet" folder and rename the folder to "auto-prophet" .
+8.  Return to the "AutoProphet" folder and rename the folder to "auto-prophet" .
 
-    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/01cb5b3d-b7ec-4024-9d82-98682ccbfc67)
+      ![Screenshot 2024-03-21 004359](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/1d946841-2ddc-4184-a2d3-77a19a43cfd2)
 
-10. Open your command prompt by typing cmd .
+
+9. Open your command prompt by typing "cmd".
        ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/41a4db2e-e70f-42a6-9121-2e6d1b43cefc)
 
       b. Type in "cd" and then past the file path to the GitHub folder:
    
       <img width="421" alt="step1ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/74081e79-1095-4fc6-b407-213ccf23c028">
+      
+      c. If you are not sure how to find and copy the file path this is how: Right click on the GitHub folder and select "copy as path".
+         ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/c383754a-63c0-4745-a8a0-1c7a57f8603a)
+
+10. Next type in "cd auto-prophet" in the command prompt.
+
+     <img width="407" alt="step3ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/55c7f90e-c12d-4eb0-8aae-d558c90e670e">
+
+11. Then type in "npm install"
+
+    <img width="465" alt="step5ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/111363a0-903b-4fc7-a921-41024a63d9a4">
+
+12. Lastly, type the following command "npm start"
+
+    <img width="457" alt="step6ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/4196753d-345a-4761-98e5-3dbf6ce8b097"> 
+
+13. After the startup finishes, you should see the desktop interface for the application.
+    
+   ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/49f89a90-80a7-4131-b29c-1da810177050)
+
+## Commands After Install: 
+1. cd "file path to GitHub"
+2. cd auto-prophet
+3. npm start
+
+      
 ## Disclaimers
- 
 
 ### No Warranty
 This software is provided "as is" without any warranty of any kind, express or implied. This includes, but is not limited to, the warranties of merchantability, fitness for a particular purpose, and non-infringement.
@@ -86,36 +114,6 @@ The authors and copyright holders of this software disclaim all liability for an
 
 ### General Use Disclaimer
 The authors of this software are not financial experts. This software should not be used to replace the expert advice of financial professionals. The information and functionality of this software is for research and educational purposes. Consult a licensed professional for investing advice.
-
-## Installation
-To begin contributing to the repository:
-
-1. Clone the repository using git into a folder on your computer where you want to store the code locally
-   1. Windows users can install Git for Windows. After installing, you will clone the repository using GitBash.
-     1. Within GitBash, use the cd (change directory) and ls (list) commands to select the directory where you will clone the files.
-     2. After selecting the directory with the cd command, run: git clone https://github.com/jeffreywallphd/AutoProphet.git
-     3. Check the directory to make sure that it now has the files from the GitHub repository
-   2. Many IDE's also have this capability to clone repositories if you don't like using command line tools. Follow a similar process. 
-2. Install nodeJS by visiting: https://nodejs.org/en/download
-   1. By default it should install npm, which is a package manager for NodeJS. You will need npm installed.
-3. Install the nodeJS packages that the the application uses. In the command prompt on Windows or the terminal on Mac/Linux:
-   1. Make sure you are in the directory where you cloned the repository using the cd and ls commands. You will want to select the directory within the project where the package.json file is located. Currently, this is in the auto-prophet folder within the root folder.
-   2. Once you have selected the directory, to install the NodeJS packages used for the project, run the command: npm install
-4. Now you need to configure the application. Configuration is currently limited.
-   1. Create a folder named config in the folder containing the package.json file (this is currently the auto-prophet folder).
-   2. Within the config folder, create a file named default.json
-   3. Paste the following into the default.json file:
-      {"StockGateway": "AlphaVantageStockGateway","NewsGateway": "AlphaVantageNewsGateway"}
-5. TO UTILIZE PRICE/VOLUME FEATURES: Store an API key in a .env file.
-   1. If you do not have one already, get a free Alpha Vantage API key from https://www.alphavantage.co/support/#api-key.
-   2. Create a file called ".env" in the auto-prophet folder.
-   3. In that .env file, create a JSON object in the following form:
-        {
-            "ALPHAVANTAGE_API_KEY": "your key here"
-        }
-   4. Save your .env file and now you can use price/volume features that pull data from the Alpha Vantage API.
-6. After installing the npm packages, adding the config folder and file, and creating the .env file, you are ready to run the application. Type the following command to launch the Electron application: npm start
-   1. After the startup finishes, you should see the desktop interface for the application 
 
 ## Collaboration Practices
 Please be sure to read through the [Best Coding Practices](BestCodingPractices.md) document before you start collaborating.
