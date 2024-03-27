@@ -16,6 +16,11 @@ function TickerSearchBar(props) {
     var type;
     var interval;
     var priceData;
+    var priceMin;
+    var priceMax;
+    var maxVolume;
+    var yAxisStart;
+    var yAxisEnd;
 
     //TODO: implement error handling
     //When fetching data for a new ticker fromt he search bar, get 1D data
@@ -72,6 +77,13 @@ function TickerSearchBar(props) {
         const results = await interactor.get(requestObj);
         priceData = results;
 
+        //Calculate props data from results
+        priceMin = Math.min(...priceData.response.results[0]["data"].map(data => data.price));
+        priceMax = Math.max(...priceData.response.results[0]["data"].map(data => data.price));
+        maxVolume = Math.max(...priceData.response.results[0]["data"].map(data => data.volume));
+        yAxisStart = dateTimeFormatter(priceData.response.results[0]["data"][0]);
+        yAxisEnd = dateTimeFormatter(priceData.response.results[0]["data"][-1])
+
         //set the new data state with the updated search results
         props.onDataChange({
             initializing: true,
@@ -85,11 +97,11 @@ function TickerSearchBar(props) {
             securitiesList: props.state.securitiesList,
             searchRef: props.state.searchRef,
             isLoading: false,
-            priceMin: Math.min(...priceData.response.results[0]["data"].map(data => data.price)),
-            priceMax: Math.max(...priceData.response.results[0]["data"].map(data => data.price)),
-            maxVolume: Math.max(...priceData.response.results[0]["data"].map(data => data.volume)),
-            yAxisStart: dateTimeFormatter(priceData.response.results[0]["data"][0]),
-            yAxisEnd: dateTimeFormatter(priceData.response.results[0]["data"][-1])
+            priceMin: priceMin,
+            priceMax: priceMax,
+            maxVolume: maxVolume,
+            yAxisStart: yAxisStart,
+            yAxisEnd: yAxisEnd
         });
 
         await fetchSecData();
@@ -156,11 +168,11 @@ function TickerSearchBar(props) {
                 securitiesList: props.state.securitiesList,
                 searchRef: props.state.searchRef,
                 isLoading: false,
-                priceMin: Math.min(...priceData.response.results[0]["data"].map(data => data.price)),
-                priceMax: Math.max(...priceData.response.results[0]["data"].map(data => data.price)),
-                maxVolume: Math.max(...priceData.response.results[0]["data"].map(data => data.volume)),
-                yAxisStart: dateTimeFormatter(priceData.response.results[0]["data"][0]),
-                yAxisEnd: dateTimeFormatter(priceData.response.results[0]["data"][-1])
+                priceMin: priceMin,
+                priceMax: priceMax,
+                maxVolume: maxVolume,
+                yAxisStart: yAxisStart,
+                yAxisEnd: yAxisEnd
             });
         });
     }
