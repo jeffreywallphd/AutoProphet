@@ -17,6 +17,7 @@ Please document the following about this pull request:
 - [ ] Documentation addition/update (non-breaking change that adds documentation to the system)
 
 ## Checklist Before Requesting a Review
+- [ ] Do you want to keep your branch for future changes or delete it once it is reviewed?
 - [ ] I have followed the git practices outlined [here](GitPractices.md) to ensure code conflicts are minimized
 - [ ] My code follows the style guidelines of this project outlined [here](documentation/StyleGuide.md)
 - [ ] I have performed a self-review of my code. It runs without errors and follows the [Best Coding Practices](BestCodingPractices.md)
@@ -25,4 +26,3 @@ Please document the following about this pull request:
 - [ ] My changes generate no new warnings
 - [ ] There are no API keys, passwords, usernames, or other secrets in the code. I am using .env files for all secrets.
 - [ ] I have added tests that prove my fix is effective or that my feature works
-

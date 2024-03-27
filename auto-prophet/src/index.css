@@ -1,4 +1,19 @@
+/* Color Scheme */
+
+:root {
+  --primary-color: #2B388F;
+  --secondary-color: #00878E;
+  --tertiary-color: #62C0C2;
+  --background-color: #FFFFFF;
+  --accent-color: #27A2CC;
+  --highlight-color: #FDCB50;
+  --text-color-dark: #000000;
+  --text-color-light: #FFFFFF;
+  --text-color-medium: #333333;
+}
+
 body {
+  background-color: var(--secondary-color);
   margin: 0;
   margin-left: 150px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -9,50 +24,120 @@ body {
   background-color: #AFD3E4;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+footer {
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  padding: 15px;
+  text-align: center;
 }
 
-.vertical-menu { 
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 150px; 
-  height: 100%;
-  background-color: #2B388F;
-  overflow-y: auto;
+h1 {
+  color: var(--text-color-light);
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+h2 {
+  color: var(--text-color-dark);
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+h3 {
+  color: var(--text-color-medium);
+}
+
+button {
+  background-color: var(--accent-color);
+  padding: 10px;
+  border: 0px;
+  cursor: pointer;
+}
+
+footer {
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  padding: 15px;
+  text-align: center;
+}
+
+h1 {
+  color: var(--text-color-light);
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+h2 {
+  color: var(--text-color-dark);
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+h3 {
+  color: var(--text-color-medium);
+}
+
+button {
+  background-color: var(--accent-color);
+  padding: 10px;
+  border: 0px;
+  cursor: pointer;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.main {
+  display: flex;
+  min-height: 500px;
+}
+
+.sidebar { 
+  width: 200px; 
+  min-height: 500px;
+  background-color: var(--primary-color);
   transition: width 0.5s ease;
 }
 
-.menu-collapsed .vertical-menu {
-  width: 60px; /* Width of menu when collapsed */
+.sidebar.collapsed { 
+  width: 40px;
+}
+
+.header {
+  text-align: center;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.header.collapsed {
+  display: none;
+}
+
+.menu-items a:hover {
+  background-color: var(--accent-color);
 }
 
 .menu-items.collapsed a {
   display: none;
 }
 
-.vertical-menu a {
-  color: white;
+.sidebar a {
+  color: var(--text-color-light);
   font-weight: bold;
   display: block;
   padding: 12px;
   text-decoration: none;
 }
 
-.menu-items a:hover {
-  background-color: #AFD3E4;
-}
-
-.toggle-menu {
-  color: white;
-  background-color: #2B388F;
+.toggle-sidebar {
+  color: var(--text-color-light);
+  background-color: var(--primary-color);
   border: none;
   cursor: pointer;
   padding: 10px;
   text-align: left;
-  width: 60px;
+  width: 40px;
 }
 
 #navIcon{
@@ -72,8 +157,25 @@ code {
   background-color: #2B388F;
 }
 
-.toggle-menu:hover {
-  background-color: #5086FF;
+#navIcon{
+  border-image: 0;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  margin: 0;
+}
+
+#navButton{
+  padding:0;
+  margin: 0;
+  border: 0;
+  padding-block:0;
+  padding-inline:0;
+  background-color: #2B388F;
+}
+
+.toggle-sidebar:hover {
+  background-color: var(--tertiary-color);
 }
 
 .main{
@@ -113,6 +215,10 @@ code {
   margin-left: -70px; /* Adjust the margin when menu is collapsed */
 }
 
+.page {
+  padding: 20px;
+}
+
 .cardRow {
     width: fit-content;
     block-size: fit-content;
@@ -124,7 +230,7 @@ code {
 
 .cardRow a {
     text-decoration: none;
-    color: #000;
+    color: var(--text-color-dark);
 }
 
 .card {
@@ -140,11 +246,47 @@ code {
 }
 
 .cardHeader {
-  color: #fff;
-  background-color: #00878E;
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  border-radius: 10px 10px 0px 0px;
   padding: 20px;
 }
 
+.cardHeader h3 {
+  color: var(--text-color-light);
+}
+
 .cardContainer {
+  background-color: var(--tertiary-color);
   padding: 20px;
+}
+
+.priceSearchFormContainer{
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.priceSearchBar{
+  padding: 8px;
+  width: 400px;
+  border: 1px solid black;
+  height: 30px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.priceSearchButton{
+  height: 50px;
+  width: 50px;
+  border-radius: 4px;
+  background-color: var(--accent-color);
+  color: var(--text-color-light);
+  transition: 0.2s;
+}
+
+.priceSearchButton:hover{
+  background-color: var(--accent-color);
+  box-shadow: 5px 5px 5px 0px rgba(186,186,186,0.5);
 }
