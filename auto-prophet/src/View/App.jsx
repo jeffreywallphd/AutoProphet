@@ -4,7 +4,7 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import {
   Routes,
   Route,
@@ -57,11 +57,11 @@ class App extends Component {
                             </header>
                             <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <NavLink to="/">Home</NavLink>
+                                <NavLink to="/learn">Learn</NavLink>
                                 <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/portfolio">Portfolio</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
-                                <NavLink to="/news">Investment News</NavLink>
-                                <NavLink to="/learn">Learn</NavLink>
+                                <NavLink to="/news">Investment News</NavLink>                                
                             </div>
                         </div>
                         <div className="content">

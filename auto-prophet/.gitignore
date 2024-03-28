@@ -16,11 +16,11 @@ package-lock.json
 #configuration
 /config
 
+#database
+*.db
+
 #caching
-Cache/
-!Cache/
-Cache/sec/
-!Cache/sec
+Cache/sec/*/*.json
 
 # misc
 .DS_Store

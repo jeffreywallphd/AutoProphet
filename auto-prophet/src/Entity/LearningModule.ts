@@ -11,6 +11,9 @@ export class LearningModule implements IEntity {
         var id = new Field("id","uuid", null);
         this.fields.set("id", id);
 
+        var key = new Field("key", "string", null);
+        this.fields.set("key", key);
+
         var title = new Field("title", "string", null);
         this.fields.set("title", title);
 

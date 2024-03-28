@@ -1,9 +1,9 @@
 import {LearningModule} from "../../Entity/LearningModule";
 import {LearningPage} from "../../Entity/LearningPage";
 import {IEntity} from "../../Entity/IEntity";
-import {IDataGateway} from "../Data/IDataGateway";
+import {IDataGateway} from "./IDataGateway";
 
-export class LearningModuleGateway implements IDataGateway {
+export class LearningModuleSQLiteDBGateway implements IDataGateway {
     key: string;
 
     connect(): void {
@@ -21,7 +21,7 @@ export class LearningModuleGateway implements IDataGateway {
         throw new Error("Method not implemented.");
     }
 
-    read(entity: IEntity, action: string): Promise<IEntity[]> {
+    async read(entity: IEntity, action: string): Promise<IEntity[]> {      
         //TODO: implement module extraction
         throw new Error("Method not implemented.");
     }

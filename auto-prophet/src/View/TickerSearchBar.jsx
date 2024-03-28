@@ -141,7 +141,7 @@ function TickerSearchBar(props) {
             }`);
 
             const secResults = await secInteractor.get(secRequestObj);
-            window.fsApi.logData(JSON.stringify(secResults));
+            window.terminal.log(JSON.stringify(secResults));
 
             //set the new secData state with the SEC API results
             props.onDataChange({

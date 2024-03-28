@@ -6,12 +6,27 @@
 
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
+const fs = require("fs");
+const ipcMain = require('electron').ipcMain;
 
+//ipcMain.on('select-data', async (event, args) => {
+//  const data = await selectFromDatabase(args["query"], args["inputData"]);
+//  event.sender.send('select-data-response', data);
+//});
+
+ipcMain.handle('select-data', async (event, args) => {
+  const data = await selectFromDatabase(args["query"], args["inputData"]);
+  return data;
+});
+
+// TODO: try to remove nodeIntegration, as it may create security vulnerabilities
 const createWindow = () => {
   win = new BrowserWindow({ 
     show: false,
     webPreferences: {
       preload: path.join(app.getAppPath(), 'src/preload.js'),
+      //contextIsolation: true
       nodeIntegration: true
     } 
   });
@@ -20,7 +35,7 @@ const createWindow = () => {
   win.show();
 
   win.loadFile('./public/index.html');
-}
+};
 
 app.whenReady().then(() => {
   createWindow()
@@ -28,9 +43,44 @@ app.whenReady().then(() => {
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
-})
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
-})
+});
 
+let db;
+
+const initDatabase = async () => {
+  try {
+    db = new sqlite3.Database('./src/Asset/DB/AutoProphet.db');
+    const schema = await fs.promises.readFile('./src/Asset/DB/schema.sql', 'utf-8');
+    await db.exec(schema);
+  } catch (error) {
+    console.error('Error initializing database:', error);
+  }
+};
+
+initDatabase();
+
+const selectFromDatabase = async (query, dataArray) => {
+  return new Promise((resolve, reject) => {
+    const data = [];
+
+    try {
+      //execute the query
+      db.all(query, dataArray, (err, rows) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        // Convert rows to objects
+        rows.forEach((row) => data.push(row));
+        resolve(data);
+      });
+    } catch (err) {
+      reject(err);
+    } 
+  });
+};
