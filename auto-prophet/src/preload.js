@@ -14,5 +14,8 @@ contextBridge.exposeInMainWorld('fs', {
 contextBridge.exposeInMainWorld('terminal', {
     log: (data) => {
         console.log(data);
+    },
+    error: (data) => {
+        console.error(data);
     }
 });

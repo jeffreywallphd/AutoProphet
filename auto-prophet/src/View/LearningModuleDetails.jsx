@@ -11,14 +11,6 @@ import {
 } from "react-router-dom";
 
 export function LearningModuleDetails(props) {
-    const state = {
-        "title": null,
-        "description": null,
-        "estimatedTime": null,
-        "dataCreated": null,
-        "pages": null
-    };
-
     const location = useLocation();
 
     return (
@@ -26,7 +18,7 @@ export function LearningModuleDetails(props) {
             <div>
                 <h2>{location.state.title}</h2>
                 <p>Description: {location.state.description}</p>
-                <p>Estimated Time: {location.state.estimatedTime} minutes</p>
+                <p>Estimated Time: {location.state.timeEstimate} minutes</p>
             </div>
             <div>
                 <NavLink to="/learningModulePage" state={{

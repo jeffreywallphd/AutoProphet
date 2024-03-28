@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS LearningModule(
     keywords TEXT NOT NULL,
     timeEstimate REAL NOT NULL,
     category TEXT NOT NULL,
-    dataCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS LearningModulePage(
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS LearningModulePage(
     title TEXT NOT NULL,
     pageContentUrl TEXT NOT NULL,
     voiceoverUrl TEXT NOT NULL,
-    dataCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (moduleId) REFERENCES LearningModule(id)
 );
 

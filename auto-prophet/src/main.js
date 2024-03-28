@@ -71,15 +71,17 @@ const selectFromDatabase = async (query, dataArray) => {
       //execute the query
       db.all(query, dataArray, (err, rows) => {
         if (err) {
+          console.log(err);
           reject(err);
           return;
         }
 
-        // Convert rows to objects
+        // Convert rows to array of objects
         rows.forEach((row) => data.push(row));
         resolve(data);
       });
     } catch (err) {
+      console.log(err);
       reject(err);
     } 
   });
