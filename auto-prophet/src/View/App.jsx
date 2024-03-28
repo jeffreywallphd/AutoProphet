@@ -22,10 +22,11 @@ import { TimeSeries } from "./TimeSeriesPage";
 import { News } from "./NewsPage";
 import Learn from "./Learn";
 import logo from "../Asset/Image/logo.png";
+import navIcon from "../Asset/Image/navIcon.png"
 //import secCache from "../Cache/sec.json"; //TODO: load this through the new preload.js script
 
 class App extends Component {
-    // --Code for collapsable sidebar menu--
+    // --Code for collapsible menu--
     constructor(props) {
         super(props);
         this.state = {
@@ -39,7 +40,7 @@ class App extends Component {
             menuCollapsed: !prevState.menuCollapsed
         }));
     }
-    // --End: Code for collapsable sidebar menu--
+    // --End: Code for collapsible menu--
 
     render() {
         const { menuCollapsed } = this.state;
@@ -49,8 +50,8 @@ class App extends Component {
                 <div>
                     <div className="main">
                         <div className={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
-                            <button className="toggle-sidebar" onClick={this.toggleMenu}>
-                                {menuCollapsed ? '>>' : '<<'}
+                            <button id="navButton">
+                                <img className="toggle-menu" id="navIcon" onClick={this.toggleMenu} src={menuCollapsed ? navIcon : navIcon} alt="navIcon" />
                             </button>
                             <header className={`header ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <img src={logo} alt="Logo" width="150" />
