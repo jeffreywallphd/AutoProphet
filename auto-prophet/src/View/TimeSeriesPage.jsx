@@ -39,7 +39,7 @@ class TimeSeriesPage extends Component {
 
     //Used to pass data from the search bar to the chart
     handleDataChange = (state) => {
-        window.fsApi.logData(state);
+        window.terminal.log(state);
         this.setState(state);
     }
 
