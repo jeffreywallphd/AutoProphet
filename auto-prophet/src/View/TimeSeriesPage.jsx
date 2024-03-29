@@ -139,7 +139,7 @@ class TimeSeriesPage extends Component {
         return (
                 <div className="page">
                     <h2>Price and Volume Trends</h2>
-                    <div>
+                    <div className="flex">
                         <div>
                             <TickerSearchBar cacheHandler={this.manageTickerCikMapCache} state={this.state} onDataChange={this.handleDataChange}/>
                             {/* Use a ternary operator for concise conditional rendering */}
@@ -151,7 +151,7 @@ class TimeSeriesPage extends Component {
                                 <p>The ticker you entered is not valid. Please choose a valid ticker.</p>
                             ) : (null)}
                         </div>
-                        <div>
+                        <div className="sidePanel">
                             { this.state.secData ? (
                                 <TickerSidePanel state={this.state} />
                             ) : (null)}

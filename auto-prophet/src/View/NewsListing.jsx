@@ -8,7 +8,7 @@ import React from "react";
 
 function NewsListing(props) {
     return (
-        <div>{props.listingData["title"]}</div>
+        <div>{JSON.stringify(props.listingData)}</div>
     );
 }
 
