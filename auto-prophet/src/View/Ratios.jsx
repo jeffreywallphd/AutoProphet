@@ -46,11 +46,14 @@ function getRatioValues(props) {
         grossProfitMargin
     };
 }
-var EPS = getRatioValues.earningsPerShare
-var PER = getRatioValues.priceEarningRatio
-var WCR = getRatioValues.workingCapitalRatio
-var QR = getRatioValues.quickRatio
-var DER = getRatioValues.debtEquityRatio
-var GPM = getRatioValues.grossProfitMargin
+
+var ratioValues = getRatioValues(props)
+
+var EPS = ratioValues.earningsPerShare
+var PER = ratioValues.priceEarningRatio
+var WCR = ratioValues.workingCapitalRatio
+var QR = ratioValues.quickRatio
+var DER = ratioValues.debtEquityRatio
+var GPM = ratioValues.grossProfitMargin
 
 export {EPS, PER, WCR, QR, DER, GPM};
