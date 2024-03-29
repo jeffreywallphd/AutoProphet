@@ -9,7 +9,7 @@ import React from "react";
 function TickerSidePanel(props) {
     return (
         <div>
-            <h2>Side Panel</h2>
+            <h4>{props.state.data.response.results[0]["companyName"]}</h4>
             <p>CIK: {props.state.secData.response.results[0]["cik"]}</p>
             <p>Revenues: {props.state.secData.response.results[0]["data"]["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]}</p>
         </div>
