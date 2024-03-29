@@ -33,6 +33,7 @@ class RatioCalculator {
         var weightedAvgSharesOutstanding = 3;
         var earningsPerShare = (netIncome - preferredDividends) / weightedAvgSharesOutstanding;
         this.EPS = earningsPerShare;
+        // this.data["facts"]["us-gaap"]["EarningsPerShareDiluted"]["units"]["USD/shares"][0]["val"];
     }
 
     //PE Ratio
