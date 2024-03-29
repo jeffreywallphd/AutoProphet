@@ -4,7 +4,10 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-function getRatioValues(props) {
+import React from "react";
+
+
+function Ratios(props) {
     //EPS Ratio
     var netIncome = "1";
     var preferredDividends = "2";

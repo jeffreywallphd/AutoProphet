@@ -5,20 +5,23 @@
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 import React from "react";
-import {EPS, PER, WCR, QR, DER, GPM} from "./Ratios";
+import RatioCalculator from "../Utility/RatioCalculator";
 
 function TickerSidePanel(props) {
+    const ratioCalculator = new RatioCalculator(props.state.secData.response.results[0]["data"]);
+    ratioCalculator.calculateRatios();
+
     return (
         <div>
             <h4>{props.state.data.response.results[0]["companyName"]}</h4>
             <p>CIK: {props.state.secData.response.results[0]["cik"]}</p>
             <p>Revenues: {props.state.secData.response.results[0]["data"]["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]}</p>
-            <p>Earnings Per Share Ratio: {EPS}</p>
-            <p>Price to Earnings Ratio: {PER}</p>
-            <p>Working Capital Ratio: {WCR}</p>
-            <p>Quick Rate: {QR}</p>
-            <p>Debt to Equity Ratio: {DER}</p>
-            <p>Gross Profit Margin: {GPM}</p>
+            <p>EPS: {ratioCalculator.EPS}</p>
+            <p>P/E: {ratioCalculator.PER}</p>
+            <p>Working Capital: {ratioCalculator.WCR}</p>
+            <p>Quick Rate: {ratioCalculator.QR}</p>
+            <p>Debt/Equity Ratio: {ratioCalculator.DER}</p>
+            <p>Gross Profit Margin: {ratioCalculator.GPM}</p>
         </div>
     );
 }
