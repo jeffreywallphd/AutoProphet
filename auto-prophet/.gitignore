@@ -17,10 +17,7 @@ package-lock.json
 /config
 
 #caching
-Cache/
-!Cache/
-Cache/sec/
-!Cache/sec
+sec.json
 
 # misc
 .DS_Store
