@@ -1,4 +1,4 @@
-## Risk Analysis Future Feature Ideas ##
+## Education-Finance Future Feature Ideas ##
 
 Future Idea #1:
 

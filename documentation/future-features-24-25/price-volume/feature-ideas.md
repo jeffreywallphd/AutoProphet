@@ -1,4 +1,4 @@
-## Risk Analysis Future Feature Ideas ##
+## Price / Volume Future Feature Ideas ##
 
 Future Idea #1:
 
