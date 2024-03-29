@@ -3,9 +3,9 @@
 export class CacheManager {
     extractSync(cacheFilePath) {    
         try {
-            if(window.fsApi && window.fsApi.readFileSync) {
-                const filePath = `Cache/${cacheFilePath}`;
-                const contents = window.fsApi.readFileSync(filePath);
+            if(window.fs && window.fs.fs) {
+                const filePath = `src/Cache/${cacheFilePath}`;
+                const contents = window.fs.fs.readFileSync(filePath, 'utf-8');
                 return contents;
             } else {
                 throw Error("The file system is not available for caching");
@@ -18,9 +18,9 @@ export class CacheManager {
 
     cacheSync(cachePath, data) {
         try {
-            if(window.fsApi && window.fsApi.writeFileSync) {
-                const filePath = `Cache/${cachePath}`;
-                return window.fsApi.writeFileSync(filePath, data);
+            if(window.fs && window.fs.fs) {
+                const filePath = `src/Cache/${cachePath}`;
+                return window.fs.fs.writeFileSync(filePath, data);
             } else {
                 throw Error("The file system is not available for caching");
             }
@@ -32,9 +32,9 @@ export class CacheManager {
 
     makeDirectorySync(cachePath, folder) {
         try {
-            if(window.fsApi && window.fsApi.makeDirectorySync) {
-                const folderPath = `Cache/${cachePath}/${folder}`;
-                window.fsApi.makeDirectorySync(folderPath);
+            if(window.fs && window.fs.fs) {
+                const folderPath = `src/Cache/${cachePath}/${folder}`;
+                window.fs.fs.mkdirSync(folderPath);
             } else {
                 throw Error("The filesystem is not yet ready");
             }
