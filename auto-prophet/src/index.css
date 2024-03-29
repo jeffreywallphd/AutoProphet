@@ -75,6 +75,15 @@ code {
   min-height: 500px;
 }
 
+.flex {
+  display: flex;
+}
+
+.sidePanel {
+  
+  flex: 1;
+}
+
 .sidebar { 
   width: 200px; 
   min-height: 500px;
