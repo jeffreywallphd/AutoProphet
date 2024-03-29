@@ -72,9 +72,6 @@ function TickerSearchBar(props) {
         await fetchPriceVolumeData(newState);
         //Get SEC Data
         await fetchSecData(newState);
-
-        //Update the props
-        props.onDataChange(newState);
     }
 
 
@@ -101,21 +98,26 @@ function TickerSearchBar(props) {
             }
         }`);
 
-        const results = await interactor.get(requestObj);
 
-        //Update the state
-        state.initializing = true;
-        state.data = results;
-        state.ticker = props.state.searchRef.current.value;
-        state.error = props.state.error;
-        state.type = type;
-        state.interval = interval;
-        state.isLoading = false;
-        state.priceMin = Math.min(...results.response.results[0]["data"].map(data => data.price));
-        state.priceMax = Math.max(...results.response.results[0]["data"].map(data => data.price));
-        state.maxVolume = Math.max(...results.response.results[0]["data"].map(data => data.volume));
-        state.yAxisStart = dateTimeFormatter(results.response.results[0]["data"][0]);
-        state.yAxisEnd = dateTimeFormatter(results.response.results[0]["data"][-1]);
+            const results = await interactor.get(requestObj);
+            var priceData = results;
+
+            //Update the state
+            state.initializing = true;
+            state.data = priceData;
+            state.ticker = props.state.searchRef.current.value;
+            state.error = props.state.error;
+            state.type = type;
+            state.interval = interval;
+            state.isLoading = false;
+            state.priceMin = Math.min(...priceData.response.results[0]["data"].map(data => data.price));
+            state.priceMax = Math.max(...priceData.response.results[0]["data"].map(data => data.price));
+            state.maxVolume = Math.max(...priceData.response.results[0]["data"].map(data => data.volume));
+            state.yAxisStart = dateTimeFormatter(priceData.response.results[0]["data"][0]);
+            state.yAxisEnd = dateTimeFormatter(priceData.response.results[0]["data"][-1]);
+
+            props.onDataChange(state);
+
     }
 
     //Gets SEC data for a ticker
@@ -170,7 +172,12 @@ function TickerSearchBar(props) {
             //update the state
             state.secData = secResults;
             state.cik = cik;
+
+            //Update the props
+            props.onDataChange(state);
+
         });
+        
     }
 
     //format the date and time for chart
