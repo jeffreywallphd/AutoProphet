@@ -28,12 +28,7 @@ class RatioCalculator {
 
     //EPS Ratio
     private calculateEPS() {
-        var netIncome = 1;
-        var preferredDividends = 2;
-        var weightedAvgSharesOutstanding = 3;
-        var earningsPerShare = (netIncome - preferredDividends) / weightedAvgSharesOutstanding;
-        this.EPS = earningsPerShare;
-        // this.data["facts"]["us-gaap"]["EarningsPerShareDiluted"]["units"]["USD/shares"][0]["val"];
+        this.EPS = this.data["facts"]["us-gaap"]["EarningsPerShareDiluted"]["units"]["USD/shares"][0]["val"];
     }
 
     //PE Ratio
@@ -49,35 +44,34 @@ class RatioCalculator {
     
     //WC Ratio
     private calculateWC() {
-        var currentAssets = 1;
-        var currentLiabilities = 2;
+        var currentAssets = this.data["facts"]["us-gaap"]["EquityMethodInvestmentSummarizedFinancialInformationCurrentAssets"]["units"]["USD"][0]["val"];
+        var currentLiabilities = this.data["facts"]["us-gaap"]["EquityMethodInvestmentSummarizedFinancialInformationCurrentLiabilities"]["units"]["USD"][0]["val"];
         var workingCapitalRatio = currentAssets / currentLiabilities;
         this.WCR = workingCapitalRatio;
     }
 
     //Quick Ratio
     private calculateQR() {
-        var currentAssets = 1;
-        var currentLiabilities = 2;
-        var inventory = 1;
+        var currentAssets = this.data["facts"]["us-gaap"]["EquityMethodInvestmentSummarizedFinancialInformationCurrentAssets"]["units"]["USD"][0]["val"];
+        var currentLiabilities = this.data["facts"]["us-gaap"]["EquityMethodInvestmentSummarizedFinancialInformationCurrentLiabilities"]["units"]["USD"][0]["val"];
+        var inventory = this.data["facts"]["us-gaap"]["InventoryFinishedGoods"]["units"]["USD"][0]["val"];
         var quickRatio = (currentAssets - inventory) / currentLiabilities;
         this.QR = quickRatio;
     }
  
     //Debt-Equity Ratio
     private calculateDER() {
-        var shortTermDebt = 1;
-        var longTermDebt = 2;
-        var otherFixedPayments = 3;
-        var shareholdersEquity = 4;
-        var debtEquityRatio = (shortTermDebt + longTermDebt + otherFixedPayments) / shareholdersEquity;
+        var debtAndLease = this.data["facts"]["us-gaap"]["DebtAndCapitalLeaseObligations"]["units"]["USD"][0]["val"];
+        var otherFixedPayments = 0;
+        var shareholdersEquity = this.data["facts"]["us-gaap"]["NetIncomeLossAvailableToCommonStockholdersBasic"]["units"]["USD"][0]["val"];
+        var debtEquityRatio = (debtAndLease + otherFixedPayments) / shareholdersEquity;
         this.DER = debtEquityRatio;
     }
     
     //Gross Profit Margin
     private calculateGPM() {
-        var cOGS = 1
-        var revenue = 2
+        var cOGS = this.data["facts"]["us-gaap"]["CostOfGoodsAndServicesSold"]["units"]["USD"][0]["val"];
+        var revenue = this.data["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]
         var grossProfitMargin = (revenue - cOGS) / revenue;
         this.GPM = grossProfitMargin;
     }

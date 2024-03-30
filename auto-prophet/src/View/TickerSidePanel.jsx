@@ -16,7 +16,7 @@ function TickerSidePanel(props) {
             <h4>{props.state.secData.response.results[0]["data"]["entityName"]}</h4>
             <p>CIK: {props.state.secData.response.results[0]["cik"]}</p>
             <p>Revenues: {props.state.secData.response.results[0]["data"]["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]}</p>
-            <p>EPS: {ratioCalculator.EPS}</p>
+            <p>Diluted Earnings Per Share: {ratioCalculator.EPS}</p>
             <p>P/E: {ratioCalculator.PER}</p>
             <p>Working Capital: {ratioCalculator.WCR}</p>
             <p>Quick Rate: {ratioCalculator.QR}</p>
