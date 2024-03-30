@@ -37,41 +37,69 @@ class RatioCalculator {
             this.calculateEPS();
         }
 
-        var sharePrice = this.data["facts"]["us-gaap"]["SharePrice"]["units"]["USD/shares"][0]["val"];
+        // We may need to get share price from price/volume data. The SEC reports don't consistently have this value across companies.
+        //var sharePrice = this.data["facts"]["us-gaap"]["SharePrice"]["units"]["USD/shares"][0]["val"];
+        var sharePrice = 13.49;
         var priceEarningRatio = sharePrice / this.EPS;
         this.PER = priceEarningRatio;
     }
     
     //WC Ratio
     private calculateWC() {
-        var currentAssets = this.data["facts"]["us-gaap"]["EquityMethodInvestmentSummarizedFinancialInformationCurrentAssets"]["units"]["USD"][0]["val"];
-        var currentLiabilities = this.data["facts"]["us-gaap"]["EquityMethodInvestmentSummarizedFinancialInformationCurrentLiabilities"]["units"]["USD"][0]["val"];
+        var currentAssets = this.data["facts"]["us-gaap"]["AssetsCurrent"]["units"]["USD"][0]["val"];
+        var currentLiabilities = this.data["facts"]["us-gaap"]["LiabilitiesCurrent"]["units"]["USD"][0]["val"];
         var workingCapitalRatio = currentAssets / currentLiabilities;
         this.WCR = workingCapitalRatio;
     }
 
     //Quick Ratio
     private calculateQR() {
-        var currentAssets = this.data["facts"]["us-gaap"]["EquityMethodInvestmentSummarizedFinancialInformationCurrentAssets"]["units"]["USD"][0]["val"];
-        var currentLiabilities = this.data["facts"]["us-gaap"]["EquityMethodInvestmentSummarizedFinancialInformationCurrentLiabilities"]["units"]["USD"][0]["val"];
-        var inventory = this.data["facts"]["us-gaap"]["InventoryFinishedGoods"]["units"]["USD"][0]["val"];
-        var quickRatio = (currentAssets - inventory) / currentLiabilities;
+        var quickAssets;
+
+        // Additive method
+        //if(this.data["facts"]["us-gaap"].hasOwnProperty("CashCashEquivalentsAndShortTermInvestments") && this.data["facts"]["us-gaap"].hasOwnProperty("AccountsReceivableNetCurrent")) {
+        
+        // AAPL didn't have this even though F and GOOG did. We may need to explore other possibilities
+        //const cashAndEquivalents = this.data["facts"]["us-gaap"]["CashCashEquivalentsAndShortTermInvestments"]["units"]["USD"][0]["val"];
+        const cashAndEquivalents = 0;
+        
+        // B didn't have this even though AAPL F and GOOG did. We may need to explore other possibilities
+        //const accountsReceivable = this.data["facts"]["us-gaap"]["AccountsReceivableNetCurrent"]["units"]["USD"][0]["val"];
+        const accountsReceivable = 0;
+        //}
+        quickAssets = cashAndEquivalents + accountsReceivable;
+
+        // Subtractive method
+        var currentAssets = this.data["facts"]["us-gaap"]["AssetsCurrent"]["units"]["USD"][0]["val"];
+        var currentLiabilities = this.data["facts"]["us-gaap"]["LiabilitiesCurrent"]["units"]["USD"][0]["val"];
+        
+        // GOOG didn't have InvetoryFinishedGoods. May not be useful across companies.
+        //var inventory = this.data["facts"]["us-gaap"]["InventoryFinishedGoods"]["units"]["USD"][0]["val"];
+        //quickAssets = currentAssets - inventory;
+
+        var quickRatio = quickAssets / currentLiabilities;
         this.QR = quickRatio;
     }
  
     //Debt-Equity Ratio
     private calculateDER() {
-        var debtAndLease = this.data["facts"]["us-gaap"]["DebtAndCapitalLeaseObligations"]["units"]["USD"][0]["val"];
+        // GOOG didn't have this key. We may need to explore other possibilities 
+        //var debtAndLease = this.data["facts"]["us-gaap"]["DebtAndCapitalLeaseObligations"]["units"]["USD"][0]["val"];
+        var debtAndLease = 0;
         var otherFixedPayments = 0;
-        var shareholdersEquity = this.data["facts"]["us-gaap"]["NetIncomeLossAvailableToCommonStockholdersBasic"]["units"]["USD"][0]["val"];
+        //var shareholdersEquity = this.data["facts"]["us-gaap"]["NetIncomeLossAvailableToCommonStockholdersBasic"]["units"]["USD"][-1]["val"];
+        var shareholdersEquity = this.data["facts"]["us-gaap"]["StockholdersEquity"]["units"]["USD"][0]["val"]
         var debtEquityRatio = (debtAndLease + otherFixedPayments) / shareholdersEquity;
         this.DER = debtEquityRatio;
     }
     
     //Gross Profit Margin
     private calculateGPM() {
-        var cOGS = this.data["facts"]["us-gaap"]["CostOfGoodsAndServicesSold"]["units"]["USD"][0]["val"];
-        var revenue = this.data["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]
+        // GOOG didn't have cOGS. We may need to explore other possibilities
+        //var cOGS = this.data["facts"]["us-gaap"]["CostOfGoodsAndServicesSold"]["units"]["USD"][0]["val"];
+        var cOGS = 0;
+        // B didn't have revenues even though F GOOG AAPL did. We may need to find other possibilities.
+        //var revenue = this.data["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]
         var grossProfitMargin = (revenue - cOGS) / revenue;
         this.GPM = grossProfitMargin;
     }
