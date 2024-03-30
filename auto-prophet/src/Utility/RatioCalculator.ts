@@ -100,6 +100,7 @@ class RatioCalculator {
         var cOGS = 0;
         // B didn't have revenues even though F GOOG AAPL did. We may need to find other possibilities.
         //var revenue = this.data["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]
+        var revenue = 0;
         var grossProfitMargin = (revenue - cOGS) / revenue;
         this.GPM = grossProfitMargin;
     }
