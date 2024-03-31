@@ -15,19 +15,19 @@ function TickerSearchBar(props) {
     //Variables to reset the chart view
     var type;
     var interval;
-    var priceData;
+    
 
     //TODO: implement error handling
+
     //When fetching data for a new ticker fromt he search bar, get 1D data
     const fetch1DData = async () => {
         type = "intraday";
         interval = "1D";
-        fetchData();
+        fetchAllData();
     }
 
-
-    //Gets ticker data
-    const fetchData = async () => {
+    //Gets all data for a ticker and updates the props with the data
+    const fetchAllData = async () => {
         //Take away previous data
         props.onDataChange({
             initializing: false,
@@ -43,11 +43,40 @@ function TickerSearchBar(props) {
             isLoading: true,
             priceMin: null,
             priceMax: null,
-            volumeMax: null,
+            maxVolume: null,
             yAxisStart: null,
             yAxisEnd: null
         });
 
+        //Initialize the new state
+        var newState = {
+            initializing: null,
+            data: null,
+            secData: null,
+            error: null,
+            ticker: null,
+            cik: null,
+            type: null,
+            interval: null,
+            securitiesList: props.state.securitiesList,
+            searchRef: props.state.searchRef,
+            isLoading: null,
+            minPrice: null,
+            maxPrice: null,
+            maxVolume: null,
+            yAxisStart: null,
+            yAxisEnd: null
+        };
+
+        //Get Price Data
+        await fetchPriceVolumeData(newState);
+        //Get SEC Data
+        await fetchSecData(newState);
+    }
+
+
+    //Gets price and volume data for a ticker
+    const fetchPriceVolumeData = async (state) => {
         //get company name from securities list data
         var companyName = "";
         props.state.securitiesList.find((element) => {
@@ -69,36 +98,33 @@ function TickerSearchBar(props) {
             }
         }`);
 
-        const results = await interactor.get(requestObj);
-        priceData = results;
 
-        //set the new data state with the updated search results
-        props.onDataChange({
-            initializing: true,
-            data: results,
-            secData: null,
-            ticker: props.state.searchRef.current.value,
-            cik: null,
-            error: props.state.error,
-            type: type,
-            interval: interval,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
-            isLoading: false,
-            priceMin: Math.min(...results.response.results[0]["data"].map(data => data.price)),
-            priceMax: Math.max(...results.response.results[0]["data"].map(data => data.price)),
-            volumeMax: Math.max(...results.response.results[0]["data"].map(data => data.volume)),
-            yAxisStart: dateTimeFormatter(results.response.results[0]["data"][0]),
-            yAxisEnd: dateTimeFormatter(results.response.results[0]["data"][-1])
-        });
+            const results = await interactor.get(requestObj);
+            var priceData = results;
 
-        await fetchSecData();
+            //Update the state
+            state.initializing = true;
+            state.data = priceData;
+            state.ticker = props.state.searchRef.current.value;
+            state.error = props.state.error;
+            state.type = type;
+            state.interval = interval;
+            state.isLoading = false;
+            state.priceMin = Math.min(...priceData.response.results[0]["data"].map(data => data.price));
+            state.priceMax = Math.max(...priceData.response.results[0]["data"].map(data => data.price));
+            state.maxVolume = Math.max(...priceData.response.results[0]["data"].map(data => data.volume));
+            state.yAxisStart = dateTimeFormatter(priceData.response.results[0]["data"][0]);
+            state.yAxisEnd = dateTimeFormatter(priceData.response.results[0]["data"][-1]);
+
+            props.onDataChange(state);
+
     }
 
-    const fetchSecData = async () => {
+    //Gets SEC data for a ticker
+    const fetchSecData = async (state) => {
         //TODO: consider whether the cachManager needs to be called here 
         //or if it could be called on cache extraction error
-
+        
         //check to make sure ticker:CIK map cache exists and is up-to-date
         await props.cacheHandler(props.state.searchRef.current.value).then(async () => {
             //add a momentary pause to allow cache to create on initial startup
@@ -143,26 +169,15 @@ function TickerSearchBar(props) {
             const secResults = await secInteractor.get(secRequestObj);
             window.terminal.log(JSON.stringify(secResults));
 
-            //set the new secData state with the SEC API results
-            props.onDataChange({
-                initializing: true,
-                data: priceData,
-                secData: secResults,
-                ticker: props.state.searchRef.current.value,
-                cik: cik,
-                error: props.state.error,
-                type: type,
-                interval: interval,
-                securitiesList: props.state.securitiesList,
-                searchRef: props.state.searchRef,
-                isLoading: false,
-                priceMin: props.state.priceMin,
-                priceMax: props.state.priceMax,
-                volumeMax: props.state.volumeMax,
-                yAxisStart: props.state.yAxisState,
-                yAxisEnd: props.state.yAxisEnd
-            });
+            //update the state
+            state.secData = secResults;
+            state.cik = cik;
+
+            //Update the props
+            props.onDataChange(state);
+
         });
+        
     }
 
     //format the date and time for chart
@@ -187,7 +202,7 @@ function TickerSearchBar(props) {
             type = props.state.type;
             interval = props.state.interval;
             
-            fetchData();
+            fetchAllData();
         }
     }, [props.state.interval]);
 
