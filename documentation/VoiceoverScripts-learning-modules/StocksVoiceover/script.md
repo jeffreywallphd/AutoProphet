@@ -1,3 +1,5 @@
+#Voiceover Script for Stock Learning Module
+
 ##Slide 4
  “So, what exactly is a stock? A stock represents ownership in a company. When you own stocks, or shares, within a company, you are essentially claiming a portion of their assets and earnings. By doing so, you become a shareholder within that company. The number of shares you own determines your ownership stake.”
 
