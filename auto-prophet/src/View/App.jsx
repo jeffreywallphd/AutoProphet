@@ -16,7 +16,7 @@ import {
 
 import Home from "./Home";
 import Portfolio from "./Portfolio";
-import Analysis from "./Analysis";
+import { Analysis } from "./Analysis";
 import BuyReport from "./BuyReport";
 //import TimeSeriesPage from "./TimeSeriesPage";
 import { TimeSeries } from "./TimeSeriesPage";
