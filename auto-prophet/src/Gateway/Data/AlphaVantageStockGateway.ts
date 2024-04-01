@@ -1,7 +1,6 @@
 import {StockRequest} from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
 import {IDataGateway} from "../Data/IDataGateway";
-import { time } from "console";
 
 export class AlphaVantageStockGateway implements IDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";
@@ -13,14 +12,16 @@ export class AlphaVantageStockGateway implements IDataGateway {
 
     connect(): void {
         //no connection needed for this data gateway
+        throw new Error("This gateway requries no special connection");
     }
 
     disconnect(): void {
         //no disconnection needed for this data gateway
+        throw new Error("This gateway requries no special connection, so no disconnection is necessary");
     }
 
     create(entity: IEntity, action: string): Promise<Boolean> {
-        throw new Error("Method not implemented.");
+        throw new Error("This gateway does not have the ability to post content");
     }
 
     async read(entity: IEntity, action: string): Promise<Array<IEntity>> { 
@@ -150,10 +151,10 @@ export class AlphaVantageStockGateway implements IDataGateway {
     }
 
     update(entity: IEntity, action: string): Promise<number> {
-        throw new Error("Method not implemented.");
+        throw new Error("This gateway does not have the ability to update content");
     }
 
     delete(entity: IEntity, action: string): Promise<number> {
-        throw new Error("Method not implemented.");
-    }    
+        throw new Error("This gateway does not have the ability to delete content");
+    }   
 }

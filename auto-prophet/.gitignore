@@ -16,6 +16,14 @@ package-lock.json
 #configuration
 /config
 
+#database
+*.db
+
+#caching
+Cache/sec
+Cache/sec/*/*.json
+sec.json
+
 # misc
 .DS_Store
 .env.local

@@ -11,6 +11,7 @@ export class StockGatewayFactory {
             const key = await extractor.extract("ALPHAVANTAGE_API_KEY");
             return new AlphaVantageStockGateway(key);
         } else {
+            //default will be AlphaVantage for now
             const key = await extractor.extract("ALPHAVANTAGE_API_KEY");
             return new AlphaVantageStockGateway(key);
         }

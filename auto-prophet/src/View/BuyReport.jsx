@@ -37,7 +37,6 @@ class BuyReport extends Component {
     }
 
     handleSubmit(event){
-        alert('The following values were submitted: ' + this.state.cik + " " + this.state.form + " " + this.state.start + " " + this.state.end);
         event.preventDefault();
     }
     render() {
