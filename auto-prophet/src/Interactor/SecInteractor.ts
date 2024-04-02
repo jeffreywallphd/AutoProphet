@@ -2,9 +2,9 @@ import {IInputBoundary} from "./IInputBoundary";
 import {IRequestModel} from "../Gateway/Request/IRequestModel";
 import {IResponseModel} from "../Gateway/Response/IResponseModel";
 import {JSONResponse} from "../Gateway/Response/JSONResponse";
-import {IDataGateway} from "../Gateway/Data/IDataGateway";
+import {IKeylessDataGateway} from "../Gateway/Data/IKeylessDataGateway";
 import {SecRequest} from "../Entity/SecRequest";
-import {ReportGatewayFactory} from "@DataGateway/ReportGatewayFactory";
+import {SecReportGatewayFactory} from "@DataGateway/SecReportGatewayFactory";
 import dep from '../../config/default.json';
 
 export class SecInteractor implements IInputBoundary {
@@ -20,9 +20,9 @@ export class SecInteractor implements IInputBoundary {
         var sec = new SecRequest();
         sec.fillWithRequest(requestModel);
 
-         //instantiate the correct API gateway
-        const secGatewayFactory = new ReportGatewayFactory();
-        var secGateway: IDataGateway = await secGatewayFactory.createGateway(dep);
+        //instantiate the correct API gateway
+        const secGatewayFactory = new SecReportGatewayFactory();
+        var secGateway: IKeylessDataGateway = await secGatewayFactory.createGateway(dep);
 
         //currently, we do not use an API key for the SEC API
         //add the API key to the sec request object if ever needed

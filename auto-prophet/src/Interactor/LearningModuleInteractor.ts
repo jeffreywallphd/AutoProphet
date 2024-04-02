@@ -23,9 +23,6 @@ export class LearningModuleInteractor implements IInputBoundary {
 
         //instantiate a LearningModuleGateway API gateway
         const learningModuleGateway: IDataGateway = new LearningModuleSQLiteDBGateway();
-
-        //add the API key to the news request object
-        learningModule.setFieldValue("key", learningModuleGateway.key);
         
         //search for the requested information via the API gateway
         var results = await learningModuleGateway.read(learningModule, requestModel.request.request.learningModule.action);
