@@ -1,7 +1,7 @@
 import {IEntity} from "../../Entity/IEntity";
+import { IDataGateway } from "./IDataGateway";
 
-export interface IDataGateway {
-    key?: string;
+export interface IKeylessDataGateway extends IDataGateway {
     connect(): void;
     disconnect(): void;
     create(entity: IEntity, action: string): Promise<Boolean>;
