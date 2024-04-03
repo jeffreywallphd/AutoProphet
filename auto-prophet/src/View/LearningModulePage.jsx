@@ -8,7 +8,9 @@ import React, { Component } from "react";
 import {
     NavLink,
     useLocation
-  } from "react-router-dom";
+} from "react-router-dom";
+
+import { SlideshowWindow } from "./LearningModuleSlideshows/SlideshowWindow";
 
 export function LearningModulePage(props) {
     const state = {
@@ -19,21 +21,28 @@ export function LearningModulePage(props) {
 
     const location = useLocation();
 
+    const currentPageIndex = location.state.currentPageIndex;
+    const nextPageIndex = location.state.currentPageIndex + 1;
+
     return (
         <div className="page">
-            <div>
-                <h2>{location.state.title}</h2>
-            </div>
-            <div>
-                <NavLink to="/learningModulePage" state={{
-                    "title": "Dividend Example 2",
-                    "pages": null,
-                    "currentPage": 2,
-                }}>Next Page</NavLink>
-            </div>
-            <div>Page {location.state.currentPage}</div>
+            <SlideshowWindow pages={location.state.pages} currentPageIndex={currentPageIndex} />
+            {
+                nextPageIndex < location.state.pages.length ? 
+                (
+                    <div>
+                        <NavLink to="/learningModulePage" state={{
+                            "title": location.state.pages[nextPageIndex],
+                            "pages": location.state.pages,
+                            "currentPageIndex": nextPageIndex,
+                        }}>Next Page</NavLink>
+                    </div>
+                ) :
+                (<div></div>)
+            }   
+            <div>Page {currentPageIndex + 1}</div>
         </div>
-        );
+    );
 }
 
 export default LearningModulePage;

@@ -153,6 +153,22 @@ code {
   padding: 20px;
 }
 
+.slideshowWindow {
+  height: 400px;
+  width: auto;
+  margin: 30px;
+  padding: 20px;
+  border: 25px solid var(--primary-color);
+  background-color: var(#D9D9D9);
+}
+
+.slideshowWindow h2 {
+  font-size: 36px;
+  color: var(--secondary-color);
+  text-align: center;
+  border-bottom: 3px solid var(--tertiary-color);
+}
+
 .cardRow {
     width: fit-content;
     block-size: fit-content;
