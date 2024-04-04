@@ -20,8 +20,6 @@ package-lock.json
 *.db
 
 #caching
-Cache/sec
-Cache/sec/*/*.json
 sec.json
 
 # misc

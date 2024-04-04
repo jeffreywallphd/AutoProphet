@@ -54,7 +54,6 @@ export function LearningModuleDetails(props) {
                     (
                         <div>
                             <NavLink to="/learningModulePage" state={{
-                                "title": state.pages[0].title,
                                 "pages": state.pages,
                                 "currentPageIndex": 0,
                             }}>Start Module</NavLink>

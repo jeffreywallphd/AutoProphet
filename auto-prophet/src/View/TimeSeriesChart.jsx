@@ -4,7 +4,7 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 function TimeSeriesChart(props) {

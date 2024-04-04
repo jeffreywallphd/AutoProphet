@@ -151,6 +151,7 @@ code {
 
 .page {
   padding: 20px;
+  background-color: var(--background-color);
 }
 
 .slideshowWindow {
@@ -159,14 +160,60 @@ code {
   margin: 30px;
   padding: 20px;
   border: 25px solid var(--primary-color);
-  background-color: var(#D9D9D9);
+  background-color: var(--background-color);
 }
 
-.slideshowWindow h2 {
+.slide {
+  height: 100%;
+  width: auto;
+  font-size: 28px;
+  background-color: var(--background-color);
+}
+
+.slide div.titleContainer {
+  height: 300px;
+  width: auto;
+  text-align: center;
+  vertical-align: center;
+}
+
+.slide div.contentContainer {
+  height: 300px;
+  width: auto;
+}
+
+.slide div.audioBar {
+  height: 20px;
+  width: auto;
+  text-align: right;
+}
+
+.slide p {
+  background-color: var(--background-color);
+}
+
+.slide h1 {
+  font-size: 40px;
+  color: var(--secondary-color);
+  border: none;
+}
+
+.slide h2 {
   font-size: 36px;
   color: var(--secondary-color);
   text-align: center;
   border-bottom: 3px solid var(--tertiary-color);
+}
+
+.slide h2.slideSubTitle {
+  font-size: 36px;
+  color: var(--secondary-color);
+  border: none;
+}
+
+.slide ul, .slide ul li {
+  background-color: var(--background-color);
+  margin-bottom: 5px;
 }
 
 .cardRow {
