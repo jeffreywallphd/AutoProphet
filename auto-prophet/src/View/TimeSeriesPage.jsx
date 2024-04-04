@@ -113,6 +113,7 @@ class TimeSeriesPage extends Component {
         });
 
         // TODO: consider whether there is a more computationally efficient way to do this
+        // TODO: move from file cache to the SQLite DB for more efficient querying
         // Cache the parsed data into the created folders
         for(var cacheFolder in secData.data) {
             var folderData = {lastCached: date.toLocaleDateString(), data: {}}
