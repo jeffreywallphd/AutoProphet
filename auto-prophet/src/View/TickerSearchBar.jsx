@@ -20,26 +20,29 @@ function TickerSearchBar(props) {
     //TODO: implement error handling
 
     //When fetching data for a new ticker fromt he search bar, get 1D data
-    const fetch1DData = async () => {
+    const fetch1DData = async (state) => {
         type = "intraday";
         interval = "1D";
-        fetchAllData();
+        state.type = type;
+        state.interval = interval;
+        console.log(state);
+        fetchAllData(state);
     }
 
     //Gets all data for a ticker and updates the props with the data
-    const fetchAllData = async () => {
+    const fetchAllData = async (state) => {
         //Take away previous data
         props.onDataChange({
             initializing: false,
-            error: props.state.error,
+            error: state.error,
             data: null,
             secData: null,
             ticker: null,
             cik: null,
-            type: props.state.type,
-            interval: props.state.interval,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
+            type: state.type,
+            interval: state.interval,
+            securitiesList: state.securitiesList,
+            searchRef: state.searchRef,
             isLoading: true,
             priceMin: null,
             priceMax: null,
@@ -58,8 +61,8 @@ function TickerSearchBar(props) {
             cik: null,
             type: null,
             interval: null,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
+            securitiesList: state.securitiesList,
+            searchRef: state.searchRef,
             isLoading: null,
             minPrice: null,
             maxPrice: null,
@@ -79,8 +82,8 @@ function TickerSearchBar(props) {
     const fetchPriceVolumeData = async (state) => {
         //get company name from securities list data
         var companyName = "";
-        props.state.securitiesList.find((element) => {
-            if(element.ticker === props.state.searchRef.current.value) {
+        state.securitiesList.find((element) => {
+            if(element.ticker === state.searchRef.current.value) {
                 companyName = element.companyName;
             }
         });
@@ -91,7 +94,7 @@ function TickerSearchBar(props) {
             "request": { 
                 "stock": {
                     "action": "${type}",
-                    "ticker": "${props.state.searchRef.current.value}",
+                    "ticker": "${state.searchRef.current.value}",
                     "companyName": "${companyName}",
                     "interval": "${interval}"
                 }
@@ -173,11 +176,10 @@ function TickerSearchBar(props) {
             state.secData = secResults;
             state.cik = cik;
 
-            //Update the props
-            props.onDataChange(state);
-
         });
-        
+
+        //Update the props
+        props.onDataChange(state);
     }
 
     //format the date and time for chart
