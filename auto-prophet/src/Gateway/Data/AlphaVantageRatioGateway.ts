@@ -1,4 +1,3 @@
-import {StockRequest} from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
 import {IDataGateway} from "../Data/IDataGateway";
 
@@ -26,9 +25,7 @@ export class AlphaVantageRatioGateway implements IDataGateway {
 
     async read(entity: IEntity, action: string): Promise<Array<IEntity>> { 
         var url;
-        if (action === "lookup") {
-            url = this.getSymbolLookupUrl(entity);    
-        } else if (action === "income") {
+        if(action === "income") {
             url = this.getIncomeUrl(entity);
         } else if (action === "overview"){
             url = this.getOverviewUrl(entity);
@@ -46,17 +43,14 @@ export class AlphaVantageRatioGateway implements IDataGateway {
         }
 
         var entities;
-        if (action === "lookup") {
-            entities = this.formatLookupResponse(data);
+
+        if(action === "overview") {
+            entities = this.formatOverviewResponse(data, entity);
         } else {
-            entities = this.formatDataResponse(data, entity, action);
+            entities = this.formatReportResponse(data, entity);
         }
-
+        
         return entities;
-    }
-
-    private getSymbolLookupUrl(entity: IEntity) {
-        return `${this.baseURL}?function=SYMBOL_SEARCH&keywords=${entity.getFieldValue("keyword")}&apikey=${entity.getFieldValue("key")}&datatype=json`;
     }
 
     private getOverviewUrl(entity: IEntity) {
@@ -71,51 +65,29 @@ export class AlphaVantageRatioGateway implements IDataGateway {
         return `${this.baseURL}?function=BALANCE_SHEET&symbol=${entity.getFieldValue("ticker")}&apikey=${entity.getFieldValue("key")}&datatype=json`;
     }
 
-    private formatDataResponse(data: { [key: string]: any }, entity:IEntity, action:string) {
+    private formatReportResponse(data: { [key: string]: any }, entity:IEntity) {
         var array: Array<IEntity> = [];
         
-        console.log(data);
+        const annualReports = data["annualReports"];
 
-        var timeSeries;
-        if(action === "interday") { 
-            timeSeries = data["Time Series (Daily)"];
-        } else {
-            timeSeries = data["Time Series (1min)"];    
-        }
-        
         const formattedData: Array<{ [key: string]: any }> = [];
+        for(var report of annualReports) {
+            formattedData.push(report);
+        }
 
-        entity.setFieldValue("data", formattedData.reverse());
+        entity.setFieldValue("data", formattedData);
 
         array.push(entity);
 
         return array;
     }
 
-    private createDataItem(date: Date, timeSeries: any) {
-        const item = {
-            date: date.toLocaleDateString(),
-            time: date.toLocaleTimeString(),
-            price: timeSeries["4. close"],
-            volume: timeSeries["5. volume"],
-        };
-
-        return item;
-    }
-
-    private formatLookupResponse(data: { [key: string]: any }) {
+    private formatOverviewResponse(data: { [key: string]: any }, entity:IEntity) {
         var array: Array<IEntity> = [];
-        
-        const bestMatches = data["bestMatches"];
 
-        for (const match of bestMatches) {           
-            var entity = new StockRequest();
-            
-            entity.setFieldValue("ticker", match["1. symbol"]);
-            entity.setFieldValue("companyName", match["2. name"]);
-            
-            array.push(entity);
-        }
+        entity.setFieldValue("data", data);
+
+        array.push(entity);
 
         return array
     }
