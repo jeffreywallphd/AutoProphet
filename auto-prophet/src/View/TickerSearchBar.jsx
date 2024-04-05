@@ -21,11 +21,12 @@ function TickerSearchBar(props) {
 
     //When fetching data for a new ticker fromt he search bar, get 1D data
     const fetch1DData = async (state) => {
+        console.log(state);
         type = "intraday";
         interval = "1D";
         state.type = type;
         state.interval = interval;
-        console.log(state);
+        
         fetchAllData(state);
     }
 
@@ -83,7 +84,7 @@ function TickerSearchBar(props) {
         //get company name from securities list data
         var companyName = "";
         state.securitiesList.find((element) => {
-            if(element.ticker === state.searchRef.current.value) {
+            if(element.ticker === state.searchRef) {
                 companyName = element.companyName;
             }
         });
@@ -94,7 +95,7 @@ function TickerSearchBar(props) {
             "request": { 
                 "stock": {
                     "action": "${type}",
-                    "ticker": "${state.searchRef.current.value}",
+                    "ticker": "${state.searchRef}",
                     "companyName": "${companyName}",
                     "interval": "${interval}"
                 }
@@ -108,8 +109,8 @@ function TickerSearchBar(props) {
             //Update the state
             state.initializing = true;
             state.data = priceData;
-            state.ticker = props.state.searchRef.current.value;
-            state.error = props.state.error;
+            state.ticker = state.searchRef;
+            state.error = state.error;
             state.type = type;
             state.interval = interval;
             state.isLoading = false;

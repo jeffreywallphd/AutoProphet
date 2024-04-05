@@ -18,19 +18,20 @@ function SymbolSearchBar(props) {
     //Checks the keyUp event to determine if a key was hit or a datalist option was selected
     const checkInput = async (e) => {
         //Unidentified means datalist option was selected, otherwise a key was hit
-        if (e.key == "Unidentified" || e.key == "Enter"){
+        if (e.key == "Unidentified"){
             //Fetch symbol again to make sure props are caught up
             await fetchSymbol();
+            console.log(state);
 
-            //Wait for the symbol fetch to complete
-            while(searching) {
-                //const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-                console.log("delay");
-                //await delay(1000);
-            }
+            // //Wait for the symbol fetch to complete
+            // while(searching) {
+            //     //const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+            //     console.log("delay");
+            //     //await delay(1000);
+            // }
 
             //Fetch data and pass the securitiesList
-            await props.fetchData(state);
+            //await props.fetchData(state);
         } else {
             await fetchSymbol();
         }
@@ -87,7 +88,7 @@ function SymbolSearchBar(props) {
                     type: props.state.type,
                     interval: props.state.interval,
                     securitiesList: searchData.response.results,
-                    searchRef: searchRef,
+                    searchRef: searchRef.current.value,
                     isLoading: false,
                     priceMin: props.state.priceMin,
                     priceMax: props.state.priceMax,
@@ -95,6 +96,8 @@ function SymbolSearchBar(props) {
                     yAxisStart: props.state.yAxisStart,
                     yAxisEnd: props.state.yAxisEnd
                 };
+
+                //console.log(state);
             } finally {
                 setSearching(false);
             }
@@ -106,6 +109,7 @@ function SymbolSearchBar(props) {
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
                     e.preventDefault();
+                    await fetchSymbol();
                     props.fetchData(state);
                 }}>
                     <input className="priceSearchBar" type="text" list="tickers" ref={searchRef}
