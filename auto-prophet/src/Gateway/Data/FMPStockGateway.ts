@@ -55,29 +55,40 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
   }
 
   private getSymbolLookupUrl(entity: IEntity) {
-    return `<span class="math-inline">\{this\.baseURL\}search?query\=</span>{entity.getFieldValue("keyword")}&apikey=${this.apiKey}`;
+    return `${this.baseURL}search?query=${entity.getFieldValue("keyword")}&apikey=${this.apiKey}`;
   }
 
   private getIntradayUrl(entity: IEntity) {
-    return `<span class="math-inline">\{this\.baseURL\}historical\-price\-full/</span>{entity.getFieldValue("ticker")}?interval=1min&apikey=${this.apiKey}`;
+    return `${this.baseURL}historical-chart/1min/${entity.getFieldValue("ticker")}?apikey=${this.apiKey}`;
   }
 
   private getInterdayUrl(entity: IEntity) {
-    const intervalMap: { [key: string]: string } = { 
-        "5D": "5day",
-        "1M": "1month",
-        "6M": "6month",
-        "1Y": "1year",
-        "5Y": "5year",
+    const currentDate = new Date();
+    const previousDate = new Date();
+    const intervalMap: { [key: string]: any } = { 
+        "5D": {from: previousDate.setDate(currentDate.getDate() - 5), to: currentDate},
+        "1M": {from: previousDate.setDate(currentDate.getDate() - 30), to: currentDate},
+        "6M": {from: previousDate.setDate(currentDate.getDate() - 180), to: currentDate},
+        "1Y": {from: previousDate.setDate(currentDate.getDate() - 365), to: currentDate},
+        "5Y": {from: previousDate.setDate(currentDate.getDate() - 2190), to: currentDate},
+        "Max": {from: null, to: null}
     };
+
     const interval = intervalMap[entity.getFieldValue("interval")];
 
     if (!interval) {
         throw new Error("Invalid interval specified");
     }
 
-    return `${this.baseURL}historical-price-full/${entity.getFieldValue("ticker")}?seriesType=${interval}&apikey=${this.apiKey}`;
-}
+    var fromToQuery = "";
+
+    if(interval["from"] !== null && interval["to"] !== null) {
+      fromToQuery = `from=${interval["from"]}&to=${interval["to"]}&`;
+    }
+
+    return `${this.baseURL}historical-price-full/${entity.getFieldValue("ticker")}?${fromToQuery}apikey=${this.apiKey}`;
+  }
+
   private formatDataResponse(data: any[], entity: IEntity, action: string) {
     var array: Array<IEntity> = [];
 
