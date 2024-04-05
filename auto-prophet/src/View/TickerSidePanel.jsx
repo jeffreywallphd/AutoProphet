@@ -7,11 +7,18 @@
 import React from "react";
 
 function TickerSidePanel(props) {
+    // Fetch latest data
+    const dataLen = props.state.data.response.results[0]["data"].length;
+    const todayData = props.state.data.response.results[0]["data"][dataLen - 1];
+
     return (
         <div>
             <h4>{props.state.secData.response.results[0]["data"]["entityName"]}</h4>
             <p>CIK: {props.state.secData.response.results[0]["cik"]}</p>
             <p>Revenues: {props.state.secData.response.results[0]["data"]["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]}</p>
+            <p>Price: {todayData.price}</p>
+            <p>Volume: {todayData.volume}</p>
+            <p>(as of {todayData.date} {todayData.time})</p>
         </div>
     );
 }
