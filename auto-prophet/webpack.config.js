@@ -41,6 +41,10 @@ const config = {
                 use: [stylesHandler,'css-loader'],
             },
             {
+                test: /\.(mp3|wav|ogg)$/, 
+                use: 'file-loader',
+            },
+            {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },

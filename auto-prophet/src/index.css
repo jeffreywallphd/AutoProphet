@@ -45,6 +45,10 @@ h3 {
   color: var(--text-color-medium);
 }
 
+h4{
+  color: var(--text-color-medium);
+}
+
 button {
   cursor: pointer;
 }
@@ -147,6 +151,69 @@ code {
 
 .page {
   padding: 20px;
+  background-color: var(--background-color);
+}
+
+.slideshowWindow {
+  height: 400px;
+  width: auto;
+  margin: 30px;
+  padding: 20px;
+  border: 25px solid var(--primary-color);
+  background-color: var(--background-color);
+}
+
+.slide {
+  height: 100%;
+  width: auto;
+  font-size: 28px;
+  background-color: var(--background-color);
+}
+
+.slide div.titleContainer {
+  height: 300px;
+  width: auto;
+  text-align: center;
+  vertical-align: center;
+}
+
+.slide div.contentContainer {
+  height: 300px;
+  width: auto;
+}
+
+.slide div.audioBar {
+  height: 20px;
+  width: auto;
+  text-align: right;
+}
+
+.slide p {
+  background-color: var(--background-color);
+}
+
+.slide h1 {
+  font-size: 40px;
+  color: var(--secondary-color);
+  border: none;
+}
+
+.slide h2 {
+  font-size: 36px;
+  color: var(--secondary-color);
+  text-align: center;
+  border-bottom: 3px solid var(--tertiary-color);
+}
+
+.slide h2.slideSubTitle {
+  font-size: 36px;
+  color: var(--secondary-color);
+  border: none;
+}
+
+.slide ul, .slide ul li {
+  background-color: var(--background-color);
+  margin-bottom: 5px;
 }
 
 .cardRow {
@@ -212,3 +279,74 @@ code {
   background-color: var(--accent-color);
   box-shadow: 5px 5px 5px 0px rgba(186,186,186,0.5);
 }
+
+/*Used excluively in the Analysis Page*/
+
+.riskHeaders {
+  display: flex;       /*Allows side by side div elements*/
+  align-items: center; /* Vertically centers items */
+}
+
+.riskBody{
+  display: flex;
+}
+
+.riskHeader{
+  padding-left: 20px;
+}
+
+.userInput{
+  width: 150px;
+  margin: 5px;
+}
+
+.explanationText{
+  font-size: xx-small;
+}
+
+.riskContainer{
+  width: 425px;
+  align-items: center;
+}
+
+.ratioBox{
+  text-align: center;
+  width: 75px;
+  border: 3px solid var(--text-color-dark);
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.ratioName{
+  text-align: center;
+  width: 125px;
+  border: 3px solid var(--text-color-dark);
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.scoreContainer{
+  display: flex;
+  border: 4px solid var(--secondary-color);
+  border-radius: 4px;
+  width: 275px;
+  margin: 10px;
+  margin-left: 14px;
+}
+
+.scoreContainerOverallScore{
+  display: flex;
+  border: 4px solid var(--secondary-color);
+  width: 275px;
+}
+
+.highlight{
+  border: 4px solid var(--highlight-color);
+  display: flex;
+  border-radius: 4px;
+  width: 283px;
+  margin: 10px;
+  margin-top: 20px;
+}
+
+/*End Analysis Page*/

@@ -63,6 +63,10 @@ export class SecRequest implements IEntity {
             this.setFieldValue("cik", json.request.sec.cik);
         }
 
+        if(json.request.sec.hasOwnProperty("ticker")) {
+            this.setFieldValue("ticker", json.request.sec.ticker);
+        }
+
         if(json.request.sec.hasOwnProperty("accountingStandard")) {
             this.setFieldValue("accountingStandard", json.request.sec.accountingStandard);
         } else {

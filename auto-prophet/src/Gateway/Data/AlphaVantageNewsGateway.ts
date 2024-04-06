@@ -1,7 +1,7 @@
 import {IEntity} from "../../Entity/IEntity";
-import {IDataGateway} from "../Data/IDataGateway";
+import {IKeyedDataGateway} from "../Data/IKeyedDataGateway";
 
-export class AlphaVantageNewsGateway implements IDataGateway {
+export class AlphaVantageNewsGateway implements IKeyedDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";
     key: string;
 

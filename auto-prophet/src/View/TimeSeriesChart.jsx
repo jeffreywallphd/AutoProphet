@@ -4,7 +4,7 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 function TimeSeriesChart(props) {
@@ -76,7 +76,7 @@ function TimeSeriesChart(props) {
                 </AreaChart>
                 <BarChart width={700} height={100} data={props.state.data.response.results[0]["data"]} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} domain={[props.state.yAxisStart, props.state.yAxisEnd]} />
-                    <YAxis domain={[0, props.state.volumeMax]} />
+                    <YAxis domain={[0, props.state.maxVolume]} />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     <Bar type="monotone" dataKey="volume" fill="#62C0C2"/>
