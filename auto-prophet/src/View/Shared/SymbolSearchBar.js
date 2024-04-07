@@ -21,16 +21,8 @@ function SymbolSearchBar(props) {
         if (e.key == "Unidentified"){
             //Fetch symbol again to make sure props are caught up
             await fetchSymbol();
-            console.log(state);
 
-            // //Wait for the symbol fetch to complete
-            // while(searching) {
-            //     //const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-            //     console.log("delay");
-            //     //await delay(1000);
-            // }
-
-            //Fetch data and pass the securitiesList
+            //Fetch data
             await props.fetchData(state);
         } else {
             await fetchSymbol();
@@ -61,32 +53,15 @@ function SymbolSearchBar(props) {
                 
                 setSecuritiesList(searchData.response.results);
 
-                // props.onSymbolChange({
-                //     initializing: false,
-                //     data: props.state.data,
-                //     ticker: props.state.ticker,
-                //     cik: props.state.cik,
-                //     error: props.state.error,
-                //     type: props.state.type,
-                //     interval: props.state.interval,
-                //     securitiesList: searchData.response.results,
-                //     searchRef: searchRef,
-                //     isLoading: false,
-                //     priceMin: props.state.priceMin,
-                //     priceMax: props.state.priceMax,
-                //     maxVolume: props.state.maxVolume,
-                //     yAxisStart: props.state.yAxisStart,
-                //     yAxisEnd: props.state.yAxisEnd
-                // });
-
+                //Update the state to be passed to the fetch data function
                 state = {
                     initializing: false,
                     data: props.state.data,
                     ticker: props.state.ticker,
                     cik: props.state.cik,
                     error: props.state.error,
-                    type: props.state.type,
-                    interval: props.state.interval,
+                    type: "intraday",
+                    interval: "1D",
                     securitiesList: searchData.response.results,
                     searchRef: searchRef.current.value,
                     isLoading: false,
@@ -97,7 +72,6 @@ function SymbolSearchBar(props) {
                     yAxisEnd: props.state.yAxisEnd
                 };
 
-                //console.log(state);
             } finally {
                 setSearching(false);
             }
@@ -109,6 +83,7 @@ function SymbolSearchBar(props) {
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
                     e.preventDefault();
+                    //Fetch symbol to make sure we are caught up before fetching data
                     await fetchSymbol();
                     props.fetchData(state);
                 }}>

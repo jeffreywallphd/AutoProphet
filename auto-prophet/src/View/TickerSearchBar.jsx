@@ -12,27 +12,12 @@ import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 import { CacheManager } from "../Utility/CacheManager";
 
 function TickerSearchBar(props) {
-    //Variables to reset the chart view
-    var type;
-    var interval;
-    
-
     //TODO: implement error handling
-
-    //When fetching data for a new ticker fromt he search bar, get 1D data
-    const fetch1DData = async (state) => {
-        console.log(state);
-        type = "intraday";
-        interval = "1D";
-        state.type = type;
-        state.interval = interval;
-        
-        fetchAllData(state);
-    }
 
     //Gets all data for a ticker and updates the props with the data
     const fetchAllData = async (state) => {
-        //Take away previous data
+        //Take away previous data and set the state to loading
+        //Uses old state and interval to avoid useEffect fetching again
         props.onDataChange({
             initializing: false,
             error: state.error,
@@ -40,8 +25,8 @@ function TickerSearchBar(props) {
             secData: null,
             ticker: null,
             cik: null,
-            type: state.type,
-            interval: state.interval,
+            type: props.state.type,
+            interval: props.state.interval,
             securitiesList: state.securitiesList,
             searchRef: state.searchRef,
             isLoading: true,
@@ -60,8 +45,8 @@ function TickerSearchBar(props) {
             error: null,
             ticker: null,
             cik: null,
-            type: null,
-            interval: null,
+            type: state.type,
+            interval: state.interval,
             securitiesList: state.securitiesList,
             searchRef: state.searchRef,
             isLoading: null,
@@ -94,14 +79,13 @@ function TickerSearchBar(props) {
         var requestObj = new JSONRequest(`{ 
             "request": { 
                 "stock": {
-                    "action": "${type}",
+                    "action": "${state.type}",
                     "ticker": "${state.searchRef}",
                     "companyName": "${companyName}",
-                    "interval": "${interval}"
+                    "interval": "${state.interval}"
                 }
             }
         }`);
-
 
             const results = await interactor.get(requestObj);
             var priceData = results;
@@ -111,8 +95,6 @@ function TickerSearchBar(props) {
             state.data = priceData;
             state.ticker = state.searchRef;
             state.error = state.error;
-            state.type = type;
-            state.interval = interval;
             state.isLoading = false;
             state.priceMin = Math.min(...priceData.response.results[0]["data"].map(data => data.price));
             state.priceMax = Math.max(...priceData.response.results[0]["data"].map(data => data.price));
@@ -201,9 +183,6 @@ function TickerSearchBar(props) {
     useEffect(() => {
         //stops fetchData() from being called upon page start
         if(props.state.initializing === false) {
-            //Get new type and interval for which to format data
-            type = props.state.type;
-            interval = props.state.interval;
             fetchAllData(props.state);
         }
     }, [props.state.interval]);
@@ -213,7 +192,7 @@ function TickerSearchBar(props) {
     };
    
     return (
-        <SymbolSearchBar fetchData={fetch1DData} state={props.state} onSymbolChange={handleSymbolChange}/>
+        <SymbolSearchBar fetchData={fetchAllData} state={props.state} onSymbolChange={handleSymbolChange}/>
     );
 }
 
