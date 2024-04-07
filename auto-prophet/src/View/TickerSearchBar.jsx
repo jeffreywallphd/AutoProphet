@@ -170,7 +170,7 @@ function TickerSearchBar(props) {
             window.terminal.log(JSON.stringify(secResults));
 
             //build the financial statements based on SEC submissions and company data
-            var schema = await secInteractor.calculateReport(props.state.searchRef.current.value.toLowerCase(), secSubmissionsResults, secResults);
+            var schema = await secInteractor.calculateReport(state.searchRef.toLowerCase(), secSubmissionsResults, secResults);
             
             window.console.dirxml(schema[0].response);
 
