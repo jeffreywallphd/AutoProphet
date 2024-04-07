@@ -1,8 +1,8 @@
 import {StockRequest} from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
-import {IDataGateway} from "../Data/IDataGateway";
+import {IKeyedDataGateway} from "../Data/IKeyedDataGateway";
 
-export class AlphaVantageStockGateway implements IDataGateway {
+export class AlphaVantageStockGateway implements IKeyedDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";
     key: string;
 
@@ -38,7 +38,7 @@ export class AlphaVantageStockGateway implements IDataGateway {
 
         const response = await fetch(url);
         const data = await response.json();
-
+        
         if("Information" in data) {
             throw Error("The API key used for Alpha Vantage has reached its daily limit");
         }

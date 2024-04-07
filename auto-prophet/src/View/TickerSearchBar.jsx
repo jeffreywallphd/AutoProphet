@@ -63,7 +63,6 @@ function TickerSearchBar(props) {
         await fetchSecData(newState);
     }
 
-
     //Gets price and volume data for a ticker
     const fetchPriceVolumeData = async (state) => {
         //get company name from securities list data
@@ -115,7 +114,7 @@ function TickerSearchBar(props) {
         await props.cacheHandler(state.searchRef).then(async () => {
             //add a momentary pause to allow cache to create on initial startup
             // TODO: create a better way to wait for cache to completely resolve. Possibly useEffect()
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             await delay(1000);
             
             //get CIK from cache based on ticker symbol
@@ -125,8 +124,8 @@ function TickerSearchBar(props) {
             var data = cacheManager.extractSync(`sec/${tickerFolder}/sec.json`);
             const tickerCikMap = JSON.parse(data);
 
-             // remove the data to free memory
-             data = null;
+            // remove the data to free memory
+            data = null;
 
             // Make sure the ticker exists in the ticker:CIK mapping
             var cik;
@@ -136,14 +135,29 @@ function TickerSearchBar(props) {
                 // either the cache isn't set up or
                 //the requested ticker is not from a company tracked by the SEC
 
+                // TODO: if not a company tracked by the SEC, throw error or alert user of issue
                 // TODO: come up with a better way than timeout above to wait for cache creation
                 return;
             }
             
             //TODO: create a parent interactor that can send a single request and dispatch
+            
             //get SEC data through SEC interactor
             var secInteractor = new SecInteractor();
-            var secRequestObj = new JSONRequest(`{ 
+
+            var secFormatRequestObj = new JSONRequest(`{
+                "request": {
+                    "sec": {
+                        "action": "submissionsLookup",
+                        "cik": "${cik}"
+                    }
+                }
+            }`);
+
+            const secSubmissionsResults = await secInteractor.get(secFormatRequestObj);
+            window.terminal.log(JSON.stringify(secSubmissionsResults));
+
+            var secCompanyRequestObj = new JSONRequest(`{ 
                 "request": { 
                     "sec": {
                         "action": "companyLookup",
@@ -152,8 +166,13 @@ function TickerSearchBar(props) {
                 }
             }`);
 
-            const secResults = await secInteractor.get(secRequestObj);
+            const secResults = await secInteractor.get(secCompanyRequestObj);
             window.terminal.log(JSON.stringify(secResults));
+
+            //build the financial statements based on SEC submissions and company data
+            var schema = await secInteractor.calculateReport(props.state.searchRef.current.value.toLowerCase(), secSubmissionsResults, secResults);
+            
+            window.console.dirxml(schema[0].response);
 
             //update the state
             state.secData = secResults;

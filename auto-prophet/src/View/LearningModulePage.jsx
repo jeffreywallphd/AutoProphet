@@ -4,36 +4,24 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { Component } from "react";
+import React from "react";
 import {
-    NavLink,
     useLocation
-  } from "react-router-dom";
+} from "react-router-dom";
+
+import { SlideshowWindow } from "./LearningModuleSlideshows/SlideshowWindow";
 
 export function LearningModulePage(props) {
-    const state = {
-        "title": null,
-        "pages": null,
-        "currentPage": null,
-    };
-
     const location = useLocation();
+
+    const currentPageIndex = location.state.currentPageIndex;
+    const nextPageIndex = location.state.currentPageIndex + 1;
 
     return (
         <div className="page">
-            <div>
-                <h2>{location.state.title}</h2>
-            </div>
-            <div>
-                <NavLink to="/learningModulePage" state={{
-                    "title": "Dividend Example 2",
-                    "pages": null,
-                    "currentPage": 2,
-                }}>Next Page</NavLink>
-            </div>
-            <div>Page {location.state.currentPage}</div>
+            <SlideshowWindow pages={location.state.pages} currentPageIndex={currentPageIndex}/>
         </div>
-        );
+    );
 }
 
 export default LearningModulePage;

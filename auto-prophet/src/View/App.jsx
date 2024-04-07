@@ -15,7 +15,7 @@ import {
 //Imports for react pages and assets
 import Home from "./Home";
 import Portfolio from "./Portfolio";
-import Analysis from "./Analysis";
+import { Analysis } from "./Analysis";
 import BuyReport from "./BuyReport";
 import { TimeSeries } from "./TimeSeriesPage";
 import { News } from "./NewsPage";
