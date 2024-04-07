@@ -31,7 +31,7 @@ function SymbolSearchBar(props) {
             // }
 
             //Fetch data and pass the securitiesList
-            //await props.fetchData(state);
+            await props.fetchData(state);
         } else {
             await fetchSymbol();
         }

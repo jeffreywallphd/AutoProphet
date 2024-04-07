@@ -130,7 +130,7 @@ function TickerSearchBar(props) {
         //or if it could be called on cache extraction error
         
         //check to make sure ticker:CIK map cache exists and is up-to-date
-        await props.cacheHandler(props.state.searchRef.current.value).then(async () => {
+        await props.cacheHandler(state.searchRef).then(async () => {
             //add a momentary pause to allow cache to create on initial startup
             // TODO: create a better way to wait for cache to completely resolve. Possibly useEffect()
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -139,7 +139,7 @@ function TickerSearchBar(props) {
             //get CIK from cache based on ticker symbol
             const cacheManager = new CacheManager();
             
-            const tickerFolder = props.state.searchRef.current.value.toString().charAt(0).toLowerCase();
+            const tickerFolder = state.searchRef.toString().charAt(0).toLowerCase();
             var data = cacheManager.extractSync(`sec/${tickerFolder}/sec.json`);
             const tickerCikMap = JSON.parse(data);
 
@@ -148,8 +148,8 @@ function TickerSearchBar(props) {
 
             // Make sure the ticker exists in the ticker:CIK mapping
             var cik;
-            if(tickerCikMap["data"] !== undefined && tickerCikMap["data"].hasOwnProperty(props.state.searchRef.current.value.toLowerCase())) {
-                cik = tickerCikMap["data"][props.state.searchRef.current.value.toLowerCase()];
+            if(tickerCikMap["data"] !== undefined && tickerCikMap["data"].hasOwnProperty(state.searchRef.toLowerCase())) {
+                cik = tickerCikMap["data"][state.searchRef.toLowerCase()];
             } else {
                 // either the cache isn't set up or
                 //the requested ticker is not from a company tracked by the SEC
@@ -204,8 +204,7 @@ function TickerSearchBar(props) {
             //Get new type and interval for which to format data
             type = props.state.type;
             interval = props.state.interval;
-            
-            fetchAllData();
+            fetchAllData(props.state);
         }
     }, [props.state.interval]);
 
