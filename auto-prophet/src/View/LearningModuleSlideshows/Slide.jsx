@@ -4,11 +4,12 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Howl } from 'howler';
 
 function Slide(props) {
     const [state, setState] = useState({disable: false});
+    const soundRef = useRef(null);
 
     const parseHtmlToComponents = (htmlString) => {
         const parser = new DOMParser(); // Parse the HTML string
@@ -47,18 +48,33 @@ function Slide(props) {
         if(props.page.voiceoverUrl !== null) {
             var audioSrc = `../src/Asset/LearningModulesVoiceovers/${props.page.voiceoverUrl}`;
             window.console.log(audioSrc);
-            var sound = new Howl({
+            soundRef.current = new Howl({
                 src: [audioSrc]
             });
 
-            sound.on('end', () => {
+            soundRef.current.on('end', () => {
                 setState({disable: false});
             });
 
-            sound.play();
+            props.registerSlide(soundRef.current, handleButtonReset);
+
+            soundRef.current.play();
             setState({disable: true});
         }
     };
+
+    const handleButtonReset = () => {
+        setState({disable: false});
+    }
+
+    // stop playing sound after leaving page
+    useEffect(() => {
+        return () => {
+          if (soundRef.current) {
+            soundRef.current.unload(); 
+          }
+        };
+    }, []);
 
     return (
         <div className="slide">
