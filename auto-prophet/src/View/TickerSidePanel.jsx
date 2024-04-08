@@ -5,13 +5,22 @@
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 import React from "react";
+import RatioCalculator from "../Utility/RatioCalculator";
 
 function TickerSidePanel(props) {
+    const ratioCalculator = new RatioCalculator(props.state.secData.response.results[0]["data"]);
+    ratioCalculator.calculateRatios();
+
     return (
         <div>
-            <h4>{props.state.secData.response.results[0]["data"]["entityName"]}</h4>
+            <h4>{props.state.secData.response.results[0]["data"]["Name"]} Ratios</h4>
             <p>CIK: {props.state.secData.response.results[0]["cik"]}</p>
-            <p>Revenues: {props.state.secData.response.results[0]["data"]["facts"]["us-gaap"]["Revenues"]["units"]["USD"][0]["val"]}</p>
+            <p>EPS: {ratioCalculator.EPS}</p>
+            <p>P/E: {ratioCalculator.PER}</p>
+            <p>Working Capital: {ratioCalculator.WCR}</p>
+            <p>Quick Ratio: {ratioCalculator.QR}</p>
+            <p>Debt/Equity Ratio: {ratioCalculator.DER}</p>
+            <p>Gross Profit Margin: {ratioCalculator.GPM}</p>
         </div>
     );
 }

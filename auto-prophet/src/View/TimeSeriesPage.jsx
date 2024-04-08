@@ -143,7 +143,6 @@ class TimeSeriesPage extends Component {
                     <div className="flex">
                         <div>
                             <TickerSearchBar cacheHandler={this.manageTickerCikMapCache} state={this.state} onDataChange={this.handleDataChange}/>
-                            {/* Use a ternary operator for concise conditional rendering */}
                             { this.state.data ? (
                                 <TimeSeriesChart state={this.state} onIntervalChange={this.handleIntervalChange} />
                             ) : this.state.isLoading === true ? (
