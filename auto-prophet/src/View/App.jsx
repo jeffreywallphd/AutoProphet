@@ -62,7 +62,7 @@ class App extends Component {
                                 <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/portfolio">Portfolio</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
-                                <NavLink to="/news">Investment News</NavLink>                                
+                                <NavLink to="/news">News</NavLink>                                
                             </div>
                         </div>
                         <div className="content">
