@@ -16,6 +16,6 @@
     }
 
 * Now, if you want to fetch data using Financial Modeling Prep instead of AlphaVantage, you will have to change the default.json as shown below:
-    * { "StockGateway": "FinancialModelingPrepGateway", "newsGateway":"AlphaVantageNewsGateway" }
+    * { "StockGateway": "FMPStockGateway", "NewsGateway": "AlphaVantageNewsGateway", "ReportGateway": "AlphaVantageRatioGateway"}
 
 * If you want to continue with AlphaVantage, then avoid the last step. You can manually change that thing as many times as you like, but keep in mind that once the API reaches its daily limit, it will stop working for you.
