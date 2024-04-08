@@ -13,7 +13,7 @@ function TickerSidePanel(props) {
 
     return (
         <div>
-            <h4>{props.state.secData.response.results[0]["data"]["entityName"]}</h4>
+            <h4>{props.state.secData.response.results[0]["data"]["Name"]} Ratios</h4>
             <p>CIK: {props.state.secData.response.results[0]["cik"]}</p>
             <p>EPS: {ratioCalculator.EPS}</p>
             <p>P/E: {ratioCalculator.PER}</p>

@@ -8,9 +8,9 @@ class RatioCalculator {
     data:any = null;
     EPS:number = null;
     PER:number = null;
-    WCR:number = null;
-    QR:number = null;
-    DER:number = null;
+    WCR:string = null;
+    QR:string = null;
+    DER:string = null;
     GPM:number = null;
 
     constructor(data:any) {
@@ -38,20 +38,17 @@ class RatioCalculator {
     
     //WC Ratio
     private calculateWC() {
-        // Set up for Balance Sheet Implementation. May not be correct based on data formatting.  
-        // this.WCR = (this.data.totalCurrentAssets)/(this.data.totalCurrentLiabilities)
+        this.WCR = (Math.round(this.data.totalCurrentAssets)/(this.data.totalCurrentLiabilities)).toFixed(2);
     }
 
     //Quick Ratio
-    private calculateQR() {
-        // Set up for Balance Sheet Implementation. May not be correct based on data formatting.  
-        // this.QR = ((this.data.totalCurrentAssets)-(this.data.inventory))/(this.data.currentLiabilities)
+    private calculateQR() {  
+        this.QR = (Math.round((this.data.totalCurrentAssets)-(this.data.inventory))/(this.data.totalCurrentLiabilities)).toFixed(2);
     }
  
     //Debt-Equity Ratio
     private calculateDER() {
-        // Set up for Balance Sheet Implementation. May not be correct based on data formatting.  
-        // this.DER = ((this.data.shortTermDebt)+(this.data.longTermDebt)+(this.data.otherNonCurrentLiabilities))/(this.data.totalShareholdersEquity)
+        this.DER = (Math.round(+this.data.shortTermDebt + +this.data.longTermDebt + +this.data.otherNonCurrentLiabilities)/(this.data.totalShareholderEquity)).toFixed(2);
     }
     
     //Gross Profit Margin
