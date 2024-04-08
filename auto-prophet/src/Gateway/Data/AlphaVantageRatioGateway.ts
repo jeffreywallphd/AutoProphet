@@ -25,9 +25,7 @@ export class AlphaVantageRatioGateway implements IDataGateway {
 
     async read(entity: IEntity, action: string): Promise<Array<IEntity>> { 
         var url;
-        if(action === "income") {
-            url = this.getIncomeUrl(entity);
-        } else if (action === "overview"){
+        if (action === "overview"){
             url = this.getOverviewUrl(entity);
         } else if (action === "balance") {
             url = this.getBalanceUrl(entity);
@@ -55,10 +53,6 @@ export class AlphaVantageRatioGateway implements IDataGateway {
 
     private getOverviewUrl(entity: IEntity) {
         return `${this.baseURL}?function=OVERVIEW&symbol=${entity.getFieldValue("ticker")}&apikey=${entity.getFieldValue("key")}&datatype=json`;
-    }
-
-    private getIncomeUrl(entity: IEntity) {
-        return `${this.baseURL}?function=INCOME_STATEMENT&symbol=${entity.getFieldValue("ticker")}&apikey=${entity.getFieldValue("key")}&datatype=json`;
     }
 
     private getBalanceUrl(entity: IEntity) {

@@ -38,19 +38,20 @@ class RatioCalculator {
     
     //WC Ratio
     private calculateWC() {
-        // var workingCapitalRatio = currentAssets / currentLiabilities;
+        // Set up for Balance Sheet Implementation. May not be correct based on data formatting.  
+        // this.WCR = (this.data.totalCurrentAssets)/(this.data.totalCurrentLiabilities)
     }
 
     //Quick Ratio
     private calculateQR() {
-        // //quickAssets = currentAssets - inventory;
-        // var quickRatio = quickAssets / currentLiabilities;
+        // Set up for Balance Sheet Implementation. May not be correct based on data formatting.  
+        // this.QR = ((this.data.totalCurrentAssets)-(this.data.inventory))/(this.data.currentLiabilities)
     }
  
     //Debt-Equity Ratio
     private calculateDER() {
-        // var debtEquityRatio = (debtAndLease + otherFixedPayments) / shareholdersEquity;
-        // this.DER = debtEquityRatio;
+        // Set up for Balance Sheet Implementation. May not be correct based on data formatting.  
+        // this.DER = ((this.data.shortTermDebt)+(this.data.longTermDebt)+(this.data.otherNonCurrentLiabilities))/(this.data.totalShareholdersEquity)
     }
     
     //Gross Profit Margin
