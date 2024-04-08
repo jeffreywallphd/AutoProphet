@@ -12,21 +12,30 @@
   --text-color-medium: #333333;
 }
 
+html, div{ 
+  min-height: 0%;
+  max-width: 100%;
+  max-height: 20%;
+  min-width:0%; 
+}
+
 body {
-  background-color: var(--secondary-color);
-  margin: 0;
+  background-color: var(--primary-color);
+  padding-top: 3.1%;
+  margin-right:5%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} 
 
 footer {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   color: var(--text-color-light);
-  padding: 15px;
+  display:flexbox; 
   text-align: center;
+  padding-bottom: 2px; 
 }
 
 h1 {
@@ -178,7 +187,7 @@ code {
 }
 
 .slide div.contentContainer {
-  height: 300px;
+  height: 100px;
   width: auto;
 }
 
@@ -247,7 +256,7 @@ code {
 
 .cardContainer {
   background-color: var(--tertiary-color);
-  padding: 20px;
+  padding: 5px;
 }
 
 .priceSearchFormContainer{

@@ -122,6 +122,12 @@ export function Learn() {
                     (<div>Error: Unable to load the learning modules</div>)
                 
             }
+            
         </div>
+        
+        
     );
+    <footer>
+     testing 1 two three...
+    </footer>
 }

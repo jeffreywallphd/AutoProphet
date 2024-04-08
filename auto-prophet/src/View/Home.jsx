@@ -47,6 +47,7 @@ class Home extends Component {
                       </div>
                     </NavLink>
                 </section>
+                
             </div>
         );
     }

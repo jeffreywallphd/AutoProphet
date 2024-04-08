@@ -15,7 +15,8 @@ import {
 //Imports for react pages and assets
 import Home from "./Home";
 import Portfolio from "./Portfolio";
-import { Analysis } from "./Analysis";
+import About from "./About";
+import {Analysis}  from "./Analysis";
 import BuyReport from "./BuyReport";
 import { TimeSeries } from "./TimeSeriesPage";
 import { News } from "./NewsPage";
@@ -58,17 +59,19 @@ class App extends Component {
                             </header>
                             <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <NavLink to="/">Home</NavLink>
-                                <NavLink to="/learn">Learn</NavLink>
-                                <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/portfolio">Portfolio</NavLink>
+                                <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
-                                <NavLink to="/news">Investment News</NavLink>                                
+                                <NavLink to="/news">News</NavLink> 
+                                <NavLink to="/learn">Learn</NavLink>
+                                <NavLink to="/about">About</NavLink>                               
                             </div>
                         </div>
                         <div className="content">
                             <Routes>
                                 <Route path="/" element={<Home />}/>
                                 <Route path="/portfolio" element={<Portfolio />}/>
+                                <Route path="/about" element={<About />}/>
                                 <Route path="/analysis" element={<Analysis />}/>
                                 <Route path="/buy-report" element={<BuyReport />}/>
                                 <Route path="/price" element={<TimeSeries />}/>
@@ -79,13 +82,19 @@ class App extends Component {
                             </Routes>
                         </div>
                     </div>
-                    <footer>
-                        This software is licensed under the GPL-3.0 license. 
-                    </footer>
+                    
                 </div>
+                <br>
+                </br>
+                <br>
+                </br>
+                    <footer>
+                    This software is licensed under the GPL-3.0 license. 
+                    </footer>
             </HashRouter>
         );
-    }
+    } 
+   
 }
 
 export default App;
