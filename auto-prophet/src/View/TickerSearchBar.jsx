@@ -144,18 +144,33 @@ function TickerSearchBar(props) {
             
             //get SEC data through SEC interactor
             var secInteractor = new SecInteractor();
-            window.console.log("symbol: " + props.state.searchRef.current.value);
             var secRequestObj = new JSONRequest(`{
                 "request": {
                     "sec": {
                         "action": "overview",
                         "cik": "${cik}",
-                        "ticker": "${props.state.searchRef.current.value}"
+                        "ticker": "${state.searchRef}"
                     }
                 }
             }`);
 
             const secResults = await secInteractor.get(secRequestObj);
+            window.console.log(JSON.stringify(secResults));
+
+            var secBalanceRequestObj = new JSONRequest(`{
+                "request": {
+                    "sec": {
+                        "action": "balance",
+                        "cik": "${cik}",
+                        "ticker": "${state.searchRef}"
+                    }
+                }
+            }`);
+
+            const secBalanceResults = await secInteractor.get(secBalanceRequestObj);
+            window.console.log(JSON.stringify(secBalanceResults));
+
+            secResults.response.results[0].data = Object.assign({}, secResults.response.results[0].data, secBalanceResults.response.results[0].data[0]);
             window.console.log(JSON.stringify(secResults));
 
             //build the financial statements based on SEC submissions and company data
