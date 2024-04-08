@@ -6,7 +6,7 @@ import { FinancialModelingPrepGateway } from "./FMPStockGateway";
 export class StockGatewayFactory {
     async createGateway(config: any): Promise<IDataGateway> {
         const extractor = new EnvVariableExtractor();
-        
+        window.console.log(config["StockGateway"]);
         //TODO: add other gateways, such as Yahoo Finance API
         if(config["StockGateway"] === "AlphaVantageStockGateway") {
             const key = await extractor.extract("ALPHAVANTAGE_API_KEY");

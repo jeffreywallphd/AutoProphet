@@ -36,7 +36,7 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
     } else {
       throw new Error("Either no action was sent in the request or an incorrect action was used.");
     }
-
+    window.console.log(url)
     const response = await fetch(url);
     const data = await response.json();
 
@@ -65,12 +65,19 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
   private getInterdayUrl(entity: IEntity) {
     const currentDate = new Date();
     const previousDate = new Date();
+
+    const fiveDaysAgo = new Date(previousDate.setDate(currentDate.getDate() - 5)).toISOString().split('T')[0];
+    const oneMonthAgo = new Date(previousDate.setDate(currentDate.getDate() - 30)).toISOString().split('T')[0];
+    const sixMonthsAgo = new Date(previousDate.setDate(currentDate.getDate() - 180)).toISOString().split('T')[0];
+    const oneYearAgo = new Date(previousDate.setDate(currentDate.getDate() - 365)).toISOString().split('T')[0];
+    const fiveYearsAgo = new Date(previousDate.setDate(currentDate.getDate() - 2190)).toISOString().split('T')[0];
+
     const intervalMap: { [key: string]: any } = { 
-        "5D": {from: previousDate.setDate(currentDate.getDate() - 5), to: currentDate},
-        "1M": {from: previousDate.setDate(currentDate.getDate() - 30), to: currentDate},
-        "6M": {from: previousDate.setDate(currentDate.getDate() - 180), to: currentDate},
-        "1Y": {from: previousDate.setDate(currentDate.getDate() - 365), to: currentDate},
-        "5Y": {from: previousDate.setDate(currentDate.getDate() - 2190), to: currentDate},
+        "5D": {from: fiveDaysAgo, to: currentDate.toISOString().split('T')[0]},
+        "1M": {from: oneMonthAgo, to: currentDate.toISOString().split('T')[0]},
+        "6M": {from: sixMonthsAgo, to: currentDate.toISOString().split('T')[0]},
+        "1Y": {from: oneYearAgo, to: currentDate.toISOString().split('T')[0]},
+        "5Y": {from: fiveYearsAgo, to: currentDate.toISOString().split('T')[0]},
         "Max": {from: null, to: null}
     };
 
@@ -89,8 +96,14 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
     return `${this.baseURL}historical-price-full/${entity.getFieldValue("ticker")}?${fromToQuery}apikey=${this.apiKey}`;
   }
 
-  private formatDataResponse(data: any[], entity: IEntity, action: string) {
+  private formatDataResponse(data: any, entity: IEntity, action: string) {
     var array: Array<IEntity> = [];
+    var closingPriceKey = "close";
+
+    if(action === "interday") {
+      data = data["historical"];
+      closingPriceKey = "adjClose";
+    }
 
     const formattedData: Array<{ [key: string]: any }> = [];
     for (const item of data) {
@@ -98,7 +111,7 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
       formattedData.push({
         date: date.toLocaleDateString(),
         time: action === "intraday" ? date.toLocaleTimeString() : "", // Only include time for intraday data
-        price: item["close"],
+        price: item[closingPriceKey],
         volume: item["volume"],
       });
     }
@@ -109,18 +122,24 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
     return array;
   }
 
-  private createDataItem(date: Date, timeSeries: any) {
-    throw new Error("This method is not used with Financial Modeling Prep");
-  }
-
   private formatLookupResponse(data: any) {
     var array: Array<IEntity> = [];
+
+    var limit = 10;
+    var i = 0;
 
     for (const match of data) {
       var entity = new StockRequest();
       entity.setFieldValue("ticker", match["symbol"]);
       entity.setFieldValue("companyName", match["name"]);
       array.push(entity);
+
+      // limit to the top 10 listings
+      if(i >= 10) {
+        break;
+      }
+
+      i++;
     }
 
     return array;
