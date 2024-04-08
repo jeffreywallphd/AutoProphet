@@ -6,7 +6,7 @@ Main Content Areas are referring to the main focus of the page (not including th
 - Whitespace should be reduced but not eliminated
     - Try to cover as much of the main content area as possible without making the page feel crowded
 - Keep design consistent throughout ALL main content areas. Every area should look like it belongs in the app
-- Graphics like graphs, symbols, pictures, etc... should follow the color pallet
+- Graphics like graphs, symbols, pictures, etc... should follow the color palette
 
 ## Navigation
 - The navigation is to be left justified horizontally	
@@ -15,7 +15,7 @@ Main Content Areas are referring to the main focus of the page (not including th
 - The arrows are only to be shown when the navigation menu is uncollapsed
 
 ## Color Palette
-The color palette depicted below is to be the exclusive color palette used in the AutoProfit program.
+The color palette depicted below is to be the exclusive color palette used in the AutoProphet program.
 
 ### General Color Palette:
 ![ColorPaletteImage](/documentation/palette.png)
@@ -23,8 +23,8 @@ For text color, follow the text color represented per image above. (ex. #2B388F 
 - #2B388F - with text color #ffffff
 - #00878E - with text color #ffffff
 - #62C0C2 - with text color #000000
-- #C3FBF1 - with text color #000000
-- #AFD3E4 - with text color #000000
+- #27A2CC - with text color #000000
+- #FDCB50 - with text color #000000
 
 ### Sidebar:
 - Main background color: #2B388F
@@ -32,7 +32,7 @@ For text color, follow the text color represented per image above. (ex. #2B388F 
 - Text Color: #ffffff
 
 ### Main Page:
-- Background: #AFD3E4
+- Background: #ffffff
 - Top Nav Bar Color: #00878E
 - Accent Color: #62C0C2
 
