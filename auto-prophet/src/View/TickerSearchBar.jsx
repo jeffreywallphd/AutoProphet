@@ -12,34 +12,23 @@ import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 import { CacheManager } from "../Utility/CacheManager";
 
 function TickerSearchBar(props) {
-    //Variables to reset the chart view
-    var type;
-    var interval;
-    
-
     //TODO: implement error handling
 
-    //When fetching data for a new ticker from the search bar, get 1D data
-    const fetch1DData = async () => {
-        type = "intraday";
-        interval = "1D";
-        fetchAllData();
-    }
-
     //Gets all data for a ticker and updates the props with the data
-    const fetchAllData = async () => {
-        //Take away previous data
+    const fetchAllData = async (state) => {
+        //Take away previous data and set the state to loading
+        //Uses old state and interval to avoid useEffect fetching again
         props.onDataChange({
             initializing: false,
-            error: props.state.error,
+            error: state.error,
             data: null,
             secData: null,
             ticker: null,
             cik: null,
             type: props.state.type,
             interval: props.state.interval,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
+            securitiesList: state.securitiesList,
+            searchRef: state.searchRef,
             isLoading: true,
             priceMin: null,
             priceMax: null,
@@ -56,10 +45,10 @@ function TickerSearchBar(props) {
             error: null,
             ticker: null,
             cik: null,
-            type: null,
-            interval: null,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
+            type: state.type,
+            interval: state.interval,
+            securitiesList: state.securitiesList,
+            searchRef: state.searchRef,
             isLoading: null,
             minPrice: null,
             maxPrice: null,
@@ -78,8 +67,8 @@ function TickerSearchBar(props) {
     const fetchPriceVolumeData = async (state) => {
         //get company name from securities list data
         var companyName = "";
-        props.state.securitiesList.find((element) => {
-            if(element.ticker === props.state.searchRef.current.value) {
+        state.securitiesList.find((element) => {
+            if(element.ticker === state.searchRef) {
                 companyName = element.companyName;
             }
         });
@@ -89,14 +78,13 @@ function TickerSearchBar(props) {
         var requestObj = new JSONRequest(`{ 
             "request": { 
                 "stock": {
-                    "action": "${type}",
-                    "ticker": "${props.state.searchRef.current.value}",
+                    "action": "${state.type}",
+                    "ticker": "${state.searchRef}",
                     "companyName": "${companyName}",
-                    "interval": "${interval}"
+                    "interval": "${state.interval}"
                 }
             }
         }`);
-
 
             const results = await interactor.get(requestObj);
             var priceData = results;
@@ -104,10 +92,8 @@ function TickerSearchBar(props) {
             //Update the state
             state.initializing = true;
             state.data = priceData;
-            state.ticker = props.state.searchRef.current.value;
-            state.error = props.state.error;
-            state.type = type;
-            state.interval = interval;
+            state.ticker = state.searchRef;
+            state.error = state.error;
             state.isLoading = false;
             state.priceMin = Math.min(...priceData.response.results[0]["data"].map(data => data.price));
             state.priceMax = Math.max(...priceData.response.results[0]["data"].map(data => data.price));
@@ -125,7 +111,7 @@ function TickerSearchBar(props) {
         //or if it could be called on cache extraction error
         
         //check to make sure ticker:CIK map cache exists and is up-to-date
-        await props.cacheHandler(props.state.searchRef.current.value).then(async () => {
+        await props.cacheHandler(state.searchRef).then(async () => {
             //add a momentary pause to allow cache to create on initial startup
             // TODO: create a better way to wait for cache to completely resolve. Possibly useEffect()
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -134,7 +120,7 @@ function TickerSearchBar(props) {
             //get CIK from cache based on ticker symbol
             const cacheManager = new CacheManager();
             
-            const tickerFolder = props.state.searchRef.current.value.toString().charAt(0).toLowerCase();
+            const tickerFolder = state.searchRef.toString().charAt(0).toLowerCase();
             var data = cacheManager.extractSync(`sec/${tickerFolder}/sec.json`);
             const tickerCikMap = JSON.parse(data);
 
@@ -143,8 +129,8 @@ function TickerSearchBar(props) {
 
             // Make sure the ticker exists in the ticker:CIK mapping
             var cik;
-            if(tickerCikMap["data"] !== undefined && tickerCikMap["data"].hasOwnProperty(props.state.searchRef.current.value.toLowerCase())) {
-                cik = tickerCikMap["data"][props.state.searchRef.current.value.toLowerCase()];
+            if(tickerCikMap["data"] !== undefined && tickerCikMap["data"].hasOwnProperty(state.searchRef.toLowerCase())) {
+                cik = tickerCikMap["data"][state.searchRef.toLowerCase()];
             } else {
                 // either the cache isn't set up or
                 //the requested ticker is not from a company tracked by the SEC
@@ -158,43 +144,47 @@ function TickerSearchBar(props) {
             
             //get SEC data through SEC interactor
             var secInteractor = new SecInteractor();
-
-            var secFormatRequestObj = new JSONRequest(`{
+            var secRequestObj = new JSONRequest(`{
                 "request": {
                     "sec": {
-                        "action": "submissionsLookup",
-                        "cik": "${cik}"
+                        "action": "overview",
+                        "cik": "${cik}",
+                        "ticker": "${state.searchRef}"
                     }
                 }
             }`);
 
-            const secSubmissionsResults = await secInteractor.get(secFormatRequestObj);
-            window.terminal.log(JSON.stringify(secSubmissionsResults));
+            const secResults = await secInteractor.get(secRequestObj);
+            window.console.log(JSON.stringify(secResults));
 
-            var secCompanyRequestObj = new JSONRequest(`{ 
-                "request": { 
+            var secBalanceRequestObj = new JSONRequest(`{
+                "request": {
                     "sec": {
-                        "action": "companyLookup",
-                        "cik": "${cik}"
+                        "action": "balance",
+                        "cik": "${cik}",
+                        "ticker": "${state.searchRef}"
                     }
                 }
             }`);
 
-            const secResults = await secInteractor.get(secCompanyRequestObj);
-            window.terminal.log(JSON.stringify(secResults));
+            const secBalanceResults = await secInteractor.get(secBalanceRequestObj);
+            window.console.log(JSON.stringify(secBalanceResults));
+
+            secResults.response.results[0].data = Object.assign({}, secResults.response.results[0].data, secBalanceResults.response.results[0].data[0]);
+            window.console.log(JSON.stringify(secResults));
 
             //build the financial statements based on SEC submissions and company data
-            var schema = await secInteractor.calculateReport(props.state.searchRef.current.value.toLowerCase(), secSubmissionsResults, secResults);
-            
-            window.console.dirxml(schema[0].response);
+            //var schema = await secInteractor.calculateReport(props.state.searchRef.current.value.toLowerCase(), secSubmissionsResults, secResults);
+            //window.console.dirxml(schema[0].response);
 
             //update the state
             state.secData = secResults;
             state.cik = cik;
 
-            //Update the props
-            props.onDataChange(state);
         });
+
+        //Update the props
+        props.onDataChange(state);
     }
 
     //format the date and time for chart
@@ -215,11 +205,7 @@ function TickerSearchBar(props) {
     useEffect(() => {
         //stops fetchData() from being called upon page start
         if(props.state.initializing === false) {
-            //Get new type and interval for which to format data
-            type = props.state.type;
-            interval = props.state.interval;
-            
-            fetchAllData();
+            fetchAllData(props.state);
         }
     }, [props.state.interval]);
 
@@ -228,7 +214,7 @@ function TickerSearchBar(props) {
     };
    
     return (
-        <SymbolSearchBar fetchData={fetch1DData} state={props.state} onSymbolChange={handleSymbolChange}/>
+        <SymbolSearchBar fetchData={fetchAllData} state={props.state} onSymbolChange={handleSymbolChange}/>
     );
 }
 
