@@ -24,6 +24,8 @@ export class SecInteractor implements IInputBoundary {
         //instantiate the correct API gateway
         const secGatewayFactory = new SecReportGatewayFactory();
         var secGateway: IDataGateway = await secGatewayFactory.createGateway(dep);
+
+        sec.setFieldValue("key", secGateway.key);
         
         //search for the requested information via the API gateway
         var results = await secGateway.read(sec, requestModel.request.request.sec.action);

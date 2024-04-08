@@ -144,35 +144,38 @@ function TickerSearchBar(props) {
             
             //get SEC data through SEC interactor
             var secInteractor = new SecInteractor();
-
-            var secFormatRequestObj = new JSONRequest(`{
+            var secRequestObj = new JSONRequest(`{
                 "request": {
                     "sec": {
-                        "action": "submissionsLookup",
-                        "cik": "${cik}"
+                        "action": "overview",
+                        "cik": "${cik}",
+                        "ticker": "${state.searchRef}"
                     }
                 }
             }`);
 
-            const secSubmissionsResults = await secInteractor.get(secFormatRequestObj);
-            window.terminal.log(JSON.stringify(secSubmissionsResults));
+            const secResults = await secInteractor.get(secRequestObj);
+            window.console.log(JSON.stringify(secResults));
 
-            var secCompanyRequestObj = new JSONRequest(`{ 
-                "request": { 
+            var secBalanceRequestObj = new JSONRequest(`{
+                "request": {
                     "sec": {
-                        "action": "companyLookup",
-                        "cik": "${cik}"
+                        "action": "balance",
+                        "cik": "${cik}",
+                        "ticker": "${state.searchRef}"
                     }
                 }
             }`);
 
-            const secResults = await secInteractor.get(secCompanyRequestObj);
-            window.terminal.log(JSON.stringify(secResults));
+            const secBalanceResults = await secInteractor.get(secBalanceRequestObj);
+            window.console.log(JSON.stringify(secBalanceResults));
+
+            secResults.response.results[0].data = Object.assign({}, secResults.response.results[0].data, secBalanceResults.response.results[0].data[0]);
+            window.console.log(JSON.stringify(secResults));
 
             //build the financial statements based on SEC submissions and company data
-            var schema = await secInteractor.calculateReport(state.searchRef.toLowerCase(), secSubmissionsResults, secResults);
-            
-            window.console.dirxml(schema[0].response);
+            //var schema = await secInteractor.calculateReport(props.state.searchRef.current.value.toLowerCase(), secSubmissionsResults, secResults);
+            //window.console.dirxml(schema[0].response);
 
             //update the state
             state.secData = secResults;
