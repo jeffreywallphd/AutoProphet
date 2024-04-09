@@ -349,12 +349,11 @@ export function Analysis() {
             <div className="ratioBox">{state.PER}</div>
             <div className="ratioBox">{state.PERGrade}</div>
           </div>
-          <div className="highlight">
             <div className="scoreContainerOverallScore">
-              <div className="ratioName">Overall Score: </div>
+              <div className="ratioName">Overall: </div>
               <div className="ratioBox">{state.overallScore}</div>
               <div className="ratioBox">{state.overallScoreGrade}</div>
-            </div>
+      
           </div>
           <div>
             <h3 className="riskHeader">Other Stats</h3>
