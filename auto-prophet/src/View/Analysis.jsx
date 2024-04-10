@@ -64,7 +64,7 @@ function Analysis(props) {
             border: '2px solid black',
         })
         setDiversificationScore({
-            score: Number(largeCS.current.value)*4+Number(midCS.current.value)*2+Number(smallCS.current.value),
+            score: (Number(largeCS.current.value)*4+Number(midCS.current.value)*2+Number(smallCS.current.value)).toFixed(2),
             grade: calculateDiversityGrade(Number(largeCS.current.value), Number(midCS.current.value), Number(smallCS.current.value)),
         })
     }
