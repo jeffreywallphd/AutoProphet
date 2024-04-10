@@ -64,7 +64,9 @@ button {
   cursor: pointer;
 }
 
-/* Home Pagee */
+/* Home Page */
+
+/* Largest Circle */
 .ellipse1 {
   position: absolute;
   left: 35.6%;
@@ -75,9 +77,35 @@ button {
   background-color:#00878E;
   padding-top: 0px;
   padding-bottom: 0px;
-  display: flex;
-  
+  display: inline-block;
+} 
 
+/* Medium Circle */
+.ellipse2 {
+  position: absolute;
+  left: 35.6%;
+  transform: translate(-50%,-50%);
+  height:280px;
+  width: 400px; 
+  border-radius: 100px 500px 0 0;
+  background-color:#62C0C2;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  display: inline-block;
+} 
+
+/* Smallest Circle */
+.ellipse3 {
+  position: absolute;
+  left: 35.6%;
+  transform: translate(-50%,-50%);
+  height:180px;
+  width: 300px; 
+  border-radius: 100px 500px 0 0;
+  background-color:#AFD3E4;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  display: inline-block;
 }
 
 #navButton{

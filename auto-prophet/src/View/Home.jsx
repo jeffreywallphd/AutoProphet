@@ -49,7 +49,11 @@ class Home extends Component {
                   trends.
                 </p>
               </div>
+              
               <span className ="ellipse1"></span>
+              <span className ="ellipse2"></span>
+              <span cassName ="ellipse3"></span>
+         
             </div>
           </NavLink>
         </section>
