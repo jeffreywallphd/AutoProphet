@@ -15,11 +15,17 @@ contextBridge.exposeInMainWorld('yahoo', {
     finance: require('yahoo-finance2').default
 });
 
-contextBridge.exposeInMainWorld('terminal', {
+// for databases that rely on require(), add them to this contextBridge
+contextBridge.exposeInMainWorld('database', {
+    sqlite: require('sqlite3').verbose()
+});
+
+// use window.console.log when you need to log within electron
+/*contextBridge.exposeInMainWorld('terminal', {
     log: (data) => {
         console.log(data);
     },
     error: (data) => {
         console.error(data);
     }
-});
+});*/
