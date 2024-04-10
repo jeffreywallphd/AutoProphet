@@ -64,6 +64,22 @@ button {
   cursor: pointer;
 }
 
+/* Home Pagee */
+.ellipse1 {
+  position: absolute;
+  left: 35.6%;
+  transform: translate(-50%,-50%);
+  height:380px;
+  width: 500px; 
+  border-radius: 100px 500px 0 0;
+  background-color:#00878E;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  display: flex;
+  
+
+}
+
 #navButton{
   padding:0;
   margin: 0;
@@ -141,7 +157,7 @@ code {
   background-color: var(--primary-color);
   border: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 3px;
   text-align: left;
   width: 40px;
 }
@@ -161,7 +177,7 @@ code {
 }
 
 .page {
-  padding: 20px;
+  padding: 10px;
   background-color: var(--background-color);
 }
 
