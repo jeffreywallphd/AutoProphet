@@ -66,7 +66,9 @@ button {
 
 /* Home Page */
 
+
 /* Largest Circle */
+/*
 .ellipse1 {
   position: absolute;
   left: 35.6%;
@@ -79,8 +81,10 @@ button {
   padding-bottom: 0px;
   display: inline-block;
 } 
+*/
 
 /* Medium Circle */
+/*
 .ellipse2 {
   position: absolute;
   left: 35.6%;
@@ -93,8 +97,9 @@ button {
   padding-bottom: 0px;
   display: inline-block;
 } 
-
+*/
 /* Smallest Circle */
+/*
 .ellipse3 {
   position: absolute;
   left: 35.6%;
@@ -107,7 +112,7 @@ button {
   padding-bottom: 0px;
   display: inline-block;
 }
-
+*/
 #navButton{
   padding:0;
   margin: 0;
