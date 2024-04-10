@@ -11,8 +11,11 @@ class Portfolio extends Component {
     render() {
         return (
             <div className="page">
-                <h2>My Portfolio</h2>
+                     <div>               
+                     <h2>My Portfolio</h2>
+                     </div>
             </div>
+        
         );
     }
 }
