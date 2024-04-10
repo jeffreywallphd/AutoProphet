@@ -82,3 +82,18 @@ INSERT OR IGNORE LearningModule (moduleID, title, PageContentUrl, voiceoverUrl, 
 INSERT OR IGNORE LearningModule (moduleID, title, PageContentUrl, voiceoverUrl, pageNumber) VALUES (3, "Short-term VS Long-Term Capital Gains", "Taxes/Slide17.html", "Taxes/Slide17_Taxes.mp3", 17);
 INSERT OR IGNORE LearningModule (moduleID, title, PageContentUrl, voiceoverUrl, pageNumber) VALUES (3, "Example Calculations", "Taxes/Slide18.html", "Taxes/Slide18_Taxes.mp3", 18);
 INSERT OR IGNORE LearningModule (moduleID, title, PageContentUrl, voiceoverUrl, pageNumber) VALUES (3, "Strategies To Minimize Taxes", "Taxes/Slide19.html", "Taxes/Slide19_Taxes.mp3", 19);
+
+INSERT OR IGNORE INTO LearningModule (id, title, description, keywords, timeEstimate, categry) VALUES (2, "Introduction to Bonds", "This learning module provides you with an introduction to bonds.", 10, "Bonds");
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, subTitle, pageNumber, pageType) VALUES (2, "Introduction to Bonds", "What is a Bond?", 1, "TitlePage");
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, pageNumber) VALUES (2, "Topics Covered", "Bonds/Slide2.html",2);
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, subTitle, pageNumber, pageType) VALUES (2, "Bonds", "What they are", 3, "SectionPage");
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (2, "Definitions and Explanations", "Bonds/Slide4.html", "Bonds_Voiceovers/Slide4_Bonds.mp3", 4);
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (2, "Important to Note about Bonds", "Bonds/Slide5.html", "Bonds_Voiceovers/Slide5_Bonds.mp3", 5);
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (2, "Bond Maturity: What is it?", "Bonds/Slide6.html", "Bonds_Voiceovers/Slide6_Bonds.mp3", 6);
+INSERT OR IGNORE INTO LearningModulePage (moudleId, title, subTitle, pageNumber, pageType) VALUES (2, "Bonds", "The Different Types", 7, "SectionPage");
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (2, "Types of Bonds", "Bonds/Slide8.html", "Bonds_Voiceovers/Slide8_Bonds.mp3", 8);
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (2, "Zero Coupon Bonds", "Bonds/Slide9.html", "Bonds_Voiceovers/Slide9_Bonds.mp3", 9);
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (2, "How Bonds Interact with Taxes", "Bonds/Slide10.html", "bonds_Voiceovers/Slide10_Bonds.mp3", 10);
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, subTitle, pageNumber, pageType) VALUES (2, "Bonds", "The Risks", 11, "SectionPage");
+INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (2, "Two Main Risks", "Bonds/Slide12.htl", "Bonds_Voiceovers/Slide12_Bonds.mp3", 12);
+
