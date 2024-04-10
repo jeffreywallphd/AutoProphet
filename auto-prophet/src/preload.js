@@ -11,6 +11,10 @@ contextBridge.exposeInMainWorld('fs', {
     fs: require('fs'),
 });
 
+contextBridge.exposeInMainWorld('yahoo', {
+    finance: require('yahoo-finance2').default
+});
+
 contextBridge.exposeInMainWorld('terminal', {
     log: (data) => {
         console.log(data);
