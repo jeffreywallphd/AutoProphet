@@ -109,6 +109,7 @@ export function Learn() {
                         <p>Description: {module.description}</p>
                         <p>Estimated Time: {module.timeEstimate} minutes</p>
                         <NavLink to="/learningModule" state={{
+                            moduleId: module.id,
                             title: module.title,
                             description: module.description,
                             timeEstimate: module.timeEstimate,

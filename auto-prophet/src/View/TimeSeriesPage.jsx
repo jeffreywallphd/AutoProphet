@@ -113,6 +113,7 @@ class TimeSeriesPage extends Component {
         });
 
         // TODO: consider whether there is a more computationally efficient way to do this
+        // TODO: move from file cache to the SQLite DB for more efficient querying
         // Cache the parsed data into the created folders
         for(var cacheFolder in secData.data) {
             var folderData = {lastCached: date.toLocaleDateString(), data: {}}
@@ -142,7 +143,6 @@ class TimeSeriesPage extends Component {
                     <div className="flex">
                         <div>
                             <TickerSearchBar cacheHandler={this.manageTickerCikMapCache} state={this.state} onDataChange={this.handleDataChange}/>
-                            {/* Use a ternary operator for concise conditional rendering */}
                             { this.state.data ? (
                                 <TimeSeriesChart state={this.state} onIntervalChange={this.handleIntervalChange} />
                             ) : this.state.isLoading === true ? (

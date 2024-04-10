@@ -12,22 +12,22 @@ import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 function NewsSearchBar(props) {
     //TODO: implement error handling
     //Gets ticker data
-    const fetchNews = async (args) => {
+    const fetchNews = async (state) => {
         //Take away previous data
         props.onDataChange({
             initializing: false,
             data: null,
-            error: props.state.error,
+            error: state.error,
             isLoading: true,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
+            securitiesList: state.securitiesList,
+            searchRef: state.searchRef,
         });
 
         var companyName = "";
 
         //get company name from securities list data
-        props.state.securitiesList.find((element) => {
-            if(element.ticker === (props.state.searchRef.current.value).toUpperCase()) {
+        state.securitiesList.find((element) => {
+            if(element.ticker === (state.searchRef).toUpperCase()) {
                 companyName = element.companyName;
             }
         });
@@ -38,7 +38,7 @@ function NewsSearchBar(props) {
             "request": { 
                 "news": {
                     "action": "searchByTicker",
-                    "ticker": "${props.state.searchRef.current.value}",
+                    "ticker": "${state.searchRef}",
                     "companyName": "${companyName}"
                 }
             }
@@ -49,10 +49,10 @@ function NewsSearchBar(props) {
         props.onDataChange({
             initializing: false,
             data: results,
-            error: props.state.error,
+            error: state.error,
             isLoading: false,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
+            securitiesList: state.securitiesList,
+            searchRef: state.searchRef,
         });
     }
 
