@@ -73,3 +73,12 @@ INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voice
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (1, "How to Invest in Common Stock", "Stocks/Slide10.html", "Stocks/Slide10_Stocks.mp3", 10);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (1, "Stock Options", "Stocks/Slide11.html", "Stocks/Slide11_Stocks.mp3", 11);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (1, "Returns", "Stocks/Slide12.html", "Stocks/Slide12_Stocks.mp3", 12);
+
+INSERT OR IGNORE LearningModule (id, title, description, keywords, tumeEstimate, category) VALUES (3, "Introduction to Taxes", "This learning module provides you with an introduction to taxes in investing.", "capital gains tax", 10, "Taxes");
+INSERT OR IGNORE LearningModule (moduleID, title, subTitle, pagenumber, pageType) VALUES (3, "Introduction to Taxes", "A Beginner's Overview of Taxes", 13, "TitlePage");
+INSERT OR IGNORE LearningModule (moduleID, title, pageContentUrl, pageNumber) VALUES (3, "Topics Covered", "Taxes/Slide14.html", 14);
+INSERT OR IGNORE LearningModule (moduleID, title, subTitle, pageNumber, pageType) VALUES (3, "Capital Gains Tax", "What Is It?", 15, "SectionPage");
+INSERT OR IGNORE LearningModule (moduleID, title, PageContentUrl, voiceoverUrl, pageNumber) VALUES (3, "Capital Gains Tax Definition", "Taxes/Slide16.html", "Taxes/Slide16_Taxes.mp3", 16);
+INSERT OR IGNORE LearningModule (moduleID, title, PageContentUrl, voiceoverUrl, pageNumber) VALUES (3, "Short-term VS Long-Term Capital Gains", "Taxes/Slide17.html", "Taxes/Slide17_Taxes.mp3", 17);
+INSERT OR IGNORE LearningModule (moduleID, title, PageContentUrl, voiceoverUrl, pageNumber) VALUES (3, "Example Calculations", "Taxes/Slide18.html", "Taxes/Slide18_Taxes.mp3", 18);
+INSERT OR IGNORE LearningModule (moduleID, title, PageContentUrl, voiceoverUrl, pageNumber) VALUES (3, "Strategies To Minimize Taxes", "Taxes/Slide19.html", "Taxes/Slide19_Taxes.mp3", 19);
