@@ -25,7 +25,8 @@ export class StockInteractor implements IInputBoundary {
         
         var stockGateway: IDataGateway;
         // use internal database for company/ticker/cik lookups
-        if(requestModel.request.request.stock.action === "lookup") {
+
+        if(requestModel.request.request.stock.action === "downloadPublicCompanies") {
             stockGateway = new SQLiteCompanyLookupGateway();
 
             //check to see if the PublicCompany table is filled and has been updated recently
@@ -39,11 +40,22 @@ export class StockInteractor implements IInputBoundary {
                 dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
             }
 
+            //var response = new JSONResponse();
+
             // Re-cache ticker:cik mapping if more than 14 days old. Also cache if undefined.
             // Re-caching is done to capture new IPOs and changes to org reporting data
             if(lastUpdated === undefined || dayDiff > 30) {
-                stockGateway.refreshTableCache(stock);    
-            }
+                await stockGateway.refreshTableCache(stock);
+                return;     
+            } 
+
+            return;
+        } 
+
+        if(requestModel.request.request.stock.action === "lookup") {
+            stockGateway = new SQLiteCompanyLookupGateway();
+
+            
         } else {
             //instantiate the correct API gateway
             const stockGatewayFactory = new StockGatewayFactory();
