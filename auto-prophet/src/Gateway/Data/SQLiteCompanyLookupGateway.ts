@@ -1,3 +1,4 @@
+import { StockRequest } from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
 import {ISqlDataGateway} from "../Data/ISqlDataGateway";
 
@@ -23,7 +24,7 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
         try {
             const query = "INSERT INTO PublicCompany (ticker, cik) VALUES (?, ?)";
             const args  = [entity.getFieldValue("ticker"), entity.getFieldValue("cik")];
-            const result = await window.electron.ipcRenderer.invoke('sqlite-insert', { query, args });
+            const result = await window.electron.ipcRenderer.invoke('sqlite-insert', { database: this.databasePath, query: query, parameters: args });
             return true;
         } catch(error) {
             return false;
@@ -54,7 +55,7 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
                     parameterArray.push(keyword);
                     hasWhereCondition = true;
                 } else {
-                    query = this.appendWhere(query, " ticker LIKE '%' || ? || '%' OR companyName LIKE '%' || ? || '%'", hasWhereCondition);
+                    query = this.appendWhere(query, " ticker LIKE ? || '%' OR companyName LIKE ? || '%'", hasWhereCondition);
                     
                     // Push twice to check in ticker and companyName
                     // TODO: create a text index with ticker and companyName data
@@ -77,19 +78,36 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
                 query = this.appendWhere(query, " cik LIKE '%' || ? || '%'", hasWhereCondition);
                 parameterArray.push(cik);
             }
+
+            query += " ORDER BY ticker ASC LIMIT 10";
             
-            const rows = await window.electron.ipcRenderer.invoke('sqlite-query', { query, parameterArray });
+            const data = await window.electron.ipcRenderer.invoke('sqlite-query', { database: this.databasePath, query: query, parameters: parameterArray });
+            window.console.log(data);
+            var entities;
+            if (action === "lookup") {
+                entities = this.formatLookupResponse(data);
+            }
 
-            const entities:IEntity[] = [];
-
-            rows.forEach((row:any) => {
-                window.console.log(row);
-                entities.push(row);
-            });
-
+            return entities;
         } catch(error) {
             window.console.error(error);
         }
+    }
+
+    private formatLookupResponse(data:any) {
+        var array: Array<IEntity> = [];
+
+        for (const match of data) {           
+            var entity = new StockRequest();
+            
+            entity.setFieldValue("ticker", match.ticker.toUpperCase());
+            entity.setFieldValue("companyName", match.companyName);
+            entity.setFieldValue("cik", match.cik);
+            
+            array.push(entity);
+        }
+
+        return array
     }
 
     private appendWhere(query:string, condition:string, hasWhereCondition:boolean) {
@@ -112,10 +130,10 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
         try {
             const query = "DELETE FROM PublicCompany;";
             const args:any[]  = [];
-            const result = await window.electron.ipcRenderer.invoke('sqlite-delete', { query, args });
+            const result = await window.electron.ipcRenderer.invoke('sqlite-delete', { query: query, parameters: args });
             
             const query2 = "UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='PublicCompany'";
-            await window.electron.ipcRenderer.invoke('sqlite-update', { query2, args });
+            await window.electron.ipcRenderer.invoke('sqlite-update', { query: query2, parameters: args });
             
             return result;
         } catch(error) {
@@ -128,7 +146,7 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
     async checkTableExists() {
         const query = "SELECT name FROM sqlite_master WHERE type='table' AND name='PublicCompany';"
         const args:any[]  = [];
-        const rows = await window.electron.ipcRenderer.invoke('sqlite-query', { query, args });
+        const rows = await window.electron.ipcRenderer.invoke('sqlite-query', { query: query, parameters: args });
         
         if(rows !== null && rows[0].name) {
             return true;
@@ -141,30 +159,29 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
     async checkLastTableUpdate() {
         const query = "SELECT changedAt FROM modifications WHERE tableName='PublicCompany' ORDER BY changedAt DESC LIMIT 1"
         const args:any[]  = [];
-        const rows = await window.electron.ipcRenderer.invoke('sqlite-query', { query, args });
-        window.console.log(rows[0].changedAt);
+        const data = await window.electron.ipcRenderer.invoke('sqlite-get', { query: query, parameters: args });
         
-        var date = undefined;
-
-        if(rows !== null && rows[0].changedAt) {
-            date = new Date(rows[0].changedAt);
-        } 
-        
-        return date;
+        if(data && data.changedAt) {
+            return new Date(data.changedAt);
+        } else {
+            return undefined;
+        }
     }
 
     async refreshTableCache(entity: IEntity) {
         await this.delete(entity, "");
 
-        const response = await fetch('https://www.sec.gov/include/ticker.txt');
-        const secTextData = await response.text();
+        const response = await fetch('https://www.sec.gov/files/company_tickers.json');
+        const secData = await response.json();
 
         // Parse the SEC text file to extract ticker:CIK pairs
-        const lines = secTextData.split('\n');
-        const parsedData = lines.map(async (line) => {
-            var [ticker, cik] = line.split('\t');
-            
-            // Add leading 0's to CIK
+        //const lines = secTextData.split('\n');
+
+        for(var key in secData) {
+            var ticker = secData[key]["ticker"];
+            var cik = secData[key]["cik_str"];
+            var companyName = secData[key]["title"].toUpperCase();
+
             if(cik.toString().length < 10) {
                 const diff = 10 - cik.toString().length;
                 var newCik = "";
@@ -175,10 +192,10 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
 
                 cik = newCik + cik;
             }
-
-            const query = "INSERT INTO PublicCompany (ticker, cik) VALUES(?,?)";
-            const args  = [ticker, cik];
-            const result = await window.electron.ipcRenderer.invoke('sqlite-insert', { query, args });
-        });
+            
+            const query = "INSERT INTO PublicCompany (companyName, ticker, cik) VALUES(?,?,?)";
+            const args  = [companyName, ticker, cik];
+            await window.electron.ipcRenderer.invoke('sqlite-insert', { query: query, parameters: args });
+        } 
     }
 }

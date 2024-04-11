@@ -64,7 +64,7 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
       formattedData.push({
         date: date.toLocaleDateString(),
         time: action === "intraday" ? date.toLocaleTimeString() : "", // Only include time for intraday data
-        price: item[closingPriceKey],
+        price: item[closingPriceKey] ? Math.round(item[closingPriceKey]*100)/100: null,
         volume: item["volume"],
       });
     }
@@ -116,12 +116,19 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
     }        
   }
 
-  private async getIntradayData(ticker: any) {
+  private async getIntradayData(entity: IEntity) {
     try {
+      const currentDate = new Date();
+      const previousDate = new Date();
+
+      const startDate = new Date(previousDate.setDate(currentDate.getDate() - 1));
+
       const queryOptions = {
-        period1: new Date()
+        period1: startDate,
+        period2: currentDate,
+        interval: "1m"
       };
-      const data = await this.yahooFinance.chart(ticker, queryOptions);
+      const data = await this.yahooFinance.chart(entity.getFieldValue("ticker"), queryOptions);
       return data;
     } catch (error) {
       throw new Error("Error occurred while fetching intraday data: " + error.message);
@@ -129,15 +136,16 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
   }
 
   private async getInterdayData(entity: IEntity) {
-    var period2;
+    var period1;
     const currentDate = new Date();
     const previousDate = new Date();
 
-    const fiveDaysAgo = new Date(previousDate.setDate(currentDate.getDate() - 5)).toISOString().split('T')[0];
-    const oneMonthAgo = new Date(previousDate.setDate(currentDate.getDate() - 30)).toISOString().split('T')[0];
-    const sixMonthsAgo = new Date(previousDate.setDate(currentDate.getDate() - 180)).toISOString().split('T')[0];
-    const oneYearAgo = new Date(previousDate.setDate(currentDate.getDate() - 365)).toISOString().split('T')[0];
-    const fiveYearsAgo = new Date(previousDate.setDate(currentDate.getDate() - 2190)).toISOString().split('T')[0];
+    const fiveDaysAgo = new Date(previousDate.setDate(currentDate.getDate() - 5));
+    const oneMonthAgo = new Date(previousDate.setDate(currentDate.getDate() - 30));
+    const sixMonthsAgo = new Date(previousDate.setDate(currentDate.getDate() - 180));
+    const oneYearAgo = new Date(previousDate.setDate(currentDate.getDate() - 365));
+    const fiveYearsAgo = new Date(previousDate.setDate(currentDate.getDate() - 2190));
+    const twentyYearsAgo = new Date(previousDate.setDate(currentDate.getDate() - 7300));
 
     const period2Map: { [key: string]: any } = { 
         "5D": fiveDaysAgo,
@@ -145,15 +153,15 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
         "6M": sixMonthsAgo,
         "1Y": oneYearAgo,
         "5Y": fiveYearsAgo,
-        "Max": null
+        "Max": twentyYearsAgo
     };
 
-    period2 = period2Map[entity.getFieldValue("interval")];
+    period1 = period2Map[entity.getFieldValue("interval")];
 
     try {
         const data = await this.yahooFinance.historical(entity.getFieldValue("ticker"), {
-            period1: new Date().toISOString().split('T')[0],
-            period2: period2
+            period1: period1,
+            period2: new Date()
         });
         return data;
     } catch (error) {
