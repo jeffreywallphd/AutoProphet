@@ -3,101 +3,93 @@ import {ISqlDataGateway} from "../Data/ISqlDataGateway";
 
 // allow the yahoo.finance contextBridge to be used in TypeScript
 declare global {
-    interface Window { database: any; }
+    interface Window { electron: any }
 }
 
 export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
     databasePath = "./src/Asset/DB/AutoProphet.db";
     connection: any = null;
 
-    connect(): void {
-        this.connection = new window.database.sqlite.Database('./src/Asset/DB/AutoProphet.db');
+    async connect(): Promise<void> {
+        throw new Error("Due to the nature of this gateway's dependencies, connections are not handled through this method");
     }
 
     disconnect(): void {
-        if(this.connection != null) {
-            this.connection.close();
-        }
+        throw new Error("Due to the nature of this gateway's dependencies, connections and disconnections are not handled through this method");
     }
 
     // used to create and periodically refresh the cache
     async create(entity: IEntity, action: string): Promise<Boolean> {
-        const statement = this.connection.prepare("INSERT INTO PublicCompany (ticker, cik) VALUES (?, ?)");
-        return await statement.run([entity.getFieldValue("ticker"), entity.getFieldValue("cik")]);
+        try {
+            const query = "INSERT INTO PublicCompany (ticker, cik) VALUES (?, ?)";
+            const args  = [entity.getFieldValue("ticker"), entity.getFieldValue("cik")];
+            const result = await window.electron.ipcRenderer.invoke('sqlite-insert', { query, args });
+            return true;
+        } catch(error) {
+            return false;
+            window.console.error(error);
+        }
     }
     
     async read(entity: IEntity, action: string): Promise<IEntity[]> {
-        const keyword = entity.getFieldValue("keyword");
-        const companyName = entity.getFieldValue("companyName");
-        const ticker = entity.getFieldValue("ticker");
-        const cik = entity.getFieldValue("cik");
+        try {
+            const keyword = entity.getFieldValue("keyword");
+            const companyName = entity.getFieldValue("companyName");
+            const ticker = entity.getFieldValue("ticker");
+            const cik = entity.getFieldValue("cik");
 
-        if(keyword === null && companyName === null && ticker === null && cik === null) {
-            return [];
-        }
-
-        var query:string = "SELECT * FROM PublicCompany WHERE"
-        const parameterArray:any[] = [];
-
-        var hasWhereCondition:boolean = false;
-
-        if(keyword !== null) {
-            // treat the keyword as a CIK if able to parseFloat()
-            if(!isNaN(parseFloat(keyword))) {
-                query = this.appendWhere(query, " cik=?", hasWhereCondition);
-                parameterArray.push(keyword);
-                hasWhereCondition = true;
-            } else {
-                query = this.appendWhere(query, " ticker LIKE '%' || ? || '%' OR companyName LIKE '%' || ? || '%'", hasWhereCondition);
-                
-                // Push twice to check in ticker and companyName
-                // TODO: create a text index with ticker and companyName data
-                parameterArray.push(keyword);
-                parameterArray.push(keyword);
+            if(keyword === null && companyName === null && ticker === null && cik === null) {
+                return [];
             }
-        }
 
-        if(companyName != null) {
-            query = this.appendWhere(query, " companyName LIKE '%' || ? || '%'", hasWhereCondition);
-            parameterArray.push(companyName);
-        }
+            var query:string = "SELECT * FROM PublicCompany WHERE"
+            const parameterArray:any[] = [];
 
-        if(ticker != null) {
-            query = this.appendWhere(query, " ticker LIKE '%' || ? || '%'", hasWhereCondition);
-            parameterArray.push(ticker);
-        }
+            var hasWhereCondition:boolean = false;
 
-        if(cik != null) {
-            query = this.appendWhere(query, " cik LIKE '%' || ? || '%'", hasWhereCondition);
-            parameterArray.push(cik);
-        }
-
-        const statement = this.connection.prepare(query);
-        //const results = await statement.run(parameterArray);
-
-        return new Promise((resolve, reject) => {
-            try {
-              const entities:IEntity[] = [];
-              //execute the query
-              statement.all(parameterArray, (err:any, rows:any) => {
-                if (err) {
-                  window.console.log(err);
-                  reject(err);
-                  return;
+            if(keyword !== null) {
+                // treat the keyword as a CIK if able to parseFloat()
+                if(!isNaN(parseFloat(keyword))) {
+                    query = this.appendWhere(query, " cik=?", hasWhereCondition);
+                    parameterArray.push(keyword);
+                    hasWhereCondition = true;
+                } else {
+                    query = this.appendWhere(query, " ticker LIKE '%' || ? || '%' OR companyName LIKE '%' || ? || '%'", hasWhereCondition);
+                    
+                    // Push twice to check in ticker and companyName
+                    // TODO: create a text index with ticker and companyName data
+                    parameterArray.push(keyword);
+                    parameterArray.push(keyword);
                 }
-        
-                // Convert rows to array of objects
-                rows.forEach((row:any) => {
-                    window.console.log(row);
-                    entities.push(row)
-                });
-                resolve(entities);
-              });
-            } catch (err) {
-              console.log(err);
-              reject(err);
-            } 
-          });
+            }
+
+            if(companyName !== null) {
+                query = this.appendWhere(query, " companyName LIKE '%' || ? || '%'", hasWhereCondition);
+                parameterArray.push(companyName);
+            }
+
+            if(ticker !== null) {
+                query = this.appendWhere(query, " ticker LIKE '%' || ? || '%'", hasWhereCondition);
+                parameterArray.push(ticker);
+            }
+
+            if(cik !== null) {
+                query = this.appendWhere(query, " cik LIKE '%' || ? || '%'", hasWhereCondition);
+                parameterArray.push(cik);
+            }
+            
+            const rows = await window.electron.ipcRenderer.invoke('sqlite-query', { query, parameterArray });
+
+            const entities:IEntity[] = [];
+
+            rows.forEach((row:any) => {
+                window.console.log(row);
+                entities.push(row);
+            });
+
+        } catch(error) {
+            window.console.error(error);
+        }
     }
 
     private appendWhere(query:string, condition:string, hasWhereCondition:boolean) {
@@ -117,17 +109,28 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
 
     // purge the database of entries for a periodic refresh of the data
     async delete(entity: IEntity, action: string): Promise<number> {
-        await this.connection.run("DELETE FROM PublicCompany;");
-        //reset indices for this table
-        return await this.connection.run("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='PublicCompany';");
+        try {
+            const query = "DELETE FROM PublicCompany;";
+            const args:any[]  = [];
+            const result = await window.electron.ipcRenderer.invoke('sqlite-delete', { query, args });
+            
+            const query2 = "UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='PublicCompany'";
+            await window.electron.ipcRenderer.invoke('sqlite-update', { query2, args });
+            
+            return result;
+        } catch(error) {
+            window.console.error(error);
+            return 0;
+        }
     }
 
     //check to see if the database table exists
     async checkTableExists() {
         const query = "SELECT name FROM sqlite_master WHERE type='table' AND name='PublicCompany';"
-        const row = await this.connection.get(query);
-
-        if(row !== null && row.name) {
+        const args:any[]  = [];
+        const rows = await window.electron.ipcRenderer.invoke('sqlite-query', { query, args });
+        
+        if(rows !== null && rows[0].name) {
             return true;
         }
 
@@ -136,14 +139,15 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
 
     //for database tables that act as cache, check for the last time a table was updated
     async checkLastTableUpdate() {
-        const query = "SELECT changedAt FROM modifications WHERE tableName='PublicCompany' ORDER BY changedAt DESC LIMIT 1";
-        const row = await this.connection.get(query);
-        window.console.log(row.changedAt);
+        const query = "SELECT changedAt FROM modifications WHERE tableName='PublicCompany' ORDER BY changedAt DESC LIMIT 1"
+        const args:any[]  = [];
+        const rows = await window.electron.ipcRenderer.invoke('sqlite-query', { query, args });
+        window.console.log(rows[0].changedAt);
         
         var date = undefined;
 
-        if(row !== null && row.changedAt) {
-            date = new Date(row.changedAt);
+        if(rows !== null && rows[0].changedAt) {
+            date = new Date(rows[0].changedAt);
         } 
         
         return date;
@@ -172,9 +176,9 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
                 cik = newCik + cik;
             }
 
-            var query = "INSERT INTO PublicCompany (ticker, cik) VALUES(?,?)";
-            const statement = this.connection.prepare(query);
-            await statement.run([ticker, cik]);
+            const query = "INSERT INTO PublicCompany (ticker, cik) VALUES(?,?)";
+            const args  = [ticker, cik];
+            const result = await window.electron.ipcRenderer.invoke('sqlite-insert', { query, args });
         });
     }
 }

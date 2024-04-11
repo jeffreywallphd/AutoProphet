@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS PublicCompany (
 );
 
 /*create a table to track changes to some tables that act as cache*/
-CREATE TABLE modifications (
+CREATE TABLE IF NOT EXISTS modifications (
     tableName TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
     action TEXT NOT NULL,
     changedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP

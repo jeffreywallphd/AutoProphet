@@ -17,7 +17,16 @@ contextBridge.exposeInMainWorld('yahoo', {
 
 // for databases that rely on require(), add them to this contextBridge
 contextBridge.exposeInMainWorld('database', {
-    sqlite: require('sqlite3').verbose()
+    sqlite: (database) => {
+        try{
+            const sqlite3 = require('sqlite3').verbose();
+            const db = new sqlite3.Database(database);
+            return db;
+        } catch(error) {
+            window.console.error(error);
+        }
+        
+    }
 });
 
 // use window.console.log when you need to log within electron

@@ -20,6 +20,53 @@ ipcMain.handle('select-data', async (event, args) => {
   return data;
 });
 
+ipcMain.handle('sqlite-query', async (event, args) => {
+  try{
+    const db = new sqlite3.Database(args["database"]);
+    const data = await db.all(args["query"], args["parameters"]);
+    db.close();
+    return data;
+  } catch(error) {
+    console.log(error);
+  }
+});
+
+ipcMain.handle('sqlite-insert', async (event, args) => {
+  try{
+    const db = new sqlite3.Database(args["database"]);
+    const statement = await db.prepare(args["query"]);
+    result = await statement.run(args["parameters"]);
+    db.close();
+    return result;
+  } catch(error) {
+    console.log(error);
+  }
+});
+
+ipcMain.handle('sqlite-update', async (event, args) => {
+  try{
+    const db = new sqlite3.Database(args["database"]);
+    const statement = await db.prepare(args["query"]);
+    result = await statement.run(args["parameters"]);
+    db.close();
+    return result;
+  } catch(error) {
+    console.log(error);
+  }
+});
+
+ipcMain.handle('sqlite-delete', async (event, args) => {
+  try{
+    const db = new sqlite3.Database(args["database"]);
+    const statement = await db.prepare(args["query"]);
+    result = await statement.run(args["parameters"]);
+    db.close();
+    return result;
+  } catch(error) {
+    console.log(error);
+  }
+});
+
 // TODO: try to remove nodeIntegration, as it may create security vulnerabilities
 const createWindow = () => {
   win = new BrowserWindow({ 

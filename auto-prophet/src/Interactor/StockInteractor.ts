@@ -23,25 +23,27 @@ export class StockInteractor implements IInputBoundary {
         var stock = new StockRequest();
         stock.fillWithRequest(requestModel);
         
-        var stockGateway: IDataGateway
+        var stockGateway: IDataGateway;
         // use internal database for company/ticker/cik lookups
         if(requestModel.request.request.stock.action === "lookup") {
             stockGateway = new SQLiteCompanyLookupGateway();
-            
+
             //check to see if the PublicCompany table is filled and has been updated recently
             const lastUpdated = await stockGateway.checkLastTableUpdate();
 
-            if(lastUpdated === undefined) {
+            var dayDiff=0; 
+
+            if(lastUpdated !== undefined) {
                 // Calculate last time cache was updated in milliseconds; convert to days
                 const timeDiff = Math.abs(date.getTime() - lastUpdated.getTime());
-                const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-                // Re-cache particular folder data map if more than 7 days old
-                if (dayDiff > 7) {
-                    throw Error("The cache is outdated");
-                }
+                dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
             }
 
+            // Re-cache ticker:cik mapping if more than 14 days old. Also cache if not exists.
+            // Re-caching is done to capture new IPOs and changes to org reporting data
+            if(lastUpdated === undefined || dayDiff > 14) {
+                stockGateway.refreshTableCache(stock);    
+            }
         } else {
             //instantiate the correct API gateway
             const stockGatewayFactory = new StockGatewayFactory();
