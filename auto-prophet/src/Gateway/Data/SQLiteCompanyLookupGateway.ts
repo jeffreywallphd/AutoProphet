@@ -42,9 +42,20 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
             if(keyword === null && companyName === null && ticker === null && cik === null) {
                 return [];
             }
+            
+            var query:string = "SELECT *";
 
-            var query:string = "SELECT * FROM PublicCompany WHERE"
+            // an array to contain the parameters for the parameterized query
             const parameterArray:any[] = [];
+
+            // create a preference for ticker matches over companyName matches
+            if(keyword !== null) {
+                query += ", CASE WHEN ticker LIKE ? || '%' THEN 1 WHEN companyName LIKE ? || '%' THEN 2 ELSE 3 END AS rank";
+                parameterArray.push(keyword);
+                parameterArray.push(keyword);
+            }
+
+            query += " FROM PublicCompany WHERE";
 
             var hasWhereCondition:boolean = false;
 
@@ -79,8 +90,13 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
                 parameterArray.push(cik);
             }
 
-            query += " ORDER BY ticker ASC LIMIT 10";
+            if(keyword !== null) {
+                query += " ORDER BY rank ASC, ticker ASC LIMIT 10";
+            } else {
+                query += " ORDER BY ticker ASC LIMIT 10";
+            }
             
+            window.console.log(query);
             const data = await window.electron.ipcRenderer.invoke('sqlite-query', { database: this.databasePath, query: query, parameters: parameterArray });
             window.console.log(data);
             var entities;
