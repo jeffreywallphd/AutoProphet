@@ -73,7 +73,7 @@ export function Learn() {
                   });
             });
         } catch (error) {
-            window.terminal.error('Error fetching data:' + error);
+            console.error('Error fetching data:' + error);
         }
     };
 
