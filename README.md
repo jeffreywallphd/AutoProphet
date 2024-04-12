@@ -10,7 +10,7 @@ To begin contributing to the repository follow the instructions below. If you ar
 1. Ensure you have a version of git installed on your computer appropriate for your operating system
 2. Download and install NodeJS: https://nodejs.org/en/download
 3. Clone the repository: https://github.com/jeffreywallphd/AutoProphet.git
-4. In the auto-prophet folder, create a folder named:
+4. In the auto-prophet folder, create a folder named: config
    * Create a file in the config folder named: default.json
    * Add the following to the default.json file: { "StockGateway": "AlphaVantageStockGateway", "NewsGateway": "AlphaVantageNewsGateway", "ReportGateway": "AlphaVantageRatioGateway"}
 5. In the auto-prophet folder, create a file named: .env
