@@ -13,6 +13,9 @@ export class StockRequest implements IEntity {
         var ticker = new Field("ticker", "string", null);
         this.fields.set("ticker", ticker);
 
+        var cik = new Field("cik", "string", null);
+        this.fields.set("cik", cik);
+
         var companyName = new Field("companyName", "string", null);
         this.fields.set("companyName", companyName);
 
@@ -53,6 +56,10 @@ export class StockRequest implements IEntity {
 
         if(json.request.stock.hasOwnProperty("ticker")) {
             this.setFieldValue("ticker", json.request.stock.ticker);
+        }
+
+        if(json.request.stock.hasOwnProperty("cik")) {
+            this.setFieldValue("cik", json.request.stock.cik);
         }
 
         if(json.request.stock.hasOwnProperty("companyName")) {

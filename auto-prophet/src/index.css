@@ -30,7 +30,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-} 
+}
+
+#root {
+  height: 100%;
+}
 
 footer {
   background-color: var(--primary-color);
@@ -63,6 +67,35 @@ h4{
 button {
   cursor: pointer;
 }
+
+.loadingContainer {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadingContent {
+  color: var(--text-color-light);
+  text-align: center;
+}
+
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  text-align: center;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 /* Home Page */
 
@@ -124,8 +157,8 @@ button {
 
 #navIcon{
   border-image: 0;
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   margin: 0;
 }
@@ -144,7 +177,6 @@ code {
 }
 
 .sidePanel {
-  
   flex: 1;
 }
 
@@ -156,7 +188,7 @@ code {
 }
 
 .sidebar.collapsed { 
-  width: 60px;
+  width: 40px;
 }
 
 .header {
@@ -310,6 +342,10 @@ code {
   padding: 5px;
 }
 
+.chartContainer {
+  width: 700px;
+}
+
 .priceSearchFormContainer{
   display: flex;
   gap: 15px;
@@ -338,6 +374,11 @@ code {
 .priceSearchButton:hover{
   background-color: var(--accent-color);
   box-shadow: 5px 5px 5px 0px rgba(186,186,186,0.5);
+}
+
+.btn-group {
+  text-align: right;
+  padding-right: 30px;
 }
 
 /*Used excluively in the Analysis Page*/
