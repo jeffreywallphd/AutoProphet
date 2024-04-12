@@ -10,10 +10,15 @@ const updateConfigFile = (api) => {
         
         // Update the specific API endpoint based on the selected API
         if (api === 'alphaVantage') {
-            config.newsGateway = 'AlphaVantageNewsGateway';
+            config.StockGateway = 'AlphaVantageStockGateway';
+            config.NewsGateway = 'AlphaVantageNewsGateway';
         } else if (api === 'financialModelingPrep') {
             config.StockGateway = 'FinancialModelingPrepGateway';
-        } // Add more conditions as needed for other APIs
+            config.NewsGateway = 'AlphaVantageNewsGateway';
+        } else if (api === 'YahooFinance') {
+            config.StockGateway = 'YFinanceStockGateway';
+            config.NewsGateway = 'AlphaVantageNewsGateway';
+        }
         
         fs.writeFileSync(configFile, JSON.stringify(config, null, 4));
         console.log('Configuration updated successfully.');
@@ -30,10 +35,13 @@ const updateEnvFile = (apiKey) => {
     const envFile = './.env';
     try {
         let envData = fs.readFileSync(envFile, 'utf8');
-        // Replace the existing API key with the new one
-        const regex = new RegExp(/^(ALPHAVANTAGE_API_KEY|FINANCIALMODELINGPREP_API_KEY|YAHOO_FINANCE_API_KEY)=.*$/gm);
-        envData = envData.replace(regex, `$1=${apiKey}`);
-        fs.writeFileSync(envFile, envData);
+        let envConfig = JSON.parse(envData);
+
+        // Update the specific API key based on the provided key
+        envConfig.ALPHAVANTAGE_API_KEY = apiKey;
+        
+        
+        fs.writeFileSync(envFile, JSON.stringify(envConfig, null, 4));
         console.log('.env file updated successfully.');
     } catch (err) {
         console.error('Error updating .env file:', err);
