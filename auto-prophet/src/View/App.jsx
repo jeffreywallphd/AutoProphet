@@ -5,12 +5,6 @@
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 import React, { useState } from "react";
-import {
-  Routes,
-  Route,
-  NavLink,
-  HashRouter
-} from "react-router-dom";
 
 //Imports for react pages and assets
 import AppLoaded from "./AppLoaded";

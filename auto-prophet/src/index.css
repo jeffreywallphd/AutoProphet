@@ -98,8 +98,8 @@ button {
 
 #navIcon{
   border-image: 0;
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   margin: 0;
 }
@@ -118,7 +118,6 @@ code {
 }
 
 .sidePanel {
-  
   flex: 1;
 }
 
@@ -130,7 +129,7 @@ code {
 }
 
 .sidebar.collapsed { 
-  width: 60px;
+  width: 40px;
 }
 
 .header {
@@ -284,6 +283,10 @@ code {
   padding: 20px;
 }
 
+.chartContainer {
+  width: 700px;
+}
+
 .priceSearchFormContainer{
   display: flex;
   gap: 15px;
@@ -312,6 +315,11 @@ code {
 .priceSearchButton:hover{
   background-color: var(--accent-color);
   box-shadow: 5px 5px 5px 0px rgba(186,186,186,0.5);
+}
+
+.btn-group {
+  text-align: right;
+  padding-right: 30px;
 }
 
 /*Used excluively in the Analysis Page*/

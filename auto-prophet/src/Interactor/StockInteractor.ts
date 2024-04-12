@@ -54,8 +54,6 @@ export class StockInteractor implements IInputBoundary {
 
         if(requestModel.request.request.stock.action === "lookup") {
             stockGateway = new SQLiteCompanyLookupGateway();
-
-            
         } else {
             //instantiate the correct API gateway
             const stockGatewayFactory = new StockGatewayFactory();
