@@ -1,8 +1,8 @@
 ## Price / Volume Future Feature Ideas ##
 
 **Future Idea #1:** Current Price and Volume
-- With our current educational key with Auto Prophet, we cannot get current day price and volume data, only day-old data.
-- You could try getting funding to pay for an Auto Prophet Premium key (monthly subscription) or find a different API to get current price and volume data.
+- With our current educational key with Alpha Vantage, we cannot get current day price and volume data, only day-old data.
+- You could try getting funding to pay for an Alpha Vantage Premium key (monthly subscription) or find a different API to get current price and volume data.
 - Once you have the current price and volume data, you could implement a few ideas:
     - Display the current price and volume above all charts in red or green depending on if it has increased or decreased on the day.
     - Display the day change in price and volume
