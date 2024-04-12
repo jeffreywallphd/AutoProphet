@@ -1,13 +1,31 @@
 # AutoProphet
 AutoProphet is an open source financial analytics tool designed to provide financial analytics capabilties at a low cost. The tool is meant to provide novice investors with the opportunity to learn and explore financial analytics capabilities, beginning with a simple set of analytics tools and gradually learning more complex tools and models.
 
-
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Installation
-To begin contributing to the repository:
+To begin contributing to the repository follow the instructions below. If you are familiar with software development, please follow the quick install instructions. If you are new to software development, a more detailed set of instructions can be found after the quick install instructions.
 
-## Download the following software
+### Quick Install Instructions
+1. Ensure you have a version of git installed on your computer appropriate for your operating system
+2. Download and install NodeJS: https://nodejs.org/en/download
+3. Clone the repository: https://github.com/jeffreywallphd/AutoProphet.git
+4. In the auto-prophet folder, create a folder named: config
+   * Create a file in the config folder named: default.json
+   * Add the following to the default.json file: { "StockGateway": "AlphaVantageStockGateway", "NewsGateway": "AlphaVantageNewsGateway", "ReportGateway": "AlphaVantageRatioGateway"}
+5. In the auto-prophet folder, create a file named: .env
+   * Add the following to the .env file: {"ALPHAVANTAGE_API_KEY": "your_key_here", "FMP_API_KEY": "your_key_here"}
+   * Replace your_key_here with a free AlphaVantage key found here: https://www.alphavantage.co/support/#api-key
+   * Replace your_key_here with a free Financial Modeling Prep key, which requires account signup here: https://site.financialmodelingprep.com/. After signup, the key can be found in the Dashboard.
+6. Install the project dependencies in the terminal/command line, by running: npm install
+7. To see the existing software, run: npm start
+8. The application should load in an Electron window.
+
+
+### Detailed Install Instructions
+The following instructions provide greater detail for contributors new to software development.
+
+#### Download the following software
 1. Download GitHub Desktop: https://desktop.github.com/
    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/6a62cd50-258f-4d9f-b302-d8e2880579ff)
 
@@ -102,7 +120,6 @@ To begin contributing to the repository:
 1. cd "file path to GitHub"
 2. cd auto-prophet
 3. npm start
-
       
 ## Disclaimers
 
@@ -121,27 +138,17 @@ Please be sure to read through the [Best Coding Practices](BestCodingPractices.m
 As you use git and GitHub to manager your contributions, follow the guidelines outlined in the [Git Practices](GitPractices.md) document. Remember to pull from main regularly to avoid code conflicts.
 
 ## Future Feature Ideas
-* Utilize the Recharts React visualization library: https://recharts.org/en-US
+To contribute feature ideas or to see other's ideas for features, please see the [Issues](https://github.com/jeffreywallphd/AutoProphet/issues) section of this repository. Your ideas are welcome. Please tag your feature ideas as "enhancements" so they are easy to find. 
 
 ## Acknowledgments
-All gratitude to the authors of this project for their valuable input and assistance.
+All gratitude to the Michigan Tech students who worked on this project to develop IT and FinTech knowledge and skills through their coursework and share their contributions.
 
-### Authors
+### Core Contributors
 * Jeffrey Wall - Faculty Advisor
-* Daron Hebeler
-* Trent Bennett
-* Josh Breitenbach
-* Tracy Gaolese
-* Hanna Hiltunen
-* Donovan Korth
-* Bester Mangisoni
-* Lizzie Schnell
-* Zack Stone
-* Maggie Zimmermann
+* Students at Michigan Technological University in MIS 4100 - Emerging Technologies: Fall 2023
+* Students at Michigan Technological University in MIS 3200 - Systems Analysis and Design: Spring 2024
 
 ### Dependencies
-* Node js
-* NPM
-
+Please see the package.json file in the auto-prophet folder for a list of the dependencies used in this project.
 
 
