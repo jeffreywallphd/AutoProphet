@@ -37,7 +37,7 @@ export function LearningModuleDetails(props) {
                   });
             });
         } catch (error) {
-            window.terminal.error('Error fetching data:' + error);
+            console.error('Error fetching data:' + error);
         }
     };
 
