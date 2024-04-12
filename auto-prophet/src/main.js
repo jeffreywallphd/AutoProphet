@@ -10,15 +10,7 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require("fs");
 const ipcMain = require('electron').ipcMain;
 
-//ipcMain.on('select-data', async (event, args) => {
-//  const data = await selectFromDatabase(args["query"], args["inputData"]);
-//  event.sender.send('select-data-response', data);
-//});
-
-ipcMain.handle('select-data', async (event, args) => {
-  const data = await selectFromDatabase(args["query"], args["inputData"]);
-  return data;
-});
+//////////////////////////// Core Electron Section ////////////////////////////
 
 // TODO: try to remove nodeIntegration, as it may create security vulnerabilities
 const createWindow = () => {
@@ -49,6 +41,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 });
 
+//////////////////////////// Database Section ////////////////////////////
 let db;
 
 const initDatabase = async () => {
@@ -62,6 +55,11 @@ const initDatabase = async () => {
 };
 
 initDatabase();
+
+ipcMain.handle('select-data', async (event, args) => {
+  const data = await selectFromDatabase(args["query"], args["inputData"]);
+  return data;
+});
 
 const selectFromDatabase = async (query, dataArray) => {
   return new Promise((resolve, reject) => {
@@ -78,6 +76,101 @@ const selectFromDatabase = async (query, dataArray) => {
 
         // Convert rows to array of objects
         rows.forEach((row) => data.push(row));
+        resolve(data);
+      });
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    } 
+  });
+};
+
+ipcMain.handle('sqlite-query', async (event, args) => {
+  console.log("sqlite-query: " + args);
+  const data = await sqliteQuery(args["query"], args["parameters"]);
+  console.log(data);
+  return data;
+});
+
+const sqliteQuery = async (query, dataArray) => {
+  return new Promise((resolve, reject) => {
+    const data = [];
+
+    try {
+      //execute the query
+      db.all(query, dataArray, (err, rows) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+          return;
+        }
+
+        // Convert rows to array of objects
+        rows.forEach((row) => data.push(row));
+        resolve(data);
+      });
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    } 
+  });
+};
+
+ipcMain.handle('sqlite-get', async (event, args) => {
+  console.log("sqlite-get: " + args["query"] + " " + args["parameters"]);
+  const data = await sqliteGet(args["query"], args["parameters"]);
+  console.log(data);
+  return data;
+});
+
+const sqliteGet = async (query, dataArray) => {
+  return new Promise((resolve, reject) => {
+    try {
+      //execute the query
+      db.get(query, dataArray, (err, data) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+          return;
+        }
+        resolve(data);
+      });
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    } 
+  });
+};
+
+ipcMain.handle('sqlite-insert', async (event, args) => {
+  console.log("sqlite-insert: " + args);
+  const data = await sqliteRun(args["query"], args["parameters"]);
+  return data;
+});
+
+ipcMain.handle('sqlite-update', async (event, args) => {
+  console.log("sqlite-update: " + args);
+  const data = await sqliteRun(args["query"], args["parameters"]);
+  return data;
+});
+
+ipcMain.handle('sqlite-delete', async (event, args) => {
+  console.log("sqlite-delete: " + args);
+  const data = await sqliteRun(args["query"], args["parameters"]);
+  return data;
+});
+
+const sqliteRun = async (query, dataArray) => {
+  return new Promise((resolve, reject) => {
+    try {
+      //execute the query
+      db.run(query, dataArray, (err, data) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+          return;
+        }
+
         resolve(data);
       });
     } catch (err) {
