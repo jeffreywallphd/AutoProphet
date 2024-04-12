@@ -1,10 +1,21 @@
 import React, { Component } from "react";
+import { updateConfigFile,updateEnvFile } from "../Utility/ConfigUpdater";
 
 class Settings extends Component {
-    handleSubmit = (api, apiKey) => {
+    handleSubmit = (event) => {
         // Handle form submission logic here
-        console.log('Selected API:', api);
-        console.log('API Key:', apiKey);
+        event.preventDefault();
+        const api = event.target.api.value;
+        const apiKey = event.target.apiKey.value;
+
+
+        // Update default.json with new API endpoint
+        updateConfigFile(api);
+
+        // Update .env file with new API key
+        updateEnvFile(apiKey);
+        
+        console.log('Configuration updated successfully.');
     };
 
     render() {
@@ -13,7 +24,7 @@ class Settings extends Component {
                 <h2>Settings</h2>
                 <div>
                     <h1>API Configuration</h1>
-                    <form onSubmit={(e) => { e.preventDefault(); }}>
+                    <form onSubmit={this.handleSubmit}>
                         <label htmlFor="api">Select API:</label>
                         <select id="api" name="api">
                             <option value="alphaVantage">AlphaVantage</option>
@@ -31,7 +42,7 @@ class Settings extends Component {
                         <br />
                         <small>Note: Yahoo Finance doesn't require an API key.</small>
                         <br />
-                        <button type="submit" onClick={() => this.handleSubmit(document.getElementById('api').value, document.getElementById('apiKey').value)}>Save Configuration</button>
+                        <button type="submit">Save Configuration</button>
                     </form>
                 </div>
             </div>
