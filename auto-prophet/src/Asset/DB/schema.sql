@@ -8,6 +8,26 @@ CREATE TABLE IF NOT EXISTS User (
   username TEXT UNIQUE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS PublicCompany (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    companyName TEXT,
+    ticker TEXT NOT NULL UNIQUE,
+    cik TEXT NOT NULL
+);
+
+/*create a table to track changes to some tables that act as cache*/
+CREATE TABLE IF NOT EXISTS modifications (
+    tableName TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+    action TEXT NOT NULL,
+    changedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+/*create a trigger to update the modificaitons table when Delete occurs on PublicCompany*/
+CREATE TRIGGER IF NOT EXISTS PublicCompanyOnDelete AFTER DELETE ON PublicCompany
+BEGIN
+    INSERT INTO modifications (tableName, action) VALUES ('PublicCompany','DELETE');
+END;
+
 CREATE TABLE IF NOT EXISTS LearningModule(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,

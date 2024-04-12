@@ -79,7 +79,7 @@ export class AlphaVantageStockGateway implements IKeyedDataGateway {
         
         //calculate the pate date based on the interval specified by the user
         //currently, intervals are 5 day, 1 month, 6 months, 1 year, 5 years, and max
-        var pastDate = null;
+        var pastDate:Date;
         if(entity.getFieldValue("interval") === "5D") {
             pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));
         } else if(entity.getFieldValue("interval") === "1M") {
@@ -90,6 +90,9 @@ export class AlphaVantageStockGateway implements IKeyedDataGateway {
             pastDate = new Date(mostRecentDate.getTime() - (365 * 24 * 60 * 60 * 1000));
         } else if(entity.getFieldValue("interval") === "5Y") {
             pastDate = new Date(mostRecentDate.getTime() - (5 * 365 * 24 * 60 * 60 * 1000));
+        } else {
+            //default to 5D interval
+            pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));
         }
         
         const formattedData: Array<{ [key: string]: any }> = [];
