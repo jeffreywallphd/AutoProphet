@@ -24,6 +24,9 @@ import { LearningModuleDetails } from "./LearningModuleDetails";
 import { LearningModulePage } from "./LearningModulePage";
 import logo from "../Asset/Image/logo.png";
 import navIcon from "../Asset/Image/navIcon.png"
+import Forecast from "./Forecast";
+import ForecastFeature from "./ForecastFeature";
+import ForecastModel from "./ForecastModel";
 
 class AppLoaded extends Component {
     // --Code for collapsible menu--
@@ -47,7 +50,7 @@ class AppLoaded extends Component {
 
         return (
             <HashRouter>
-                <div>
+                <>
                     <div className="main">
                         <div className={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
                             <button id="navButton">
@@ -58,11 +61,12 @@ class AppLoaded extends Component {
                             </header>
                             <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <NavLink to="/">Home</NavLink>
-                                <NavLink to="/learn">Learn</NavLink>
-                                <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/portfolio">Portfolio</NavLink>
+                                <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
-                                <NavLink to="/news">News</NavLink>                                
+                                <NavLink to="/forecast">Forecast</NavLink>
+                                <NavLink to="/news">News</NavLink>
+                                <NavLink to="/learn">Learn</NavLink>                                
                             </div>
                         </div>
                         <div className="content">
@@ -76,13 +80,17 @@ class AppLoaded extends Component {
                                 <Route path="/learn" element={<Learn />}/>
                                 <Route path="/learningModule" element={<LearningModuleDetails />}/>
                                 <Route path="/learningModulePage" element={<LearningModulePage />}/>
+                                <Route path="/forecast" element={<Forecast />} />
+                                <Route path="/forecast-features" element={<ForecastFeature />} />
+                                <Route path="/forecast-models" element={<ForecastModel />} />
                             </Routes>
+                            <footer>
+                                This software is licensed under the GPL-3.0 license. 
+                            </footer>
                         </div>
                     </div>
-                    <footer>
-                        This software is licensed under the GPL-3.0 license. 
-                    </footer>
-                </div>
+                    
+                </>
             </HashRouter>
         );
     }
