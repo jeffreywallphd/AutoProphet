@@ -12,9 +12,22 @@ To begin contributing to the repository follow the instructions below. If you ar
 3. Clone the repository: https://github.com/jeffreywallphd/AutoProphet.git
 4. In the auto-prophet folder, create a folder named: config
    * Create a file in the config folder named: default.json
-   * Add the following to the default.json file: { "StockGateway": "AlphaVantageStockGateway", "NewsGateway": "AlphaVantageNewsGateway", "ReportGateway": "AlphaVantageRatioGateway"}
+   * Add the following to the default.json file: 
+   ```
+   { 
+      "StockGateway": "AlphaVantageStockGateway", 
+      "NewsGateway": "AlphaVantageNewsGateway", 
+      "ReportGateway": "AlphaVantageRatioGateway"
+   }
+   ```
 5. In the auto-prophet folder, create a file named: .env
-   * Add the following to the .env file: {"ALPHAVANTAGE_API_KEY": "your_key_here", "FMP_API_KEY": "your_key_here"}
+   * Add the following to the .env file: 
+   ```
+      {
+         "ALPHAVANTAGE_API_KEY": "your_api_key_here",
+         "FMP_API_KEY" : "your_api_key_here"
+      }
+   ```
    * Replace your_key_here with a free AlphaVantage key found here: https://www.alphavantage.co/support/#api-key
    * Replace your_key_here with a free Financial Modeling Prep key, which requires account signup here: https://site.financialmodelingprep.com/. After signup, the key can be found in the Dashboard.
 6. Install the project dependencies in the terminal/command line, by running: npm install
@@ -25,101 +38,85 @@ To begin contributing to the repository follow the instructions below. If you ar
 ### Detailed Install Instructions
 The following instructions provide greater detail for contributors new to software development.
 
-#### Download the following software
-1. Download GitHub Desktop: https://desktop.github.com/
-   ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/6a62cd50-258f-4d9f-b302-d8e2880579ff)
+#### Software you may find useful when working on this project
+1. To interact with this repository, you will need a version of git on your computer. Git is a program that allows you to store project files on a local repository on your computer that can communicate with this remote GitHub repository. There are some options that you can use for this purpose:
+   * GitHub Desktop (for Windows and Mac): https://desktop.github.com/
+   * Git for Windows: https://gitforwindows.org/
+   * Git for Mac: https://git-scm.com/download/mac
 
-2. Download VS Code: https://code.visualstudio.com/download
+2. To view/edit code, contribute to documentation, or work with the folder and file structure of the software, you will need an integrated development environment (IDE). IDE's have many tools to help you build software. You can also use many IDEs to run git commands using simple user interface tools. 
+   * A common IDE that supports multiple programming languages is VS Code. 
+   * VS code will also allow you make connections with GitHub. You may still need a tool like Git for Windows for VS code to properly integrate with GitHub.
+   * Download VS Code at: https://code.visualstudio.com/download
 
-   ![Screenshot 2024-03-21 005424](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/eaaaf10c-3bce-4f9d-91af-ca7598356319)
-
-3. Download Node.js: https://nodejs.org/en/download
-
+3. This software project utilizes NodeJS. Before you can successfully work on this project, you will need to download NodeJS. NodeJS will also install the node package manager (npm). You will use npm to install Javascript packages and start the software.  
+   * Download Node.js at: https://nodejs.org/en/download
    ![Screenshot 2024-03-21 005335](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/d7279af4-e1e1-448d-8915-38d3eac8fcfb)
 
-   
-4. Clone the repository by copying and pasting this link under the URL option: https://github.com/jeffreywallphd/AutoProphet.git
+#### Setting up the project environment
+To contribute to the software project, you will need to set up the project environment so that you can view the code and run the software for testing purposes. The following steps will help you prepare your environment to run the software.
 
+1. First, you will need to clone the repository. Cloning a repository copies the code from the GitHub repository to the repository on your local computer. There are multiple tools you can use to clone a repository. If you like command line tools, you can use GitBash, which comes with Git for Windows. If you prefer a graphical user interface, you can use GitHub Destkop or VS Code. 
+   * You will need the following repository URL to clone this repository: https://github.com/jeffreywallphd/AutoProphet.git
+   * To clone a repository on GitHub Desktop, click File -> Clone repository. You will then paste the repository URL above and select a location to store the files on your computer.
 
      ![Screenshot 2024-03-21 004049](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/2a98257c-dea1-40df-abc2-ae74c9448274)
 
      ![Screenshot 2024-03-21 004125](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/9f1cba35-5de3-4664-8b27-99f3d81a12e3)
 
+   * You can also clone a repository within VS code. Click the source control icon in the left sidebar. Click the Clone Repository button. Paste the repository URL into the bar that appears at the top of the screen and click Clone from URL.
+   ![Cloning](https://github.com/jeffreywallphd/AutoProphet/tree/main/documentation/images/vs_code_cloning.png)
 
-5. Download & Unzip the following file by right clicking and then selecting "Extract All":
-   
-   a. [env.zip](https://github.com/jeffreywallphd/AutoProphet/files/14723882/env.zip)
+2. Once you clone the repository, you will need to add a couple of folders and files that should only exist on your computer. For security and other reasons, some files should not exist on a public GitHub repository. 
 
-   Note: Ask the professor for the specific key needed for this file.
-   
-   b. Make sure to add the key into this file by editing it. Then make sure to "save all" or "save as". You can double check that it was updated correctly by exiting out and clicking on the file once again.
-
-   ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/ff66e719-0992-4eb6-9fcf-4cb842df9016)
-
-   
+   a. The first file you will need to create is a file you will name: .env
+      * The .env file can be used store API keys, passwords, and other secrets that should not be shared on GitHub, but that are also necessary for the software to run.
+      * To make this point vitally clear, never store passwords, API keys, or other secrets on a remote repository. 
+      * To create this .env file, open the project in VS Code. Make sure the Explorer window is open in the left sidebar of VS Code. Within the Explorer, right click on the auto-prophet folder and select: New File...
+      ![NewFile](https://github.com/jeffreywallphd/AutoProphet/tree/main/documentation/images/vs_code_create_env.png)
+      * A text field will appear where you can type a name for the file. The name of the file must be: .env
+      * Click Enter on your keyboard and the file will be created. The file will also be opened in the VS Code editing window. 
+      * The project current stores two API keys, one to extract stock, news, and other financial data from the AlphaVantage API and another to extract the same from the Financial Modeling Prep (FMP) API. Paste the following JSON code into the file:
+      ```
+      {
+         "ALPHAVANTAGE_API_KEY": "your_api_key_here",
+         "FMP_API_KEY" : "your_api_key_here"
+      }
+      ```
+      * You will need to replace the your_api_key_here with keys from the AlphaVantage and FMP APIs. 
+      * You can obtain a free AlphaVantage API key at: https://www.alphavantage.co/support/#api-key
+      * You can obtain a free FMP API key after creating an FMP account, logging in, and visiting the Dashboard at: https://site.financialmodelingprep.com/  
+      * Note: If you are a student in a class, ask the professor for a key. Your professor may be able to provide you with a premium key for free for educational purposes.
  
-   c. [default.zip](https://github.com/jeffreywallphd/AutoProphet/files/14721696/default.zip)
+   b. Second, you will need to create a folder to store configuration information. The AutoProphet project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
+      * Create a folder in the auto-prophet folder called **config**. Do this in the Explorer window by right clicking the auto-prophet folder and clicking: New Folder...
+      * A text field will appear where you can type: config.
+      * Once the folder is created, add a file inside the config folder named: **default.json**. This file will store information about which data sources to use.
+      * Paste the following code into the file:
+      ```
+      { 
+         "StockGateway": "AlphaVantageStockGateway", 
+         "NewsGateway": "AlphaVantageNewsGateway", 
+         "ReportGateway": "AlphaVantageRatioGateway"
+      }
+      ```
 
-
-6. Click on the "env folder" that was extracted and copy the file inside.
-
-   a. Then follow this file path or find a way to get to your GitHub folder in your file explorer: C:\Users\"your username"\OneDrive\Documents\GitHub  
-  
-     ![Screenshot 2024-03-21 004302](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/e23fd755-2304-4a03-9f29-48920244f013)
-
-   b. Click on the GitHub folder, then click on the AutoProphet folder.
-
-   ![Screenshot 2024-03-21 004359](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/b2f27373-57df-4e67-9cd9-ba9b3e2a9916)
-
-   c. Paste the ".env" file into the AutoProphet folder by using the "Ctrl V" shortcut or the paste button in the upper left-hand corner.
-
-
-7. Create a new folder in the "AutoProphet" folder and name it "config".
-   
-   a. ![Screenshot 2024-03-21 004551](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/6534f348-de7e-4033-b5e4-e395fa5b577b)
-
-   b. Return to your downloads folder in your file explorer and go to the "json" folder that was extracted.
-   
-   c. Click on the folder and copy the file inside.
-   
-   d. Paste the file into the new "config" folder you just created.
-      ![Screenshot 2024-03-21 004616](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/af607bd5-d1c8-4011-b060-f00e7cc86d25)
-
-8.  Return to the "AutoProphet" folder and rename the folder to "auto-prophet" .
-
-      ![Screenshot 2024-03-21 004359](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/1d946841-2ddc-4184-a2d3-77a19a43cfd2)
-
-
-9. Open your command prompt by typing "cmd".
-       ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/41a4db2e-e70f-42a6-9121-2e6d1b43cefc)
-
-      b. Type in "cd" and then past the file path to the GitHub folder:
-   
-      <img width="421" alt="step1ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/74081e79-1095-4fc6-b407-213ccf23c028">
-      
-      c. If you are not sure how to find and copy the file path this is how: Right click on the GitHub folder and select "copy as path".
-         ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/c383754a-63c0-4745-a8a0-1c7a57f8603a)
-
-10. Next type in "cd auto-prophet" in the command prompt.
-
-     <img width="407" alt="step3ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/55c7f90e-c12d-4eb0-8aae-d558c90e670e">
-
-11. Then type in "npm install"
-
-    <img width="465" alt="step5ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/111363a0-903b-4fc7-a921-41024a63d9a4">
-
-12. Lastly, type the following command "npm start"
-
-    <img width="457" alt="step6ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/4196753d-345a-4761-98e5-3dbf6ce8b097"> 
-
-13. After the startup finishes, you should see the desktop interface for the application.
+3. With the repository cloned and the .env and config/default.json files created, you are now ready to start the program. If you haven't already done so, you will need to install NodeJS mentioned earlier. To run the program, open the terminal/command line. 
+   * VS Code has a terminal built in. To access the terminal in VS Code, Click the View -> Terminal option from the top menu bar. 
+   * You will need to point the terminal to the auto-prophet folder. This can be done with the cd command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd auto-prophet**
+   <img width="407" alt="step3ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/55c7f90e-c12d-4eb0-8aae-d558c90e670e">
+   * Now that the terminal is pointed to the auto-prophet directory, you can install the code resources (i.e., dependencies) the project uses. To do this, type the following command into the terminal: **npm install**
+   <img width="465" alt="step5ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/111363a0-903b-4fc7-a921-41024a63d9a4">
+   * After the dependency packages have been installed, you can start the software by running the command in the terminal: **npm start**
+   <img width="457" alt="step6ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/4196753d-345a-4761-98e5-3dbf6ce8b097">
+   * Note. If you are using Windows command prompt, you can copy the file path by right clicking on the GitHub folder in your file system and selecting "copy as path". You can paste that after the cd command.
+   ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/c383754a-63c0-4745-a8a0-1c7a57f8603a)     
+4. After the install and startup finishes, you should see the desktop interface for the application.
     
    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/49f89a90-80a7-4131-b29c-1da810177050)
 
-## Commands After Install: 
-1. cd "file path to GitHub"
-2. cd auto-prophet
-3. npm start
+5. Whenever you want to start the project to view what your code changes did to the software, simply use the terminal to get to the auto-prophet folder and run: **npm start**
+   * If you need to start over at any point by re-cloning the GitHub project, you may also need to repeat these steps. 
       
 ## Disclaimers
 
