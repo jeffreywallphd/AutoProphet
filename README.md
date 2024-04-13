@@ -65,6 +65,7 @@ To contribute to the software project, you will need to set up the project envir
      ![Screenshot 2024-03-21 004125](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/9f1cba35-5de3-4664-8b27-99f3d81a12e3)
 
    * You can also clone a repository within VS code. Click the source control icon in the left sidebar. Click the Clone Repository button. Paste the repository URL into the bar that appears at the top of the screen and click Clone from URL.
+
    ![Cloning](https://github.com/jeffreywallphd/AutoProphet/tree/main/documentation/images/vs_code_cloning.png)
 
 2. Once you clone the repository, you will need to add a couple of folders and files that should only exist on your computer. For security and other reasons, some files should not exist on a public GitHub repository. 
@@ -73,7 +74,9 @@ To contribute to the software project, you will need to set up the project envir
       * The .env file can be used store API keys, passwords, and other secrets that should not be shared on GitHub, but that are also necessary for the software to run.
       * To make this point vitally clear, never store passwords, API keys, or other secrets on a remote repository. 
       * To create this .env file, open the project in VS Code. Make sure the Explorer window is open in the left sidebar of VS Code. Within the Explorer, right click on the auto-prophet folder and select: New File...
+
       ![NewFile](https://github.com/jeffreywallphd/AutoProphet/tree/main/documentation/images/vs_code_create_env.png)
+
       * A text field will appear where you can type a name for the file. The name of the file must be: .env
       * Click Enter on your keyboard and the file will be created. The file will also be opened in the VS Code editing window. 
       * The project current stores two API keys, one to extract stock, news, and other financial data from the AlphaVantage API and another to extract the same from the Financial Modeling Prep (FMP) API. Paste the following JSON code into the file:
@@ -104,12 +107,19 @@ To contribute to the software project, you will need to set up the project envir
 3. With the repository cloned and the .env and config/default.json files created, you are now ready to start the program. If you haven't already done so, you will need to install NodeJS mentioned earlier. To run the program, open the terminal/command line. 
    * VS Code has a terminal built in. To access the terminal in VS Code, Click the View -> Terminal option from the top menu bar. 
    * You will need to point the terminal to the auto-prophet folder. This can be done with the cd command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd auto-prophet**
+
    <img width="407" alt="step3ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/55c7f90e-c12d-4eb0-8aae-d558c90e670e">
+
    * Now that the terminal is pointed to the auto-prophet directory, you can install the code resources (i.e., dependencies) the project uses. To do this, type the following command into the terminal: **npm install**
+
    <img width="465" alt="step5ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/111363a0-903b-4fc7-a921-41024a63d9a4">
+
    * After the dependency packages have been installed, you can start the software by running the command in the terminal: **npm start**
+
    <img width="457" alt="step6ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/4196753d-345a-4761-98e5-3dbf6ce8b097">
+
    * Note. If you are using Windows command prompt, you can copy the file path by right clicking on the GitHub folder in your file system and selecting "copy as path". You can paste that after the cd command.
+   
    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/c383754a-63c0-4745-a8a0-1c7a57f8603a)     
 4. After the install and startup finishes, you should see the desktop interface for the application.
     
