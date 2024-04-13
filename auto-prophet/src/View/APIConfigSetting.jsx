@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { updateConfigFile,updateEnvFile } from "../Utility/ConfigUpdater";
+import ConfigUpdater from "../Utility/ConfigUpdater";
 
 class Settings extends Component {
     handleSubmit = (event) => {
@@ -8,12 +8,13 @@ class Settings extends Component {
         const api = event.target.api.value;
         const apiKey = event.target.apiKey.value;
 
-
+        const updater = new ConfigUpdater({api: api, apiKey: apiKey});
+        
         // Update default.json with new API endpoint
-        updateConfigFile(api);
+        updater.updateConfigFile();
 
         // Update .env file with new API key
-        updateEnvFile(apiKey);
+        updater.updateEnvFile();
         
         console.log('Configuration updated successfully.');
     };
