@@ -1,4 +1,3 @@
-
 class ConfigUpdater {
     configFile = './config/default.json';
     envFile = './.env';
