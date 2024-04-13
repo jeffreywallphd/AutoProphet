@@ -21,13 +21,13 @@ class ConfigUpdater {
             // Update the specific API endpoint based on the selected API
             if (this.api === 'alphaVantage') {
                 config.StockGateway = 'AlphaVantageStockGateway';
-                config.NewsGateway = 'AlphaVantageNewsGateway';
+                config.newsGateway = 'AlphaVantageNewsGateway';
             } else if (this.api === 'financialModelingPrep') {
                 config.StockGateway = 'FinancialModelingPrepGateway';
-                config.NewsGateway = 'AlphaVantageNewsGateway';
+                config.newsGateway = 'AlphaVantageNewsGateway';
             } else if (this.api === 'yahooFinance') {
                 config.StockGateway = 'YFinanceStockGateway';
-                config.NewsGateway = 'AlphaVantageNewsGateway';
+                config.newsGateway = 'AlphaVantageNewsGateway';
             }
             
             fs.writeFileSync(this.configFile, JSON.stringify(config, null, 4));
