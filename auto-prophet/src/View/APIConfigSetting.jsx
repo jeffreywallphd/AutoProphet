@@ -65,15 +65,27 @@ function Settings(props) {
     const handleSubmit = (event) => {
         // Handle form submission logic here
         event.preventDefault();
-        const api = event.target.api.value;
-        const apiKey = event.target.apiKey.value;
+
+        const api = stockApiRef.current.value;
+        var apiKey = null;
+         // Check if selected API requires an API key
+        if (state.hasStockApiKey) {
+            apiKey = event.target.apiKey.value;
+        }
 
         const updater = new ConfigUpdater({api: api, apiKey: apiKey});
-        
-        
+        window.console.log(api);
         window.console.log(apiKey);
         // Update .env file with new API key
-        if(apiKey !== null && apiKey !== undefined && apiKey !== "") {
+        if(!state.hasStockApiKey) {
+            updater.updateConfigFile();
+            setState({
+                hasStockApiKey: state.hasStockApiKey,
+                currentApiKey: state.currentApiKey,
+                apiSize: state.apiSize,
+                message: "Successfully saved the configuration"
+            });
+        } else if(state.hasStockApiKey && apiKey !== null && apiKey !== undefined && apiKey !== "") {
             // Update default.json with new API endpoint
             updater.updateConfigFile();
 

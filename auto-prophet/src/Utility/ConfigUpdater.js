@@ -1,4 +1,3 @@
-
 class ConfigUpdater {
     configFile = './config/default.json';
     envFile = './.env';
@@ -27,7 +26,7 @@ class ConfigUpdater {
                 config.NewsGateway = 'AlphaVantageNewsGateway';
             } else if (this.api === 'YFinanceStockGateway') {
                 config.StockGateway = 'YFinanceStockGateway';
-                config.NewsGateway = 'AlphaVantageNewsGateway';
+                config.newsGateway = 'AlphaVantageNewsGateway';
             }
             
             fs.writeFileSync(this.configFile, JSON.stringify(config, null, 4));
