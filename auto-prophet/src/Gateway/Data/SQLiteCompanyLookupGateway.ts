@@ -96,9 +96,7 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
                 query += " ORDER BY ticker ASC LIMIT 10";
             }
             
-            window.console.log(query);
             const data = await window.electron.ipcRenderer.invoke('sqlite-query', { database: this.databasePath, query: query, parameters: parameterArray });
-            window.console.log(data);
             var entities;
             if (action === "lookup") {
                 entities = this.formatLookupResponse(data);

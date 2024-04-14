@@ -28,8 +28,6 @@ function Settings(props) {
 
         // set the value of the API Key textbox
         if(stockApiRef.current.value === "AlphaVantageStockGateway") {
-            window.console.log(env.ALPHAVANTAGE_API_KEY);
-            window.console.log(env.ALPHAVANTAGE_API_KEY.length);
             setState({
                 hasStockApiKey: true,
                 currentApiKey: env.ALPHAVANTAGE_API_KEY,
@@ -37,7 +35,6 @@ function Settings(props) {
                 message: null
             });
         } else if(stockApiRef.current.value === "FinancialModelingPrepGateway") {
-            window.console.log(env.FMP_API_KEY);
             setState({
                 hasStockApiKey: true,
                 currentApiKey: env.FMP_API_KEY,
@@ -74,8 +71,6 @@ function Settings(props) {
         }
 
         const updater = new ConfigUpdater({api: api, apiKey: apiKey});
-        window.console.log(api);
-        window.console.log(apiKey);
         // Update .env file with new API key
         if(!state.hasStockApiKey) {
             updater.updateConfigFile();

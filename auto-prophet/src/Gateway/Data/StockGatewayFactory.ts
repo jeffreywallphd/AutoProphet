@@ -7,14 +7,14 @@ import { YFinanceStockGateway } from "./YFinanceStockGateway";
 export class StockGatewayFactory {
     async createGateway(config: any): Promise<IDataGateway> {
         const extractor = new EnvVariableExtractor();
-
+        window.console.log("config: " + config["StockGateway"]);
         // For AlphaVantage API
         if(config["StockGateway"] === "AlphaVantageStockGateway") {
             const key = await extractor.extract("ALPHAVANTAGE_API_KEY");
             return new AlphaVantageStockGateway(key);
         }
         // For Financial Modeling Prep API
-        else if(config["StockGateway"] === "FMPStockGateway"){
+        else if(config["StockGateway"] === "FinancialModelingPrepGateway"){
             const key = await extractor.extract("FMP_API_KEY");
             return new FinancialModelingPrepGateway(key);
         }
