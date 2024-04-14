@@ -24,7 +24,7 @@ import { LearningModuleDetails } from "./LearningModuleDetails";
 import { LearningModulePage } from "./LearningModulePage";
 import logo from "../Asset/Image/logo.png";
 import navIcon from "../Asset/Image/navIcon.png"
-import Settings from "./APIConfigSetting";
+import { Settings } from "./APIConfigSetting";
 
 class AppLoaded extends Component {
     // --Code for collapsible menu--
