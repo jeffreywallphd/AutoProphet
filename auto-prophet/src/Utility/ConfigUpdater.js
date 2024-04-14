@@ -26,7 +26,7 @@ class ConfigUpdater {
                 config.NewsGateway = 'AlphaVantageNewsGateway';
             } else if (this.api === 'YFinanceStockGateway') {
                 config.StockGateway = 'YFinanceStockGateway';
-                config.NewsGatewayewsGateway = 'AlphaVantageNewsGateway';
+                config.NewsGateway = 'AlphaVantageNewsGateway';
             }
             
             fs.writeFileSync(this.configFile, JSON.stringify(config, null, 4));
