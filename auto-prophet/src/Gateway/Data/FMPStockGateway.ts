@@ -26,6 +26,7 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
   }
 
   async read(entity: IEntity, action: string): Promise<Array<IEntity>> {
+    window.console.log("Using FMP");
     var url;
     if (action === "lookup") {
       url = this.getSymbolLookupUrl(entity);
@@ -36,7 +37,7 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
     } else {
       throw new Error("Either no action was sent in the request or an incorrect action was used.");
     }
-    window.console.log(url)
+
     const response = await fetch(url);
     const data = await response.json();
 

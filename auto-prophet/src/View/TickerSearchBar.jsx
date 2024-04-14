@@ -96,7 +96,6 @@ function TickerSearchBar(props) {
         }`);
 
         const secResults = await secInteractor.get(secRequestObj);
-        window.console.log(JSON.stringify(secResults));
 
         var secBalanceRequestObj = new JSONRequest(`{
             "request": {
@@ -109,10 +108,8 @@ function TickerSearchBar(props) {
         }`);
 
         const secBalanceResults = await secInteractor.get(secBalanceRequestObj);
-        window.console.log(JSON.stringify(secBalanceResults));
 
         secResults.response.results[0].data = Object.assign({}, secResults.response.results[0].data, secBalanceResults.response.results[0].data[0]);
-        window.console.log(JSON.stringify(secResults));
 
         //build the financial statements based on SEC submissions and company data
         //var schema = await secInteractor.calculateReport(props.state.searchRef.current.value.toLowerCase(), secSubmissionsResults, secResults);

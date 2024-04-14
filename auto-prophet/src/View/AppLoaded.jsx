@@ -24,6 +24,7 @@ import { LearningModuleDetails } from "./LearningModuleDetails";
 import { LearningModulePage } from "./LearningModulePage";
 import logo from "../Asset/Image/logo.png";
 import navIcon from "../Asset/Image/navIcon.png"
+import { Settings } from "./APIConfigSetting";
 import Forecast from "./Forecast";
 import ForecastFeature from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
@@ -66,7 +67,7 @@ class AppLoaded extends Component {
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
                                 <NavLink to="/forecast">Forecast</NavLink>
                                 <NavLink to="/news">News</NavLink>
-                                <NavLink to="/learn">Learn</NavLink>                                
+                                <NavLink to="/settings">Settings</NavLink>                                
                             </div>
                         </div>
                         <div className="content">
@@ -80,6 +81,7 @@ class AppLoaded extends Component {
                                 <Route path="/learn" element={<Learn />}/>
                                 <Route path="/learningModule" element={<LearningModuleDetails />}/>
                                 <Route path="/learningModulePage" element={<LearningModulePage />}/>
+                                <Route path="/settings" element={<Settings />}/>
                                 <Route path="/forecast" element={<Forecast />} />
                                 <Route path="/forecast-features" element={<ForecastFeature />} />
                                 <Route path="/forecast-models" element={<ForecastModel />} />

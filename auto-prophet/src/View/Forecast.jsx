@@ -6,6 +6,7 @@
 
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import binaryHeader from "../Asset/Image/binary_header.jpg";
 
 class Forecast extends Component {
     render() {
@@ -22,7 +23,7 @@ class Forecast extends Component {
                             <h3>Create Custom Data Features</h3>
                         </div>
                         <div className="cardContainer">
-                            <img scr="../Asset/Image/binary_header.jpg" alt="header image"/>
+                            <img scr={binaryHeader} alt="header image"/>
                             <p>If you would like to create custom data features for prediction and forecasting models, this page will help you do so. For example, you can choose different types windows for moving average calculations. You can save your data features and use them in different forecasting models.</p>
                         </div>
                       </div>
@@ -33,7 +34,7 @@ class Forecast extends Component {
                             <h3>Select a Forecasting Model</h3>
                         </div>
                         <div className="cardContainer">
-                          <p>Select and run forecasts using different forecasting models using traditional time series models or machine learning and AI models.</p>
+                          <p>Select and run forecasts using different forecasting models. You can select from traditional time series models like ARIMA, or machine learning and AI models like random forests and deep learning.</p>
                         </div>
                       </div>
                     </NavLink>

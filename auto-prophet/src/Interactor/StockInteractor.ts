@@ -31,7 +31,7 @@ export class StockInteractor implements IInputBoundary {
 
             //check to see if the PublicCompany table is filled and has been updated recently
             const lastUpdated = await stockGateway.checkLastTableUpdate();
-            window.console.log("last updated: " + lastUpdated);
+
             var dayDiff=0; 
 
             if(lastUpdated !== undefined) {
