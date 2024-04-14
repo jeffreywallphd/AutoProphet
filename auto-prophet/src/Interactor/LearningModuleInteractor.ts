@@ -4,7 +4,6 @@ import {IResponseModel} from "../Gateway/Response/IResponseModel";
 import {JSONResponse} from "../Gateway/Response/JSONResponse";
 import {IDataGateway} from "../Gateway/Data/IDataGateway";
 import {LearningModule} from "../Entity/LearningModule";
-//import dep from '../../config/default.json'; // TODO: consider whether configuration is needed for learning modules
 import { LearningModuleSQLiteDBGateway } from "@DataGateway/LearningModuleSQLiteDBGateway";
 
 export class LearningModuleInteractor implements IInputBoundary {

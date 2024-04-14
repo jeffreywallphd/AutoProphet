@@ -10,7 +10,7 @@ import React, { useEffect } from "react";
 import { StockInteractor } from "../Interactor/StockInteractor";
 import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import logo from "../Asset/Image/logo.png";
-import navIcon from "../Asset/Image/navIcon.png"
+import ConfigUpdater from "../Utility/ConfigManager";
 
 export function AppPreparing(props) {
     const checkContent = async () => {
@@ -24,6 +24,10 @@ export function AppPreparing(props) {
         }`);
 
         await interactor.get(requestObj);
+
+        const updater = new ConfigUpdater();
+        updater.createEnvIfNotExists();
+
         props.handleLoading();
     };
 

@@ -27,7 +27,6 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
   }
 
   async read(entity: IEntity, action: string): Promise<IEntity[]> {
-    window.console.log("Using YFinance");
     var data;
     if (action === "lookup") {
         data = await this.searchSymbol(entity);
@@ -38,7 +37,7 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
     } else {
         throw new Error("Either no action was sent in the request or an incorrect action was used.");
     }
-    window.console.log(data);
+
     var entities;
     if (action === "lookup") {
         entities = this.formatLookupResponse(data);

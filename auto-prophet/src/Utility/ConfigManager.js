@@ -9,6 +9,28 @@ class ConfigUpdater {
         this.apiKey = args["apiKey"];
     }
 
+    createEnvIfNotExists() {
+        const fs = window.fs.fs;
+
+        try {
+            const envExists = fs.statSync("./.env");     
+        } catch(error) {
+            // .env file didn't exist throws error. Try to create .env
+            try {
+                fs.openSync("./.env", "w");
+                
+                var envJson = {
+                    ALPHAVANTAGE_API_KEY: "",
+                    FMP_API_KEY: ""
+                }
+
+                fs.writeFileSync("./.env", JSON.stringify(envJson, null, 4));
+            } catch(error2) {
+                console.error(error);
+            }
+        }
+    }
+
     updateConfigFile() {
         try {
             // Access fs module from the preload script

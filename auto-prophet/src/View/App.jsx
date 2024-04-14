@@ -9,8 +9,6 @@ import React, { useState } from "react";
 //Imports for react pages and assets
 import AppLoaded from "./AppLoaded";
 import { AppPreparing } from "./AppPreparing";
-import logo from "../Asset/Image/logo.png";
-import navIcon from "../Asset/Image/navIcon.png"
 
 export function App(props) {
     const [loading, setLoading] = useState(true);
