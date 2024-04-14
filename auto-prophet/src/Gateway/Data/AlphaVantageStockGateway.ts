@@ -25,7 +25,6 @@ export class AlphaVantageStockGateway implements IKeyedDataGateway {
     }
 
     async read(entity: IEntity, action: string): Promise<Array<IEntity>> {
-        window.console.log("Using AlphaVantage") 
         var url;
         if (action === "lookup") {
             url = this.getSymbolLookupUrl(entity);    

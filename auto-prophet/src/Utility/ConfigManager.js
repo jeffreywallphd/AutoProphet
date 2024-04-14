@@ -52,7 +52,6 @@ class ConfigUpdater {
             }
             
             fs.writeFileSync(this.configFile, JSON.stringify(config, null, 4));
-            console.log('Configuration updated successfully.');
         } catch (err) {
             console.error('Error updating configuration:', err);
         }
@@ -75,7 +74,6 @@ class ConfigUpdater {
             } 
                        
             fs.writeFileSync(this.envFile, JSON.stringify(envConfig, null, 4));
-            console.log('.env file updated successfully.');
         } catch (err) {
             console.error('Error updating .env file:', err);
         }
