@@ -16,4 +16,4 @@ export class NewsGatewayFactory {
             return new AlphaVantageNewsGateway(key);
         }
     }
-}
+}7

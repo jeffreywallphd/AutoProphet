@@ -24,6 +24,7 @@ import { LearningModuleDetails } from "./LearningModuleDetails";
 import { LearningModulePage } from "./LearningModulePage";
 import logo from "../Asset/Image/logo.png";
 import navIcon from "../Asset/Image/navIcon.png"
+import { Settings } from "./APIConfigSetting";
 
 class AppLoaded extends Component {
     // --Code for collapsible menu--
@@ -62,7 +63,8 @@ class AppLoaded extends Component {
                                 <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/portfolio">Portfolio</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
-                                <NavLink to="/news">News</NavLink>                                
+                                <NavLink to="/news">News</NavLink>
+                                <NavLink to="/settings">Settings</NavLink>                                
                             </div>
                         </div>
                         <div className="content">
@@ -76,6 +78,7 @@ class AppLoaded extends Component {
                                 <Route path="/learn" element={<Learn />}/>
                                 <Route path="/learningModule" element={<LearningModuleDetails />}/>
                                 <Route path="/learningModulePage" element={<LearningModulePage />}/>
+                                <Route path="/settings" element={<Settings />}/>
                             </Routes>
                         </div>
                     </div>
