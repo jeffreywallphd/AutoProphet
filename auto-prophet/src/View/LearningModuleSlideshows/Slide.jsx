@@ -42,12 +42,11 @@ function Slide(props) {
     };
 
     const contents = props.page.pageContentUrl !== null ? window.fs.fs.readFileSync(`src/View/LearningModuleSlideshows/${props.page.pageContentUrl}`, 'utf-8') : null;
-    window.console.log(contents);
 
     const playAudio = () => {
         if(props.page.voiceoverUrl !== null) {
             var audioSrc = `../src/Asset/LearningModulesVoiceovers/${props.page.voiceoverUrl}`;
-            window.console.log(audioSrc);
+
             soundRef.current = new Howl({
                 src: [audioSrc]
             });

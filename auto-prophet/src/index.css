@@ -402,7 +402,7 @@ code {
 }
 
 .explanationText{
-  font-size: xx-small;
+  font-size: small;
 }
 
 .riskContainer{
@@ -461,4 +461,17 @@ code {
   margin-top: 0px;
 }
 
+.pie-chart{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-image: conic-gradient(orange 64%, blue 64%, blue 81%, green 81%, green 90%, black 90%);
+}
+
+.keyColors{
+  height: 2px;
+  width: 40px; 
+  margin-top: 10px; 
+  margin-right: 5px;
+}
 /*End Analysis Page*/

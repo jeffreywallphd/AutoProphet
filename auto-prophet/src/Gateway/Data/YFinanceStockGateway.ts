@@ -27,6 +27,7 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
   }
 
   async read(entity: IEntity, action: string): Promise<IEntity[]> {
+    window.console.log("Using YFinance");
     var data;
     if (action === "lookup") {
         data = await this.searchSymbol(entity);
@@ -104,7 +105,7 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
             quotesCount: 10
         };
         const searchResult = await this.yahooFinance.search(keyword, searchOptions);
-        window.console.log(searchResult);
+
         // the filter ensures only results with a symbol are mapped
         const symbols = searchResult.quotes.filter((result:any) => result.symbol).map((result:any) => ({
             ticker: result.symbol,
@@ -118,16 +119,37 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
 
   private async getIntradayData(entity: IEntity) {
     try {
-      const currentDate = new Date();
-      const previousDate = new Date();
+      // TODO: continue to improve logic to account for stock market holidays and closures
+      var currentDate = new Date();
+      var date = new Date();
 
-      const startDate = new Date(previousDate.setDate(currentDate.getDate() - 1));
+      // check if current date is a weekend. If so, use Friday stock data
+      if(currentDate.getDay() === 6) {
+        // check if Saturday
+        currentDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
+      } else if(currentDate.getDay() === 0) {
+        // check if Sunday
+        currentDate = new Date(currentDate.setDate(currentDate.getDate() - 2));
+      }
+
+      // set start date to stock market opening at 9:30am
+      const startDate = new Date(date.setDate(currentDate.getDate()));
+      startDate.setHours(9);
+      startDate.setMinutes(30);
+      startDate.setMilliseconds(0);
+
+      // set end date to stock market closeing at 4:00pm
+      const endDate = new Date(date.setDate(currentDate.getDate()));
+      endDate.setHours(16);
+      endDate.setMinutes(0);
+      endDate.setMilliseconds(0);
 
       const queryOptions = {
         period1: startDate,
-        period2: currentDate,
+        period2: endDate,
         interval: "1m"
       };
+
       const data = await this.yahooFinance.chart(entity.getFieldValue("ticker"), queryOptions);
       return data;
     } catch (error) {
@@ -147,7 +169,7 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
     const fiveYearsAgo = new Date(previousDate.setDate(currentDate.getDate() - 2190));
     const twentyYearsAgo = new Date(previousDate.setDate(currentDate.getDate() - 7300));
 
-    const period2Map: { [key: string]: any } = { 
+    const period1Map: { [key: string]: any } = { 
         "5D": fiveDaysAgo,
         "1M": oneMonthAgo,
         "6M": sixMonthsAgo,
@@ -156,7 +178,7 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
         "Max": twentyYearsAgo
     };
 
-    period1 = period2Map[entity.getFieldValue("interval")];
+    period1 = period1Map[entity.getFieldValue("interval")];
 
     try {
         const data = await this.yahooFinance.historical(entity.getFieldValue("ticker"), {
