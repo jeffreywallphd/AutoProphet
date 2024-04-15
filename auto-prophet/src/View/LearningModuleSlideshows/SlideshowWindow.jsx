@@ -55,7 +55,8 @@ function SlideshowWindow(props) {
     return (
         <div className="slideshowWindow">
             <Slide page={props.pages[props.currentPageIndex]} registerSlide={handleSlide}/>
-            <div className="flex">
+            <div className="slideWindowControlBar">
+                <div className="slidePageNumber">Page {props.currentPageIndex + 1}</div>
                 {
                     props.currentPageIndex > 0 ? 
                     (
@@ -63,12 +64,12 @@ function SlideshowWindow(props) {
                             <NavLink to="/learningModulePage" onClick={handlePrevious} state={{
                                 "pages": props.pages,
                                 "currentPageIndex": previousPageIndex,
-                            }}>Previous Page</NavLink>
+                            }}><div>Previous</div></NavLink>
                         </div>
                     ) :
-                    (<div></div>)
+                    (<div className="greyedOut">Previous</div>)
                 }
-                <div>Page {props.currentPageIndex + 1}</div>
+                <div>&nbsp;</div>
                 {
                     nextPageIndex < props.pages.length ? 
                     (
@@ -76,10 +77,10 @@ function SlideshowWindow(props) {
                             <NavLink to="/learningModulePage" onClick={handleNext} state={{
                                 "pages": props.pages,
                                 "currentPageIndex": nextPageIndex,
-                            }}>Next Page</NavLink>
+                            }}><div>Next</div></NavLink>
                         </div>
                     ) :
-                    (<div></div>)
+                    (<div className="greyedOut">Next</div>)
                 }
             </div>   
         </div>

@@ -67,6 +67,7 @@ class AppLoaded extends Component {
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
                                 <NavLink to="/forecast">Forecast</NavLink>
                                 <NavLink to="/news">News</NavLink>
+                                <NavLink to="/learn">Learn</NavLink>
                                 <NavLink to="/settings">Settings</NavLink>                                
                             </div>
                         </div>

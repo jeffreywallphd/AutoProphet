@@ -14,13 +14,22 @@ function Slide(props) {
     const parseHtmlToComponents = (htmlString) => {
         const parser = new DOMParser(); // Parse the HTML string
         const doc = parser.parseFromString(htmlString, "text/html");
-        const rootElement = doc.documentElement;
+        //const rootElement = doc.documentElement;
+
+        const rootElement = doc.body.firstChild;
+
+        if (!rootElement) {
+            // Handle potential empty content or invalid HTML
+            return null;
+        }
       
+        const content = React.cloneElement(convertElementToComponent(rootElement), { key: 'root' });
+        
         // Assign a unique key to the root element
-        return React.cloneElement(convertElementToComponent(rootElement), { key: 'root' });
-      };
+        return content;
+    };
       
-      const convertElementToComponent = (element) => {
+    const convertElementToComponent = (element) => {
         const tagName = element.tagName.toLowerCase(); // Ensure lowercase tag names
         const attributes = {};
         for (const attr of element.attributes) {
