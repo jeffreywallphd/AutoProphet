@@ -10,6 +10,7 @@ declare global {
 export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
     databasePath = "./src/Asset/DB/AutoProphet.db";
     connection: any = null;
+    sourceName: string = "SQLite Database";
 
     async connect(): Promise<void> {
         throw new Error("Due to the nature of this gateway's dependencies, connections are not handled through this method");

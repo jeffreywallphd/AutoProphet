@@ -1,8 +1,6 @@
 import {IEntity} from "../../Entity/IEntity";
 import { StockRequest } from "../../Entity/StockRequest";
 import { IKeylessDataGateway } from "./IKeylessDataGateway";
-import { FinancialModelingPrepGateway } from "./FMPStockGateway";
-//import yahooFinance from 'yahoo-finance2';
 
 // allow the yahoo.finance contextBridge to be used in TypeScript
 declare global {
@@ -11,6 +9,7 @@ declare global {
 
 export class YFinanceStockGateway implements IKeylessDataGateway {
   yahooFinance = window.yahoo.finance;
+  sourceName: string = "Yahoo Finance (unofficial) Community API";
      
   connect(): void {
     // No connection needed for this data gateway

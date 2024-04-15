@@ -5,7 +5,10 @@ import {JSONResponse} from "../Gateway/Response/JSONResponse";
 import {IDataGateway} from "../Gateway/Data/IDataGateway";
 import {NewsRequest} from "../Entity/NewsRequest";
 import { NewsGatewayFactory } from "@DataGateway/NewsGatewayFactory";
-import dep from '../../config/default.json';
+
+declare global {
+    interface Window { fs: any; }
+}
 
 export class NewsInteractor implements IInputBoundary {
     requestModel: IRequestModel;
@@ -20,9 +23,10 @@ export class NewsInteractor implements IInputBoundary {
         var news = new NewsRequest();
         news.fillWithRequest(requestModel);
 
-         //instantiate the correct API gateway
+        //instantiate the correct API gateway
+        const config = window.fs.fs.readFileSync('./config/default.json', "utf-8");
         const newsGatewayFactory = new NewsGatewayFactory();
-        var newsGateway: IDataGateway = await newsGatewayFactory.createGateway(dep);
+        var newsGateway: IDataGateway = await newsGatewayFactory.createGateway(JSON.parse(config));
 
         //add the API key to the news request object
         news.setFieldValue("key", newsGateway.key);

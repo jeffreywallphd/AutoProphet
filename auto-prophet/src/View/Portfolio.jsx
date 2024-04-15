@@ -32,51 +32,53 @@ class Portfolio extends Component {
                                 <th>% Gain</th>
                             </tr>
                         </thead>
-                        <tr>
-                            <td>F</td>
-                            <td>Ford Motor Company</td>
-                            <td className="numeric">13.45</td>
-                            <td className="numeric">13.00</td>
-                            <td className="numeric">10</td>
-                            <td className="numeric">4.50</td>
-                            <td className="numeric">+3.46%</td>
-                        </tr>
-                        <tr>
-                            <td>GOOG</td>
-                            <td>Alphabet Inc.</td>
-                            <td className="numeric">13.45</td>
-                            <td className="numeric">13.00</td>
-                            <td className="numeric">10</td>
-                            <td className="numeric">4.50</td>
-                            <td className="numeric">+3.46%</td>
-                        </tr>
-                        <tr>
-                            <td>TSLA</td>
-                            <td>Tesla</td>
-                            <td className="numeric">13.45</td>
-                            <td className="numeric">13.00</td>
-                            <td className="numeric">10</td>
-                            <td className="numeric">4.50</td>
-                            <td className="numeric">+3.46%</td>
-                        </tr>
-                        <tr>
-                            <td>AAPL</td>
-                            <td>Apple</td>
-                            <td className="numeric">13.45</td>
-                            <td className="numeric">13.00</td>
-                            <td className="numeric">10</td>
-                            <td className="numeric">4.50</td>
-                            <td className="numeric">+3.46%</td>
-                        </tr>
-                        <tr>
-                            <td>Dow</td>
-                            <td>Dow</td>
-                            <td className="numeric">13.45</td>
-                            <td className="numeric">13.00</td>
-                            <td className="numeric">10</td>
-                            <td className="numeric">4.50</td>
-                            <td className="numeric">+3.46%</td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>F</td>
+                                <td>Ford Motor Company</td>
+                                <td className="numeric">13.45</td>
+                                <td className="numeric">13.00</td>
+                                <td className="numeric">10</td>
+                                <td className="numeric">4.50</td>
+                                <td className="numeric">+3.46%</td>
+                            </tr>
+                            <tr>
+                                <td>GOOG</td>
+                                <td>Alphabet Inc.</td>
+                                <td className="numeric">13.45</td>
+                                <td className="numeric">13.00</td>
+                                <td className="numeric">10</td>
+                                <td className="numeric">4.50</td>
+                                <td className="numeric">+3.46%</td>
+                            </tr>
+                            <tr>
+                                <td>TSLA</td>
+                                <td>Tesla</td>
+                                <td className="numeric">13.45</td>
+                                <td className="numeric">13.00</td>
+                                <td className="numeric">10</td>
+                                <td className="numeric">4.50</td>
+                                <td className="numeric">+3.46%</td>
+                            </tr>
+                            <tr>
+                                <td>AAPL</td>
+                                <td>Apple</td>
+                                <td className="numeric">13.45</td>
+                                <td className="numeric">13.00</td>
+                                <td className="numeric">10</td>
+                                <td className="numeric">4.50</td>
+                                <td className="numeric">+3.46%</td>
+                            </tr>
+                            <tr>
+                                <td>Dow</td>
+                                <td>Dow</td>
+                                <td className="numeric">13.45</td>
+                                <td className="numeric">13.00</td>
+                                <td className="numeric">10</td>
+                                <td className="numeric">4.50</td>
+                                <td className="numeric">+3.46%</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

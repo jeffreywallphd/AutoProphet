@@ -60,6 +60,7 @@ function TickerSearchBar(props) {
         //Update the state
         state.initializing = true;
         state.data = priceData;
+        state.dataSource = results.source;
         state.ticker = state.searchRef;
         state.error = state.error;
         state.isLoading = false;
@@ -117,6 +118,7 @@ function TickerSearchBar(props) {
 
         //update the state
         state.secData = secResults;
+        state.secSource = secResults.response.source;
         state.cik = cik;
 
         //Update the props

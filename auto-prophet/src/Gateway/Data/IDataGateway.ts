@@ -2,6 +2,7 @@ import {IEntity} from "../../Entity/IEntity";
 
 export interface IDataGateway {
     key?: string;
+    sourceName: string;
     connect(): void;
     disconnect(): void;
     create(entity: IEntity, action: string): Promise<Boolean>;

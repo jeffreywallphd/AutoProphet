@@ -6,7 +6,10 @@ import {IDataGateway} from "../Gateway/Data/IDataGateway";
 import {StockRequest} from "../Entity/StockRequest";
 import { StockGatewayFactory } from "@DataGateway/StockGatewayFactory";
 import { SQLiteCompanyLookupGateway } from "@DataGateway/SQLiteCompanyLookupGateway";
-import dep from '../../config/default.json';
+
+declare global {
+    interface Window { fs: any; }
+}
 
 export class StockInteractor implements IInputBoundary {
     requestModel: IRequestModel;
@@ -56,8 +59,9 @@ export class StockInteractor implements IInputBoundary {
             stockGateway = new SQLiteCompanyLookupGateway();
         } else {
             //instantiate the correct API gateway
+            const config = window.fs.fs.readFileSync('./config/default.json', "utf-8");
             const stockGatewayFactory = new StockGatewayFactory();
-            stockGateway = await stockGatewayFactory.createGateway(dep);
+            stockGateway = await stockGatewayFactory.createGateway(JSON.parse(config));
             
             //add the API key to the stock request object
             stock.setFieldValue("key", stockGateway.key);
@@ -69,6 +73,7 @@ export class StockInteractor implements IInputBoundary {
         //convert the API gateway response to a JSON reponse object
         var response = new JSONResponse();
         response.convertFromEntity(results, false);
+        response.response["source"] = stockGateway.sourceName;
 
         return response.response;
     }

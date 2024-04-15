@@ -4,6 +4,8 @@ import {IEntity} from "../../Entity/IEntity";
 import {IKeylessDataGateway} from "./IKeylessDataGateway";
 
 export class LearningModuleSQLiteDBGateway implements IKeylessDataGateway {
+    sourceName: string = "SQLite Database";
+
     connect(): void {
         throw new Error("Method not implemented.");
     }

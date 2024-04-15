@@ -4,6 +4,7 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
+
 import React from "react";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
@@ -21,7 +22,9 @@ function TimeSeriesChart(props) {
         props.onIntervalChange({
             initializing: false,
             data: props.state.data,
+            dataSource: props.state.dataSource,
             secData: props.state.secData,
+            secSource: props.state.secSource,
             ticker: props.state.ticker,
             cik: props.state.cik,
             error: props.state.error,
@@ -72,13 +75,13 @@ function TimeSeriesChart(props) {
                             <button disabled={props.state.interval === "Max" ? true: false} onClick={(e) => setInterval("Max")}>Max</button>
                         </>) :
                         (<>
-                            <button disabled="true">1D</button>
-                            <button disabled="true">5D</button>
-                            <button disabled="true">1M</button>
-                            <button disabled="true">6M</button>
-                            <button disabled="true">1Y</button>
-                            <button disabled="true">5Y</button>
-                            <button disabled="true">Max</button>
+                            <button disabled={true}>1D</button>
+                            <button disabled={true}>5D</button>
+                            <button disabled={true}>1M</button>
+                            <button disabled={true}>6M</button>
+                            <button disabled={true}>1Y</button>
+                            <button disabled={true}>5Y</button>
+                            <button disabled={true}>Max</button>
                         </>)
                     }
                 </div>
