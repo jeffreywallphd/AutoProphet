@@ -24,7 +24,8 @@ export class AlphaVantageStockGateway implements IKeyedDataGateway {
         throw new Error("This gateway does not have the ability to post content");
     }
 
-    async read(entity: IEntity, action: string): Promise<Array<IEntity>> { 
+    async read(entity: IEntity, action: string): Promise<Array<IEntity>> {
+        window.console.log("Using AlphaVantage") 
         var url;
         if (action === "lookup") {
             url = this.getSymbolLookupUrl(entity);    
@@ -90,6 +91,8 @@ export class AlphaVantageStockGateway implements IKeyedDataGateway {
             pastDate = new Date(mostRecentDate.getTime() - (365 * 24 * 60 * 60 * 1000));
         } else if(entity.getFieldValue("interval") === "5Y") {
             pastDate = new Date(mostRecentDate.getTime() - (5 * 365 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "Max") {
+            pastDate = null;
         } else {
             //default to 5D interval
             pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));

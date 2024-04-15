@@ -87,7 +87,7 @@ export class SecInteractor implements IInputBoundary {
             
             // TODO: Should this fetch be moved to a gateway?
             var archivesPath = `https://sec.gov/Archives/edgar/data/${zeroStrippedCik}/${accessionNumber}/${fileName}`;
-            window.console.log(archivesPath);
+
             const reportSchema = await fetch(archivesPath);
 
             const responseDoc = new XMLResponse(await reportSchema.text());
