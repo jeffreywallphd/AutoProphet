@@ -307,9 +307,6 @@ export function Analysis() {
           <p className="explanationText">
             ****Weighted Average Number of Shares Outstanding
           </p>
-          <button id="calcRiskScores" onClick={handleClick}>
-            Calculate Risk Scores
-          </button>
           <div>
             <h3 className="riskHeader">Your Timeline</h3>
             <h4 className="statHeader">Investment Horizon</h4>
@@ -349,19 +346,24 @@ export function Analysis() {
             <div className="ratioBox">{state.PER}</div>
             <div className="ratioBox">{state.PERGrade}</div>
           </div>
-            <div className="scoreContainerOverallScore">
-              <div className="ratioName">Overall: </div>
-              <div className="ratioBox">{state.overallScore}</div>
-              <div className="ratioBox">{state.overallScoreGrade}</div>
-      
+          <div className="scoreContainerOverallScore">
+            <div className="ratioName">Overall: </div>
+            <div className="ratioBox">{state.overallScore}</div>
+            <div className="ratioBox">{state.overallScoreGrade}</div>
           </div>
+          <button id="calcRiskScores" onClick={handleClick}>
+            Calculate Risk Scores
+          </button>
           <div>
-            <h3 className="riskHeader">Other Stats</h3>
-            <h4 className="statHeader">Diversification</h4>
+            <div>
+              <h3 className="riskHeader">Other Stats</h3>
+            </div>
+            <div>
+              <h4 className="statHeader">Diversification</h4>
+            </div>
           </div>
         </div>
       </div>
-      
     </div>
   );
 }

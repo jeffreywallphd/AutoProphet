@@ -62,10 +62,19 @@ h3 {
 
 h4{
   color: var(--text-color-medium);
+  margin-top:5px;
 }
 
+/*Risk Analysis Page Button */
 button {
   cursor: pointer;
+  justify-content: right;
+  padding-left: 10px;
+  margin-top: 10px;
+  margin-left: 60px;
+  margin-right: 20px;
+  margin-bottom: 46px;
+  
 }
 
 .loadingContainer {
