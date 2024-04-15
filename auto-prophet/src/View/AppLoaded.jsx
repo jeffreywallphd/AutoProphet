@@ -14,6 +14,7 @@ import {
 
 //Imports for react pages and assets
 import Home from "./Home";
+import About  from "./About";
 import Portfolio from "./Portfolio";
 import { Analysis } from "./Analysis";
 import BuyReport from "./BuyReport";
@@ -58,11 +59,12 @@ class AppLoaded extends Component {
                             </header>
                             <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <NavLink to="/">Home</NavLink>
-                                <NavLink to="/learn">Learn</NavLink>
-                                <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/portfolio">Portfolio</NavLink>
+                                <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
-                                <NavLink to="/news">News</NavLink>                                
+                                <NavLink to="/news">News</NavLink> 
+                                <NavLink to="/learn">Learn</NavLink> 
+                                <NavLink to="/about">About</NavLink>                              
                             </div>
                         </div>
                         <div className="content">
@@ -76,6 +78,7 @@ class AppLoaded extends Component {
                                 <Route path="/learn" element={<Learn />}/>
                                 <Route path="/learningModule" element={<LearningModuleDetails />}/>
                                 <Route path="/learningModulePage" element={<LearningModulePage />}/>
+                                <Route path="/about" element={<About/>}/>
                             </Routes>
                         </div>
                     </div>
