@@ -343,7 +343,7 @@ code {
 }
 
 .explanationText{
-  font-size: xx-small;
+  font-size: small;
 }
 
 .riskContainer{
@@ -360,11 +360,54 @@ code {
 }
 
 .ratioName{
-  text-align: center;
   width: 125px;
   border: 3px solid var(--text-color-dark);
   padding-top: 2px;
   padding-bottom: 2px;
+  padding-left: 10px;
+  display: flex;
+}
+
+.smallbutton{
+  margin-left: 8px;
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  border: 2px solid black;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.bigbutton{
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  font: bold;
+  font-size: 16px; 
+  border: 3px solid black;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.infobutton{
+  font-size: x-small;
+  margin-left: 8px;
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  border: 2px solid black;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 6px;
+}
+
+.realRatioName{
+  margin-left: 8px;
+}
+
+.overallScore{
+  width: 125px;
+  border: 3px solid var(--text-color-dark);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-align: center;
 }
 
 .scoreContainer{
@@ -391,4 +434,17 @@ code {
   margin-top: 20px;
 }
 
+.pie-chart{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-image: conic-gradient(orange 64%, blue 64%, blue 81%, green 81%, green 90%, black 90%);
+}
+
+.keyColors{
+  height: 2px;
+  width: 40px; 
+  margin-top: 10px; 
+  margin-right: 5px;
+}
 /*End Analysis Page*/
