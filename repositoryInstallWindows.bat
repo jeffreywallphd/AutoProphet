@@ -29,9 +29,9 @@ set /p githubInstalled="Do you have Github Desktop installed? If yes, type y, if
 
 if /i "%githubInstalled%"=="n" (
     echo Installing GitHub Desktop...
-    curl -o "%TEMP%\GitHubDesktopSetup.exe" "https://desktop.githubusercontent.com/releases/2.9.6-GP/Desktop/releases/2.9.6-GP/GitHubDesktopSetup.exe"
-    start /wait "" "%TEMP%\GitHubDesktopSetup.exe" /S
-    del "%TEMP%\GitHubDesktopSetup.exe"
+    curl -o "%TEMP%\GitHubDesktopSetup.msi" "https://central.github.com/deployments/desktop/desktop/latest/win32?format=msi"
+    msiexec /i "%TEMP%\GitHubDesktopSetup.msi" /quiet
+    del "%TEMP%\GitHubDesktopSetup.msi"
 )
 
 endlocal
