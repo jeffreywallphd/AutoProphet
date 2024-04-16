@@ -235,7 +235,7 @@ code {
   color: var(--text-color-light);
 }
 
-/* Styling for Content and Page Containers */
+/* Styling for Home, Content, and Page Containers */
 
 .content {
   padding: 0;
@@ -252,6 +252,36 @@ code {
   background-color: var(--background-color);
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.homeContainer {
+  width: 75%;
+  height: 400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  color: var(--text-color-light);
+  font-size: 48px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.homeContainer p {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.homeContainer p:nth-of-type(2) {
+  margin-left: 75px;
+}
+
+.homeContainer p:nth-of-type(3) {
+  margin-left: 150px;
+}
+
+.homeContainer p:nth-of-type(4) {
+  margin-left: 225px;
 }
 
 /* Styling for Slideshows */

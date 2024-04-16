@@ -6,25 +6,23 @@
 
 
 import React, { Component } from "react";
-import * as ReactDOM from 'react-dom';
-import {
-  Routes,
-  Route,
-  NavLink,
-  HashRouter
-} from "react-router-dom";
-
-import Analysis from "./Analysis";
-import BuyReport from "./BuyReport";
+import homeBackground from "../Asset/Image/home-background.jpg";
 
 class Home extends Component {
+    background = {
+      backgroundImage: `url(${homeBackground})`
+    }
+
     render() {
         return (
-            <div className="page">
-                <h2>Welcome!</h2>
-                <p>
-                    AutoProphet is an open-source AI-enabled tool that seeks to democratize financial analysis by providing you with advanced analytics tools to help you make wise financial decisions.
-                </p>
+            <div className="page" style={this.background}>
+                <h1>Welcome to AutoProphet!</h1>
+                <div className="homeContainer">
+                  <p>Open source</p>
+                  <p>AI-enabled</p>
+                  <p>Configurable</p>
+                  <p>Adaptive to Experience</p>
+                </div>
             </div>
         );
     }
