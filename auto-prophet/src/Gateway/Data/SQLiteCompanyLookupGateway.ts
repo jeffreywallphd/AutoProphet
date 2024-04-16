@@ -189,9 +189,7 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
         const response = await fetch('https://www.sec.gov/files/company_tickers.json');
         const secData = await response.json();
 
-        // Parse the SEC text file to extract ticker:CIK pairs
-        //const lines = secTextData.split('\n');
-
+        // Parse the SEC JSON file to extract ticker, CIK, and companyName
         for(var key in secData) {
             var ticker = secData[key]["ticker"];
             var cik = secData[key]["cik_str"];
@@ -212,5 +210,8 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
             const args  = [companyName, ticker, cik];
             await window.electron.ipcRenderer.invoke('sqlite-insert', { query: query, parameters: args });
         } 
+
+        const SP500Response = await fetch("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies");
+        window.console.log(SP500Response);
     }
 }

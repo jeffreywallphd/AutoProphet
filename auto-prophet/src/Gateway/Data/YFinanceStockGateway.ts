@@ -60,12 +60,16 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
     const formattedData: Array<{ [key: string]: any }> = [];
     for (const item of data) {
       const date = new Date(item["date"]);
-      formattedData.push({
-        date: date.toLocaleDateString(),
-        time: action === "intraday" ? date.toLocaleTimeString() : "", // Only include time for intraday data
-        price: item[closingPriceKey] ? Math.round(item[closingPriceKey]*100)/100: null,
-        volume: item["volume"],
-      });
+
+      // Only keep data if the price is greater than $1.00
+      if(item[closingPriceKey] > 1) {
+        formattedData.push({
+          date: date.toLocaleDateString(),
+          time: action === "intraday" ? date.toLocaleTimeString() : "", // Only include time for intraday data
+          price: item[closingPriceKey] ? Math.round(item[closingPriceKey]*100)/100: null,
+          volume: item["volume"],
+        });
+      }
     }
 
     entity.setFieldValue("data", formattedData);
@@ -115,6 +119,15 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
     }        
   }
 
+  private isPreMarketOpen() {
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+
+    // Check if hour is less than 9 or if it's 9 and minute is less than 30
+    return hour < 9 || (hour === 9 && minute < 30);
+  }
+
   private async getIntradayData(entity: IEntity) {
     try {
       // TODO: continue to improve logic to account for stock market holidays and closures
@@ -128,6 +141,16 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
       } else if(currentDate.getDay() === 0) {
         // check if Sunday
         currentDate = new Date(currentDate.setDate(currentDate.getDate() - 2));
+      }
+
+      //check if current time is before market open. If so, use previous day
+      if( (currentDate.getDay() !== 0 || currentDate.getDay() !== 6) && this.isPreMarketOpen() ) {
+        // If Monday, look for Friday data, otherwise look to previous day
+        if(currentDate.getDay() === 1) {
+          currentDate = new Date(currentDate.setDate(currentDate.getDate() - 3));
+        } else {
+          currentDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
+        }
       }
 
       // set start date to stock market opening at 9:30am
