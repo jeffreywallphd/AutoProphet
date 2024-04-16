@@ -3,6 +3,7 @@ import {IKeylessDataGateway} from "./IKeylessDataGateway";
 
 export class SecAPIGateway implements IKeylessDataGateway {
     baseURL: string = "https://data.sec.gov/";
+    sourceName: string = "SEC's API";
 
     connect(): void {
         //no connection needed for this data gateway

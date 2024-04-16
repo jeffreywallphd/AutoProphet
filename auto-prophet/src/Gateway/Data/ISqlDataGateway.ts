@@ -3,6 +3,7 @@ import { IDataGateway } from "./IDataGateway";
 
 export interface ISqlDataGateway extends IDataGateway {
     key?: string;
+    sourceName: string;
     connect(): void;
     disconnect(): void;
     create(entity: IEntity, action: string): Promise<Boolean>;

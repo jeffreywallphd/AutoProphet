@@ -5,8 +5,11 @@ import {JSONResponse} from "../Gateway/Response/JSONResponse";
 import {IDataGateway} from "../Gateway/Data/IDataGateway";
 import {SecRequest} from "../Entity/SecRequest";
 import {SecReportGatewayFactory} from "@DataGateway/SecReportGatewayFactory";
-import dep from '../../config/default.json';
 import { XMLResponse } from "../Gateway/Response/XMLResponse";
+
+declare global {
+    interface Window { fs: any; }
+}
 
 export class SecInteractor implements IInputBoundary {
     requestModel: IRequestModel;
@@ -22,8 +25,9 @@ export class SecInteractor implements IInputBoundary {
         sec.fillWithRequest(requestModel);
 
         //instantiate the correct API gateway
+        const config = window.fs.fs.readFileSync('./config/default.json', "utf-8");
         const secGatewayFactory = new SecReportGatewayFactory();
-        var secGateway: IDataGateway = await secGatewayFactory.createGateway(dep);
+        var secGateway: IDataGateway = await secGatewayFactory.createGateway(JSON.parse(config));
 
         sec.setFieldValue("key", secGateway.key);
         

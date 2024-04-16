@@ -4,6 +4,7 @@ import {IDataGateway} from "../Data/IDataGateway";
 export class AlphaVantageRatioGateway implements IDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";
     key: string;
+    sourceName: string = "AlphaVantage Fundamental Data API";
 
     constructor(key: string) {
         this.key = key;

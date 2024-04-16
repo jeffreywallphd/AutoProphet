@@ -69,7 +69,6 @@ const selectFromDatabase = async (query, dataArray) => {
       //execute the query
       db.all(query, dataArray, (err, rows) => {
         if (err) {
-          console.log(err);
           reject(err);
           return;
         }
@@ -79,16 +78,13 @@ const selectFromDatabase = async (query, dataArray) => {
         resolve(data);
       });
     } catch (err) {
-      console.log(err);
       reject(err);
     } 
   });
 };
 
 ipcMain.handle('sqlite-query', async (event, args) => {
-  console.log("sqlite-query: " + args);
   const data = await sqliteQuery(args["query"], args["parameters"]);
-  console.log(data);
   return data;
 });
 
@@ -100,7 +96,6 @@ const sqliteQuery = async (query, dataArray) => {
       //execute the query
       db.all(query, dataArray, (err, rows) => {
         if (err) {
-          console.log(err);
           reject(err);
           return;
         }
@@ -110,16 +105,13 @@ const sqliteQuery = async (query, dataArray) => {
         resolve(data);
       });
     } catch (err) {
-      console.log(err);
       reject(err);
     } 
   });
 };
 
 ipcMain.handle('sqlite-get', async (event, args) => {
-  console.log("sqlite-get: " + args["query"] + " " + args["parameters"]);
   const data = await sqliteGet(args["query"], args["parameters"]);
-  console.log(data);
   return data;
 });
 
@@ -129,33 +121,28 @@ const sqliteGet = async (query, dataArray) => {
       //execute the query
       db.get(query, dataArray, (err, data) => {
         if (err) {
-          console.log(err);
           reject(err);
           return;
         }
         resolve(data);
       });
     } catch (err) {
-      console.log(err);
       reject(err);
     } 
   });
 };
 
 ipcMain.handle('sqlite-insert', async (event, args) => {
-  console.log("sqlite-insert: " + args);
   const data = await sqliteRun(args["query"], args["parameters"]);
   return data;
 });
 
 ipcMain.handle('sqlite-update', async (event, args) => {
-  console.log("sqlite-update: " + args);
   const data = await sqliteRun(args["query"], args["parameters"]);
   return data;
 });
 
 ipcMain.handle('sqlite-delete', async (event, args) => {
-  console.log("sqlite-delete: " + args);
   const data = await sqliteRun(args["query"], args["parameters"]);
   return data;
 });
@@ -166,7 +153,6 @@ const sqliteRun = async (query, dataArray) => {
       //execute the query
       db.run(query, dataArray, (err, data) => {
         if (err) {
-          console.log(err);
           reject(err);
           return;
         }
@@ -174,7 +160,6 @@ const sqliteRun = async (query, dataArray) => {
         resolve(data);
       });
     } catch (err) {
-      console.log(err);
       reject(err);
     } 
   });

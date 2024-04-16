@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import ConfigUpdater from "../Utility/ConfigUpdater";
+import ConfigUpdater from "../Utility/ConfigManager";
 
 function Settings(props) {
     const stockApiRef = useRef(null);
@@ -98,9 +98,7 @@ function Settings(props) {
                 apiSize: state.apiSize,
                 message: "Configuration not saved. The API key for this API may not be empty"
             });
-        }      
-        
-        console.log('Configuration updated successfully.');
+        }              
     };
 
     return (

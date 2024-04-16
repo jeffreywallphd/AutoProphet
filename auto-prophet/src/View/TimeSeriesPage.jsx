@@ -20,7 +20,9 @@ class TimeSeriesPage extends Component {
     state = {
         initializing: true,
         data: null,
+        dataSource: null,
         secData: null,
+        secSource: null,
         error: null,
         ticker: null,
         cik: null,
@@ -59,7 +61,7 @@ class TimeSeriesPage extends Component {
                                 </>
                             ) : this.state.error ? (
                                 <p>The ticker you entered is not valid. Please choose a valid ticker.</p>
-                            ) : (<p>&nbsp;</p>)}
+                            ) : (<p>Data Source: {this.state.dataSource}</p>)}
                             <TimeSeriesChart state={this.state} onIntervalChange={this.handleIntervalChange} />
                         </div>
                         <div className="sidePanel">

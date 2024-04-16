@@ -1,8 +1,6 @@
 import {IEntity} from "../../Entity/IEntity";
 import { StockRequest } from "../../Entity/StockRequest";
 import { IKeylessDataGateway } from "./IKeylessDataGateway";
-import { FinancialModelingPrepGateway } from "./FMPStockGateway";
-//import yahooFinance from 'yahoo-finance2';
 
 // allow the yahoo.finance contextBridge to be used in TypeScript
 declare global {
@@ -11,6 +9,7 @@ declare global {
 
 export class YFinanceStockGateway implements IKeylessDataGateway {
   yahooFinance = window.yahoo.finance;
+  sourceName: string = "Yahoo Finance (unofficial) Community API";
      
   connect(): void {
     // No connection needed for this data gateway
@@ -27,7 +26,6 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
   }
 
   async read(entity: IEntity, action: string): Promise<IEntity[]> {
-    window.console.log("Using YFinance");
     var data;
     if (action === "lookup") {
         data = await this.searchSymbol(entity);
@@ -38,7 +36,7 @@ export class YFinanceStockGateway implements IKeylessDataGateway {
     } else {
         throw new Error("Either no action was sent in the request or an incorrect action was used.");
     }
-    window.console.log(data);
+
     var entities;
     if (action === "lookup") {
         entities = this.formatLookupResponse(data);

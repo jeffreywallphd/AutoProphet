@@ -5,6 +5,7 @@ import { IKeyedDataGateway } from "../Data/IKeyedDataGateway";
 export class FinancialModelingPrepGateway implements IKeyedDataGateway {
   baseURL: string = "https://financialmodelingprep.com/api/v3/";
   apiKey: string;
+  sourceName: string = "Financial Management Prep Stock API";
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -26,7 +27,6 @@ export class FinancialModelingPrepGateway implements IKeyedDataGateway {
   }
 
   async read(entity: IEntity, action: string): Promise<Array<IEntity>> {
-    window.console.log("Using FMP");
     var url;
     if (action === "lookup") {
       url = this.getSymbolLookupUrl(entity);

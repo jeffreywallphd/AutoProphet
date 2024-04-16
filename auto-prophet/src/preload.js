@@ -28,13 +28,3 @@ contextBridge.exposeInMainWorld('database', {
         
     }
 });
-
-// use window.console.log when you need to log within electron
-/*contextBridge.exposeInMainWorld('terminal', {
-    log: (data) => {
-        console.log(data);
-    },
-    error: (data) => {
-        console.error(data);
-    }
-});*/

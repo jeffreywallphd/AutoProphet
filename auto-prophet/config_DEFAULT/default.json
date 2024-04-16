@@ -1,0 +1,5 @@
+{
+    "StockGateway": "AlphaVantageStockGateway",
+    "NewsGateway": "AlphaVantageNewsGateway",
+    "ReportGateway": "AlphaVantageRatioGateway"
+}

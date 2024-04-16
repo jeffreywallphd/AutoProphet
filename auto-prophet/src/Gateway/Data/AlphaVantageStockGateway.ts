@@ -5,6 +5,7 @@ import {IKeyedDataGateway} from "../Data/IKeyedDataGateway";
 export class AlphaVantageStockGateway implements IKeyedDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";
     key: string;
+    sourceName: string = "AlphaVantage Stock API";
 
     constructor(key: string) {
         this.key = key;
@@ -25,7 +26,6 @@ export class AlphaVantageStockGateway implements IKeyedDataGateway {
     }
 
     async read(entity: IEntity, action: string): Promise<Array<IEntity>> {
-        window.console.log("Using AlphaVantage") 
         var url;
         if (action === "lookup") {
             url = this.getSymbolLookupUrl(entity);    
