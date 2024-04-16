@@ -25,28 +25,6 @@ class Home extends Component {
                 <p>
                     AutoProphet is an open-source AI-enabled tool that seeks to democratize financial analysis by providing you with advanced analytics tools to help you make wise financial decisions.
                 </p>
-                <section className="cardRow">
-                    <NavLink to="/buy-report">
-                      <div className="card">
-                        <div className="cardHeader">
-                            <h3>Buy Report</h3>
-                        </div>
-                        <div className="cardContainer">
-                          <p>Gather performance information about publicly traded firms, such as quarterly and annual reports, to help you determine whether to invest in a company.</p>
-                        </div>
-                      </div>
-                    </NavLink>
-                    <NavLink to="/analysis">
-                      <div className="card">
-                        <div className="cardHeader">
-                            <h3>Advanced Analytics</h3>
-                        </div>
-                        <div className="cardContainer">
-                          <p>Select from different advanced analytics tools, including machine learning and AI tools, to help you identify market trends.</p>
-                        </div>
-                      </div>
-                    </NavLink>
-                </section>
             </div>
         );
     }

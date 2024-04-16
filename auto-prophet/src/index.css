@@ -32,10 +32,11 @@ body {
 }
 
 footer {
-  background-color: var(--secondary-color);
-  color: var(--text-color-light);
+  background-color: var(--background-color);
+  color: var(--text-color-medium);
   padding: 15px;
   text-align: center;
+  border-top: 1px solid #999999;
 }
 
 h1 {
@@ -58,8 +59,47 @@ h4{
   color: var(--text-color-medium);
 }
 
+select {
+  padding: 8px;
+  border: 1px solid black;
+  height: 40px;
+  border-radius: 4px;
+}
+
 button {
   cursor: pointer;
+  background-color: var(--accent-color);
+  color: var(--text-color-light);
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+button:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-group button {
+  background-color: #CCCCCC;
+  color: var(--text-color-medium);
+  border-radius: 0px;
+  padding: 10px;
+  font-size: 12px;
+  margin-top: 0px;
+}
+
+.btn-group button:hover {
+  box-shadow: 0;
+  border-right: 1px solid #999999;
+  border-left: 1px solid #999999;
+}
+
+.btn-group button:disabled {
+  color: #999999;
 }
 
 .greyedOut {
@@ -296,12 +336,9 @@ code {
 /* Styling for Cards */
 
 .cardRow {
-    width: fit-content;
-    block-size: fit-content;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 40px;
-    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .cardRow a {
@@ -310,7 +347,13 @@ code {
 }
 
 .card {
-  height: 100%;
+  flex: 1;
+  min-height: 450px;
+  max-width: 450px;
+  margin-left: 20px;
+  margin-right: 20px;
+  background-color: #FFFFFF; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .card:hover {
@@ -321,17 +364,20 @@ code {
   background-color: var(--secondary-color);
   color: var(--text-color-light);
   border-radius: 10px 10px 0px 0px;
-  padding: 20px;
-}
-
-.cardHeader h3 {
-  color: var(--text-color-light);
+  height: 200px
 }
 
 .cardContainer {
-  background-color: var(--tertiary-color);
   padding: 20px;
   height: 100%;
+  border-radius: 0px 0px 10px 10px;
+  color: var(--text-color-medium);
+}
+
+.cardContainer h3 {
+  padding: 0;
+  margin: 0;
+  color: var(--text-color-medium);
 }
 
 /* Styling for Stock Charting */

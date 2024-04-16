@@ -23,7 +23,7 @@ import { Learn } from "./Learn";
 import { LearningModuleDetails } from "./LearningModuleDetails";
 import { LearningModulePage } from "./LearningModulePage";
 import logo from "../Asset/Image/logo.png";
-import navIcon from "../Asset/Image/navIcon.png"
+import navIcon from "../Asset/Image/navIcon.png";
 import { Settings } from "./APIConfigSetting";
 import Forecast from "./Forecast";
 import ForecastFeature from "./ForecastFeature";

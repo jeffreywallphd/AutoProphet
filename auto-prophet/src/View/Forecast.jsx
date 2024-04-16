@@ -7,8 +7,17 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import binaryHeader from "../Asset/Image/binary_header.jpg";
+import aiHeader from "../Asset/Image/ai_header.jpg";
 
 class Forecast extends Component {
+    dataFeatureCardStyle = {
+      backgroundImage: `url(${binaryHeader})`
+    }
+
+    modelCardStyle = {
+      backgroundImage: `url(${aiHeader})`
+    }
+
     render() {
         return (
             <div className="page">
@@ -19,21 +28,18 @@ class Forecast extends Component {
                 <section className="cardRow">
                     <NavLink to="/forecast-features">
                       <div className="card">
-                        <div className="cardHeader">
-                            <h3>Create Custom Data Features</h3>
-                        </div>
+                        <div className="cardHeader" style={this.dataFeatureCardStyle}></div>
                         <div className="cardContainer">
-                            <img scr={binaryHeader} alt="header image"/>
+                            <h3>Create Custom Data Features</h3>
                             <p>If you would like to create custom data features for prediction and forecasting models, this page will help you do so. For example, you can choose different types windows for moving average calculations. You can save your data features and use them in different forecasting models.</p>
                         </div>
                       </div>
                     </NavLink>
                     <NavLink to="/forecast-models">
                       <div className="card">
-                        <div className="cardHeader">
-                            <h3>Select a Forecasting Model</h3>
-                        </div>
+                        <div className="cardHeader" style={this.modelCardStyle}></div>
                         <div className="cardContainer">
+                          <h3>Select a Forecasting Model</h3>
                           <p>Select and run forecasts using different forecasting models. You can select from traditional time series models like ARIMA, or machine learning and AI models like random forests and deep learning.</p>
                         </div>
                       </div>

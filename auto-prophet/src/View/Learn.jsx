@@ -89,6 +89,7 @@ export function Learn() {
                             onKeyUp={(e) => checkInput(e)} placeholder="Please enter a topic to learn about"></input>
                     <button className="priceSearchButton" type="submit" disabled={state.searching}><FaSearch/></button>
                 </div>
+                <div>&nbsp;</div>
                 <div>
                     <span>Filter by: </span>
                     <select ref={filterRef} onChange={selectData}>
