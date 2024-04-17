@@ -55,7 +55,9 @@ export class StockInteractor implements IInputBoundary {
             return;
         } 
 
-        if(requestModel.request.request.stock.action === "lookup") {
+        // use internal SQLite database for lookup and random selection of an S&P500 company
+        // otherwise, use the gateway configured in the default config file
+        if(requestModel.request.request.stock.action === "lookup" || requestModel.request.request.stock.action === "selectRandomSP500") {
             stockGateway = new SQLiteCompanyLookupGateway();
         } else {
             //instantiate the correct API gateway

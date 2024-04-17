@@ -109,6 +109,7 @@ button:hover {
 /* Styling for Loading Page */
 
 .loadingContainer {
+  background-color: var(--primary-color);
   display: flex;
   min-height: 100vh;
   justify-content: center;
