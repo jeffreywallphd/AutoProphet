@@ -108,14 +108,14 @@ INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voice
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, subTitle, pageNumber, pageType) VALUES (2, "Bonds", "The Risks", 11, "SectionPage");
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (2, "Two Main Risks", "Bonds/Slide12.html", "Bonds_Voiceovers/Slide12_Bonds.mp3", 12);
 
-INSERT OR IGNORE INTO LearningModule (id, title, description, keywords, timeEstimate, category) VALUES (7, "What is stock screening?", "This learning module provides you with an introduction to stock screening.", 10, "Stock Screening");
+INSERT OR IGNORE INTO LearningModule (id, title, description, keywords, timeEstimate, category) VALUES (7, "What is stock screening?", "This learning module provides you with an introduction to stock screening.", "stock screening introduction", 10, "Stock Screening");
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, pageNumber) VALUES (7, "Topics Covered", "StockScreening/Slide2.html",2);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (7, "Market Beta", "StockScreening/Slide3.html", "StockScreening_Voiceovers/Slide3_StockScreening.mp3", 4);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, subTitle, pageNumber, pageType) VALUES (7, "Stock Screening", "Market Beta", 3, "SectionPage");
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (7, "Ratios", "StockScreening/Slide4.html", "StockScreening_Voiceovers/Slide4_StockScreening.mp3", 4);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (7, "Build Your own Strategy", "StockScreening/Slide5.html", "StockScreening_Voiceovers/Slide5_StockScreening.mp3", 5);
 
-INSERT OR IGNORE INTO LearningModule (id, title, description, keywords, timeEstimate, category) VALUES (8, "Basics of Blockchain", "This learning module provides you with an introduction to blockchain.", 10, "Blockchain");
+INSERT OR IGNORE INTO LearningModule (id, title, description, keywords, timeEstimate, category) VALUES (8, "Basics of Blockchain", "This learning module provides you with an introduction to blockchain.", "blockchain introduction", 10, "Blockchain");
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, pageNumber) VALUES (8, "A Beginner's Overview To Blockchain", "Blockchain/Slide2.html",2);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (8, "Blockchain Basics", "Blockchain/Slide3.html", "Blockchain/Slide3_Blockchain.mp3", 3);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, subTitle, pageNumber, pageType) VALUES (8, "How to invest in Crypto and NFTs?", "Multiple exchanges and opportunities!", 3, "SectionPage");
