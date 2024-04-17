@@ -1,0 +1,10 @@
+# Voiceover for Fund learning module
+
+## Slide 3
+"What is a mutual fund?  A mutual fund is an investment opportunity, often managed by a financial professional, where many people buy in for a 'share' of the fund.  The fund itself is managed according to its prospectus, which is a document that details the fund's rules and investment strategies.  What gives funds value is that they are a collection of other investments of many different types, which means that a typical fund has diverse holdings.  Returns come from the investor selling shares in the fund, not the stocks directly."
+
+## Slide 4
+"There are two main types of funds, Active funds and Index funds.  Active funds aim to have better growth than the market.  They try to do this by having at least one financial professional buying and selling assorted investments to generate as much value as possible.  Index funds, on the other hand, are usually managed via automation.  This automation attempts to buy and sell stocks to match the growth of the market, which is done by trying to match a financial index such as the Dow Jones Industrial Average.  The lack of human involvement means that index funds generally have lower fees than active funds."
+
+## Slide 5
+"Like all investments, funds have various pros and cons.  Like stocks, Funds are easy to trade.  Funds are also an easy way to make your portfolio more diverse, and even index funds have professional management and oversight to make sure that they are being handled responsibly.  However, even with the prospectus document funds are sometimes arcane and lack transparency in their operations.  Additionally, funds have fees associated with them, making it possibly more expensive than other investment options, and on top of all that, funds can lack protection by the FDIC, making them more risky in other ways."
