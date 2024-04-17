@@ -84,3 +84,10 @@ INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voice
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (4, "What does each type do?", "RiskFreeInvestments/Slide7.html", "RiskFreeInvestments/Slide7_RiskFree.mp3", 7);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (4, "What does each type do?", "RiskFreeInvestments/Slide8.html", "RiskFreeInvestments/Slide8_RiskFree.mp3", 8);
 INSERT OR IGNORE INTO LearningModulePage (moduleId, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (4, "How safe are they?", "RiskFreeInvestments/Slide9.html", "RiskFreeInvestments/Slide9_RiskFree.mp3", 9);
+
+INSERT OR IGNORE INTO LearningModule (id, title, description, keywords, timeEstimate, category) VALUES (7, "Introduction to Funds", "This learning module provides you with some basic information about Funds.", "Funds", 10, "Funds");
+INSERT OR IGNORE INTO LearningModule (moduleId, title, pageNumber, pageType) VALUES (7, "What are Funds?", 2, "TitlePage");
+INSERT OR IGNORE INTO LearningModule (moduleID, title, pageContentUrl, pageNumber) VALUES (7, "A Beginner's Overview to Funds", "Funds/Slide2.html", 3);
+INSERT OR IGNORE INTO LearningModule (moduleID, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (7, "What is a fund?", "Funds/Slide3.html", "Funds/Slide3.mp3", 4);
+INSERT OR IGNORE INTO LearningModule (moduleID, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (7, "Active vs Passive Funds", "Funds/Slide4.html", "Funds/Slide4.mp3", 5);
+INSERT OR IGNORE INTO LearningModule (moduleID, title, pageContentUrl, voiceoverUrl, pageNumber) VALUES (7, "Pros and Cons of Funds", "Funds/Slide5.html", "Funds/Slide5.mp3", 6);
