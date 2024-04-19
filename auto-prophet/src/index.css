@@ -176,6 +176,8 @@ code {
 
 .sidePanel {
   flex: 1;
+  padding: 20px;
+  margin-left: 10px;
 }
 
 .sidebar {
@@ -241,18 +243,18 @@ code {
 .content {
   padding: 0;
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--background-color);
   flex: 1;
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .page {
-  height: calc(100vh - var(--footer-height));
+  min-height: 100vh;
   padding: 20px;
   background-color: var(--background-color);
   overflow-x: hidden;
-  overflow-y: scroll;
 }
 
 .homeContainer {
@@ -288,7 +290,7 @@ code {
 /* Styling for Slideshows */
 
 .slideshowWindow {
-  height: 450px;
+  height: 500px;
   width: auto;
   margin: 30px;
   padding: 20px;
@@ -304,14 +306,14 @@ code {
 }
 
 .slide div.titleContainer {
-  height: 310px;
+  height: 350px;
   width: auto;
   text-align: center;
   vertical-align: center;
 }
 
 .slide div.contentContainer {
-  height: 310px;
+  height: 350px;
   width: auto;
 }
 
@@ -415,6 +417,7 @@ code {
 
 .chartContainer {
   width: 700px;
+  margin-left: 10px;
 }
 
 .priceSearchFormContainer{
