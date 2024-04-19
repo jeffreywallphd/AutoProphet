@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS PublicCompany (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     companyName TEXT,
     ticker TEXT NOT NULL UNIQUE,
-    cik TEXT NOT NULL
+    cik TEXT NOT NULL,
+    isSP500 INTEGER DEFAULT 0
 );
 
 /*create a table to track changes to some tables that act as cache*/

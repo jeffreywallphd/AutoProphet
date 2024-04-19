@@ -1,6 +1,7 @@
 import { StockRequest } from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
 import {ISqlDataGateway} from "../Data/ISqlDataGateway";
+import { parse } from 'node-html-parser';
 
 // allow the yahoo.finance contextBridge to be used in TypeScript
 declare global {
@@ -34,79 +35,114 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
     }
     
     async read(entity: IEntity, action: string): Promise<IEntity[]> {
-        try {
-            const keyword = entity.getFieldValue("keyword");
-            const companyName = entity.getFieldValue("companyName");
-            const ticker = entity.getFieldValue("ticker");
-            const cik = entity.getFieldValue("cik");
+        var query:string = "";
+        var data;
 
-            if(keyword === null && companyName === null && ticker === null && cik === null) {
-                return [];
-            }
-            
-            var query:string = "SELECT *";
+        if(action === "lookup") {
+            try {
+                const keyword = entity.getFieldValue("keyword");
+                const companyName = entity.getFieldValue("companyName");
+                const ticker = entity.getFieldValue("ticker");
+                const cik = entity.getFieldValue("cik");
+                const isSP500 = entity.getFieldValue("isSP500");
 
-            // an array to contain the parameters for the parameterized query
-            const parameterArray:any[] = [];
+                if(keyword === null && companyName === null && ticker === null && cik === null) {
+                    return [];
+                }
+                
+                query = "SELECT *";
 
-            // create a preference for ticker matches over companyName matches
-            if(keyword !== null) {
-                query += ", CASE WHEN ticker LIKE ? || '%' THEN 1 WHEN companyName LIKE ? || '%' THEN 2 ELSE 3 END AS rank";
-                parameterArray.push(keyword);
-                parameterArray.push(keyword);
-            }
+                // an array to contain the parameters for the parameterized query
+                const parameterArray:any[] = [];
 
-            query += " FROM PublicCompany WHERE";
-
-            var hasWhereCondition:boolean = false;
-
-            if(keyword !== null) {
-                // treat the keyword as a CIK if able to parseFloat()
-                if(!isNaN(parseFloat(keyword))) {
-                    query = this.appendWhere(query, " cik=?", hasWhereCondition);
-                    parameterArray.push(keyword);
-                    hasWhereCondition = true;
-                } else {
-                    query = this.appendWhere(query, " ticker LIKE ? || '%' OR companyName LIKE ? || '%'", hasWhereCondition);
-                    
-                    // Push twice to check in ticker and companyName
-                    // TODO: create a text index with ticker and companyName data
+                // create a preference for ticker matches over companyName matches
+                if(keyword !== null) {
+                    query += ", CASE WHEN ticker LIKE ? || '%' THEN 1 WHEN companyName LIKE ? || '%' THEN 2 ELSE 3 END AS rank";
                     parameterArray.push(keyword);
                     parameterArray.push(keyword);
                 }
-            }
 
-            if(companyName !== null) {
-                query = this.appendWhere(query, " companyName LIKE '%' || ? || '%'", hasWhereCondition);
-                parameterArray.push(companyName);
-            }
+                query += " FROM PublicCompany WHERE";
 
-            if(ticker !== null) {
-                query = this.appendWhere(query, " ticker LIKE '%' || ? || '%'", hasWhereCondition);
-                parameterArray.push(ticker);
-            }
+                var hasWhereCondition:boolean = false;
 
-            if(cik !== null) {
-                query = this.appendWhere(query, " cik LIKE '%' || ? || '%'", hasWhereCondition);
-                parameterArray.push(cik);
-            }
+                if(keyword !== null) {
+                    // treat the keyword as a CIK if able to parseFloat()
+                    if(!isNaN(parseFloat(keyword))) {
+                        query = this.appendWhere(query, " cik=?", hasWhereCondition);
+                        parameterArray.push(keyword);
+                        hasWhereCondition = true;
+                    } else {
+                        query = this.appendWhere(query, " ticker LIKE ? || '%' OR companyName LIKE ? || '%'", hasWhereCondition);
+                        
+                        // Push twice to check in ticker and companyName
+                        // TODO: create a text index with ticker and companyName data
+                        parameterArray.push(keyword);
+                        parameterArray.push(keyword);
+                    }
+                }
 
-            if(keyword !== null) {
-                query += " ORDER BY rank ASC, ticker ASC LIMIT 10";
-            } else {
-                query += " ORDER BY ticker ASC LIMIT 10";
-            }
-            
-            const data = await window.electron.ipcRenderer.invoke('sqlite-query', { database: this.databasePath, query: query, parameters: parameterArray });
-            var entities;
-            if (action === "lookup") {
-                entities = this.formatLookupResponse(data);
-            }
+                if(companyName !== null) {
+                    query = this.appendWhere(query, " companyName LIKE '%' || ? || '%'", hasWhereCondition);
+                    parameterArray.push(companyName);
+                }
 
-            return entities;
-        } catch(error) {
-            window.console.error(error);
+                if(ticker !== null) {
+                    query = this.appendWhere(query, " ticker LIKE '%' || ? || '%'", hasWhereCondition);
+                    parameterArray.push(ticker);
+                }
+
+                if(cik !== null) {
+                    query = this.appendWhere(query, " cik LIKE '%' || ? || '%'", hasWhereCondition);
+                    parameterArray.push(cik);
+                }
+
+                if(isSP500 !== null) {
+                    query = this.appendWhere(query, " isSP500=?", hasWhereCondition, "AND");
+                    parameterArray.push(isSP500);
+                }
+
+                if(keyword !== null) {
+                    query += " ORDER BY rank ASC, ticker ASC LIMIT 10";
+                } else {
+                    query += " ORDER BY ticker ASC LIMIT 10";
+                }
+                
+                data = await window.electron.ipcRenderer.invoke('sqlite-query', { database: this.databasePath, query: query, parameters: parameterArray });
+                
+                
+            } catch(error) {
+                window.console.error(error);
+            }
+        } else if(action === "selectRandomSP500") {
+            query = "SELECT * FROM PublicCompany WHERE id > (ABS(RANDOM()) % (SELECT max(id) + 1 FROM PublicCompany)) ORDER BY id LIMIT 1;";
+            data = await window.electron.ipcRenderer.invoke('sqlite-query', { database: this.databasePath, query: query });
         }
+
+        var entities;
+        if (action === "lookup") {
+            entities = this.formatLookupResponse(data);
+        } else if(action === "selectRandomSP500") {
+            entities = this.formatRandomData(data);
+        }
+
+        return entities;
+    }
+    
+    formatRandomData(data: any): any {
+        var array: Array<IEntity> = [];
+
+        for (const match of data) {           
+            var entity = new StockRequest();
+            
+            entity.setFieldValue("ticker", match.ticker.toUpperCase());
+            entity.setFieldValue("companyName", match.companyName);
+            entity.setFieldValue("cik", match.cik);
+            
+            array.push(entity);
+        }
+
+        return array;
     }
 
     private formatLookupResponse(data:any) {
@@ -122,15 +158,15 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
             array.push(entity);
         }
 
-        return array
+        return array;
     }
 
-    private appendWhere(query:string, condition:string, hasWhereCondition:boolean) {
+    private appendWhere(query:string, condition:string, hasWhereCondition:boolean, whereOperator:string = "OR") {
         if(!hasWhereCondition) {
             query += condition;
         } else {
             // currently using OR to match any of the conditions
-            query += " OR" + condition;
+            query += ` ${whereOperator}` + condition;
         }
 
         return query;
@@ -189,9 +225,7 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
         const response = await fetch('https://www.sec.gov/files/company_tickers.json');
         const secData = await response.json();
 
-        // Parse the SEC text file to extract ticker:CIK pairs
-        //const lines = secTextData.split('\n');
-
+        // Parse the SEC JSON file to extract ticker, CIK, and companyName
         for(var key in secData) {
             var ticker = secData[key]["ticker"];
             var cik = secData[key]["cik_str"];
@@ -212,5 +246,27 @@ export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
             const args  = [companyName, ticker, cik];
             await window.electron.ipcRenderer.invoke('sqlite-insert', { query: query, parameters: args });
         } 
+
+        // get the S&P 500 companies and store those in a database
+        const SP500Response = await fetch("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies");
+        const SP500Object = parse(await SP500Response.text());
+
+        // get all of the rows from the consituents table that stores the S&P500 companies
+        const rows = SP500Object.querySelector("#constituents").querySelectorAll("tr");
+
+        // loop over all rows in the constituents table to extract S&P500 tickers
+        for(var row of rows) {
+            var tds = Array.from(row.querySelectorAll("td"));
+
+            // for valid rows in the table, get the ticker from the first cell and update the database
+            if(tds.length > 0) {
+                var SP500ticker = tds[0].querySelector("a").innerText;
+                const updateQuery = "UPDATE PublicCompany SET isSP500=1 WHERE ticker=?";
+                const updateArgs = [SP500ticker];
+                await window.electron.ipcRenderer.invoke('sqlite-update', { query: updateQuery, parameters: updateArgs });
+            }
+        }
+
+        
     }
 }

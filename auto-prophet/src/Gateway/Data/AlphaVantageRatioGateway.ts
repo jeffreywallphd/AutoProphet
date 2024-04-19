@@ -63,16 +63,18 @@ export class AlphaVantageRatioGateway implements IDataGateway {
     private formatReportResponse(data: { [key: string]: any }, entity:IEntity) {
         var array: Array<IEntity> = [];
         
-        const annualReports = data["annualReports"];
+        if(data.hasOwnProperty("annualReports")) {
+            const annualReports = data["annualReports"];
 
-        const formattedData: Array<{ [key: string]: any }> = [];
-        for(var report of annualReports) {
-            formattedData.push(report);
+            const formattedData: Array<{ [key: string]: any }> = [];
+            for(var report of annualReports) {
+                formattedData.push(report);
+            }
+
+            entity.setFieldValue("data", formattedData);
+
+            array.push(entity);
         }
-
-        entity.setFieldValue("data", formattedData);
-
-        array.push(entity);
 
         return array;
     }

@@ -4,75 +4,60 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { Component } from "react";
+import React, { useContext, useEffect } from "react";
+import { StockInteractor } from "../Interactor/StockInteractor";
+import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import { TimeSeriesChart } from "./TimeSeriesChart";
 import { TickerSearchBar } from "./TickerSearchBar";
 import { TickerSidePanel } from "./TickerSidePanel";
+import { DataContext } from "./App";
 
-class TimeSeriesPage extends Component {
-    constructor(props) {
-        super(props);
-    }
+function TimeSeriesPage(props) {
+    const { state, setState } = useContext(DataContext);
+    
+    //ensure that the state changes
+    useEffect(() => {
+        setState({
+            ...state
+        })
+    }, [state.data, state.searchRef, state.secData, state.interval]);
 
-    currentDate = new Date();
-
-    //set default state for search bar and chart
-    state = {
-        initializing: true,
-        data: null,
-        dataSource: null,
-        secData: null,
-        secSource: null,
-        error: null,
-        ticker: null,
-        cik: null,
-        type: 'intraday',
-        interval: '1D',
-        securitiesList: null,
-        searchRef: null,
-        isLoading: false,
-        minPrice: 0,
-        maxPrice: 10,
-        maxVolume: 1000,
-        yAxisStart: new Date(this.currentDate.getDate() - 5).toISOString().split('T')[0],
-        yAxisEnd: new Date().toISOString().split('T')[0]
+    const handleDataChange = (newState) => {
+        setState(newState);
     };
 
-    //Used to pass data from the search bar to the chart
-    handleDataChange = (state) => {
-        this.setState(state);
-    }
-
-    //used to pass interval changes from button clicks on chart
-    handleIntervalChange = (state) => {
-        this.setState(state);
-    }
-
-    render() {        
-        return (
-                <div className="page">
-                    <h2>Price and Volume Trends</h2>
-                    <div className="flex">
-                        <div>
-                            <TickerSearchBar state={this.state} onDataChange={this.handleDataChange}/>
-                            { this.state.isLoading === true ? (
-                                <>
-                                    <p>Loading...</p>
-                                </>
-                            ) : this.state.error ? (
-                                <p>The ticker you entered is not valid. Please choose a valid ticker.</p>
-                            ) : (<p>Data Source: {this.state.dataSource}</p>)}
-                            <TimeSeriesChart state={this.state} onIntervalChange={this.handleIntervalChange} />
-                        </div>
-                        <div className="sidePanel">
-                            { this.state.secData ? (
-                                <TickerSidePanel state={this.state} />
-                            ) : (null)}
-                        </div>
-                    </div>
+    return (
+        <div className="page">
+            <h2>Price and Volume Trends</h2>
+            <div className="flex">
+                <div>
+                    {state ?
+                        ( 
+                            <>
+                                <TickerSearchBar state={state} handleDataChange={handleDataChange}/>
+                            
+                                { state.isLoading === true ? (
+                                    <>
+                                        <p>Loading...</p>
+                                    </>
+                                ) : state.error ? (
+                                    <p>The ticker you entered is not valid. Please choose a valid ticker.</p>
+                                ) : (<p>Data Source: {state.dataSource}</p>) }
+                            
+                                <TimeSeriesChart state={state} handleDataChange={handleDataChange} />
+                            </>
+                        ) :   
+                        (<p>Loading Context...</p>)
+                    }
                 </div>
-        );
-    }
+                <div className="sidePanel">
+                    { state && state.secData ? (
+                        <TickerSidePanel state={state} />
+                    ) : (null)}
+                </div>
+            </div>
+        </div>
+    );
 }
 
 // In case hooks are needed for this class. Can remove later if not necessary

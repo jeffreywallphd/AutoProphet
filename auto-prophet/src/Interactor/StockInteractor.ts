@@ -45,7 +45,7 @@ export class StockInteractor implements IInputBoundary {
 
             //var response = new JSONResponse();
 
-            // Re-cache ticker:cik mapping if more than 14 days old. Also cache if undefined.
+            // Re-cache ticker:cik mapping if more than 30 days old. Also cache if undefined.
             // Re-caching is done to capture new IPOs and changes to org reporting data
             if(lastUpdated === undefined || dayDiff > 30) {
                 await stockGateway.refreshTableCache(stock);
@@ -55,7 +55,9 @@ export class StockInteractor implements IInputBoundary {
             return;
         } 
 
-        if(requestModel.request.request.stock.action === "lookup") {
+        // use internal SQLite database for lookup and random selection of an S&P500 company
+        // otherwise, use the gateway configured in the default config file
+        if(requestModel.request.request.stock.action === "lookup" || requestModel.request.request.stock.action === "selectRandomSP500") {
             stockGateway = new SQLiteCompanyLookupGateway();
         } else {
             //instantiate the correct API gateway

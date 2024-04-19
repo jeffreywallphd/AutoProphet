@@ -16,6 +16,9 @@ export class SecRequest implements IEntity {
         var cik = new Field("cik", "string", null);
         this.fields.set("cik", cik);
 
+        var isSP500 = new Field("isSP500", "integer", null);
+        this.fields.set("isSP500", isSP500);
+
         var accountingStandard = new Field("accountingStandard", "string", "us-gaap");
         this.fields.set("accountingStandard", accountingStandard);
 
@@ -65,6 +68,10 @@ export class SecRequest implements IEntity {
 
         if(json.request.sec.hasOwnProperty("ticker")) {
             this.setFieldValue("ticker", json.request.sec.ticker);
+        }
+
+        if(json.request.sec.hasOwnProperty("isSP500")) {
+            this.setFieldValue("isSP500", json.request.sec.isSP500);
         }
 
         if(json.request.sec.hasOwnProperty("accountingStandard")) {
