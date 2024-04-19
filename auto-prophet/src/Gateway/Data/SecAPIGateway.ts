@@ -1,14 +1,9 @@
-import {StockRequest} from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
-import {IDataGateway} from "./IDataGateway";
+import {IKeylessDataGateway} from "./IKeylessDataGateway";
 
-export class SecAPIGateway implements IDataGateway {
+export class SecAPIGateway implements IKeylessDataGateway {
     baseURL: string = "https://data.sec.gov/";
-    key: string;
-
-    constructor(key: string) {
-        this.key = key;
-    }
+    sourceName: string = "SEC's API";
 
     connect(): void {
         //no connection needed for this data gateway

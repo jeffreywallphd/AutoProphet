@@ -10,11 +10,14 @@
   --text-color-dark: #000000;
   --text-color-light: #FFFFFF;
   --text-color-medium: #333333;
+  --footer-height: 90px;
 }
 
 body {
-  background-color: var(--secondary-color);
+  height: 100vh;
+  background-color: var(--background-color);
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -22,11 +25,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
 footer {
-  background-color: var(--secondary-color);
-  color: var(--text-color-light);
+  background-color: var(--background-color);
+  color: var(--text-color-medium);
   padding: 15px;
   text-align: center;
+  border-top: 1px solid #999999;
 }
 
 h1 {
@@ -45,9 +55,89 @@ h3 {
   color: var(--text-color-medium);
 }
 
+h4{
+  color: var(--text-color-medium);
+}
+
+select {
+  padding: 8px;
+  border: 1px solid black;
+  height: 40px;
+  border-radius: 4px;
+}
+
 button {
   cursor: pointer;
+  background-color: var(--accent-color);
+  color: var(--text-color-light);
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 10px;
 }
+
+button:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-group button {
+  background-color: #CCCCCC;
+  color: var(--text-color-medium);
+  border-radius: 0px;
+  padding: 10px;
+  font-size: 12px;
+  margin-top: 0px;
+}
+
+.btn-group button:hover {
+  box-shadow: 0;
+  border-right: 1px solid #999999;
+  border-left: 1px solid #999999;
+}
+
+.btn-group button:disabled {
+  color: #999999;
+}
+
+.greyedOut {
+  color: #666666;
+}
+
+/* Styling for Loading Page */
+
+.loadingContainer {
+  background-color: var(--primary-color);
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadingContent {
+  color: var(--text-color-light);
+  text-align: center;
+}
+
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  text-align: center;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Styling for Navigation */
 
 #navButton{
   padding:0;
@@ -60,8 +150,8 @@ button {
 
 #navIcon{
   border-image: 0;
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   margin: 0;
 }
@@ -70,9 +160,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+/* Styling for Main Container and Sidebar */
+
 .main {
+  margin: 0;
+  padding: 0;
   display: flex;
-  min-height: 500px;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .flex {
@@ -80,19 +175,20 @@ code {
 }
 
 .sidePanel {
-  
   flex: 1;
 }
 
-.sidebar { 
+.sidebar {
+  padding:0;
+  margin:0; 
   width: 200px; 
-  min-height: 500px;
+  height: 100vh;
   background-color: var(--primary-color);
   transition: width 0.5s ease;
 }
 
 .sidebar.collapsed { 
-  width: 60px;
+  width: 40px;
 }
 
 .header {
@@ -140,27 +236,155 @@ code {
   color: var(--text-color-light);
 }
 
+/* Styling for Home, Content, and Page Containers */
+
 .content {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
   background-color: var(--background-color);
   flex: 1;
+  overflow: hidden;
 }
 
 .page {
+  height: calc(100vh - var(--footer-height));
   padding: 20px;
+  background-color: var(--background-color);
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
+.homeContainer {
+  width: 75%;
+  height: 400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  color: var(--text-color-light);
+  font-size: 48px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.homeContainer p {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.homeContainer p:nth-of-type(2) {
+  margin-left: 75px;
+}
+
+.homeContainer p:nth-of-type(3) {
+  margin-left: 150px;
+}
+
+.homeContainer p:nth-of-type(4) {
+  margin-left: 225px;
+}
+
+/* Styling for Slideshows */
+
+.slideshowWindow {
+  height: 450px;
+  width: auto;
+  margin: 30px;
+  padding: 20px;
+  border: 25px solid var(--secondary-color);
+  background-color: var(--background-color);
+}
+
+.slide {
+  height: 100%;
+  width: auto;
+  font-size: 28px;
+  background-color: var(--background-color);
+}
+
+.slide div.titleContainer {
+  height: 310px;
+  width: auto;
+  text-align: center;
+  vertical-align: center;
+}
+
+.slide div.contentContainer {
+  height: 310px;
+  width: auto;
+}
+
+.slide div.audioBar {
+  height: 20px;
+  width: auto;
+  text-align: right;
+}
+
+.slide p {
+  background-color: var(--background-color);
+}
+
+.slide h1 {
+  font-size: 40px;
+  color: var(--secondary-color);
+  border: none;
+}
+
+.slide h2 {
+  font-size: 36px;
+  color: var(--secondary-color);
+  text-align: center;
+  border-bottom: 3px solid var(--tertiary-color);
+}
+
+.slide h2.slideSubTitle {
+  font-size: 36px;
+  color: var(--secondary-color);
+  border: none;
+}
+
+.slide ul, .slide ul li {
+  background-color: var(--background-color);
+  margin-bottom: 5px;
+}
+
+.slideWindowControlBar {
+  display: flex;
+  justify-content: center;
+}
+
+.slideWindowControlBar div {
+  text-align: right;
+}
+
+.slideWindowControlBar div.slidePageNumber {
+  flex: 1;
+  text-align: left;
+  color: #333333;
+}
+
+/* Styling for Cards */
+
 .cardRow {
-    width: fit-content;
-    block-size: fit-content;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 40px;
-    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .cardRow a {
     text-decoration: none;
     color: var(--text-color-dark);
+}
+
+.card {
+  flex: 1;
+  min-height: 450px;
+  max-width: 450px;
+  margin-left: 20px;
+  margin-right: 20px;
+  background-color: #FFFFFF; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .card:hover {
@@ -171,16 +395,26 @@ code {
   background-color: var(--secondary-color);
   color: var(--text-color-light);
   border-radius: 10px 10px 0px 0px;
-  padding: 20px;
-}
-
-.cardHeader h3 {
-  color: var(--text-color-light);
+  height: 200px
 }
 
 .cardContainer {
-  background-color: var(--tertiary-color);
   padding: 20px;
+  height: 100%;
+  border-radius: 0px 0px 10px 10px;
+  color: var(--text-color-medium);
+}
+
+.cardContainer h3 {
+  padding: 0;
+  margin: 0;
+  color: var(--text-color-medium);
+}
+
+/* Styling for Stock Charting */
+
+.chartContainer {
+  width: 700px;
 }
 
 .priceSearchFormContainer{
@@ -211,4 +445,181 @@ code {
 .priceSearchButton:hover{
   background-color: var(--accent-color);
   box-shadow: 5px 5px 5px 0px rgba(186,186,186,0.5);
+}
+
+.btn-group {
+  text-align: right;
+  padding-right: 30px;
+}
+
+/* Styling for Risk Analysis Page */
+
+.riskHeaders {
+  display: flex;       /*Allows side by side div elements*/
+  align-items: center; /* Vertically centers items */
+}
+
+.riskBody{
+  display: flex;
+}
+
+.riskHeader{
+  padding-left: 20px;
+}
+
+.userInput{
+  width: 150px;
+  margin: 5px;
+}
+
+.explanationText{
+  font-size: small;
+}
+
+.riskContainer{
+  width: 425px;
+  align-items: center;
+}
+
+.ratioBox{
+  text-align: center;
+  width: 75px;
+  border: 3px solid var(--text-color-dark);
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.ratioName{
+  width: 125px;
+  border: 3px solid var(--text-color-dark);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  display: flex;
+}
+
+.smallbutton{
+  margin-left: 8px;
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  border: 2px solid black;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.bigbutton{
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  font: bold;
+  font-size: 16px; 
+  border: 3px solid black;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.infobutton{
+  font-size: x-small;
+  margin-left: 8px;
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+  border: 2px solid black;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 6px;
+}
+
+.realRatioName{
+  margin-left: 8px;
+}
+
+.overallScore{
+  width: 125px;
+  border: 3px solid var(--text-color-dark);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-align: center;
+}
+
+.scoreContainer{
+  display: flex;
+  border: 4px solid var(--secondary-color);
+  border-radius: 4px;
+  width: 275px;
+  margin: 10px;
+  margin-left: 14px;
+}
+
+.scoreContainerOverallScore{
+  display: flex;
+  border: 4px solid var(--secondary-color);
+  width: 275px;
+}
+
+.highlight{
+  border: 4px solid var(--highlight-color);
+  display: flex;
+  border-radius: 4px;
+  width: 283px;
+  margin: 10px;
+  margin-top: 20px;
+}
+
+.pie-chart{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-image: conic-gradient(orange 64%, blue 64%, blue 81%, green 81%, green 90%, black 90%);
+}
+
+.keyColors{
+  height: 2px;
+  width: 40px; 
+  margin-top: 10px; 
+  margin-right: 5px;
+}
+
+/* Styling for Portfolio Page */
+
+.portfolioTableContainer {
+  height: 135px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.portfolioTable {
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+  position: relative;
+  display: block;
+}
+
+.portfolioTable thead {
+  position: sticky; 
+  top: 0;
+  background-color: var(--tertiary-color); 
+  z-index: 1; 
+}
+
+.portfolioTable tr th {
+  min-width: 135px;
+  padding: 2px;
+  text-align: left;
+  border: 1px solid #666666;
+}
+
+.portfolioTable tr td {
+  padding: 2px;
+  border: 1px solid #666666;
+  margin: 0;
+  font-size: 14px;
+}
+
+.portfolioTable tr td.numeric {
+  text-align: right;
 }

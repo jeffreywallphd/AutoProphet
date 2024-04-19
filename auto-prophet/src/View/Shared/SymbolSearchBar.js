@@ -4,7 +4,7 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {StockInteractor} from "../../Interactor/StockInteractor";
 import {JSONRequest} from "../../Gateway/Request/JSONRequest";
 import { FaSearch } from "react-icons/fa";
@@ -17,8 +17,10 @@ function SymbolSearchBar(props) {
     //Checks the keyUp event to determine if a key was hit or a datalist option was selected
     const checkInput = async (e) => {
         //Unidentified means datalist option was selected, otherwise a key was hit
-        if (e.key == "Unidentified" || e.key == "Enter"){
-            await props.fetchData();
+        if (e.key == "Unidentified"){
+            //fetch symbol and then fetch related data
+            const newState = await fetchSymbol();
+            await props.fetchData(newState);
         } else {
             await fetchSymbol();
         }
@@ -48,35 +50,47 @@ function SymbolSearchBar(props) {
                 
                 setSecuritiesList(searchData.response.results);
 
-                props.onSymbolChange({
+                //Update the state to be passed to the fetch data function
+                const newState = {
+                    ...props.state,
                     initializing: false,
                     data: props.state.data,
                     ticker: props.state.ticker,
                     cik: props.state.cik,
                     error: props.state.error,
-                    type: props.state.type,
-                    interval: props.state.interval,
+                    type: "intraday",
+                    interval: "1D",
                     securitiesList: searchData.response.results,
-                    searchRef: searchRef,
+                    searchRef: searchRef.current.value,
                     isLoading: false,
                     priceMin: props.state.priceMin,
                     priceMax: props.state.priceMax,
                     maxVolume: props.state.maxVolume,
                     yAxisStart: props.state.yAxisStart,
                     yAxisEnd: props.state.yAxisEnd
-                });
+                };
+
+                return newState;
             } finally {
                 setSearching(false);
             }
         } 
     };
 
+    useEffect(() => {
+        if(props.state.searchRef) {
+            searchRef.current.value = props.state.searchRef;
+        }
+    }, [props.state.searchRef]);
+
     return (
         <>
             <div className="priceSearchFormContainer">
                 <form onSubmit={async (e) => {
                     e.preventDefault();
-                    props.fetchData();
+                    //Fetch symbol to make sure we are caught up before fetching data
+                    const newState = await fetchSymbol();
+                    props.fetchData(newState);
                 }}>
                     <input className="priceSearchBar" type="text" list="tickers" ref={searchRef}
                            onKeyUp={(e) => checkInput(e)} placeholder="Please enter a ticker symbol"></input>

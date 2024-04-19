@@ -30,6 +30,7 @@ const config = {
         rules: [
             {
                 test: /\.(js|jsx)$/i,
+                exclude: /node_modules/,
                 loader: 'babel-loader',
             },
             {
@@ -39,6 +40,10 @@ const config = {
             {
                 test: /\.css$/i,
                 use: [stylesHandler,'css-loader'],
+            },
+            {
+                test: /\.(mp3|wav|ogg)$/, 
+                use: 'file-loader',
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,

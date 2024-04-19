@@ -73,7 +73,7 @@ export function Learn() {
                   });
             });
         } catch (error) {
-            window.terminal.error('Error fetching data:' + error);
+            console.error('Error fetching data:' + error);
         }
     };
 
@@ -89,6 +89,7 @@ export function Learn() {
                             onKeyUp={(e) => checkInput(e)} placeholder="Please enter a topic to learn about"></input>
                     <button className="priceSearchButton" type="submit" disabled={state.searching}><FaSearch/></button>
                 </div>
+                <div>&nbsp;</div>
                 <div>
                     <span>Filter by: </span>
                     <select ref={filterRef} onChange={selectData}>
@@ -109,6 +110,7 @@ export function Learn() {
                         <p>Description: {module.description}</p>
                         <p>Estimated Time: {module.timeEstimate} minutes</p>
                         <NavLink to="/learningModule" state={{
+                            moduleId: module.id,
                             title: module.title,
                             description: module.description,
                             timeEstimate: module.timeEstimate,

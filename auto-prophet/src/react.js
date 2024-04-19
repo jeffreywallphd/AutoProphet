@@ -7,10 +7,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './View/App';
+import { App } from './View/App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+/* to use in production
+root.render(
+  <App />
+);
+*/
+
+//React.StrictMode is good for development
+//React.StrictMode can cause weird side effects, such as stock data running twice on page load
 root.render(
   <React.StrictMode>
     <App />

@@ -9,175 +9,125 @@ import { StockInteractor } from "../Interactor/StockInteractor";
 import { SecInteractor } from "../Interactor/SecInteractor";
 import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
-import { CacheManager } from "../Utility/CacheManager";
 
 function TickerSearchBar(props) {
-    //Variables to reset the chart view
-    var type;
-    var interval;
-    
-
     //TODO: implement error handling
 
-    //When fetching data for a new ticker fromt he search bar, get 1D data
-    const fetch1DData = async () => {
-        type = "intraday";
-        interval = "1D";
-        fetchAllData();
-    }
-
     //Gets all data for a ticker and updates the props with the data
-    const fetchAllData = async () => {
-        //Take away previous data
-        props.onDataChange({
-            initializing: false,
-            error: props.state.error,
-            data: null,
-            secData: null,
-            ticker: null,
-            cik: null,
-            type: props.state.type,
-            interval: props.state.interval,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
-            isLoading: true,
-            priceMin: null,
-            priceMax: null,
-            maxVolume: null,
-            yAxisStart: null,
-            yAxisEnd: null
-        });
-
-        //Initialize the new state
-        var newState = {
-            initializing: null,
-            data: null,
-            secData: null,
-            error: null,
-            ticker: null,
-            cik: null,
-            type: null,
-            interval: null,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
-            isLoading: null,
-            minPrice: null,
-            maxPrice: null,
-            maxVolume: null,
-            yAxisStart: null,
-            yAxisEnd: null
-        };
+    const fetchAllData = async (newState, fetchSec=true) => {
+        newState.isLoading = true;
+        props.handleDataChange(newState);
 
         //Get Price Data
-        await fetchPriceVolumeData(newState);
+        newState = await fetchPriceVolumeData(newState);
+
         //Get SEC Data
-        await fetchSecData(newState);
+        if(fetchSec) {
+            newState = await fetchSecData(newState);
+        }
+        
+        props.handleDataChange(newState);
     }
 
-
     //Gets price and volume data for a ticker
-    const fetchPriceVolumeData = async (state) => {
-        //get company name from securities list data
+    const fetchPriceVolumeData = async (newState) => {
+        // TODO: can we store cik in the securities list as well? 
+        // get company name from securities list data
         var companyName = "";
-        props.state.securitiesList.find((element) => {
-            if(element.ticker === props.state.searchRef.current.value) {
+        var cik = "";
+        newState.securitiesList.find((element) => {
+            if(element.ticker === newState.searchRef) {
                 companyName = element.companyName;
+                cik = element.cik;
             }
         });
-
+        
         //get price and volume data through stock interactor
         var interactor = new StockInteractor();
         var requestObj = new JSONRequest(`{ 
             "request": { 
                 "stock": {
-                    "action": "${type}",
-                    "ticker": "${props.state.searchRef.current.value}",
+                    "action": "${newState.type}",
+                    "ticker": "${newState.searchRef}",
+                    "cik": "${cik}",
                     "companyName": "${companyName}",
-                    "interval": "${interval}"
+                    "interval": "${newState.interval}"
                 }
             }
         }`);
 
+        const results = await interactor.get(requestObj);
+        var priceData = results;
 
-            const results = await interactor.get(requestObj);
-            var priceData = results;
+        //Update the state
+        newState.initializing = true;
+        newState.data = priceData;
+        newState.dataSource = results.source;
+        newState.ticker = newState.searchRef;
+        newState.isLoading = false;
+        newState.priceMin = Math.min(...priceData.response.results[0]["data"].map(data => data.price));
+        newState.priceMax = Math.max(...priceData.response.results[0]["data"].map(data => data.price));
+        newState.maxVolume = Math.max(...priceData.response.results[0]["data"].map(data => data.volume));
+        newState.yAxisStart = dateTimeFormatter(priceData.response.results[0]["data"][0]);
+        newState.yAxisEnd = dateTimeFormatter(priceData.response.results[0]["data"][-1]);
 
-            //Update the state
-            state.initializing = true;
-            state.data = priceData;
-            state.ticker = props.state.searchRef.current.value;
-            state.error = props.state.error;
-            state.type = type;
-            state.interval = interval;
-            state.isLoading = false;
-            state.priceMin = Math.min(...priceData.response.results[0]["data"].map(data => data.price));
-            state.priceMax = Math.max(...priceData.response.results[0]["data"].map(data => data.price));
-            state.maxVolume = Math.max(...priceData.response.results[0]["data"].map(data => data.volume));
-            state.yAxisStart = dateTimeFormatter(priceData.response.results[0]["data"][0]);
-            state.yAxisEnd = dateTimeFormatter(priceData.response.results[0]["data"][-1]);
-
-            props.onDataChange(state);
-
+        return newState;
     }
 
     //Gets SEC data for a ticker
-    const fetchSecData = async (state) => {
-        //TODO: consider whether the cachManager needs to be called here 
-        //or if it could be called on cache extraction error
-        
-        //check to make sure ticker:CIK map cache exists and is up-to-date
-        await props.cacheHandler(props.state.searchRef.current.value).then(async () => {
-            //add a momentary pause to allow cache to create on initial startup
-            // TODO: create a better way to wait for cache to completely resolve. Possibly useEffect()
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-            await delay(1000);
-            
-            //get CIK from cache based on ticker symbol
-            const cacheManager = new CacheManager();
-            
-            const tickerFolder = props.state.searchRef.current.value.toString().charAt(0).toLowerCase();
-            var data = cacheManager.extractSync(`sec/${tickerFolder}/sec.json`);
-            const tickerCikMap = JSON.parse(data);
-
-             // remove the data to free memory
-             data = null;
-
-            // Make sure the ticker exists in the ticker:CIK mapping
-            var cik;
-            if(tickerCikMap["data"] !== undefined && tickerCikMap["data"].hasOwnProperty(props.state.searchRef.current.value.toLowerCase())) {
-                cik = tickerCikMap["data"][props.state.searchRef.current.value.toLowerCase()];
-            } else {
-                // either the cache isn't set up or
-                //the requested ticker is not from a company tracked by the SEC
-
-                // TODO: come up with a better way than timeout above to wait for cache creation
-                return;
-            }
-            
+    const fetchSecData = async (newState) => {
+        try{
+            //TODO: we need to get the CIK from the database. If this is captured in the securitiesList, we don't need a database lookup                    
             //TODO: create a parent interactor that can send a single request and dispatch
+            var cik = "";
+            newState.securitiesList.find((element) => {
+                if(element.ticker === newState.searchRef) {
+                    cik = element.cik;
+                }
+            });
+
             //get SEC data through SEC interactor
             var secInteractor = new SecInteractor();
-            var secRequestObj = new JSONRequest(`{ 
-                "request": { 
+            var secRequestObj = new JSONRequest(`{
+                "request": {
                     "sec": {
-                        "action": "companyLookup",
-                        "cik": "${cik}"
+                        "action": "overview",
+                        "cik": "${cik}",
+                        "ticker": "${newState.searchRef}"
                     }
                 }
             }`);
 
             const secResults = await secInteractor.get(secRequestObj);
-            window.terminal.log(JSON.stringify(secResults));
+
+            var secBalanceRequestObj = new JSONRequest(`{
+                "request": {
+                    "sec": {
+                        "action": "balance",
+                        "cik": "${cik}",
+                        "ticker": "${newState.searchRef}"
+                    }
+                }
+            }`);
+
+            const secBalanceResults = await secInteractor.get(secBalanceRequestObj);
+
+            secResults.response.results[0].data = Object.assign({}, secResults.response.results[0].data, secBalanceResults.response.results[0].data[0]);
+
+            //build the financial statements based on SEC submissions and company data
+            //var schema = await secInteractor.calculateReport(props.state.searchRef.current.value.toLowerCase(), secSubmissionsResults, secResults);
+            //window.console.dirxml(schema[0].response);
 
             //update the state
-            state.secData = secResults;
-            state.cik = cik;
+            newState.secData = secResults;
+            newState.secSource = secResults.response.source;
+            newState.cik = cik;
 
             //Update the props
-            props.onDataChange(state);
-
-        });
-        
+            return newState;
+        } catch(error) {
+            return newState;
+        }
     }
 
     //format the date and time for chart
@@ -196,22 +146,47 @@ function TickerSearchBar(props) {
 
     //fetch data when the interval is changed by the interval buttons in TimeSeriesChart
     useEffect(() => {
-        //stops fetchData() from being called upon page start
+        //stops fetch from being called upon page start
         if(props.state.initializing === false) {
-            //Get new type and interval for which to format data
-            type = props.state.type;
-            interval = props.state.interval;
-            
-            fetchAllData();
+            fetchAllData(props.state, false);
         }
     }, [props.state.interval]);
 
-    const handleSymbolChange = (state) => {
-        props.onDataChange(state);
+    //when page loads for first time, select a random S&P 500 stock and display it
+    useEffect( () => {
+        async function fetchRandomSP500() {
+            //get price and volume data through stock interactor
+            var interactor = new StockInteractor();
+            var requestObj = new JSONRequest(`{ 
+                "request": { 
+                    "stock": {
+                        "action": "selectRandomSP500"
+                    }
+                }
+            }`);
+
+            const results = await interactor.get(requestObj);
+            window.console.log(JSON.stringify(results));
+
+            const newState = props.state;
+            newState.searchRef = results.response.results[0].ticker;
+            newState.securitiesList = results.response.results;
+            newState.initializing = false;
+            newState.isFirstLoad = false;
+
+            fetchAllData(newState);
+        }
+        if(props.state.isFirstLoad) {
+            fetchRandomSP500();
+        }
+    }, []);
+
+    const handleSymbolChange = (newState) => {
+        props.handleDataChange(newState);
     };
    
     return (
-        <SymbolSearchBar fetchData={fetch1DData} state={props.state} onSymbolChange={handleSymbolChange}/>
+        <SymbolSearchBar fetchData={fetchAllData} state={props.state} onSymbolChange={handleSymbolChange}/>
     );
 }
 

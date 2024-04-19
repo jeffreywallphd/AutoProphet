@@ -1,10 +1,11 @@
 import {StockRequest} from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
-import {IDataGateway} from "../Data/IDataGateway";
+import {IKeyedDataGateway} from "../Data/IKeyedDataGateway";
 
-export class AlphaVantageStockGateway implements IDataGateway {
+export class AlphaVantageStockGateway implements IKeyedDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";
     key: string;
+    sourceName: string = "AlphaVantage Stock API";
 
     constructor(key: string) {
         this.key = key;
@@ -24,7 +25,7 @@ export class AlphaVantageStockGateway implements IDataGateway {
         throw new Error("This gateway does not have the ability to post content");
     }
 
-    async read(entity: IEntity, action: string): Promise<Array<IEntity>> { 
+    async read(entity: IEntity, action: string): Promise<Array<IEntity>> {
         var url;
         if (action === "lookup") {
             url = this.getSymbolLookupUrl(entity);    
@@ -38,7 +39,7 @@ export class AlphaVantageStockGateway implements IDataGateway {
 
         const response = await fetch(url);
         const data = await response.json();
-
+        
         if("Information" in data) {
             throw Error("The API key used for Alpha Vantage has reached its daily limit");
         }
@@ -79,7 +80,7 @@ export class AlphaVantageStockGateway implements IDataGateway {
         
         //calculate the pate date based on the interval specified by the user
         //currently, intervals are 5 day, 1 month, 6 months, 1 year, 5 years, and max
-        var pastDate = null;
+        var pastDate:Date;
         if(entity.getFieldValue("interval") === "5D") {
             pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));
         } else if(entity.getFieldValue("interval") === "1M") {
@@ -90,6 +91,11 @@ export class AlphaVantageStockGateway implements IDataGateway {
             pastDate = new Date(mostRecentDate.getTime() - (365 * 24 * 60 * 60 * 1000));
         } else if(entity.getFieldValue("interval") === "5Y") {
             pastDate = new Date(mostRecentDate.getTime() - (5 * 365 * 24 * 60 * 60 * 1000));
+        } else if(entity.getFieldValue("interval") === "Max") {
+            pastDate = null;
+        } else {
+            //default to 5D interval
+            pastDate = new Date(mostRecentDate.getTime() - (5 * 24 * 60 * 60 * 1000));
         }
         
         const formattedData: Array<{ [key: string]: any }> = [];

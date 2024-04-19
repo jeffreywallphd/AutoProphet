@@ -18,10 +18,10 @@ package-lock.json
 
 #database
 *.db
+*.db-journal
+/src/Asset/DB/AutoProphet.db
 
 #caching
-Cache/sec
-Cache/sec/*/*.json
 sec.json
 
 # misc
