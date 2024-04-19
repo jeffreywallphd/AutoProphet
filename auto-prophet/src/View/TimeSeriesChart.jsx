@@ -27,20 +27,22 @@ function TimeSeriesChart(props) {
         });
     };
 
-    var priceMin;
-    var priceMax;
+    var priceMinPadded;
+    var priceMaxPadded;
     var volumeMax;
 
     var header = "Search for a Company";
     var data = null;
-    var priceMin = 0;
+    
 
     if(props.state.data) {
         header = `${props.state.data.response.results[0]["companyName"]} (${props.state.data.response.results[0]["ticker"]})`;
         data = props.state.data.response.results[0]["data"];
-        priceMin = props.state.priceMin;
+        priceMinPadded = (Math.round((props.state.priceMin - ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100) > 0 ? Math.round((props.state.priceMin - ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100 : 0;
+        priceMaxPadded = Math.round((props.state.priceMax + ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100;
     }
 
+    window.console.log(priceMinPadded + " " + priceMaxPadded);
     //TODO: calculate a max value for the y-axis that adds a little padding to top of graph    
     //TODO: set the min value for the x-axis to 9:00 AM and the max value to 5:00 PM when intraday data
     return(<>
@@ -80,7 +82,7 @@ function TimeSeriesChart(props) {
                         </linearGradient>
                     </defs>
                     <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} domain={[props.state.yAxisStart, props.state.yAxisEnd]} />
-                    <YAxis type="number" domain={[priceMin, props.state.priceMax]} />
+                    <YAxis type="number" domain={[priceMinPadded, priceMaxPadded]} />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     <Area type="monotone" dataKey="price" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
