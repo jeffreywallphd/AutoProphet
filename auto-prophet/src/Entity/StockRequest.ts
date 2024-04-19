@@ -16,6 +16,9 @@ export class StockRequest implements IEntity {
         var cik = new Field("cik", "string", null);
         this.fields.set("cik", cik);
 
+        var isSP500 = new Field("isSP500", "integer", null);
+        this.fields.set("isSP500", isSP500);
+
         var companyName = new Field("companyName", "string", null);
         this.fields.set("companyName", companyName);
 
@@ -60,6 +63,10 @@ export class StockRequest implements IEntity {
 
         if(json.request.stock.hasOwnProperty("cik")) {
             this.setFieldValue("cik", json.request.stock.cik);
+        }
+
+        if(json.request.stock.hasOwnProperty("isSP500")) {
+            this.setFieldValue("isSP500", json.request.stock.isSP500);
         }
 
         if(json.request.stock.hasOwnProperty("companyName")) {

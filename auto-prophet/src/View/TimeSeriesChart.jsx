@@ -17,27 +17,13 @@ function TimeSeriesChart(props) {
             type = "interday";
         }
 
-        //set internval properties reset data properties
-        
-        props.onIntervalChange({
+        //set internval properties
+        props.handleDataChange({
+            ...props.state,
             initializing: false,
-            data: props.state.data,
-            dataSource: props.state.dataSource,
-            secData: props.state.secData,
-            secSource: props.state.secSource,
-            ticker: props.state.ticker,
-            cik: props.state.cik,
-            error: props.state.error,
             type: type,
             interval: selectedInterval,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
-            isLoading: false,
-            minPrice: null,
-            maxPrice: null,
-            maxVolume: null,
-            yAxisStart: null,
-            yAxisEnd: null
+            isLoading: false
         });
     };
 
@@ -46,12 +32,11 @@ function TimeSeriesChart(props) {
     var volumeMax;
 
     var header = "Search for a Company";
-    var startDate = null;
     var data = null;
     var priceMin = 0;
+
     if(props.state.data) {
         header = `${props.state.data.response.results[0]["companyName"]} (${props.state.data.response.results[0]["ticker"]})`;
-        startDate = props.state.data.response.results[0]["data"][0].date;
         data = props.state.data.response.results[0]["data"];
         priceMin = props.state.priceMin;
     }
@@ -101,8 +86,8 @@ function TimeSeriesChart(props) {
                     <Area type="monotone" dataKey="price" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
                 </AreaChart>
                 <BarChart width={700} height={100} data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} domain={[props.state.yAxisStart, props.state.yAxisEnd]} />
-                    <YAxis domain={[0, props.state.maxVolume]} />
+                    <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} domain={[props.state.yAxisStart, props.state.yAxisEnd]} />
+                    <YAxis domain={[0, props.state.maxVolume]} angle={-45} />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     <Bar type="monotone" dataKey="volume" fill="#62C0C2"/>
