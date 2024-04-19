@@ -86,8 +86,8 @@ function TimeSeriesChart(props) {
                     <Area type="monotone" dataKey="price" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
                 </AreaChart>
                 <BarChart width={700} height={100} data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} domain={[props.state.yAxisStart, props.state.yAxisEnd]} />
-                    <YAxis domain={[0, props.state.maxVolume]} />
+                    <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} domain={[props.state.yAxisStart, props.state.yAxisEnd]} />
+                    <YAxis domain={[0, props.state.maxVolume]} angle={-45} />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     <Bar type="monotone" dataKey="volume" fill="#62C0C2"/>
