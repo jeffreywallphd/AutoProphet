@@ -17,27 +17,13 @@ function TimeSeriesChart(props) {
             type = "interday";
         }
 
-        //set internval properties reset data properties
-        
-        props.onIntervalChange({
+        //set internval properties
+        props.handleDataChange({
+            ...props.state,
             initializing: false,
-            data: props.state.data,
-            dataSource: props.state.dataSource,
-            secData: props.state.secData,
-            secSource: props.state.secSource,
-            ticker: props.state.ticker,
-            cik: props.state.cik,
-            error: props.state.error,
             type: type,
             interval: selectedInterval,
-            securitiesList: props.state.securitiesList,
-            searchRef: props.state.searchRef,
-            isLoading: false,
-            minPrice: null,
-            maxPrice: null,
-            maxVolume: null,
-            yAxisStart: null,
-            yAxisEnd: null
+            isLoading: false
         });
     };
 
@@ -46,12 +32,11 @@ function TimeSeriesChart(props) {
     var volumeMax;
 
     var header = "Search for a Company";
-    var startDate = null;
     var data = null;
     var priceMin = 0;
+
     if(props.state.data) {
         header = `${props.state.data.response.results[0]["companyName"]} (${props.state.data.response.results[0]["ticker"]})`;
-        startDate = props.state.data.response.results[0]["data"][0].date;
         data = props.state.data.response.results[0]["data"];
         priceMin = props.state.priceMin;
     }
