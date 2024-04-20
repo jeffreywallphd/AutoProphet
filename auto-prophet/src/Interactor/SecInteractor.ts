@@ -3,6 +3,7 @@ import {IRequestModel} from "../Gateway/Request/IRequestModel";
 import {IResponseModel} from "../Gateway/Response/IResponseModel";
 import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import {JSONResponse} from "../Gateway/Response/JSONResponse";
+import { XMLResponse } from "../Gateway/Response/XMLResponse";
 import {IDataGateway} from "../Gateway/Data/IDataGateway";
 import {SecRequest} from "../Entity/SecRequest";
 import {SecReportGatewayFactory} from "@DataGateway/SecReportGatewayFactory";
@@ -24,7 +25,6 @@ export class SecInteractor implements IInputBoundary {
     }
     
     async get(requestModel: IRequestModel): Promise<IResponseModel> {
-        window.console.log(requestModel.request.request.sec.action);
         if(requestModel.request.request.sec.action === "10-K" || requestModel.request.request.sec.action === "10-Q") {
             return this.getReport(requestModel);    
         } else {
@@ -65,7 +65,7 @@ export class SecInteractor implements IInputBoundary {
 
         const zeroStrippedCik = requestModel.request.request.sec.cik.replace(/^0+/, "");
         const type = requestModel.request.request.sec.action;
-        window.console.log(JSON.stringify(requestModel));
+
         var secRequestObj = new JSONRequest(`{
             "request": {
                 "sec": {
@@ -105,19 +105,33 @@ export class SecInteractor implements IInputBoundary {
         //const schemaDocument = `${submissionsData.response.results[0].data.filings.recent["primaryDocument"][submissionIndex]}_cal.xml`;
         
         const [year, month, day] = submissionsResponse.response.results[0].data.filings.recent["reportDate"][includedSubmissionIndices[0]].split("-");
-        const fileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}_cal.xml`;
+        const calFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}_cal.xml`;
+        const xsdFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}.xsd`;
         
         // TODO: Should this fetch be moved to a gateway?
-        var archivesPath = `https://sec.gov/Archives/edgar/data/${zeroStrippedCik}/${accessionNumber}/${fileName}`;
+        var archivesPath = `https://sec.gov/Archives/edgar/data/${zeroStrippedCik}/${accessionNumber}/`;
         window.console.log(archivesPath);
-        const reportSchemaXmlString = await fetch(archivesPath);
+        // get _cal.xml file that contains calculation logic for building financial statements
+        const reportXmlString = await fetch(archivesPath + calFileName);
+        const xmlResponse = new XMLResponse(await reportXmlString.text());
+        window.console.log(xmlResponse.response.documentElement.getElementsByTagName("link:calculationLink"));
+
+        // get xsd file that contains human readable names of financial statements
+        const xsdString = await fetch(archivesPath + xsdFileName);
+        const xsdResponse = new XMLResponse(await xsdString.text());
+        window.console.log(xmlResponse.response.documentElement.getElementsByTagName("link:roleType"));
 
         var schemaResponse = {};
+        var schemaStatements = {};
         try {
-            const reportSchemaJson = await window.convert.xmlToJson.parseStringPromise(await reportSchemaXmlString.text());
+            const reportSchemaJson = await window.convert.xmlToJson.parseStringPromise(await reportXmlString.text());
+        
+            for(var report of reportSchemaJson["link:linkbase"]["link:calculationLink"]) {
+
+            }
+
             schemaResponse = new JSONResponse(JSON.stringify(reportSchemaJson));
         } catch(error) {
-            window.console.log(error);
             return undefined;
         }
        

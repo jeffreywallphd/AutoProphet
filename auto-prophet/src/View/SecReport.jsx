@@ -14,8 +14,6 @@ function SecReport(props) {
     const [state, setState] = useState(null);
 
     const fetchReport = async () => {
-        window.console.log(JSON.stringify(location));
-        window.console.log(location.state.cik);
         var secInteractor = new SecInteractor();
         var secRequestObj = new JSONRequest(`{
             "request": {
@@ -28,8 +26,17 @@ function SecReport(props) {
         }`);
 
         const reportResults = await secInteractor.get(secRequestObj);
-        window.console.log(JSON.stringify(reportResults));
-        setState({...location.state, secReportData: reportResults});
+        window.console.log(reportResults.response.schema.response["link:linkbase"]["link:calculationLink"][0]);
+        for(var key in reportResults.response.schema.response["link:linkbase"]["link:calculationLink"]) {
+            window.console.log(key);
+            for(var report in reportResults.response.schema.response["link:linkbase"]["link:calculationLink"][key]["$"]) {
+                window.console.log(report);
+                window.console.log(reportResults.response.schema.response["link:linkbase"]["link:calculationLink"][key]["$"][report]);
+            }
+           
+        }
+
+        setState({...location.state, secReportData: reportResults.response.schema.response});
     };
 
     useEffect(() => {

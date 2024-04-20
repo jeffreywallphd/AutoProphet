@@ -167,7 +167,6 @@ function TickerSearchBar(props) {
             }`);
 
             const results = await interactor.get(requestObj);
-            window.console.log(JSON.stringify(results));
 
             const newState = props.state;
             newState.searchRef = results.response.results[0].ticker;
