@@ -6,10 +6,13 @@ import {JSONResponse} from "../Gateway/Response/JSONResponse";
 import {IDataGateway} from "../Gateway/Data/IDataGateway";
 import {SecRequest} from "../Entity/SecRequest";
 import {SecReportGatewayFactory} from "@DataGateway/SecReportGatewayFactory";
-import { XMLResponse } from "../Gateway/Response/XMLResponse";
 
 declare global {
     interface Window { fs: any; }
+}
+
+declare global {
+    interface Window { convert: any; }
 }
 
 export class SecInteractor implements IInputBoundary {
@@ -72,7 +75,7 @@ export class SecInteractor implements IInputBoundary {
             }
         }`);
 
-        const companyData = await this.get(secRequestObj);
+        const companyResponse = await this.get(secRequestObj);
 
         secRequestObj = new JSONRequest(`{
             "request": {
@@ -83,13 +86,13 @@ export class SecInteractor implements IInputBoundary {
             }
         }`);
 
-        const submissionsData = await this.get(secRequestObj);
+        const submissionsResponse = await this.get(secRequestObj);
         
         // filter to include only desired SEC company submissions
         var foundMostRecent = false;
         // loop assumes that SEC maintains API standard of presenting most recent submissions first
-        for(var i in submissionsData.response.results[0].data.filings.recent.form) {
-            const reportType = submissionsData.response.results[0].data.filings.recent.form[i];
+        for(var i in submissionsResponse.response.results[0].data.filings.recent.form) {
+            const reportType = submissionsResponse.response.results[0].data.filings.recent.form[i];
             
             if(reportType === type) {
                 includedSubmissionIndices.push(i);
@@ -98,18 +101,32 @@ export class SecInteractor implements IInputBoundary {
             }
         }
         
-        const accessionNumber = submissionsData.response.results[0].data.filings.recent["accessionNumber"][includedSubmissionIndices[0]].replace(/-/g, "");
+        const accessionNumber = submissionsResponse.response.results[0].data.filings.recent["accessionNumber"][includedSubmissionIndices[0]].replace(/-/g, "");
         //const schemaDocument = `${submissionsData.response.results[0].data.filings.recent["primaryDocument"][submissionIndex]}_cal.xml`;
         
-        const [year, month, day] = submissionsData.response.results[0].data.filings.recent["reportDate"][includedSubmissionIndices[0]].split("-");
+        const [year, month, day] = submissionsResponse.response.results[0].data.filings.recent["reportDate"][includedSubmissionIndices[0]].split("-");
         const fileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}_cal.xml`;
         
         // TODO: Should this fetch be moved to a gateway?
         var archivesPath = `https://sec.gov/Archives/edgar/data/${zeroStrippedCik}/${accessionNumber}/${fileName}`;
         window.console.log(archivesPath);
-        const reportSchema = await fetch(archivesPath);
+        const reportSchemaXmlString = await fetch(archivesPath);
 
-        const responseDoc = new XMLResponse(await reportSchema.text());
-        return responseDoc;
+        var schemaResponse = {};
+        try {
+            const reportSchemaJson = await window.convert.xmlToJson.parseStringPromise(await reportSchemaXmlString.text());
+            schemaResponse = new JSONResponse(JSON.stringify(reportSchemaJson));
+        } catch(error) {
+            window.console.log(error);
+            return undefined;
+        }
+       
+        const combinedResponse = {response: {
+            schema: schemaResponse,
+            data: companyResponse.response.results[0].data
+        }}
+
+        const response = new JSONResponse(JSON.stringify(combinedResponse));
+        return response.response;
     }
 }

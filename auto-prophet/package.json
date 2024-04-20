@@ -21,6 +21,7 @@
     "recharts": "^2.12.2",
     "sqlite3": "^5.1.7",
     "uuid": "^9.0.1",
+    "xml2js": "^0.6.2",
     "yahoo-finance2": "^2.11.1"
   },
   "devDependencies": {

@@ -28,7 +28,7 @@ function SecReport(props) {
         }`);
 
         const reportResults = await secInteractor.get(secRequestObj);
-
+        window.console.log(JSON.stringify(reportResults));
         setState({...location.state, secReportData: reportResults});
     };
 
@@ -40,7 +40,7 @@ function SecReport(props) {
         <div className="page">
             <NavLink to="/price">Back</NavLink>
             <h2>{location.state.report}</h2>
-            <div>{state ? state.secReportData.toString() : null}</div>
+            <div>{state ? JSON.stringify(state.secReportData) : null}</div>
         </div>
     );
 }
