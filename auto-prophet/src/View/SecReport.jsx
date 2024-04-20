@@ -26,15 +26,6 @@ function SecReport(props) {
         }`);
 
         const reportResults = await secInteractor.get(secRequestObj);
-        window.console.log(reportResults.response.schema.response["link:linkbase"]["link:calculationLink"][0]);
-        for(var key in reportResults.response.schema.response["link:linkbase"]["link:calculationLink"]) {
-            window.console.log(key);
-            for(var report in reportResults.response.schema.response["link:linkbase"]["link:calculationLink"][key]["$"]) {
-                window.console.log(report);
-                window.console.log(reportResults.response.schema.response["link:linkbase"]["link:calculationLink"][key]["$"][report]);
-            }
-           
-        }
 
         setState({...location.state, secReportData: reportResults.response.schema.response});
     };

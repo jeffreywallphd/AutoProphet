@@ -119,6 +119,7 @@ export class SecInteractor implements IInputBoundary {
         // get xsd file that contains human readable names of financial statements
         const xsdString = await fetch(archivesPath + xsdFileName);
         const xsdResponse = new XMLResponse(await xsdString.text());
+        window.console.log(xsdResponse.response);
         window.console.log(xmlResponse.response.documentElement.getElementsByTagName("link:roleType"));
 
         var schemaResponse = {};
