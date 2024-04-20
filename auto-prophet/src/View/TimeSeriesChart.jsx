@@ -38,8 +38,20 @@ function TimeSeriesChart(props) {
     if(props.state.data) {
         header = `${props.state.data.response.results[0]["companyName"]} (${props.state.data.response.results[0]["ticker"]})`;
         data = props.state.data.response.results[0]["data"];
-        priceMinPadded = (Math.round((props.state.priceMin - ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100) > 0 ? Math.round((props.state.priceMin - ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100 : 0;
-        priceMaxPadded = Math.round((props.state.priceMax + ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100;
+
+        if((props.state.priceMax - props.state.priceMin) > 1.5) {
+            //round to nearest dollar when difference between max and min price is in dollars
+            //set min to 0 if max-min is less than 0
+            priceMinPadded = (Math.floor(props.state.priceMin - ((props.state.priceMax - props.state.priceMin) * 0.2))) > 0 ? Math.round(props.state.priceMin - ((props.state.priceMax - props.state.priceMin) * 0.2)): 0;
+            priceMaxPadded = Math.ceil(props.state.priceMax + ((props.state.priceMax - props.state.priceMin) * 0.2));
+        } else {
+            //round to nearest cent when difference between max and min price is in cents
+            //set min to 0 if max-min is less than 0
+            priceMinPadded = (Math.round((props.state.priceMin - ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100) > 0 ? Math.round((props.state.priceMin - ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100 : 0;
+            priceMaxPadded = Math.round((props.state.priceMax + ((props.state.priceMax - props.state.priceMin) * 0.2)) * 100)/100;
+        }
+        
+        
     }
 
     window.console.log(priceMinPadded + " " + priceMaxPadded);
