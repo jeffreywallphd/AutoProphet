@@ -28,6 +28,7 @@ import { Settings } from "./APIConfigSetting";
 import Forecast from "./Forecast";
 import ForecastFeature from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
+import { SecReport } from "./SecReport";
 
 class AppLoaded extends Component {
     // --Code for collapsible menu--
@@ -86,6 +87,7 @@ class AppLoaded extends Component {
                                 <Route path="/forecast" element={<Forecast />} />
                                 <Route path="/forecast-features" element={<ForecastFeature />} />
                                 <Route path="/forecast-models" element={<ForecastModel />} />
+                                <Route path="/sec-report" element={<SecReport />} />
                             </Routes>
                             <footer>
                                 This software is licensed under the GPL-3.0 license. 
