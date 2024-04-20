@@ -95,7 +95,7 @@ function TimeSeriesChart(props) {
                     </defs>
                     <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} domain={[props.state.yAxisStart, props.state.yAxisEnd]} />
                     <YAxis type="number" domain={[priceMinPadded, priceMaxPadded]} />
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false}/>
                     <Tooltip />
                     <Area type="monotone" dataKey="price" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
                 </AreaChart>
