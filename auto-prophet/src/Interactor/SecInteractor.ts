@@ -125,14 +125,23 @@ export class SecInteractor implements IInputBoundary {
         var schemaResponse = {};
         var schemaStatements = {};
         try {
-            const reportSchemaJson = await window.convert.xmlToJson.parseStringPromise(await reportXmlString.text());
-        
-            for(var report of reportSchemaJson["link:linkbase"]["link:calculationLink"]) {
+            const reportXML = xmlResponse.response;
+            const reportXSD = xsdResponse.response;
+            const reportSchemaJson = await window.convert.xmlToJson.parseStringPromise(xmlResponse.toString());
 
+            var reportCounter = 0;
+            for(var report of reportXML.documentElement.getElementsByTagName("link:calculationLink")) {
+                var reportId = reportXML.documentElement.getElementsByTagName("link:roleRef")[reportCounter].getAttribute("xlink:href").split("#")[1];
+                window.console.log(reportId);
+                var reportNameElement = reportXSD.getElementById(reportId).getElementsByTagName("link:definition")[0];
+                var reportName = reportNameElement.textContent || reportNameElement.innerText || reportNameElement.innerHTML;
+                window.console.log(reportName);
+                reportCounter++;
             }
 
             schemaResponse = new JSONResponse(JSON.stringify(reportSchemaJson));
         } catch(error) {
+            window.console.log(error);
             return undefined;
         }
        
