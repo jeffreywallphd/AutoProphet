@@ -76,6 +76,7 @@ export class SecInteractor implements IInputBoundary {
         }`);
 
         const companyResponse = await this.get(secRequestObj);
+        window.console.log(JSON.stringify(companyResponse));
 
         secRequestObj = new JSONRequest(`{
             "request": {
@@ -123,7 +124,7 @@ export class SecInteractor implements IInputBoundary {
         window.console.log(xmlResponse.response.documentElement.getElementsByTagName("link:roleType"));
 
         var schemaResponse = {};
-        var schemaStatements = {};
+        var reports:any = {};
         try {
             const reportXML = xmlResponse.response;
             const reportXSD = xsdResponse.response;
@@ -135,7 +136,24 @@ export class SecInteractor implements IInputBoundary {
                 window.console.log(reportId);
                 var reportNameElement = reportXSD.getElementById(reportId).getElementsByTagName("link:definition")[0];
                 var reportName = reportNameElement.textContent || reportNameElement.innerText || reportNameElement.innerHTML;
-                window.console.log(reportName);
+                //window.console.log(reportName);
+                reports[reportId] = {
+                    title: reportName 
+                };
+
+                reports[reportId]["concepts"] = [];
+
+                for(var concept of report.getElementsByTagName("link:loc")) {
+                    var conceptName = concept.getAttribute("xlink:href").split("#")[1].split("_")[1];
+                    var conceptValue = companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptName]["units"]["USD"][-1]["val"];
+                    window.console.log(conceptName + "=" + conceptValue);
+                    reports[reportId]["concepts"].push({
+                        concept: conceptName,
+                        value: conceptValue
+                    });
+                }
+
+                
                 reportCounter++;
             }
 
