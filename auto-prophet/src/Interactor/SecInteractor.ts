@@ -143,9 +143,11 @@ export class SecInteractor implements IInputBoundary {
                 reports[reportId]["concepts"] = [];
 
                 for(var concept of report.getElementsByTagName("link:loc")) {
-                    var conceptName = concept.getAttribute("xlink:href").split("#")[1].split("_")[1];
-                    if(companyResponse.response.results[0]["data"]["facts"]["us-gaap"].hasOwnProperty(conceptName) && companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptName].hasOwnProperty("units")) {
-                        var units = companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptName]["units"];
+                    var conceptId = concept.getAttribute("xlink:href").split("#")[1].split("_")[1];
+                    if(companyResponse.response.results[0]["data"]["facts"]["us-gaap"].hasOwnProperty(conceptId) && companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptId].hasOwnProperty("units")) {
+                        var units = companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptId]["units"];
+                        var conceptLabel = companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptId]["label"];
+                        var conceptDescription = companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptId]["description"];
                         var conceptValue;
 
                         // find the correct unit for the concept
@@ -163,7 +165,9 @@ export class SecInteractor implements IInputBoundary {
                     
                         //window.console.log(conceptName + "=" + conceptValue);
                         reports[reportId]["concepts"].push({
-                            concept: conceptName,
+                            concept: conceptId,
+                            label: conceptLabel,
+                            description: conceptDescription,
                             value: conceptValue
                         });
                     }   

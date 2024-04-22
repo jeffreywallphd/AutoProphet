@@ -42,12 +42,11 @@ function SecReport(props) {
             <div>
                 {state ? 
                         <>
-                        <div>Test</div>
-                        {Object.keys(state.secReportData).map((key) => {
-                            window.console.log(key);
-                            var report = state.secReportData[key];
-                            return <SecReportStatement statementName={report.title} concepts={report.concepts} />
-                        })}
+                            {Object.keys(state.secReportData).map((key) => {
+                                window.console.log(key);
+                                var report = state.secReportData[key];
+                                return <SecReportStatement statementName={report.title} concepts={report.concepts} />
+                            })}
                         </>
                     : 
                         <div>Report could not be displayed</div>

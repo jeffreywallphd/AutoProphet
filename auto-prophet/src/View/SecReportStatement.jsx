@@ -12,15 +12,21 @@ function SecReportStatement(props) {
             {props ?
                 <> 
                     <h3>{props.statementName}</h3>
-                    {props.concepts.map((concept) => {
-                        return (<div>
-                            <p>{concept.concept}</p>
-                            <p>{concept.value}</p>
-                        </div>)
-                    })}
+                    <table>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Value</th>
+                        </tr>
+                        {props.concepts.map((concept) => {
+                            return (<tr>
+                                <td>{concept.label}</td>
+                                <td>{concept.value}</td>
+                            </tr>)
+                        })}
+                    </table>
                 </>
                 :
-                <div>Report could not be displayed</div> 
+                <div>Loading...</div> 
             }
             
         </div>
