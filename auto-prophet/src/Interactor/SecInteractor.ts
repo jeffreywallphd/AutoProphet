@@ -123,17 +123,16 @@ export class SecInteractor implements IInputBoundary {
         window.console.log(xsdResponse.response);
         window.console.log(xmlResponse.response.documentElement.getElementsByTagName("link:roleType"));
 
-        var schemaResponse = {};
+        var schemaResponse = null;
         var reports:any = {};
         try {
             const reportXML = xmlResponse.response;
             const reportXSD = xsdResponse.response;
-            const reportSchemaJson = await window.convert.xmlToJson.parseStringPromise(xmlResponse.toString());
 
             var reportCounter = 0;
             for(var report of reportXML.documentElement.getElementsByTagName("link:calculationLink")) {
                 var reportId = reportXML.documentElement.getElementsByTagName("link:roleRef")[reportCounter].getAttribute("xlink:href").split("#")[1];
-                window.console.log(reportId);
+                //window.console.log(reportId);
                 var reportNameElement = reportXSD.getElementById(reportId).getElementsByTagName("link:definition")[0];
                 var reportName = reportNameElement.textContent || reportNameElement.innerText || reportNameElement.innerHTML;
                 //window.console.log(reportName);
@@ -145,30 +144,40 @@ export class SecInteractor implements IInputBoundary {
 
                 for(var concept of report.getElementsByTagName("link:loc")) {
                     var conceptName = concept.getAttribute("xlink:href").split("#")[1].split("_")[1];
-                    var conceptValue = companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptName]["units"]["USD"][-1]["val"];
-                    window.console.log(conceptName + "=" + conceptValue);
-                    reports[reportId]["concepts"].push({
-                        concept: conceptName,
-                        value: conceptValue
-                    });
+                    if(companyResponse.response.results[0]["data"]["facts"]["us-gaap"].hasOwnProperty(conceptName) && companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptName].hasOwnProperty("units")) {
+                        var units = companyResponse.response.results[0]["data"]["facts"]["us-gaap"][conceptName]["units"];
+                        var conceptValue;
+
+                        // find the correct unit for the concept
+                        if(units.hasOwnProperty("USD")) {
+                            conceptValue = units["USD"][0]["val"];
+                        } else if(units.hasOwnProperty("shares")) {
+                            conceptValue = units["shares"][0]["val"];
+                        } else if(units.hasOwnProperty("USD/shares")) {
+                            conceptValue = units["USD/shares"][0]["val"];
+                        } else if(units.hasOwnProperty("pure")) {
+                            conceptValue = units["pure"][0]["val"];
+                        } else {
+                            continue;
+                        }
+                    
+                        //window.console.log(conceptName + "=" + conceptValue);
+                        reports[reportId]["concepts"].push({
+                            concept: conceptName,
+                            value: conceptValue
+                        });
+                    }   
                 }
 
-                
                 reportCounter++;
             }
 
-            schemaResponse = new JSONResponse(JSON.stringify(reportSchemaJson));
+            schemaResponse = new JSONResponse(JSON.stringify(reports));
         } catch(error) {
             window.console.log(error);
             return undefined;
         }
        
-        const combinedResponse = {response: {
-            schema: schemaResponse,
-            data: companyResponse.response.results[0].data
-        }}
-
-        const response = new JSONResponse(JSON.stringify(combinedResponse));
-        return response.response;
+        return schemaResponse.response;
     }
 }

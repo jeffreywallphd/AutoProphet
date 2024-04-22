@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { SecInteractor } from "../Interactor/SecInteractor";
 import { JSONRequest } from "../Gateway/Request/JSONRequest";
+import { SecReportStatement } from "./SecReportStatement";
 
 function SecReport(props) {
     const location = useLocation();
@@ -27,7 +28,7 @@ function SecReport(props) {
 
         const reportResults = await secInteractor.get(secRequestObj);
 
-        setState({...location.state, secReportData: reportResults.response.schema.response});
+        setState({...location.state, secReportData: reportResults});
     };
 
     useEffect(() => {
@@ -38,7 +39,20 @@ function SecReport(props) {
         <div className="page">
             <NavLink to="/price">Back</NavLink>
             <h2>{location.state.report}</h2>
-            <div>{state ? JSON.stringify(state.secReportData) : null}</div>
+            <div>
+                {state ? 
+                        <>
+                        <div>Test</div>
+                        {Object.keys(state.secReportData).map((key) => {
+                            window.console.log(key);
+                            var report = state.secReportData[key];
+                            return <SecReportStatement statementName={report.title} concepts={report.concepts} />
+                        })}
+                        </>
+                    : 
+                        <div>Report could not be displayed</div>
+                }
+            </div>
         </div>
     );
 }
