@@ -28,7 +28,7 @@ function SecReport(props) {
 
         const reportResults = await secInteractor.get(secRequestObj);
 
-        setState({...location.state, secReportData: reportResults});
+        setState({...location.state, secReportData: reportResults.response});
     };
 
     useEffect(() => {
@@ -38,20 +38,20 @@ function SecReport(props) {
     return (
         <div className="page">
             <NavLink to="/price">Back</NavLink>
-            <h2>{location.state.report}</h2>
-            <div>
+            <h2>Form {location.state.report} for {location.state.data.response.results[0]["companyName"]}</h2>
+            
                 {state ? 
-                        <>
-                            {Object.keys(state.secReportData).map((key) => {
-                                window.console.log(key);
-                                var report = state.secReportData[key];
-                                return <SecReportStatement statementName={report.title} concepts={report.concepts} />
+                        <div>
+                            <p>Report filed on {state.secReportData.filingDate} for period ending {state.secReportData.reportDate}</p>
+                            {Object.keys(state.secReportData.statements).map((key) => {
+                                var report = state.secReportData.statements[key];
+                                return <SecReportStatement statementDate={state.secReportData.reportDate} statementName={report.title} concepts={report.concepts} />
                             })}
-                        </>
+                        </div>
                     : 
-                        <div>Report could not be displayed</div>
+                        <div>Loading...</div>
                 }
-            </div>
+            
         </div>
     );
 }

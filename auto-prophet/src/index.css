@@ -10,6 +10,8 @@
   --text-color-dark: #000000;
   --text-color-light: #FFFFFF;
   --text-color-medium: #333333;
+  --row-primary-color: #FFFFFF;
+  --row-alternating-color: #bbfeff;
   --footer-height: 90px;
 }
 
@@ -624,5 +626,43 @@ code {
 }
 
 .portfolioTable tr td.numeric {
+  text-align: right;
+}
+
+/* Styling for Financial Statement Table */
+.statementTable {
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+}
+
+.statementTable tr {
+  background-color: var(--row-primary-color);
+}
+
+.statementTable tr.alternating {
+  background-color: var(--row-alternating-color);
+}
+
+.statementTable th {
+  text-align: right;
+  background-color: var(--accent-color);
+} 
+
+.statementTable td.indent1 {
+  padding-left: 50px;
+}
+
+.statementTable td.indent2 {
+  padding-left: 100px;
+}
+
+.statementTable td.indent3 {
+  padding-left: 150px;
+}
+
+.statementTable td.statementValue {
   text-align: right;
 }
