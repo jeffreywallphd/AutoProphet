@@ -19,6 +19,8 @@ declare global {
 export class SecInteractor implements IInputBoundary {
     requestModel: IRequestModel;
     responseModel: IResponseModel;
+    archivesPath: string;
+    valuesData: any;
 
     async post(requestModel: IRequestModel): Promise<IResponseModel> {    
         return this.get(requestModel);
@@ -97,7 +99,7 @@ export class SecInteractor implements IInputBoundary {
             filingDate: submissionsResponse.response.results[0].data.filings.recent["filingDate"][mostRecentSubmissionIndex],
             statements: {}
         }};
-        
+
         // accession number associated with the particular report on the SEC's website
         const accessionNumber = submissionsResponse.response.results[0].data.filings.recent["accessionNumber"][mostRecentSubmissionIndex].replace(/-/g, "");
         
@@ -105,18 +107,28 @@ export class SecInteractor implements IInputBoundary {
         const [year, month, day] = submissionsResponse.response.results[0].data.filings.recent["reportDate"][mostRecentSubmissionIndex].split("-");
         const calFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}_cal.xml`;
         const xsdFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}.xsd`;
+        const dataFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}_htm.xml`;
+        const labFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}_lab.xml`;
         
         // TODO: Should these fetches be moved to a gateway?
-        var archivesPath = `https://sec.gov/Archives/edgar/data/${zeroStrippedCik}/${accessionNumber}/`;
+        this.archivesPath = `https://sec.gov/Archives/edgar/data/${zeroStrippedCik}/${accessionNumber}/`;
 
         // get _cal.xml file that contains calculation logic for building financial statements
-        const reportXmlString = await fetch(archivesPath + calFileName);
+        const reportXmlString = await fetch(this.archivesPath + calFileName);
         const xmlResponse = new XMLResponse(await reportXmlString.text());
 
         // get xsd file that contains human readable names of financial statements
-        const xsdString = await fetch(archivesPath + xsdFileName);
+        const xsdString = await fetch(this.archivesPath + xsdFileName);
         const xsdResponse = new XMLResponse(await xsdString.text());
 
+        // get xml file that contains the concept value data
+        const dataString = await fetch(this.archivesPath + dataFileName);
+        const xmlData = new XMLResponse(await dataString.text());
+
+        // get xml file that contains labels for concepts
+        const labelString = await fetch(this.archivesPath + labFileName);
+        const xmlLabels = new XMLResponse(await labelString.text());
+        
         var schemaResponse = null;
         var reports:any = {};
         try {
@@ -136,27 +148,31 @@ export class SecInteractor implements IInputBoundary {
                 reportName = nameSegments[nameSegments.length-1]
                 reports[reportId] = {
                     title: reportName,
+                    dates: [],
+                    primaryDivisor: null,
                     concepts: {} 
                 };
-
-                // create an object to lookup concepts easily
+                
+                // create an object to lookup concepts for the report
                 const conceptLocations = report.getElementsByTagName("link:loc");
-                const conceptLookupObj: { [key: string]: any } = {};
-              
-                // loop over concept locations to create concept lookup object
-                for (const conceptLocation of conceptLocations) {
-                    const conceptId = conceptLocation.getAttribute("xlink:href").split("#")[1].split("_")[1];
-                    const concept = this.getConceptDetails(companyResponse.response.results[0]["data"]["facts"], conceptId, type);
-                    
-                    // add keys for xlink:label for xlink:from and :to lookup; return conceptId
-                    conceptLookupObj[conceptLocation.getAttribute("xlink:label")] = conceptId;
-                    
-                    // add keys for conceptId for concept storage
-                    if(!conceptLookupObj.hasOwnProperty(conceptId)) {
-                        conceptLookupObj[conceptId] = concept;
+                const conceptLookupObj = this.createConceptLookupObj(conceptLocations, xmlData, xmlLabels, type, ["us-gaap",requestModel.request.request.sec.ticker.toLowerCase()]);
+                if(conceptLookupObj === undefined) {
+                    continue;
+                }
+
+                // identify the dates if data for multiple dates is provided
+                reports[reportId]["dates"] = conceptLookupObj["dates"].length > 1 ? conceptLookupObj["dates"] : null;
+
+                var maxDivisorCount=0;
+                for(key of Object.keys(conceptLookupObj["divisorCount"])) {
+                    if(conceptLookupObj["divisorCount"][key] > maxDivisorCount) {
+                        maxDivisorCount = conceptLookupObj["divisorCount"][key];
+                        reports[reportId]["primaryDivisor"] = key;
                     }
                 }
-                //window.console.log(conceptLookupObj);
+
+                window.console.log(conceptLookupObj);
+                
                 // infer the parent and children of each concept
                 for(var conceptCalc of report.getElementsByTagName("link:calculationArc")) {
                     //get the parent and child of the calculation arc
@@ -165,9 +181,15 @@ export class SecInteractor implements IInputBoundary {
                     const childConceptXLink = conceptCalc.getAttribute("xlink:to");
                     const childConceptId = conceptLookupObj[childConceptXLink];
 
-                    conceptLookupObj[childConceptId]["parent"] = parentConceptId;
-                    const childConcept = conceptLookupObj[childConceptId];
-                    conceptLookupObj[parentConceptId]["concepts"][childConceptId] = childConcept;
+                    // create parent and child connections
+                    if(conceptLookupObj[childConceptId]) {
+                        conceptLookupObj[childConceptId]["parent"] = parentConceptId;
+                        const childConcept = conceptLookupObj[childConceptId];
+
+                        if(conceptLookupObj[parentConceptId]) {
+                            conceptLookupObj[parentConceptId]["concepts"][childConceptId] = childConcept;
+                        }
+                    }
                 }
 
                 // extract root objects from conceptLookupObj
@@ -179,7 +201,6 @@ export class SecInteractor implements IInputBoundary {
 
                 reports[reportId] = this.calculateLevel(reports[reportId]);
 
-                window.console.log(reports);
                 reportCounter++;
             }
 
@@ -189,13 +210,187 @@ export class SecInteractor implements IInputBoundary {
             //TODO: for consistency, consider wrapping object in {response: {}}
             schemaResponse = new JSONResponse(JSON.stringify(response));
         } catch(error) {
+            window.console.error(error);
             return undefined;
         }
        
         return schemaResponse.response;
     }
 
-    calculateLevel(report:any, level:number=0): any {
+    createConceptLookupObj(conceptLocations: any, xmlData: XMLResponse, xmlLabels: XMLResponse, type: string, sources:any=["us-gaap"]) {
+        const conceptLookupObj: { [key: string]: any } = {
+            divisorCount: {},
+            dates: []
+        };
+              
+        // loop over concept locations to create concept lookup object
+        for (const conceptLocation of conceptLocations) {
+            const conceptId = conceptLocation.getAttribute("xlink:href").split("#")[1].split("_")[1];
+            
+            try {
+                if(!conceptLookupObj.hasOwnProperty(conceptId)) {
+                    const conceptObj: { [key: string]: any } = {
+                        conceptId: null,
+                        unit: null,
+                        label: null,
+                        description: null,
+                        valuePrevious: null,
+                        value: null,
+                        valueDivisor: 1,
+                        valueDivisorDescription: null,
+                        level: 0,
+                        parent: "root",
+                        concepts: {}    
+                    };
+
+                    // set concept object conceptId
+                    conceptObj["conceptId"] = conceptId;
+
+                    //check to see if concept value exists in common sources
+                    var conceptValues = null;
+                    for(var source of sources) {
+                        const conceptTagName = source + ":" + conceptId;
+                        const valueElements = xmlData.response.documentElement.getElementsByTagName(conceptTagName);
+                        
+                        if(valueElements !== undefined && valueElements.length > 0) {
+                            conceptValues = valueElements;
+                            break;
+                        }
+                    }
+                    
+                    // set concept object unit
+                    var unit;
+                    if(conceptValues && conceptValues.length > 0) {
+                        // convert units to units in SEC company facts API for future flexibility
+                        if(conceptValues[0].getAttribute("unitRef") === "usd") {
+                            unit = "USD";                 
+                        } else if(conceptValues[0].getAttribute("unitRef") === "shares") {
+                            unit = "shares";
+                        } else if(conceptValues[0].getAttribute("unitRef") === "usdPerShare") {
+                            unit = "USD/shares"
+                        } else if(conceptValues[0].getAttribute("unitRef") === "pure") {
+                            unit = "pure"
+                        } else {
+                            return undefined;
+                        }
+
+                        conceptObj["unit"] = unit;
+                    }
+                    
+                    // set the concept label by checking common sources
+                    for(var source of sources) {
+                        const conceptLabelId = "lab_" + source + "_" + conceptId + "_label_en-US";
+                        const conceptLabelElement = xmlLabels.response.getElementById(conceptLabelId);
+                        
+                        if(conceptLabelElement) {
+                            const conceptLabel = conceptLabelElement.textContent || conceptLabelElement.innerText || conceptLabelElement.innerHTML;
+                            conceptObj["label"] = conceptLabel;
+                            break;
+                        } 
+                    } 
+                    
+                    // TODO: find out where the concept descripions are stored. Could use company facts API if needed.
+
+                    // set the concept previous and current values; previous values may not exist
+                    // check to see if more than one value exists; some reports show current data and previous year/quarter data
+                    var previousValue;
+                    if(conceptValues && conceptValues.length > 1) {
+                        // value elements are not guaranteed to be in order of appearance
+                        // must compare dates of data context in XML document to know value 
+                        var valueElement;
+                        var previousValueElement;
+
+                        // get first appearance of concept data xml file and associated context
+                        const element1 = conceptValues[0];
+                        var contextPeriod1 = xmlData.response.getElementById(element1.getAttribute("contextRef")).getElementsByTagName("period")[0].getElementsByTagName("instant")[0];
+                        if(!contextPeriod1) {
+                            // many xml context tags use instant for date. Some use startDate and endDate
+                            contextPeriod1 = xmlData.response.getElementById(element1.getAttribute("contextRef")).getElementsByTagName("period")[0].getElementsByTagName("endDate")[0]
+                        }
+                        const contextPeriod1Text = contextPeriod1.textContent || contextPeriod1.innerText || contextPeriod1.innerHTML;
+                        const contextPeriod1Date = new Date(contextPeriod1Text);
+
+                        // get second appearance of concept in data xml file and associated context
+                        const element2 = conceptValues[1];
+                        var contextPeriod2 = xmlData.response.getElementById(element2.getAttribute("contextRef")).getElementsByTagName("period")[0].getElementsByTagName("instant")[0];
+                        if(!contextPeriod2) {
+                            // many xml context tags use instant for date. Some use startDate and endDate
+                            contextPeriod2 = xmlData.response.getElementById(element2.getAttribute("contextRef")).getElementsByTagName("period")[0].getElementsByTagName("endDate")[0]
+                        }
+                        const contextPeriod2Text = contextPeriod2.textContent || contextPeriod2.innerText || contextPeriod2.innerHTML;
+                        const contextPeriod2Date = new Date(contextPeriod2Text);
+
+                        if(contextPeriod1Date > contextPeriod2Date) {
+                            valueElement = element1;
+                            previousValueElement = element2;
+                            conceptLookupObj["dates"] = [contextPeriod2Text, contextPeriod1Text];
+                        } else {
+                            valueElement = element2;
+                            previousValueElement = element1;
+                            conceptLookupObj["dates"] = [contextPeriod1Text, contextPeriod2Text];
+                        }
+
+                        conceptObj["value"] = valueElement.textContent || valueElement.innerText || valueElement.innerHTML;
+                        conceptObj["previousValue"] = previousValueElement.textContent || previousValueElement.innerText || previousValueElement.innerHTML;
+                    } else if(conceptValues && conceptValues.length === 1) {
+                        conceptObj["value"] = conceptValues[0].textContent || conceptValues[0].innerText || conceptValues[0].innerHTML;
+                    } 
+
+                    // set value divisor
+                    var divisor=1;
+                    var divisorDescription=null;
+                    
+                    if(conceptValues && conceptValues.length > 0) {
+                        if(conceptValues[0].getAttribute("decimals") === "-2") {
+                            divisor = 100;
+                            divisorDescription = "hundreds";
+                        } else if(conceptValues[0].getAttribute("decimals") === "-3") {
+                            divisor = 1000;
+                            divisorDescription = "thousands";
+                        } else if(conceptValues[0].getAttribute("decimals") === "-4") {
+                            divisor = 10000;
+                            divisorDescription = "tens of thousands";
+                        } else if(conceptValues[0].getAttribute("decimals") === "-5") {
+                            divisor = 100000;
+                            divisorDescription = "hundreds of thousands";
+                        } else if(conceptValues[0].getAttribute("decimals") === "-6") {
+                            divisor = 1000000;
+                            divisorDescription = "millions";
+                        } else if(conceptValues[0].getAttribute("decimals") === "-7") {
+                            divisor = 10000000;
+                            divisorDescription = "tens of millions";
+                        } else if(conceptValues[0].getAttribute("decimals") === "-8") {
+                            divisor = 100000000;
+                            divisorDescription = "hundreds of millions";
+                        } else if(conceptValues[0].getAttribute("decimals") === "-9") {
+                            divisor = 1000000000;
+                            divisorDescription = "billions";
+                        }
+                    }
+                    
+                    conceptObj["valueDivisor"] = divisor;
+                    conceptObj["valueDivisorDescription"] = divisorDescription;
+                    
+                    if(divisorDescription) {
+                        conceptLookupObj["divisorCount"][divisorDescription] = conceptLookupObj["divisorCount"].hasOwnProperty(divisorDescription) ? conceptLookupObj["divisorCount"][divisorDescription]+1 : 0;
+                    }
+                    
+                    // add keys for conceptId for concept storage
+                    conceptLookupObj[conceptId] = conceptObj;
+                }
+            } catch(error) {
+                window.console.error(error);
+                continue;
+            }
+
+            // add keys for xlink:label for xlink:from and :to lookup; return conceptId
+            conceptLookupObj[conceptLocation.getAttribute("xlink:label")] = conceptId;
+        }
+
+        return conceptLookupObj;
+    }
+
+    private calculateLevel(report:any, level:number=0): any {
         for(var key in report["concepts"]) {
             report["concepts"][key]["level"] = level;
 
@@ -263,7 +458,7 @@ export class SecInteractor implements IInputBoundary {
         conceptObj["conceptId"] = concept;
         conceptObj["unit"] = unit;
         conceptObj["label"] = conceptLabel;
-        conceptObj["description"] = null; //conceptDescription;
+        conceptObj["description"] = conceptDescription;
         conceptObj["value"] = value ? value : null;
         conceptObj["level"] = 0;
         conceptObj["parent"] = "root";

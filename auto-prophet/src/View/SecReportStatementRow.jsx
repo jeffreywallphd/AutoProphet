@@ -17,7 +17,11 @@ function SecReportStatementRow(props) {
                 return "indent1";
             }
         } else if(props.concept.level === 2) {
-            return "indent2";
+            if(Object.keys(props.concept.concepts).length > 0) {
+                return "indent2 subTotal";
+            } else {
+                return "indent2";
+            }
         } else if(props.concept.level === 3) {
             return "indent3";
         } else {
@@ -28,17 +32,55 @@ function SecReportStatementRow(props) {
     const getValueClass = () => {
         if(props.concept.level === 0) {
             return "statementValue total";
-        } else if(props.concept.level === 1 && Object.keys(props.concept.concepts).length > 0) {
+        } else if(props.concept.level >= 1 && Object.keys(props.concept.concepts).length > 0) {
             return "statementValue subTotal";
         } else {
             return "statementValue";
         }
     }
 
+    const formatConceptValue = (concept, value) => {
+        var preValue = "";
+
+        if(concept.unit === "USD" || concept.unit === "USD/shares") {
+            preValue += "$ ";
+        }
+
+        var valueDivided = value / concept.valueDivisor;
+        
+        if(valueDivided < 0) {
+            valueDivided = Math.abs(valueDivided);
+            return(
+                <div className="valueContainer">
+                    <span>{preValue}</span>
+                    <span className="numericValue negative">({valueDivided.toLocaleString('en')})</span>
+                </div>
+            );
+        } else {
+            return(
+                <div className="valueContainer">
+                    <span>{preValue}</span>
+                    <span className="numericValue">{valueDivided.toLocaleString('en')}</span>
+                </div>
+            );
+        }
+    }
+
     return (
         <tr className={props.rowClass}>
             <td className={getCellClass()}>{props.concept.label}</td>
-            <td className={getValueClass()}>{props.concept.hasOwnProperty("value") ? props.concept.value : ""}</td>
+            {props.dataColumns > 0 ? 
+                (
+                    <td className={getValueClass()}>
+                        {props.concept.hasOwnProperty("previousValue") ? formatConceptValue(props.concept, props.concept.previousValue) : ""}
+                    </td>
+                )
+                :
+                (null)
+            }
+            <td className={getValueClass()}>
+                {props.concept.hasOwnProperty("value") ? formatConceptValue(props.concept, props.concept.value) : ""}
+            </td>
         </tr>
     );
 }

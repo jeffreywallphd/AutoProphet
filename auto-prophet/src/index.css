@@ -11,7 +11,7 @@
   --text-color-light: #FFFFFF;
   --text-color-medium: #333333;
   --row-primary-color: #FFFFFF;
-  --row-alternating-color: #bbfeff;
+  --row-alternating-color: #c1c9ff;
   --footer-height: 90px;
 }
 
@@ -647,31 +647,52 @@ code {
 }
 
 .statementTable th {
-  text-align: right;
+  text-align: left;
   border-bottom: 1px solid black;
 } 
 
+.statementTable th.value {
+  text-align: right;
+  width: 125px;
+}
+
 .statementTable td.total {
   font-weight: bold;
+  text-decoration: underline;
+}
+
+.statementTable td span.negative {
+  color: red;
 }
 
 .statementTable td.subTotal {
-  font-weight: bold;
-  font-style: italic;
+  text-decoration: underline;
 }
 
 .statementTable td.indent1 {
-  padding-left: 50px;
+  padding-left: 40px;
 }
 
 .statementTable td.indent2 {
-  padding-left: 100px;
+  padding-left: 80px;
 }
 
 .statementTable td.indent3 {
-  padding-left: 150px;
+  padding-left: 120px;
 }
 
 .statementTable td.statementValue {
+  width: 100px;
+  text-align: right;
+  padding-left: 50px;
+}
+
+.statementTable td.statementValue div.valueContainer {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+div.valueContainer span.numericValue {
   text-align: right;
 }

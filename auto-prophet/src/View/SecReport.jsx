@@ -45,7 +45,7 @@ function SecReport(props) {
                             <p>Report filed on {state.secReportData.filingDate} for period ending {state.secReportData.reportDate}</p>
                             {Object.keys(state.secReportData.statements).map((key) => {
                                 var report = state.secReportData.statements[key];
-                                return <SecReportStatement statementDate={state.secReportData.reportDate} statementName={report.title} concepts={report.concepts} />
+                                return <SecReportStatement statementDate={state.secReportData.reportDate} statementName={report.title} primaryDivisor={report.primaryDivisor} dates={report.dates} concepts={report.concepts} />
                             })}
                         </div>
                     : 

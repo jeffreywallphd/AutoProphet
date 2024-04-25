@@ -30,8 +30,19 @@ function SecReportStatement(props) {
                     <table className="statementTable">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th>{props.statementDate}</th>
+                                <th>
+                                    {props.primaryDivisor ? 
+                                        `Values presented in ${props.primaryDivisor} unless otherwise stated. `
+                                        :
+                                        null
+                                    } Underlined values are totals or sub-totals.
+                                </th>
+                                {props.dates && props.dates.length > 1 ? 
+                                    (<th className="value">{props.dates[0]}</th>)
+                                    :
+                                    (null)
+                                }
+                                <th className="value">{props.statementDate}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,7 +50,7 @@ function SecReportStatement(props) {
                             const rowClass = index % 2 ? "" : "alternating";
 
                             return (
-                                <SecReportStatementRow rowClass={rowClass} concept={concept}/>
+                                <SecReportStatementRow rowClass={rowClass} concept={concept} dataColumns={props.dates && props.dates.length > 1 ? props.dates.length-1 : 0}/>
                             )
                         })}
                         </tbody>
