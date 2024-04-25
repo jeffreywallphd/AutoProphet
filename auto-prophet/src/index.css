@@ -648,8 +648,17 @@ code {
 
 .statementTable th {
   text-align: right;
-  background-color: var(--accent-color);
+  border-bottom: 1px solid black;
 } 
+
+.statementTable td.total {
+  font-weight: bold;
+}
+
+.statementTable td.subTotal {
+  font-weight: bold;
+  font-style: italic;
+}
 
 .statementTable td.indent1 {
   padding-left: 50px;

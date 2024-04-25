@@ -8,8 +8,14 @@ import React from "react";
 
 function SecReportStatementRow(props) {
     const getCellClass = () => {
-        if(props.concept.level === 1) {
-            return "indent1";
+        if(props.concept.level === 0) {
+            return "total";
+        } else if(props.concept.level === 1) {
+            if(Object.keys(props.concept.concepts).length > 0) {
+                return "indent1 subTotal";
+            } else {
+                return "indent1";
+            }
         } else if(props.concept.level === 2) {
             return "indent2";
         } else if(props.concept.level === 3) {
@@ -19,10 +25,20 @@ function SecReportStatementRow(props) {
         }
     };
 
+    const getValueClass = () => {
+        if(props.concept.level === 0) {
+            return "statementValue total";
+        } else if(props.concept.level === 1 && Object.keys(props.concept.concepts).length > 0) {
+            return "statementValue subTotal";
+        } else {
+            return "statementValue";
+        }
+    }
+
     return (
         <tr className={props.rowClass}>
             <td className={getCellClass()}>{props.concept.label}</td>
-            <td className="statementValue">{props.concept.hasOwnProperty("value") ? props.concept.value : ""}</td>
+            <td className={getValueClass()}>{props.concept.hasOwnProperty("value") ? props.concept.value : ""}</td>
         </tr>
     );
 }

@@ -156,7 +156,7 @@ export class SecInteractor implements IInputBoundary {
                         conceptLookupObj[conceptId] = concept;
                     }
                 }
-                window.console.log(JSON.stringify(conceptLookupObj));
+                //window.console.log(conceptLookupObj);
                 // infer the parent and children of each concept
                 for(var conceptCalc of report.getElementsByTagName("link:calculationArc")) {
                     //get the parent and child of the calculation arc
@@ -166,7 +166,6 @@ export class SecInteractor implements IInputBoundary {
                     const childConceptId = conceptLookupObj[childConceptXLink];
 
                     conceptLookupObj[childConceptId]["parent"] = parentConceptId;
-                    conceptLookupObj[childConceptId]["level"] = conceptLookupObj[parentConceptId]["level"] + 1;
                     const childConcept = conceptLookupObj[childConceptId];
                     conceptLookupObj[parentConceptId]["concepts"][childConceptId] = childConcept;
                 }
@@ -178,37 +177,34 @@ export class SecInteractor implements IInputBoundary {
                     }
                 }
 
-                window.console.log("hello2");
-                //reports[reportId]["concepts"] = conceptLookupObj;
+                reports[reportId] = this.calculateLevel(reports[reportId]);
+
                 window.console.log(reports);
                 reportCounter++;
             }
 
-            window.console.log(JSON.stringify(reports));
             // add reports object to response object
             response.response.statements = reports;
 
             //TODO: for consistency, consider wrapping object in {response: {}}
             schemaResponse = new JSONResponse(JSON.stringify(response));
         } catch(error) {
-            window.console.log(error);
             return undefined;
         }
        
         return schemaResponse.response;
     }
 
-    private processConceptHierarchy(concepts: any, parentConceptId: string, childConceptId: string) {
-        if(childConceptId in concepts) {
-            concepts[parentConceptId]["concepts"][childConceptId] = concepts[childConceptId];
-            delete concepts[childConceptId];
+    calculateLevel(report:any, level:number=0): any {
+        for(var key in report["concepts"]) {
+            report["concepts"][key]["level"] = level;
 
-            for(const conceptId in concepts[parentConceptId]["concepts"]) {
-                this.processConceptHierarchy(concepts[parentConceptId]["concepts"], childConceptId, conceptId);
+            if(Object.keys(report["concepts"][key]["concepts"]).length > 0) {
+                report["concepts"][key] = this.calculateLevel(report["concepts"][key], level+1);
             }
-        } 
+        }
 
-        return concepts;
+        return report;
     }
 
     private findMostRecentFilingIndex(submissionsResponse: IResponseModel, type:string): number {
@@ -259,7 +255,6 @@ export class SecInteractor implements IInputBoundary {
         } else if(units.hasOwnProperty("pure")) {
             unit = "pure"
         } else {
-            window.console.log("unit unclear: " + concept);
             return undefined;
         }
 
@@ -273,7 +268,6 @@ export class SecInteractor implements IInputBoundary {
         conceptObj["level"] = 0;
         conceptObj["parent"] = "root";
         conceptObj["concepts"] = {};
-        window.console.log(concept);
         return conceptObj;
     }
 
@@ -296,7 +290,6 @@ export class SecInteractor implements IInputBoundary {
                 this.findIndexForConceptValue(data, reportType, index-1);
             }
         } catch(error) {
-            window.console.log("error finding index: " + error);
             return undefined;
         }
 
