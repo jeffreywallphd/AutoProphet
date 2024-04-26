@@ -56,8 +56,9 @@ function TimeSeriesPage(props) {
                             <TickerSidePanel state={state} />
                         </>
                     ) : (null)}
-                    { state ? 
+                    { state && state.data? 
                             <>
+                                <h4>Financial Statements</h4>
                                 <div><NavLink to="/sec-report" state={{...state, report: "10-K"}}>Most Recent 10-K</NavLink></div>
                                 <div><NavLink to="/sec-report" state={{...state, report: "10-Q"}}>Most Recent 10-Q</NavLink></div>
                             </>
