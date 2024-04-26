@@ -1,17 +1,27 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
 import ConfigUpdater from "../Utility/ConfigManager";
 
 function Settings(props) {
-    const stockApiRef = useRef(null);
-    const newsApiRef = useRef(null);
+    const stockApiRef = useRef("AlphaVantageStockGateway");
+    const newsApiRef = useRef("AlphaVantageNewsGateway");
+    const reportApiRef = useRef("SecAPIGateway");
+    const ratioApiRef = useRef("AlphaVantageRatioGateway");
+
     var stockApiKeyRef = useRef();
-    var newsAPIKeyRef = useRef();
+    var newsApiKeyRef = useRef();
+    var reportApiKeyRef = useRef();
+    var ratioApiKeyRef = useRef();
+
     const [state, setState] = useState({
         hasStockApiKey: false,
         hasNewsApiKey: false,
+        hasReportApiKey: false,
+        hasRatioApiKey: false,
         currentStockApiKey: null,
         currentNewsApiKey: null,
-        apiSize: 30,
+        currentReportApiKey: null,
+        currentRatioApiKey: null,
+        apiSize: 40,
         message: null
     });
 
@@ -26,60 +36,104 @@ function Settings(props) {
     };
 
     // some stock APIs don't have API keys
-    const handleStockApiChange = () => {
-        const config = getConfigAPI(); // Get the current API from config
+    const handleStockApiChange = (event=null, newState=null, isLoading=false) => {
         const env = getEnv();
-
-        // set the value of the API Key textbox
-        if(stockApiRef.current.value === "AlphaVantageStockGateway") {
-            setState({
-                ...prevstate,
-                hasStockApiKey: true,
-                currentStockApiKey: env.ALPHAVANTAGE_API_KEY,
-                apiSize: env.ALPHAVANTAGE_API_KEY ? env.ALPHAVANTAGE_API_KEY.length : 30,
-                message: null
-            });
-        } else if(stockApiRef.current.value === "FinancialModelingPrepGateway") {
-            setState({
-                ...prevstate,
-                hasStockApiKey: true,
-                currentStockApiKey: env.FMP_API_KEY,
-                apiSize: env.FMP_API_KEY ? env.FMP_API_KEY.length : 30,
-                message: null
-            });
-        } else {
-            setState({
-                ...prevstate,
-                hasStockApiKey: false,
-                currentStockApiKey: null,
-                apiSize: 30,
-                message: null
-            });
+ 
+        if(newState === null) {
+            newState = state;
         }
+        
+        // set the value of the API Key textbox; don't include API here if no API key
+        if(stockApiRef.current.value === "AlphaVantageStockGateway") {
+            newState["hasStockApiKey"] = true;
+            newState["currentStockApiKey"] = env.ALPHAVANTAGE_API_KEY;
+            newState["message"] = null;
+        } else if(stockApiRef.current.value === "FinancialModelingPrepGateway") {
+            newState["hasStockApiKey"] = true;
+            newState["currentStockApiKey"] = env.FMP_API_KEY;
+            newState["message"] = null;
+        } else {
+            newState["hasStockApiKey"] = false;
+            newState["currentStockApiKey"] = null;
+            newState["message"] = null;
+        }
+
+        if(!isLoading) {
+            setState({...newState});
+        }
+        
+        return newState;
     };    
     
-    const handleNewsApiChange = () => {
-        const config = getConfigAPI(); // Get the current API from config
+    const handleNewsApiChange = (event=null, newState=null, isLoading=false) => {
         const env = getEnv();
-
-        // set the value of the API Key textbox
-        if(newsApiRef.current.value === "AlphaVantageNewsGateway") {
-            setState({
-                ...prevstate,
-                hasNewsApiKey: true,
-                currentNewsApiKey: env.NEWS_API_KEY,
-                apiSize: env.NEWS_API_KEY ? env.NEWS_API_KEY.length : 30,
-                message: null
-            });
-        } else {
-            setState({
-                ...prevstate,
-                hasNewsApiKey: false,
-                currentNewsApiKey: null,
-                apiSize: 30,
-                message: null
-            });
+        
+        if(newState === null) {
+            newState = state;
         }
+
+        // set the value of the API Key textbox; don't include API here if no API key
+        if(newsApiRef.current.value === "AlphaVantageNewsGateway") {
+            newState["hasNewsApiKey"] = true;
+            newState["currentNewsApiKey"] = env.ALPHAVANTAGE_API_KEY;
+            newState["message"] = null;
+        } else {
+            newState["hasNewsApiKey"] = false;
+            newState["currentNewsApiKey"] = null;
+            newState["message"] = null;
+        }
+
+        if(!isLoading) {
+            setState({...newState});
+        }
+
+        return newState;
+    };
+
+    const handleReportApiChange = (event=null, newState=null, isLoading=false) => {
+        const env = getEnv();
+        
+        if(newState === null) {
+            newState = state;
+        }
+
+        // set the value of the API Key textbox; don't include API here if no API key
+        // will need if statements if future keyed gateways are used
+        newState["hasReportApiKey"] = false;
+        newState["currentReportApiKey"] = null;
+        newState["message"] = null;
+
+        if(!isLoading) {
+            setState({...newState});
+        }
+
+        return newState;
+    };
+
+    const handleRatioApiChange = (event=null, newState=null, isLoading=false) => {
+        const env = getEnv();
+        
+        if(newState === null) {
+            newState = state;
+        }
+
+        // set the value of the API Key textbox; don't include API here if no API key
+        // will need if statements if multiple gateways used in future
+        if(ratioApiRef.current.value === "AlphaVantageRatioGateway") {
+            newState["hasRatioApiKey"] = true;
+            newState["currentRatioApiKey"] = env.ALPHAVANTAGE_API_KEY;
+            newState["message"] = null;
+        } else {
+            newState["hasRatioApiKey"] = false;
+            newState["currentRatioApiKey"] = null;
+            newState["message"] = null;
+        }
+
+        if(!isLoading) {
+            setState({...newState});
+        }
+
+        return newState;
     };
 
     useEffect(() => {
@@ -87,152 +141,228 @@ function Settings(props) {
 
         stockApiRef.current.value = config.StockGateway;
         newsApiRef.current.value = config.NewsGateway;
+        reportApiRef.current.value = config.ReportGateway;
+        ratioApiRef.current.value = config.RatioGateway;
 
-        handleStockApiChange();
-        handleNewsApiChange();
+        var newState = state;
+        newState = handleStockApiChange(null, newState, true);
+        newState = handleNewsApiChange(null, newState, true);
+        newState = handleReportApiChange(null, newState, true);
+        newState = handleRatioApiChange(null, newState, true);
+
+        setState({...newState});
     }, []);
 
     const handleSubmit = (event) => {
         // Handle form submission logic here
         event.preventDefault();
 
-        const stock_api = stockApiRef.current.value;
-        const news_api = newsApiRef.current.value;
-        var stock_apiKey = null;
-        var news_apiKey = null;
-        const updater = new ConfigUpdater();
+        const stockApi = stockApiRef.current.value;
+        const newsApi = newsApiRef.current.value;
+        const reportApi = reportApiRef.current.value;
+        const ratioApi = ratioApiRef.current.value;
 
-         // Check if selected API requires an API key
+        var stockApiKey = null;
+        var newsApiKey = null;
+        var reportApiKey = null;
+        var ratioApiKey = null;
+
+        // Check if selected API requires an API key
         if (state.hasStockApiKey) {
-            stock_apiKey = event.target.stock_apiKey.value;
+            stockApiKey = event.target.stockApiKey.value;
+            if(stockApiKey === null || stockApiKey === undefined || stockApiKey === "" ) {
+                setState({
+                    ...state,
+                    message: "You must enter a stock API key for the selected API"
+                });
+                return;
+            }
         }
 
-        updater.updateConfigFile({stock_api: stock_api, stock_apiKey: stock_apiKey});
-        // Update .env file with new API key
-        if(!state.hasStockApiKey) {
-            updater.updateConfigFile();
-            setState({
-                ...state,
-                hasStockApiKey: state.hasStockApiKey,
-                currentStockApiKey: state.currentStockApiKey,
-                apiSize: state.apiSize,
-                message: "Successfully saved the configuration"
-            });
-        } else if(state.hasStockApiKey && stock_apiKey !== null && stock_apiKey !== undefined && stock_apiKey !== "") {
-            // Update default.json with new API endpoint
-            updater.updateConfigFile();
-
-            updater.updateEnvFile();
-            setState({
-                ...state,
-                hasStockApiKey: state.hasStockApiKey,
-                currentStockApiKey: state.currentStockApiKey,
-                apiSize: state.apiSize,
-                message: "Successfully saved the configuration"
-            });
-        } else {
-            setState({
-                ...state,
-                hasStockApiKey: state.hasStockApiKey,
-                currentStockApiKey: state.currentStockApiKey,
-                apiSize: state.apiSize,
-                message: "Configuration not saved. The API key for this API may not be empty"
-            });
-        } 
-        
         if (state.hasNewsApiKey) {
-            news_apiKey = event.target.news_apiKey.value;
+            newsApiKey = event.target.newsApiKey.value;
+            if(newsApiKey === null || newsApiKey === undefined || newsApiKey === "" ) {
+                setState({
+                    ...state,
+                    message: "You must enter a news API key for the selected API"
+                });
+                return;
+            }
         }
 
-        updater.updateConfigFile({news_api: news_api, news_apiKey: news_apiKey});
-        if (!state.hasNewsApiKey) {
-            updater.updateConfigFile();
-            setState({
-                hasNewsApiKey: state.hasNewsApiKey,
-                currentNewsApiKey: state.currentNewsApiKey,
-                apiSize: state.apiSize,
-                message: "Successfully saved the configuration"
-            });
-        } else if(state.hasNewsApiKey && news_apiKey !== null && news_apiKey !== undefined && news_apiKey !== "") {
-            updater.updateConfigFile();
+        if (state.hasReportApiKey) {
+            reportApiKey = event.target.reportApiKey.value;
+            if(reportApiKey === null || reportApiKey === undefined || reportApiKey === "" ) {
+                setState({
+                    ...state,
+                    message: "You must enter a report API key for the selected API"
+                });
+                return;
+            }
+        }
 
-            updater.updateEnvFile();
+        if (state.hasRatioApiKey) {
+            ratioApiKey = event.target.ratioApiKey.value;
+            if(ratioApiKey === null || ratioApiKey === undefined || ratioApiKey === "" ) {
+                setState({
+                    ...state,
+                    message: "You must enter a ratio API key for the selected API"
+                });
+                return;
+            }
+        }
+
+        const configData = {
+            stockApi: stockApi, 
+            stockApiKey: state.hasStockApiKey ? stockApiKey : null, 
+            newsApi: newsApi, 
+            newsApiKey: state.hasNewsApiKey ? newsApiKey : null, 
+            reportApi: reportApi, 
+            reportApiKey: state.hasReportApiKey ? reportApiKey : null,
+            ratioApi: ratioApi,
+            ratioApiKey: state.hasRatioApiKey ? ratioApiKey : null 
+        };
+
+        const updater = new ConfigUpdater(configData);
+        const updatedEnv = updater.updateEnvFile();
+
+        // Update .env file with new API key
+        if (updatedEnv) {
             setState({
-                hasNewsApiKey: state.hasNewskApiKey,
-                currentNewsApiKey: state.currentNewsApiKey,
-                apiSize: state.apiSize,
+                ...state,
                 message: "Successfully saved the configuration"
             });
+
+            // update the config file if the .env file successfully saved
+            const updatedConfig = updater.updateConfigFile();
+            if (updatedConfig) {
+                setState({
+                    ...state,
+                    message: "Successfully saved the configuration"
+                });
+            } else {
+                setState({
+                    ...state,
+                    message: "Failed to save the configuration file"
+                });
+            } 
         } else {
             setState({
-                hasNewsApiKey: state.hasNewsApiKey,
-                currentNewsApiKey: state.currentNewsApiKey,
-                apiSize: state.apiSize,
-                message: "Configuration not saved. The API key for this API may not be empty"
+                ...state,
+                message: "Failed to save the configuration file"
             });
-        } 
-        
+        }
     };
 
     return (
-        <div className="page">
-            <h2>Settings</h2>
-            <div>
-                <h3>Stock Data API Configuration</h3>
-                <form onSubmit={handleSubmit}>
-                    <div><label htmlFor="stock_api">Select a Stock Data API:</label></div>
-                    <select id="stock_api" name="stock_api" ref={stockApiRef} onChange={handleStockApiChange}>
-                        <option value="AlphaVantageStockGateway">Alpha Vantage API</option>
-                        <option value="FinancialModelingPrepGateway">Financial Modeling Prep API</option>
-                        <option value="YFinanceStockGateway">Yahoo Finance (unofficial community) API</option>
-                    </select>
-                    <br />
-                    {/* only show API key textbox if the API requires one */}
-                    {state.hasStockApiKey ?  
-                        ( 
-                        <>
-                            <div><label htmlFor="stock_apiKey">API Key:</label></div>
-                            <input type="text" id="stock_apiKey" name="stock_apiKey" size={state.apiSize} ref={stockApiKeyRef} value={state.currentStockApiKey} onChange={e => {
-                                setState({ 
-                                    hasStockApiKey: state.hasStockApiKey,
-                                    currentStockApiKey: e.target.value,
-                                    apiSize: e.target.value.length > 30 ? e.target.value.length : 30,
-                                    message: null
-                                });
-                            }} />
-                        </>
-                        ) : (null)
-                    }
-                
-                    <br />
-                    <div><label htmlFor="news_api">Select a News Data API:</label></div>
-                    <select id="news_api" name="news_api" ref={newsApiRef} onChange={handleNewsApiChange}>
-                        <option value="AlphaVantageNewsGateway">Alpha Vantage API</option>
-                    </select>
-                    <br />
-                    {/* only show API key textbox if the API requires one */}
-                    {state.hasNewsApiKey ?  
-                        ( 
-                        <>
-                            <div><label htmlFor="news_apiKey">API Key:</label></div>
-                            <input type="text" id="news_apiKey" name="news_apiKey" size={state.apiSize} ref={newsAPIKeyRef} value={state.currentNewsApiKey} onChange={e => {
-                                setState({ 
-                                    hasNewsApiKey: state.hasNewsApiKey,
-                                    currentNewsApiKey: e.target.value,
-                                    apiSize: e.target.value.length > 30 ? e.target.value.length : 30,
-                                    message: null
-                                });
-                            }} />
-                        </>
-                        ) : (null)
-                    }
-                
-                    <br />
-                    <button type="submit">Save Configuration</button>
-                    <p>{state.message}</p>
-                </form>
+            <div className="page">
+                <h2>Settings</h2>
+                <div>
+                    <h3>Stock Data API Configuration</h3>
+                    <form onSubmit={handleSubmit}>
+                        <div><label htmlFor="stockApi">Select a Stock Data API:</label></div>
+                        <select id="stockApi" name="stockApi" ref={stockApiRef} onChange={handleStockApiChange}>
+                            <option value="AlphaVantageStockGateway">Alpha Vantage Stock API</option>
+                            <option value="FinancialModelingPrepGateway">Financial Modeling Prep Stock API</option>
+                            <option value="YFinanceStockGateway">Yahoo Finance (unofficial community) API</option>
+                        </select>
+                        <br />
+                        {/* only show API key textbox if the API requires one */}
+                        {state.hasStockApiKey ?  
+                            ( 
+                            <>
+                                <div><label htmlFor="stockApiKey">Stock API Key:</label></div>
+                                <div>
+                                    <input type="text" id="stockApiKey" name="stockApiKey" size={state.apiSize} ref={stockApiKeyRef} value={state.currentStockApiKey} onChange={e => {
+                                        setState({
+                                            ...state, 
+                                            currentStockApiKey: e.target.value,
+                                            message: null
+                                        });
+                                    }} />
+                                </div>
+                            </>
+                            ) : (null)
+                        }
+                    
+                        <br />
+                        <div><label htmlFor="newsApi">Select a News Data API:</label></div>
+                        <select id="newsApi" name="newsApi" ref={newsApiRef} onChange={handleNewsApiChange}>
+                            <option value="AlphaVantageNewsGateway">Alpha Vantage News API</option>
+                        </select>
+                        <br />
+                        {/* only show API key textbox if the API requires one */}
+                        {state.hasNewsApiKey ?  
+                            ( 
+                            <>
+                                <div><label htmlFor="newsApiKey">News API Key:</label></div>
+                                <div>
+                                    <input type="text" id="newsApiKey" name="newsApiKey" size={state.apiSize} ref={newsApiKeyRef} value={state.currentNewsApiKey} onChange={e => {
+                                        setState({ 
+                                            ...state,
+                                            currentNewsApiKey: e.target.value,
+                                            message: null
+                                        });
+                                    }} />
+                                </div>
+                            </>
+                            ) : (null)
+                        }
+
+                        <br />
+                        <div><label htmlFor="reportApi">Select a Financial Report API:</label></div>
+                        <select id="reportApi" name="reportApi" ref={reportApiRef} onChange={handleReportApiChange}>
+                            <option value="SecAPIGateway">SEC Reporting API</option>
+                        </select>
+                        <br />
+                        {/* only show API key textbox if the API requires one */}
+                        {state.hasReportApiKey ?  
+                            ( 
+                            <>
+                                <div><label htmlFor="reportApiKey">Financial Report API Key:</label></div>
+                                <div>
+                                    <input type="text" id="reportApiKey" name="reportApiKey" size={state.apiSize} ref={reportApiKeyRef} value={state.currentReportApiKey} onChange={e => {
+                                        setState({
+                                            ...state, 
+                                            currentReportApiKey: e.target.value,
+                                            message: null
+                                        });
+                                    }} />
+                                </div>
+                            </>
+                            ) : (null)
+                        }
+
+                        <br />
+                        <div><label htmlFor="ratioApi">Select a Financial Ratios API:</label></div>
+                        <select id="ratioApi" name="ratioApi" ref={ratioApiRef} onChange={handleRatioApiChange}>
+                            <option value="AlphaVantageRatioGateway">Alpha Vantage Ratio API</option>
+                        </select>
+                        <br />
+                        {/* only show API key textbox if the API requires one */}
+                        {state.hasRatioApiKey ?  
+                            ( 
+                            <>
+                                <div><label htmlFor="ratioApiKey">Financial Ratio API Key:</label></div>
+                                <div>
+                                    <input type="text" id="ratioApiKey" name="ratioApiKey" size={state.apiSize} ref={ratioApiKeyRef} value={state.currentRatioApiKey} onChange={e => {
+                                        setState({
+                                            ...state, 
+                                            currentRatioApiKey: e.target.value,
+                                            message: null
+                                        });
+                                    }} />
+                                </div>
+                            </>
+                            ) : (null)
+                        }
+                    
+                        <br />
+                        <button type="submit">Save Configuration</button>
+                        <p>{state.message}</p>
+                    </form>
+                </div>
             </div>
-        </div>
     );
 }
 
