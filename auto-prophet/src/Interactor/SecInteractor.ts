@@ -4,7 +4,7 @@ import {IResponseModel} from "../Gateway/Response/IResponseModel";
 import {JSONResponse} from "../Gateway/Response/JSONResponse";
 import {IDataGateway} from "../Gateway/Data/IDataGateway";
 import {SecRequest} from "../Entity/SecRequest";
-import {SecReportGatewayFactory} from "@DataGateway/SecReportGatewayFactory";
+import {SecReportGatewayFactory} from "@DataGateway/FinancialReportGatewayFactory";
 import { XMLResponse } from "../Gateway/Response/XMLResponse";
 
 declare global {

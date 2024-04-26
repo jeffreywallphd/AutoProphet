@@ -6,7 +6,7 @@
 
 import React, { useEffect } from "react";
 import { StockInteractor } from "../Interactor/StockInteractor";
-import { SecInteractor } from "../Interactor/SecInteractor";
+import { FinancialRatioInteractor } from "../Interactor/FinancialRatioInteractor";
 import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 
@@ -23,7 +23,7 @@ function TickerSearchBar(props) {
 
         //Get SEC Data
         if(fetchSec) {
-            newState = await fetchSecData(newState);
+            newState = await fetchRatioData(newState);
         }
         
         props.handleDataChange(newState);
@@ -75,7 +75,7 @@ function TickerSearchBar(props) {
     }
 
     //Gets SEC data for a ticker
-    const fetchSecData = async (newState) => {
+    const fetchRatioData = async (newState) => {
         try{
             //TODO: we need to get the CIK from the database. If this is captured in the securitiesList, we don't need a database lookup                    
             //TODO: create a parent interactor that can send a single request and dispatch
@@ -87,7 +87,7 @@ function TickerSearchBar(props) {
             });
 
             //get SEC data through SEC interactor
-            var secInteractor = new SecInteractor();
+            var secInteractor = new FinancialRatioInteractor();
             var secRequestObj = new JSONRequest(`{
                 "request": {
                     "sec": {
@@ -113,10 +113,6 @@ function TickerSearchBar(props) {
             const secBalanceResults = await secInteractor.get(secBalanceRequestObj);
 
             secResults.response.results[0].data = Object.assign({}, secResults.response.results[0].data, secBalanceResults.response.results[0].data[0]);
-
-            //build the financial statements based on SEC submissions and company data
-            //var schema = await secInteractor.calculateReport(props.state.searchRef.current.value.toLowerCase(), secSubmissionsResults, secResults);
-            //window.console.dirxml(schema[0].response);
 
             //update the state
             newState.secData = secResults;
@@ -166,7 +162,6 @@ function TickerSearchBar(props) {
             }`);
 
             const results = await interactor.get(requestObj);
-            window.console.log(JSON.stringify(results));
 
             const newState = props.state;
             newState.searchRef = results.response.results[0].ticker;
