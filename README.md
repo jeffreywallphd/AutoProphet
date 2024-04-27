@@ -24,7 +24,7 @@ To begin contributing to the repository follow the instructions below. If you ar
 5. Install the project dependencies in the terminal/command line, by running: npm install
 6. To see the existing software, run: npm start
 7. The application should load in an Electron window.
-8. Configure the environment with desired data API's (and API keys where needed)
+8. Configure the environment with desired data API's (and API keys where needed) from the Settings section of the application.
    * If you choose the AlphaVantage API's, a free key can be obtained here: https://www.alphavantage.co/support/#api-key
    * If you choose to use Financial Modeling Prep, a free key can be obtained through account signup here: https://site.financialmodelingprep.com/. After signup, the key can be found in the Dashboard.
 
