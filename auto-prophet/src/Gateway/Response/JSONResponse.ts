@@ -20,7 +20,7 @@ export class JSONResponse implements IResponseModel {
 
             var fields: Map<string, Field> = entity.getFields();
             for (var [name, obj] of fields) {
-                if(allowNullValues == false && obj.value == null) {
+                if(allowNullValues === false && obj.value === null) {
                     continue;
                 } 
 

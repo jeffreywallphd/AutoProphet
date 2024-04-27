@@ -64,6 +64,7 @@ function TickerSearchBar(props) {
         newState.data = priceData;
         newState.dataSource = results.source;
         newState.ticker = newState.searchRef;
+        newState.cik = cik;
         newState.isLoading = false;
         newState.priceMin = Math.min(...priceData.response.results[0]["data"].map(data => data.price));
         newState.priceMax = Math.max(...priceData.response.results[0]["data"].map(data => data.price));

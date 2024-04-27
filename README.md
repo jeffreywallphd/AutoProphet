@@ -10,30 +10,23 @@ To begin contributing to the repository follow the instructions below. If you ar
 1. Ensure you have a version of git installed on your computer appropriate for your operating system
 2. Download and install NodeJS: https://nodejs.org/en/download
 3. Clone the repository: https://github.com/jeffreywallphd/AutoProphet.git
-4. In the auto-prophet folder, create a folder named: config
-   * Create a file in the config folder named: default.json
-   * Add the following to the default.json file: 
+4. In the auto-prophet folder, rename the config_DEFAULT folder to: config
+   * The folder should containa a file named: default.json
+   * The file should look something like this: 
    ```
-   { 
-      "StockGateway": "AlphaVantageStockGateway", 
-      "NewsGateway": "AlphaVantageNewsGateway", 
-      "ReportGateway": "AlphaVantageRatioGateway"
+   {
+      "StockGateway": "AlphaVantageStockGateway",
+      "NewsGateway": "AlphaVantageNewsGateway",
+      "ReportGateway": "SecAPIGateway",
+      "RatioGateway": "AlphaVantageRatioGateway"
    }
    ```
-5. In the auto-prophet folder, create a file named: .env
-   * Add the following to the .env file: 
-   ```
-      {
-         "ALPHAVANTAGE_API_KEY": "your_api_key_here",
-         "FMP_API_KEY" : "your_api_key_here"
-      }
-   ```
-   * Replace your_key_here with a free AlphaVantage key found here: https://www.alphavantage.co/support/#api-key
-   * Replace your_key_here with a free Financial Modeling Prep key, which requires account signup here: https://site.financialmodelingprep.com/. After signup, the key can be found in the Dashboard.
-6. Install the project dependencies in the terminal/command line, by running: npm install
-7. To see the existing software, run: npm start
-8. The application should load in an Electron window.
-
+5. Install the project dependencies in the terminal/command line, by running: npm install
+6. To see the existing software, run: npm start
+7. The application should load in an Electron window.
+8. Configure the environment with desired data API's (and API keys where needed) from the Settings section of the application.
+   * If you choose the AlphaVantage API's, a free key can be obtained here: https://www.alphavantage.co/support/#api-key
+   * If you choose to use Financial Modeling Prep, a free key can be obtained through account signup here: https://site.financialmodelingprep.com/. After signup, the key can be found in the Dashboard.
 
 ### Detailed Install Instructions
 The following instructions provide greater detail for contributors new to software development.
@@ -73,51 +66,28 @@ To contribute to the software project, you will need to set up the project envir
 
    ![image](https://github.com/jeffreywallphd/AutoProphet/blob/main/documentation/images/vs_code_cloning.png?raw=true)
 
-2. Once you clone the repository, you will need to add a couple of folders and files that should only exist on your computer. For security and other reasons, some files should not exist on a public GitHub repository. 
+2. Once you clone the repository, you will need to rename a folder. For security and other reasons, some files should not exist on a public GitHub repository. 
 
-   a. The first file you will need to create is a file you will name: .env
+   a. You will need to rename a folder that is used to store configuration information. The AutoProphet project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
 
-      * The .env file can be used store API keys, passwords, and other secrets that should not be shared on GitHub, but that are also necessary for the software to run.
-      * To make this point vitally clear, never store passwords, API keys, or other secrets on a remote repository. 
-      * To create this .env file, open the project in VS Code. Make sure the Explorer window is open in the left sidebar of VS Code. Within the Explorer, right click on the auto-prophet folder and select: New File...
-
-      ![image](https://github.com/jeffreywallphd/AutoProphet/blob/main/documentation/images/vs_code_create_env.png?raw=true)
-
-      * A text field will appear where you can type a name for the file. The name of the file must be: .env
-      * Click Enter on your keyboard and the file will be created. The file will also be opened in the VS Code editing window. 
-      * The project current stores two API keys, one to extract stock, news, and other financial data from the AlphaVantage API and another to extract the same from the Financial Modeling Prep (FMP) API. Paste the following JSON code into the file:
+      * In the auto-prophet folder, locate the folder named: config_DEFAULT
+      * rename the folder to: config
+      * Once the folder is renamed, ensure that the folder contains a file named: **default.json**. This file will store information about which data sources to use.
+      * Open the default.json file and ensure that it contains information that looks something like this:
 
       ```
       {
-         "ALPHAVANTAGE_API_KEY": "your_api_key_here",
-         "FMP_API_KEY" : "your_api_key_here"
+         "StockGateway": "AlphaVantageStockGateway",
+         "NewsGateway": "AlphaVantageNewsGateway",
+         "ReportGateway": "SecAPIGateway",
+         "RatioGateway": "AlphaVantageRatioGateway"
       }
       ```
 
-      * You will need to replace the your_api_key_here with keys from the AlphaVantage and FMP APIs. 
-      * You can obtain a free AlphaVantage API key at: https://www.alphavantage.co/support/#api-key
-      * You can obtain a free FMP API key after creating an FMP account, logging in, and visiting the Dashboard at: https://site.financialmodelingprep.com/  
-      * Note: If you are a student in a class, ask the professor for a key. Your professor may be able to provide you with a premium key for free for educational purposes.
- 
-   b. Second, you will need to create a folder to store configuration information. The AutoProphet project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
-
-      * Create a folder in the auto-prophet folder called **config**. Do this in the Explorer window by right clicking the auto-prophet folder and clicking: New Folder...
-      * A text field will appear where you can type: config.
-      * Once the folder is created, add a file inside the config folder named: **default.json**. This file will store information about which data sources to use.
-      * Paste the following code into the file:
-
-      ```
-      { 
-         "StockGateway": "AlphaVantageStockGateway", 
-         "NewsGateway": "AlphaVantageNewsGateway", 
-         "ReportGateway": "AlphaVantageRatioGateway"
-      }
-      ```
-
-3. With the repository cloned and the .env and config/default.json files created, you are now ready to start the program. If you haven't already done so, you will need to install NodeJS mentioned earlier. To run the program, open the terminal/command line. 
+3. With the repository cloned and the config folder renamed, you are now ready to start the program. If you haven't already done so, you will need to install NodeJS mentioned earlier. To run the program, open the terminal/command line. 
 
    * VS Code has a terminal built in. To access the terminal in VS Code, Click the View -> Terminal option from the top menu bar. 
-   * You will need to point the terminal to the auto-prophet folder. This can be done with the cd command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd auto-prophet**
+   * You will need to point the terminal to the auto-prophet folder. This can be done with the **cd** command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd auto-prophet**
 
    <img width="407" alt="step3ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/55c7f90e-c12d-4eb0-8aae-d558c90e670e">
 
@@ -136,7 +106,14 @@ To contribute to the software project, you will need to set up the project envir
     
    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/49f89a90-80a7-4131-b29c-1da810177050)
 
-5. Whenever you want to start the project to view what your code changes did to the software, simply use the terminal to get to the auto-prophet folder and run: **npm start**
+5. With the application open, you now need to configure the environment settings. Once the application installs necessary data and loads the menu sidebar, click the **Settings** option. 
+
+   a. In the Settings section, select the data providers you would prefer to use for different purposes, such as retrieving stock data, news data, financial reports, etc. Some of the data providers offer free keys with options to upgrade to premium keys. If you are using this software for a university course, your professor may be able to get you a premium key for free for some data providers, such as AlphaVantage.
+
+      * If you choose from the AlphaVantage API's, a free key can be obtained here: https://www.alphavantage.co/support/#api-key. Premium keys may be availabe through your professor for free.
+      * If you choose to use Financial Modeling Prep API's, a free key can be obtained through account signup here: https://site.financialmodelingprep.com/. After signup, the key can be found in the Dashboard.
+
+6. Whenever you want to start the project to view what your code changes did to the software, simply use the terminal to get to the auto-prophet folder and run: **npm start**
 
    * If you need to start over at any point by re-cloning the GitHub project, you may also need to repeat these steps. 
       

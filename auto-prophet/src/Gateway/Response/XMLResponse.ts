@@ -18,6 +18,12 @@ export class XMLResponse implements IResponseModel {
         }
     }
 
+    toString() {
+        const xmlSerializer = new XMLSerializer();
+        const xmlString = xmlSerializer.serializeToString(this.response);
+        return xmlString;
+    }
+
     convertFromEntity(entities: IEntity[]): void {
         throw new Error("Method not implemented.");
     }

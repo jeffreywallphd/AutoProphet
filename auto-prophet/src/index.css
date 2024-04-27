@@ -10,6 +10,8 @@
   --text-color-dark: #000000;
   --text-color-light: #FFFFFF;
   --text-color-medium: #333333;
+  --row-primary-color: #FFFFFF;
+  --row-alternating-color: #c1c9ff;
   --footer-height: 90px;
 }
 
@@ -624,5 +626,73 @@ code {
 }
 
 .portfolioTable tr td.numeric {
+  text-align: right;
+}
+
+/* Styling for Financial Statement Table */
+.statementTable {
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+}
+
+.statementTable tr {
+  background-color: var(--row-primary-color);
+}
+
+.statementTable tr.alternating {
+  background-color: var(--row-alternating-color);
+}
+
+.statementTable th {
+  text-align: left;
+  border-bottom: 1px solid black;
+} 
+
+.statementTable th.value {
+  text-align: right;
+  width: 125px;
+}
+
+.statementTable td.total {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.statementTable td span.negative {
+  color: red;
+}
+
+.statementTable td.subTotal {
+  text-decoration: underline;
+}
+
+.statementTable td.indent1 {
+  padding-left: 40px;
+}
+
+.statementTable td.indent2 {
+  padding-left: 80px;
+}
+
+.statementTable td.indent3 {
+  padding-left: 120px;
+}
+
+.statementTable td.statementValue {
+  width: 100px;
+  text-align: right;
+  padding-left: 50px;
+}
+
+.statementTable td.statementValue div.valueContainer {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+div.valueContainer span.numericValue {
   text-align: right;
 }

@@ -5,14 +5,14 @@
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 import React, { useContext, useEffect } from "react";
-import { StockInteractor } from "../Interactor/StockInteractor";
-import { JSONRequest } from "../Gateway/Request/JSONRequest";
+import { NavLink, useLocation } from "react-router-dom";
 import { TimeSeriesChart } from "./TimeSeriesChart";
 import { TickerSearchBar } from "./TickerSearchBar";
 import { TickerSidePanel } from "./TickerSidePanel";
 import { DataContext } from "./App";
 
 function TimeSeriesPage(props) {
+    const location = useLocation();
     const { state, setState } = useContext(DataContext);
     
     //ensure that the state changes
@@ -52,8 +52,19 @@ function TimeSeriesPage(props) {
                 </div>
                 <div className="sidePanel">
                     { state && state.secData ? (
-                        <TickerSidePanel state={state} />
+                        <>
+                            <TickerSidePanel state={state} />
+                        </>
                     ) : (null)}
+                    { state && state.data? 
+                            <>
+                                <h4>Financial Statements</h4>
+                                <div><NavLink to="/sec-report" state={{...state, report: "10-K"}}>Most Recent 10-K</NavLink></div>
+                                <div><NavLink to="/sec-report" state={{...state, report: "10-Q"}}>Most Recent 10-Q</NavLink></div>
+                            </>
+                        :
+                            (null)
+                    }
                 </div>
             </div>
         </div>

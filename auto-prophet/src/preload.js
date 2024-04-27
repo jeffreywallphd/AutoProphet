@@ -15,6 +15,10 @@ contextBridge.exposeInMainWorld('yahoo', {
     finance: require('yahoo-finance2').default
 });
 
+contextBridge.exposeInMainWorld('convert', {
+    xmlToJson: require('xml2js')
+});
+
 // for databases that rely on require(), add them to this contextBridge
 contextBridge.exposeInMainWorld('database', {
     sqlite: (database) => {
