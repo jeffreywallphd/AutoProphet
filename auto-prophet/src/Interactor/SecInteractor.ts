@@ -94,10 +94,11 @@ export class SecInteractor implements IInputBoundary {
         const mostRecentSubmissionIndex:number = this.findMostRecentFilingIndex(submissionsResponse, type);
 
         // set up response object to fill with data
-        const response = {response: {
+        const response: {[key: string]: any } = {response: {
             reportDate: submissionsResponse.response.results[0].data.filings.recent["reportDate"][mostRecentSubmissionIndex],
             filingDate: submissionsResponse.response.results[0].data.filings.recent["filingDate"][mostRecentSubmissionIndex],
-            statements: {}
+            statements: {},
+            link: null
         }};
 
         // accession number associated with the particular report on the SEC's website
@@ -109,9 +110,12 @@ export class SecInteractor implements IInputBoundary {
         const xsdFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}.xsd`;
         const dataFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}_htm.xml`;
         const labFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}_lab.xml`;
+        const htmlFileName = `${requestModel.request.request.sec.ticker.toLowerCase()}-${year}${month}${day}.htm`;
         
         // TODO: Should these fetches be moved to a gateway?
         this.archivesPath = `https://sec.gov/Archives/edgar/data/${zeroStrippedCik}/${accessionNumber}/`;
+
+        const reportLink = response["response"]["link"] = this.archivesPath + htmlFileName;
 
         // get _cal.xml file that contains calculation logic for building financial statements
         const reportXmlString = await fetch(this.archivesPath + calFileName);

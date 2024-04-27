@@ -4,7 +4,7 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, shell } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const fs = require("fs");
@@ -25,6 +25,11 @@ const createWindow = () => {
   //win.setMenu(null); // this doesn't allow opening developer tools
   win.maximize();
   win.show();
+
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
 
   win.loadFile('./public/index.html');
 };

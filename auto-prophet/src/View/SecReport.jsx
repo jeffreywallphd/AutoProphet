@@ -42,7 +42,10 @@ function SecReport(props) {
             
                 {state ? 
                         <div>
-                            <p>Report filed on {state.secReportData.filingDate} for period ending {state.secReportData.reportDate}</p>
+                            <h3>For period ending {state.secReportData.reportDate}</h3>
+                            <p>For the most accurate data, the full report can be viewed on the SEC's website at:</p> 
+                            <p><a href={state.secReportData.link} target="_blank">{state.secReportData.link}</a></p>
+                    
                             {Object.keys(state.secReportData.statements).map((key) => {
                                 var report = state.secReportData.statements[key];
                                 return <SecReportStatement statementDate={state.secReportData.reportDate} statementName={report.title} primaryDivisor={report.primaryDivisor} dates={report.dates} concepts={report.concepts} />
