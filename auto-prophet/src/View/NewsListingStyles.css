@@ -1,0 +1,33 @@
+/* NewsListing.module.css */
+
+.newsItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .thumbnail {
+    margin-right: 10px;
+    width: 100px;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  .newsContent {
+    flex: 1;
+  }
+  
+  .titleLink {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .summary {
+    margin: 5px 0;
+  }
+  
+  .details {
+    font-size: 0.8rem;
+    color: #555;
+  }
+  
