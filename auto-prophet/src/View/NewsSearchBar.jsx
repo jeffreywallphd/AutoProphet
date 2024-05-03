@@ -25,12 +25,12 @@ function NewsSearchBar(props) {
 
         var companyName = "";
 
-        //get company name from securities list data
-        state.securitiesList.find((element) => {
-            if(element.ticker === (state.searchRef).toUpperCase()) {
-                companyName = element.companyName;
-            }
-        });
+        // //get company name from securities list data
+        // state.securitiesList.find((element) => {
+        //     if(element.ticker === (state.searchRef).toUpperCase()) {
+        //         companyName = element.companyName;
+        //     }
+        // });
 
         //get data through stock interactor
         var interactor = new NewsInteractor();

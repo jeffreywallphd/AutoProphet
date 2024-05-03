@@ -28,9 +28,9 @@ class NewsPage extends Component {
     render() {        
         return (
                 <div className="page">
-                    <h2>Investment News</h2>
+                    <h2> Investment News </h2>
                     <NewsSearchBar state={this.state} onDataChange={this.handleDataChange}/>
-                   
+                   <br></br>
                     {
                         (this.state.data !== null ? 
                             this.state.data.response.results[0]["data"].map((listing, index) => (
