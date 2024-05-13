@@ -29,6 +29,7 @@ import Forecast from "./Forecast";
 import ForecastFeature from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
+import { Learn2vws } from "./Learn2vws";
 
 class AppLoaded extends Component {
     // --Code for collapsible menu--
@@ -69,6 +70,7 @@ class AppLoaded extends Component {
                                 <NavLink to="/forecast">Forecast</NavLink>
                                 <NavLink to="/news">News</NavLink>
                                 <NavLink to="/learn">Learn</NavLink>
+                                <NavLink to="/learn2vws">Learn [New] </NavLink>
                                 <NavLink to="/settings">Settings</NavLink>                                
                             </div>
                         </div>
@@ -81,6 +83,7 @@ class AppLoaded extends Component {
                                 <Route path="/price" element={<TimeSeries />}/>
                                 <Route path="/news" element={<News />}/>
                                 <Route path="/learn" element={<Learn />}/>
+                                <Route path="/learn2vws" element={<Learn2vws />}/>
                                 <Route path="/learningModule" element={<LearningModuleDetails />}/>
                                 <Route path="/learningModulePage" element={<LearningModulePage />}/>
                                 <Route path="/settings" element={<Settings />}/>

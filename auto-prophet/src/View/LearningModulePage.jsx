@@ -5,23 +5,24 @@
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 import React from "react";
-import {
-    useLocation
-} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { SlideshowWindow } from "./LearningModuleSlideshows/SlideshowWindow";
 
 export function LearningModulePage(props) {
-    const location = useLocation();
+  const location = useLocation();
 
-    const currentPageIndex = location.state.currentPageIndex;
-    const nextPageIndex = location.state.currentPageIndex + 1;
+  const currentPageIndex = location.state.currentPageIndex;
+  const nextPageIndex = location.state.currentPageIndex + 1;
 
-    return (
-        <div className="page">
-            <SlideshowWindow pages={location.state.pages} currentPageIndex={currentPageIndex}/>
-        </div>
-    );
+  return (
+    <div className="page">
+      <SlideshowWindow
+        pages={location.state.pages}
+        currentPageIndex={currentPageIndex}
+      />
+    </div>
+  );
 }
 
 export default LearningModulePage;

@@ -68,7 +68,7 @@ select {
   border-radius: 4px;
 }
 
-button {
+button-ap {
   cursor: pointer;
   background-color: var(--accent-color);
   color: var(--text-color-light);
@@ -296,14 +296,14 @@ code {
   width: auto;
   margin: 30px;
   padding: 20px;
-  border: 25px solid var(--secondary-color);
+  /* border: 25px solid var(--secondary-color); */
   background-color: var(--background-color);
 }
 
 .slide {
   height: 100%;
   width: auto;
-  font-size: 28px;
+  font-size: large; /* 28px; */
   background-color: var(--background-color);
 }
 
@@ -311,7 +311,7 @@ code {
   height: 350px;
   width: auto;
   text-align: center;
-  vertical-align: center;
+  vertical-align: center; 
 }
 
 .slide div.contentContainer {
@@ -381,7 +381,7 @@ code {
     color: var(--text-color-dark);
 }
 
-.card {
+.card-ap {
   flex: 1;
   min-height: 450px;
   max-width: 450px;
