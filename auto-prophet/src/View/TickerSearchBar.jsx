@@ -10,7 +10,7 @@ import { FinancialRatioInteractor } from "../Interactor/FinancialRatioInteractor
 import { JSONRequest } from "../Gateway/Request/JSONRequest";
 import { SymbolSearchBar } from "./Shared/SymbolSearchBar";
 
-function TickerSearchBar(props) {
+function  TickerSearchBar(props) {
     //TODO: implement error handling
 
     //Gets all data for a ticker and updates the props with the data
