@@ -4,41 +4,59 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts"
 function RSIChart(props) {
 
   const [rsiValues, setRsiValues] = useState([]);
-  const [period, setPeriod] = useState(14); // Default RSI period
   const [header, setHeader] = useState("Search for a company");
 
-  const calculateRSI = (prices, period) => {
-    const gains = [];
-    const losses = [];
+  // Map intervals to RSI periods
+  const intervalToPeriodMap = {
+    "1D": 1,   // Example period for 1 day interval
+    "5D": 5,
+    "1M": 30,
+    "6M": 180,
+    "1Y": 365,
+    "5Y": 900,
+    "Max": 1800
+  };
 
-    for (let i = 1; i < prices.length; i++) {
+  const calculateRSI = (prices, period) => {
+    const rsiValues = [];
+    let gains = 0;
+    let losses = 0;
+
+    for (let i = 1; i <= period; i++) {
       const change = prices[i] - prices[i - 1];
       if (change > 0) {
-        gains.push(change);
-        losses.push(0);
+        gains += change;
       } else {
-        gains.push(0);
-        losses.push(-change);
+        losses -= change;
       }
     }
 
-    const avgGain = gains.slice(-period).reduce((a, b) => a + b, 0) / period;
-    const avgLoss = losses.slice(-period).reduce((a, b) => a + b, 0) / period;
+    let avgGain = gains / period;
+    let avgLoss = losses / period;
 
-    const rs = avgGain / Math.max(avgLoss, 0.00001);
-    const rsi = 100 - (100 / (1 + rs));
+    for (let i = period; i < prices.length; i++) {
+      const change = prices[i] - prices[i - 1];
+      if (change > 0) {
+        avgGain = ((avgGain * (period - 1)) + change) / period;
+        avgLoss = ((avgLoss * (period - 1))) / period;
+      } else {
+        avgGain = (avgGain * (period - 1)) / period;
+        avgLoss = ((avgLoss * (period - 1)) - change) / period;
+      }
 
-    return rsi;
-  };
+      const rs = avgGain / Math.max(avgLoss, 0.00001);
+      const rsi = 100 - (100 / (1 + rs));
 
-  const handlePeriodChange = (newPeriod) => {
-    setPeriod(newPeriod);
+      rsiValues.push({ rsi, date: props.state.data.response.results[0]["data"][i].date });
+    }
+
+    return rsiValues;
   };
 
   const setInterval = (selectedInterval) => {
     const type = selectedInterval === "1D" ? "intraday" : "interday";
 
-    //set interval properties
+    // Set interval properties
     props.handleDataChange({
       ...props.state,
       initializing: false,
@@ -53,29 +71,28 @@ function RSIChart(props) {
       const prices = props.state.data.response.results[0]["data"].map(
         (item) => item.price
       );
-      const newRsi = calculateRSI(prices, period);
+      const period = intervalToPeriodMap[props.state.interval] || 14; // Default to 14 if interval not found
+      const newRsiValues = calculateRSI(prices, period);
       setHeader(`${props.state.data.response.results[0]["companyName"]} (${props.state.data.response.results[0]["ticker"]})`);
-      setRsiValues(newRsi);
+      setRsiValues(newRsiValues);
     }
-  }, [props.state.data, period]);
-
-  // ... existing code for setInterval, header
+  }, [props.state.data, props.state.interval]);
 
   return (
     <>
       <div className="chartContainer">
-        <h3>{header} - RSI ({period})</h3>
+        <h3>{header} - RSI ({props.state.interval})</h3>
         
         <div className="btn-group">
           {props.state.data ? 
           (<>
-                <button disabled={props.state.interval === "1D" ? true: false} onClick={(e) => setInterval("1D")}>1D</button>
-                <button disabled={props.state.interval === "5D" ? true: false} onClick={(e) => setInterval("5D")}>5D</button>
-                <button disabled={props.state.interval === "1M" ? true: false} onClick={(e) => setInterval("1M")}>1M</button>
-                <button disabled={props.state.interval === "6M" ? true: false} onClick={(e) => setInterval("6M")}>6M</button>
-                <button disabled={props.state.interval === "1Y" ? true: false} onClick={(e) => setInterval("1Y")}>1Y</button>
-                <button disabled={props.state.interval === "5Y" ? true: false} onClick={(e) => setInterval("5Y")}>5Y</button>
-                <button disabled={props.state.interval === "Max" ? true: false} onClick={(e) => setInterval("Max")}>Max</button>
+                <button disabled={props.state.interval === "1D"} onClick={() => setInterval("1D")}>1D</button>
+                <button disabled={props.state.interval === "5D"} onClick={() => setInterval("5D")}>5D</button>
+                <button disabled={props.state.interval === "1M"} onClick={() => setInterval("1M")}>1M</button>
+                <button disabled={props.state.interval === "6M"} onClick={() => setInterval("6M")}>6M</button>
+                <button disabled={props.state.interval === "1Y"} onClick={() => setInterval("1Y")}>1Y</button>
+                <button disabled={props.state.interval === "5Y"} onClick={() => setInterval("5Y")}>5Y</button>
+                <button disabled={props.state.interval === "Max"} onClick={() => setInterval("Max")}>Max</button>
             </>) : 
             (<>
               <button disabled={true}>1D</button>
@@ -85,7 +102,6 @@ function RSIChart(props) {
               <button disabled={true}>1Y</button>
               <button disabled={true}>5Y</button>
               <button disabled={true}>Max</button>
-              {/* ... similar buttons for disabled state */}
             </>
           )}
         </div>
@@ -97,14 +113,15 @@ function RSIChart(props) {
                     <stop offset="95%" stopColor="#62C0C2" stopOpacity={0}/>
                 </linearGradient>
             </defs>
-            <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} />
+            <XAxis dataKey="date" />
             <YAxis />
             <CartesianGrid strokeDasharray="3 3" vertical={false}/>
             <Tooltip />
-            <Area type="monotone" dataKey="price" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
+            <Area type="monotone" dataKey="rsi" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
         </AreaChart>
       </div>
     </>);        
   }
 
 export { RSIChart };
+

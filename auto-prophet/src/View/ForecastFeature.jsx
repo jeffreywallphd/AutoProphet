@@ -19,7 +19,7 @@ function ForecastFeaturesPage(props) {
     setState(newState);
   };
 
-  return (
+  return ( 
     <div className="page">
       <h2>Forecast Features</h2>
       <div className="flex">
