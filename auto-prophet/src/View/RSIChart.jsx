@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine} from "recharts";
 
 function RSIChart(props) {
 
@@ -8,8 +8,8 @@ function RSIChart(props) {
 
   // Map intervals to RSI periods
   const intervalToPeriodMap = {
-    "1D": 1,   // Example period for 1 day interval
-    "5D": 5,
+    "1W": 7,   // Example period for 1 day interval
+    "2W": 14,
     "1M": 30,
     "6M": 180,
     "1Y": 365,
@@ -86,8 +86,8 @@ function RSIChart(props) {
         <div className="btn-group">
           {props.state.data ? 
           (<>
-                <button disabled={props.state.interval === "1D"} onClick={() => setInterval("1D")}>1D</button>
-                <button disabled={props.state.interval === "5D"} onClick={() => setInterval("5D")}>5D</button>
+                <button disabled={props.state.interval === "1W"} onClick={() => setInterval("1W")}>1W</button>
+                <button disabled={props.state.interval === "2W"} onClick={() => setInterval("2W")}>2W</button>
                 <button disabled={props.state.interval === "1M"} onClick={() => setInterval("1M")}>1M</button>
                 <button disabled={props.state.interval === "6M"} onClick={() => setInterval("6M")}>6M</button>
                 <button disabled={props.state.interval === "1Y"} onClick={() => setInterval("1Y")}>1Y</button>
@@ -95,8 +95,8 @@ function RSIChart(props) {
                 <button disabled={props.state.interval === "Max"} onClick={() => setInterval("Max")}>Max</button>
             </>) : 
             (<>
-              <button disabled={true}>1D</button>
-              <button disabled={true}>5D</button>
+              <button disabled={true}>1W</button>
+              <button disabled={true}>2W</button>
               <button disabled={true}>1M</button>
               <button disabled={true}>6M</button>
               <button disabled={true}>1Y</button>
@@ -118,6 +118,11 @@ function RSIChart(props) {
             <CartesianGrid strokeDasharray="3 3" vertical={false}/>
             <Tooltip />
             <Area type="monotone" dataKey="rsi" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
+            {/* Add reference lines for oversold (30%) and overbought (70%) */}
+            <ReferenceLine y={30} stroke="red" strokeDasharray="3 3" label={{ value: 'Oversold < 30%', position: 'insideRight', fill: 'red', fontSize: 12 }} />
+            <ReferenceLine y={70} stroke="green" strokeDasharray="3 3" label={{ value: 'Overbought > 70%', position: 'insideRight', fill: 'green', fontSize: 12 }} />
+
+            
         </AreaChart>
       </div>
     </>);        
