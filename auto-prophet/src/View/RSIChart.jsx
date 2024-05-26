@@ -1,60 +1,65 @@
 import React, { useState, useEffect } from "react";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine} from "recharts";
+import { AreaChart, LineChart, Area, Line, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine} from "recharts";
 
 function RSIChart(props) {
 
   const [rsiValues, setRsiValues] = useState([]);
   const [header, setHeader] = useState("Search for a company");
+  const [data, SetData] =useState([]);
 
-  // Map intervals to RSI periods
-  const intervalToPeriodMap = {
-    "1W": 7,   // Example period for 1 day interval
-    "2W": 14,
-    "1M": 30,
-    "6M": 180,
-    "1Y": 365,
-    "5Y": 900,
-    "Max": 1800
-  };
 
   const calculateRSI = (prices, period) => {
-    const rsiValues = [];
-    let gains = 0;
-    let losses = 0;
+    try{
+      const rsiValues = [];
+      let gains = 0;
+      let losses = 0;
 
-    for (let i = 1; i <= period; i++) {
-      const change = prices[i] - prices[i - 1];
-      if (change > 0) {
-        gains += change;
-      } else {
-        losses -= change;
-      }
-    }
+      console.log("Calculating RSI with period:", period);
+      console.log("Prices:", prices);
 
-    let avgGain = gains / period;
-    let avgLoss = losses / period;
 
-    for (let i = period; i < prices.length; i++) {
-      const change = prices[i] - prices[i - 1];
-      if (change > 0) {
-        avgGain = ((avgGain * (period - 1)) + change) / period;
-        avgLoss = ((avgLoss * (period - 1))) / period;
-      } else {
-        avgGain = (avgGain * (period - 1)) / period;
-        avgLoss = ((avgLoss * (period - 1)) - change) / period;
+      for (let i = 1; i <= period; i++) {
+        const change = prices[i] - prices[i - 1];
+        if (change > 0) {
+          gains += change;
+        } else {
+          losses -= change;
+        }
       }
 
-      const rs = avgGain / Math.max(avgLoss, 0.00001);
-      const rsi = 100 - (100 / (1 + rs));
+      let avgGain = gains / period;
+      let avgLoss = losses / period;
 
-      rsiValues.push({ rsi, date: props.state.data.response.results[0]["data"][i].date });
+      console.log("Initial avgGain:", avgGain, "Initial avgLoss:", avgLoss);
+
+      for (let i = period; i < prices.length; i++) {
+        const change = prices[i] - prices[i - 1];
+        if (change > 0) {
+          avgGain = ((avgGain * (period - 1)) + change) / period;
+          avgLoss = ((avgLoss * (period - 1))) / period;
+        } else {
+          avgGain = (avgGain * (period - 1)) / period;
+          avgLoss = ((avgLoss * (period - 1)) - change) / period;
+          console.log("Initial avgGain:", avgGain, "Initial avgLoss:", avgLoss);
+
+        }
+
+        const rs = avgGain / Math.max(avgLoss, 0.00001);
+        const rsi = 100 - (100 / (1 + rs));
+
+        rsiValues.push({ rsi, date: props.state.data.response.results[0]["data"][i].date });
+        console.log("Index:", i, "Change:", change, "avgGain:", avgGain, "avgLoss:", avgLoss, "RS:", rs, "RSI:", rsi);
+      }
+
+      return rsiValues;
+    } catch (error) {
+      console.log("Error calculating RSI: ",error);
+      return[];
     }
-
-    return rsiValues;
   };
 
   const setInterval = (selectedInterval) => {
-    const type = selectedInterval === "1D" ? "intraday" : "interday";
+    const type = "interday";
 
     // Set interval properties
     props.handleDataChange({
@@ -67,15 +72,41 @@ function RSIChart(props) {
   };
 
   useEffect(() => {
-    if (props.state.data) {
-      const prices = props.state.data.response.results[0]["data"].map(
-        (item) => item.price
-      );
-      const period = intervalToPeriodMap[props.state.interval] || 14; // Default to 14 if interval not found
-      const newRsiValues = calculateRSI(prices, period);
-      setHeader(`${props.state.data.response.results[0]["companyName"]} (${props.state.data.response.results[0]["ticker"]})`);
-      setRsiValues(newRsiValues);
-    }
+
+    if (!props.state.data) return ;
+      try{
+      
+        const prices = props.state.data.response.results[0]["data"].map(
+          (item) => item.price
+        );
+
+          // Map intervals to RSI periods
+        const intervalToPeriodMap = {
+          "5D": 5,
+          "1M": 30,
+          "6M": 180,
+          "1Y": 365,
+          "5Y": 1825,
+          "Max": 3650
+        };
+
+        console.log("Prices array length:", prices.length);
+
+        const period = intervalToPeriodMap[props.state.interval] || prices.length; 
+        console.log("Selected interval:", props.state.interval, "Period:", period);
+
+        const newRsiValues = calculateRSI(prices, period);
+
+        setHeader(`${props.state.data.response.results[0]["companyName"]} (${props.state.data.response.results[0]["ticker"]})`);
+        SetData(props.state.data.response.results[0]["data"])
+        setRsiValues(newRsiValues);
+
+        console.log("New RSI values:", newRsiValues);
+        
+      } catch (error){
+        console.error("Error in useEffect: ",error);
+      } 
+    
   }, [props.state.data, props.state.interval]);
 
   return (
@@ -86,8 +117,7 @@ function RSIChart(props) {
         <div className="btn-group">
           {props.state.data ? 
           (<>
-                <button disabled={props.state.interval === "1W"} onClick={() => setInterval("1W")}>1W</button>
-                <button disabled={props.state.interval === "2W"} onClick={() => setInterval("2W")}>2W</button>
+                <button disabled={props.state.interval === "5D"} onClick={() => setInterval("5D")}>5D</button>
                 <button disabled={props.state.interval === "1M"} onClick={() => setInterval("1M")}>1M</button>
                 <button disabled={props.state.interval === "6M"} onClick={() => setInterval("6M")}>6M</button>
                 <button disabled={props.state.interval === "1Y"} onClick={() => setInterval("1Y")}>1Y</button>
@@ -95,8 +125,7 @@ function RSIChart(props) {
                 <button disabled={props.state.interval === "Max"} onClick={() => setInterval("Max")}>Max</button>
             </>) : 
             (<>
-              <button disabled={true}>1W</button>
-              <button disabled={true}>2W</button>
+              <button disabled={true}>5D</button>
               <button disabled={true}>1M</button>
               <button disabled={true}>6M</button>
               <button disabled={true}>1Y</button>
@@ -106,24 +135,24 @@ function RSIChart(props) {
           )}
         </div>
 
-        <AreaChart width={700} height={300} key="rsiChart" data={rsiValues} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-            <defs>
+        <LineChart width={700} height={300} key="rsiChart" data={rsiValues} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            {/* <defs>
                 <linearGradient id="colorArea" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#62C0C2" stopOpacity={0.8}/>
                     <stop offset="95%" stopColor="#62C0C2" stopOpacity={0}/>
                 </linearGradient>
-            </defs>
-            <XAxis dataKey="date" />
-            <YAxis />
+            </defs> */}
+            <XAxis dataKey = "date" domain={[props.state.yAxisStart, props.state.yAxisEnd]}/>
+            <YAxis domain={[0, 100]}/>
             <CartesianGrid strokeDasharray="3 3" vertical={false}/>
             <Tooltip />
-            <Area type="monotone" dataKey="rsi" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
+            <Line type="monotone" dataKey="rsi" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
             {/* Add reference lines for oversold (30%) and overbought (70%) */}
             <ReferenceLine y={30} stroke="red" strokeDasharray="3 3" label={{ value: 'Oversold < 30%', position: 'insideRight', fill: 'red', fontSize: 12 }} />
             <ReferenceLine y={70} stroke="green" strokeDasharray="3 3" label={{ value: 'Overbought > 70%', position: 'insideRight', fill: 'green', fontSize: 12 }} />
 
             
-        </AreaChart>
+        </LineChart>
       </div>
     </>);        
   }
