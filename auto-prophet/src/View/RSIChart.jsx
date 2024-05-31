@@ -80,19 +80,27 @@ function RSIChart(props) {
           (item) => item.price
         );
 
-          // Map intervals to RSI periods
-        const intervalToPeriodMap = {
-          "5D": 5,
-          "1M": 30,
-          "6M": 180,
-          "1Y": 365,
-          "5Y": 1825,
-          "Max": 3650
+        // Map intervals to RSI periods
+        const calculateDynamicPeriod = (interval) => {
+          const dataLength = prices.length;
+          switch (interval) {
+            case "5D":
+              return Math.floor(dataLength * 0.1); // Use 10% of the data
+            case "1M":
+              return Math.floor(dataLength * 0.2); // Use 20% of the data
+            case "6M":
+              return Math.floor(dataLength * 0.3); // Use 30% of the data
+            case "1Y":
+              return Math.floor(dataLength * 0.4); // Use 40% of the data
+            case "5Y":
+              return Math.floor(dataLength * 0.5); // Use 50% of the data
+            case "Max":
+            default:
+              return dataLength - 1; // Use all the data
+          }
         };
 
-        console.log("Prices array length:", prices.length);
-
-        const period = intervalToPeriodMap[props.state.interval] || prices.length; 
+        const period = calculateDynamicPeriod(props.state.interval);
         console.log("Selected interval:", props.state.interval, "Period:", period);
 
         const newRsiValues = calculateRSI(prices, period);
