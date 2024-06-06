@@ -125,12 +125,12 @@ function RSIChart(props) {
         <div className="btn-group">
           {props.state.data ? 
           (<>
-                <button disabled={props.state.interval === "5D"} onClick={() => setInterval("5D")}>5D</button>
-                <button disabled={props.state.interval === "1M"} onClick={() => setInterval("1M")}>1M</button>
-                <button disabled={props.state.interval === "6M"} onClick={() => setInterval("6M")}>6M</button>
-                <button disabled={props.state.interval === "1Y"} onClick={() => setInterval("1Y")}>1Y</button>
-                <button disabled={props.state.interval === "5Y"} onClick={() => setInterval("5Y")}>5Y</button>
-                <button disabled={props.state.interval === "Max"} onClick={() => setInterval("Max")}>Max</button>
+                <button disabled={props.state.interval === "5D" ? true:false} onClick={(e) => setInterval("5D")}>5D</button>
+                <button disabled={props.state.interval === "1M" ? true:false} onClick={(e) => setInterval("1M")}>1M</button>
+                <button disabled={props.state.interval === "6M" ? true:false} onClick={(e) => setInterval("6M")}>6M</button>
+                <button disabled={props.state.interval === "1Y" ? true:false} onClick={(e) => setInterval("1Y")}>1Y</button>
+                <button disabled={props.state.interval === "5Y" ? true:false} onClick={(e) => setInterval("5Y")}>5Y</button>
+                <button disabled={props.state.interval === "Max" ? true:false} onClick={(e) => setInterval("Max")}>Max</button>
             </>) : 
             (<>
               <button disabled={true}>5D</button>
