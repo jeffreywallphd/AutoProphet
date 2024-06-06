@@ -14,12 +14,15 @@ export function Learn2vws() {
     modules: null,
     isLoading: true,
     searching: false,
+    pages: null,
   });
+
   const searchRef = useRef("SearchTextField");
   const filterRef = useRef("FilterSelect");
 
   useEffect(() => {
     selectData();
+    selectPageData();
   }, []);
 
   //Checks the keyUp event to determine if a key was hit
@@ -76,6 +79,28 @@ export function Learn2vws() {
     }
   };
 
+  const selectPageData = async () => {
+    try {
+      // TODO: move this query building to a Gateway implementation for SQLite
+      // so that it can easily be configured with other databases later
+      const inputData1 = [];
+      var query1 =
+        "SELECT * FROM LearningModulePage WHERE moduleId=? ORDER BY pageNumber ASC";
+
+      inputData1.push(location.state.moduleId);
+      await window.electron.ipcRenderer
+        .invoke("select-data", { query1, inputData1 })
+        .then((data) => {
+          setState({
+            pages: data,
+            isLoading: false,
+          });
+        });
+    } catch (error) {
+      console.error("Error fetching data:" + error);
+    }
+  };
+
   return (
     <div className="page" style={{ margin: "0 5%", overflow: "auto" }}>
       <div
@@ -120,20 +145,62 @@ export function Learn2vws() {
                     placeholder="Custom search topic to learn about"
                     aria-label="Recipient's username"
                     aria-describedby="button-addon2"
-                    style={{ height: "45px" }}
+                    style={{ height: "40px" }}
                   />
                   <button
                     className="btn btn-outline-secondary"
                     type="submit"
                     id="button-addon2"
                     disabled={state.searching}
-                    style={{ height: "45px" }}
+                    style={{ height: "40px" }}
                   >
                     <FaSearch />
                   </button>
                 </div>
               </div>
             </form>
+          </div>
+
+          <div
+            class="modal fade"
+            id="currModModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Topic Info
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  {state.modules &&
+                    state.modules.map(
+                      (moduleModal, index) => moduleModal.description
+                    )}
+                </div>
+                {/* <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary">
+                    Save changes
+                  </button>
+                </div> */}
+              </div>
+            </div>
           </div>
 
           {state.modules ? (
@@ -143,6 +210,7 @@ export function Learn2vws() {
                   className="card mb-4"
                   style={{
                     height: "90%",
+                    margin: "5px",
                   }}
                 >
                   <div
@@ -153,31 +221,106 @@ export function Learn2vws() {
                       {module.title}
                     </h5>
                     <p
-                      className="ellipsis text-sm"
-                      style={{ margin: "5px 0", flex: "1" }}
+                      className="ellipsis text-xs"
+                      style={{ fontSize: "0.9rem", margin: "5px 0", flex: "1" }}
                     >
                       {module.description}
                     </p>
-                    <p
-                      className="text-secondary ellipsis"
-                      style={{ fontSize: "0.9rem", color: "#555" }}
-                    >
-                      Duration: {module.timeEstimate} minutes
-                    </p>
-                    <NavLink
-                      to="/learningModule"
-                      state={{
-                        moduleId: module.id,
-                        title: module.title,
-                        description: module.description,
-                        timeEstimate: module.timeEstimate,
-                        dateCreated: module.dateCreated,
-                        pages: null,
-                      }}
-                      className="mt-auto text-sm"
-                    >
-                      Open Module
-                    </NavLink>
+
+                    <div class="row">
+                      <div class="col-sm-4 d-flex align-items-center justify-content-start">
+                        <p
+                          className="text-danger ellipsis"
+                          style={{ fontSize: "0.8rem", color: "#555" }}
+                        >
+                          {module.timeEstimate} min read
+                        </p>
+                      </div>
+
+                      <div class="col-sm d-flex align-items-center justify-content-end">
+                        {/* <button
+                          type="button"
+                          class="btn btn-sm btn-outline-info"
+                          data-bs-toggle="modal"
+                          data-bs-target="#currModModal"
+                          style={{ fontSize: "0.9rem; " }}
+                        >
+                          Peek Info
+                        </button>
+                        &nbsp; */}
+                        {/*  &bull; &nbsp; */}
+                        &nbsp;
+                        <NavLink
+                          to="/learningModule"
+                          state={{
+                            moduleId: module.id,
+                            title: module.title,
+                            description: module.description,
+                            timeEstimate: module.timeEstimate,
+                            dateCreated: module.dateCreated,
+                            pages: null,
+                          }}
+                          className="btn btn-sm btn-outline-secondary mt-auto text-xs"
+                          data-bs-toggle="modal"
+                          data-bs-target="#currModModal"
+                          style={{ textDecoration: "none" }}
+                        >
+                          Peek Info
+                        </NavLink>
+                        &nbsp;
+                        {/* <button
+                          type="button"
+                          class="btn btn-sm btn-info"
+                          style={{ fontSize: "0.9rem;" }}
+                        >
+                          <NavLink
+                            to="/learningModule"
+                            state={{
+                              moduleId: module.id,
+                              title: module.title,
+                              description: module.description,
+                              timeEstimate: module.timeEstimate,
+                              dateCreated: module.dateCreated,
+                              pages: null,
+                            }}
+                            className="btn btn-sm btn-info mt-auto text-sm"
+                            style={{ textDecoration: 'none' }}
+                          >
+                            Open Module
+                          </NavLink>
+                        </button> */}
+                        <NavLink
+                          to="/learningModule"
+                          state={{
+                            moduleId: module.id,
+                            title: module.title,
+                            description: module.description,
+                            timeEstimate: module.timeEstimate,
+                            dateCreated: module.dateCreated,
+                            pages: null,
+                          }}
+                          className="btn btn-sm btn-primary mt-auto text-xs"
+                          style={{ textDecoration: "none" }}
+                        >
+                          Open Module
+                        </NavLink>
+                        {/* <LearningModuleDetails
+                          page={props.pages[props.currentPageIndex]}
+                          registerSlide={handleSlide}
+                        /> */}
+                        {/* &nbsp;
+                        <NavLink
+                          to="/learningModulePage"
+                          state={{
+                            moduleId: module.id,
+                            pages: state.pages,
+                            currentPageIndex: 0,
+                          }}
+                        >
+                          Start...
+                        </NavLink> */}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
