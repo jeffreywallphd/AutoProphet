@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { TickerSearchBar } from "./TickerSearchBar";
 import { DataContext } from "./App";
 import { RSIChart } from "./RSIChart";
+import { MovingAvgChart } from "./MovingAVGChart";
 
 function ForecastFeaturesPage(props) {
   const location = useLocation();
@@ -35,6 +36,7 @@ function ForecastFeaturesPage(props) {
                 <p>Data Source: {state.dataSource}</p>
               )}
               <RSIChart state={state} handleDataChange={handleDataChange} />
+              <MovingAvgChart state={state} handleDataChange={handleDataChange} />
             </>
           ) : (
             <p>Loading Context...</p>
