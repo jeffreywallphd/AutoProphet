@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TickerSearchBar } from "./TickerSearchBar";
 import { DataContext } from "./App";
@@ -8,6 +8,7 @@ import { MovingAvgChart } from "./MovingAVGChart";
 function ForecastFeaturesPage(props) {
   const location = useLocation();
   const { state, setState } = useContext(DataContext);
+  const [selectedChart, setSelectedChart] = useState("RSIChart");
 
   // Force state update (might be removed later)
   useEffect(() => {
@@ -18,6 +19,10 @@ function ForecastFeaturesPage(props) {
 
   const handleDataChange = (newState) => {
     setState(newState);
+  };
+
+  const handleChartSelection = (event) => {
+    setSelectedChart(event.target.value);
   };
 
   return ( 
@@ -35,8 +40,20 @@ function ForecastFeaturesPage(props) {
               ) : (
                 <p>Data Source: {state.dataSource}</p>
               )}
-              <RSIChart state={state} handleDataChange={handleDataChange} />
-              <MovingAvgChart state={state} handleDataChange={handleDataChange} />
+
+              <div>
+                <label htmlFor="chartSelect">Select Chart: </label>
+                <select id="chartSelect" value={selectedChart} onChange={handleChartSelection}>
+                  <option value="RSIChart">RSI Chart</option>
+                  <option value="MovingAvgChart">Moving Average Chart</option>
+                </select>
+              </div>
+
+              {selectedChart === "RSIChart" ? (
+                <RSIChart state={state} handleDataChange={handleDataChange} />
+              ) : (
+                <MovingAvgChart state={state} handleDataChange={handleDataChange} />
+              )}
             </>
           ) : (
             <p>Loading Context...</p>

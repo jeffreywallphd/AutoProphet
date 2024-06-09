@@ -30,6 +30,19 @@ function MovingAvgChart(props) {
     return emaValues;
   };
 
+  const setInterval = (selectedInterval) => {
+    const type = "interday";
+
+    // Set interval properties
+    props.handleDataChange({
+      ...props.state,
+      initializing: false,
+      type: type,
+      interval: selectedInterval,
+      isLoading: false
+    });
+  };
+
   useEffect(() => {
     if (!props.state.data) return;
     try {
@@ -74,6 +87,26 @@ function MovingAvgChart(props) {
   return (
     <div className="chartContainer">
       <h3>{header} - Moving Averages ({props.state.interval})</h3>
+      <div className="btn-group">
+          {props.state.data ? 
+          (<>
+                <button disabled={props.state.interval === "5D" ? true:false} onClick={(e) => setInterval("5D")}>5D</button>
+                <button disabled={props.state.interval === "1M" ? true:false} onClick={(e) => setInterval("1M")}>1M</button>
+                <button disabled={props.state.interval === "6M" ? true:false} onClick={(e) => setInterval("6M")}>6M</button>
+                <button disabled={props.state.interval === "1Y" ? true:false} onClick={(e) => setInterval("1Y")}>1Y</button>
+                <button disabled={props.state.interval === "5Y" ? true:false} onClick={(e) => setInterval("5Y")}>5Y</button>
+                <button disabled={props.state.interval === "Max" ? true:false} onClick={(e) => setInterval("Max")}>Max</button>
+            </>) : 
+            (<>
+              <button disabled={true}>5D</button>
+              <button disabled={true}>1M</button>
+              <button disabled={true}>6M</button>
+              <button disabled={true}>1Y</button>
+              <button disabled={true}>5Y</button>
+              <button disabled={true}>Max</button>
+            </>
+          )}
+       </div>
       <LineChart width={700} height={300} data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
         <XAxis dataKey="date" />
         <YAxis />
