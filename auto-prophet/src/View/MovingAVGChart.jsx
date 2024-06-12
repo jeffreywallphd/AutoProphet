@@ -53,9 +53,10 @@ function MovingAvgChart(props) {
       const calculateDynamicPeriod = (interval) => {
         const dataLength = prices.length;
         switch (interval) {
-          case "5D":
-            return Math.floor(dataLength * 0.1); // Use 10% of the data
+          // case "5D":
+          //   return Math.floor(dataLength * 0.1); // Use 10% of the data
           case "1M":
+          default:
             return Math.floor(dataLength * 0.2); // Use 20% of the data
           case "6M":
             return Math.floor(dataLength * 0.3); // Use 30% of the data
@@ -63,9 +64,9 @@ function MovingAvgChart(props) {
             return Math.floor(dataLength * 0.4); // Use 40% of the data
           case "5Y":
             return Math.floor(dataLength * 0.5); // Use 50% of the data
-          case "Max":
-          default:
-            return dataLength - 1; // Use all the data
+          // case "Max":
+          // default:
+          //   return dataLength - 1; // Use all the data
         }
       };
 
@@ -90,20 +91,20 @@ function MovingAvgChart(props) {
       <div className="btn-group">
           {props.state.data ? 
           (<>
-                <button disabled={props.state.interval === "5D" ? true:false} onClick={(e) => setInterval("5D")}>5D</button>
+                {/* <button disabled={props.state.interval === "5D" ? true:false} onClick={(e) => setInterval("5D")}>5D</button> */}
                 <button disabled={props.state.interval === "1M" ? true:false} onClick={(e) => setInterval("1M")}>1M</button>
                 <button disabled={props.state.interval === "6M" ? true:false} onClick={(e) => setInterval("6M")}>6M</button>
                 <button disabled={props.state.interval === "1Y" ? true:false} onClick={(e) => setInterval("1Y")}>1Y</button>
                 <button disabled={props.state.interval === "5Y" ? true:false} onClick={(e) => setInterval("5Y")}>5Y</button>
-                <button disabled={props.state.interval === "Max" ? true:false} onClick={(e) => setInterval("Max")}>Max</button>
+                {/* <button disabled={props.state.interval === "Max" ? true:false} onClick={(e) => setInterval("Max")}>Max</button> */}
             </>) : 
             (<>
-              <button disabled={true}>5D</button>
+              {/* <button disabled={true}>5D</button> */}
               <button disabled={true}>1M</button>
               <button disabled={true}>6M</button>
               <button disabled={true}>1Y</button>
               <button disabled={true}>5Y</button>
-              <button disabled={true}>Max</button>
+              {/* <button disabled={true}>Max</button> */}
             </>
           )}
        </div>
