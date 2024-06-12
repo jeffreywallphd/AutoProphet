@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 function MovingAvgChart(props) {
-  const [smaValues, setSmaValues] = useState([]);
-  const [emaValues, setEmaValues] = useState([]);
+  // const [smaValues, setSmaValues] = useState([]);
+  // const [emaValues, setEmaValues] = useState([]);
   const [header, setHeader] = useState("Search for a company");
-  const [data, setData] = useState([]);
+  const [chartData, setChartData] = useState([]);
+  // const [data, setData] = useState([]);
+  const [yAxisDomain, setYAxisDomain] = useState([0, 0]);
 
   const calculateSMA = (prices, period) => {
     const smaValues = [];
@@ -46,6 +48,7 @@ function MovingAvgChart(props) {
   useEffect(() => {
     if (!props.state.data) return;
     try {
+      const originalData = props.state.data.response.results[0]["data"];
       const prices = props.state.data.response.results[0]["data"].map(
         (item) => item.price
     );
@@ -76,10 +79,21 @@ function MovingAvgChart(props) {
       const newSmaValues = calculateSMA(prices, period);
       const newEmaValues = calculateEMA(prices, period);
 
+       // Merge original data with SMA and EMA values
+       const mergedData = originalData.map((item, index) => {
+        const sma = newSmaValues.find(s => s.date === item.date)?.sma || null;
+        const ema = newEmaValues.find(e => e.date === item.date)?.ema || null;
+        return { ...item, sma, ema };
+      });
+
       setHeader(`${props.state.data.response.results[0]["companyName"]} (${props.state.data.response.results[0]["ticker"]})`);
-      setData(props.state.data.response.results[0]["data"]);
-      setSmaValues(newSmaValues);
-      setEmaValues(newEmaValues);
+      setChartData(mergedData);
+      // Calculate the y-axis boundaries
+      const allValues = prices.concat(newSmaValues.map(d => d.sma), newEmaValues.map(d => d.ema));
+      const minValue = Math.min(...allValues);
+      const maxValue = Math.max(...allValues);
+      setYAxisDomain([minValue, maxValue]);
+
     } catch (error) {
       console.error("Error in useEffect: ", error);
     }
@@ -108,9 +122,9 @@ function MovingAvgChart(props) {
             </>
           )}
        </div>
-      <LineChart width={700} height={300} data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+      <LineChart width={700} height={300} data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
         <XAxis dataKey="date" />
-        <YAxis />
+        <YAxis domain={yAxisDomain} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
         <Line type="monotone" dataKey="price" stroke="#8884d8" dot={false} />
