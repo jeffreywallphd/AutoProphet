@@ -1,26 +1,69 @@
-// No Warranty
-// This software is provided "as is" without any warranty of any kind, express or implied. This includes, but is not limited to, the warranties of merchantability, fitness for a particular purpose, and non-infringement.
-//
-// Disclaimer of Liability
-// The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { TickerSearchBar } from "./TickerSearchBar";
+import { DataContext } from "./App";
+import { RSIChart } from "./RSIChart";
+import { MovingAvgChart } from "./MovingAVGChart";
 
-import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+function ForecastFeaturesPage(props) {
+  const location = useLocation();
+  const { state, setState } = useContext(DataContext);
+  const [selectedChart, setSelectedChart] = useState("RSIChart");
 
-class Forecast extends Component {
-    render() {
-        return (
-            <div className="page">
-                <h2>Custom Forecast Features</h2>
-                <p>
-                    Create custome features to use in forecasting models.
-                </p>
-                <div>
-                    
-                </div>
-            </div>
-        );
-    }
+  // Force state update (might be removed later)
+  useEffect(() => {
+    setState({
+      ...state,
+    });
+  }, [state.data, state.searchRef, state.interval]);
+
+  const handleDataChange = (newState) => {
+    setState(newState);
+  };
+
+  const handleChartSelection = (event) => {
+    setSelectedChart(event.target.value);
+  };
+
+  return ( 
+    <div className="page">
+      <h2>Forecast Features</h2>
+      <div className="flex">
+        <div>
+          {state ? (
+            <>
+              <TickerSearchBar state={state} handleDataChange={handleDataChange} />
+              {state.isLoading === true ? (
+                <p>Loading...</p>
+              ) : state.error ? (
+                <p>The ticker you entered is not valid. Please choose a valid ticker.</p>
+              ) : (
+                <p>Data Source: {state.dataSource}</p>
+              )}
+
+              <div>
+                <label htmlFor="chartSelect">Select Chart: </label>
+                <select id="chartSelect" value={selectedChart} onChange={handleChartSelection}>
+                  <option value="RSIChart">RSI Chart</option>
+                  <option value="MovingAvgChart">Moving Average Chart</option>
+                </select>
+              </div>
+
+              {selectedChart === "RSIChart" ? (
+                <RSIChart state={state} handleDataChange={handleDataChange} />
+              ) : (
+                <MovingAvgChart state={state} handleDataChange={handleDataChange} />
+              )}
+            </>
+          ) : (
+            <p>Loading Context...</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Forecast;
+export function ForecastFeature() {
+  return <ForecastFeaturesPage />;
+}

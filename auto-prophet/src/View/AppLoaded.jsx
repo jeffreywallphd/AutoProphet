@@ -26,7 +26,7 @@ import logo from "../Asset/Image/logo.png";
 import navIcon from "../Asset/Image/navIcon.png";
 import { Settings } from "./APIConfigSetting";
 import Forecast from "./Forecast";
-import ForecastFeature from "./ForecastFeature";
+import { ForecastFeature } from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
 
