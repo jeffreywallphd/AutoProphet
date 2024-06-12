@@ -54,6 +54,12 @@ function TimeSeriesChart(props) {
         
     }
 
+    //evenly spaces the ticks of the time series chart by putting the ticks in a fixed intervall into Array "ticks" determined by tickCount
+    const tickCount = 4;
+    const tickInterval = (priceMaxPadded - priceMinPadded) / (tickCount - 1);
+    const ticks = Array.from({ length: tickCount }, (_, index) => (priceMinPadded + tickInterval * index).toFixed(2));
+
+
     //TODO: calculate a max value for the y-axis that adds a little padding to top of graph    
     //TODO: set the min value for the x-axis to 9:00 AM and the max value to 5:00 PM when intraday data
     return(<>
@@ -93,7 +99,7 @@ function TimeSeriesChart(props) {
                         </linearGradient>
                     </defs>
                     <XAxis dataKey={props.state.type === "intraday" ? "time" : "date"} domain={[props.state.yAxisStart, props.state.yAxisEnd]} />
-                    <YAxis type="number" domain={[priceMinPadded, priceMaxPadded]} />
+                    <YAxis type="number" domain={[priceMinPadded, priceMaxPadded]} ticks={ticks}/>
                     <CartesianGrid strokeDasharray="3 3" vertical={false}/>
                     <Tooltip />
                     <Area type="monotone" dataKey="price" stroke="#62C0C2" fillOpacity={1} fill="url(#colorArea)" dot={false}/>
