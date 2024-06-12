@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 function MovingAvgChart(props) {
-  // const [smaValues, setSmaValues] = useState([]);
-  // const [emaValues, setEmaValues] = useState([]);
+  const [smaValues, setSmaValues] = useState([]);
+  const [emaValues, setEmaValues] = useState([]);
   const [header, setHeader] = useState("Search for a company");
   const [chartData, setChartData] = useState([]);
   // const [data, setData] = useState([]);
