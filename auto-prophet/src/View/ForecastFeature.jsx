@@ -4,6 +4,7 @@ import { TickerSearchBar } from "./TickerSearchBar";
 import { DataContext } from "./App";
 import { RSIChart } from "./RSIChart";
 import { MovingAvgChart } from "./MovingAVGChart";
+import { ROCChart } from "./ROCChart";
 
 function ForecastFeaturesPage(props) {
   const location = useLocation();
@@ -46,13 +47,16 @@ function ForecastFeaturesPage(props) {
                 <select id="chartSelect" value={selectedChart} onChange={handleChartSelection}>
                   <option value="RSIChart">RSI Chart</option>
                   <option value="MovingAvgChart">Moving Average Chart</option>
+                  <option value="ROCChart">ROC Chart</option>
                 </select>
               </div>
 
               {selectedChart === "RSIChart" ? (
                 <RSIChart state={state} handleDataChange={handleDataChange} />
-              ) : (
+              ) : selectedChart === "MovingAvgChart" ? (
                 <MovingAvgChart state={state} handleDataChange={handleDataChange} />
+              ) : (
+                <ROCChart state={state} handleDataChange={handleDataChange} />
               )}
             </>
           ) : (
