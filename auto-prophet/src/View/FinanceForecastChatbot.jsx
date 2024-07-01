@@ -47,6 +47,13 @@ class FinanceForecastChatbot extends Component {
     }
   };
 
+  componentDidMount() {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }
+
   render() {
     const { messages, typing, userInput } = this.state;
     
@@ -82,10 +89,6 @@ class FinanceForecastChatbot extends Component {
               onChange={(e) => this.setState({ userInput: e.target.value })}
               onKeyPress={this.handleKeyPress}
             />
-            <head>
-              {/* send Icons font link */}
-              <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-            </head>
             <button className="send-button" onClick={this.sendMessage}>
               <i className="material-icons">send</i>
             </button>

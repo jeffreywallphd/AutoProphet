@@ -6,7 +6,7 @@ const inference = new HfInference(HF_TOKEN);
 
 async function generateText(prompt) {
   const response = await inference.textGeneration({
-    model: 'istralai/Mixtral-8x7B-Instruct-v0.1',
+    model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
     inputs: prompt,
     parameters: {
       max_new_tokens: 128,
