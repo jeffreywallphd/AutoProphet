@@ -1,0 +1,86 @@
+.chat-container{
+    display: flex; 
+    flex-Direction: column; 
+    justify-Content: center; 
+    align-Items: center; 
+    background-Color: #555654; 
+    width: 100%; 
+    height: 450px; 
+    margin: auto; 
+    padding: 2px;
+}
+
+.chat-header{
+    margin-Left: 100px;
+    justify-Content: center; 
+    align-Items: center;
+    margin-Top: 2px;
+    position: sticky;
+    top: 1;
+}
+
+.Heading{
+    margin-Right: 100px;
+    justify-Content: center; 
+    align-Items: center;
+    color: white;
+}
+
+.buttons-container{
+    display: flex; 
+    flex-Direction: column;
+    position: absolute;
+    left: 20px; 
+    top: 163px; 
+    background-Color: #868885;
+    width: 350px; 
+    height: 450px; 
+    align-Items: flex-start;
+    padding-Left: 10px;
+}
+
+.recent-button{
+    background-Color: #555654;
+    color: white;
+}
+
+.chat-messages{
+    flex: 1; 
+    margin-Bottom: 10px; 
+    color: white;
+    padding-Right: 10px; 
+    scrollbar-Width: auto; 
+    overflow-y: scroll;
+    width: 700px;
+    scrollbar-Color: #888 #f1f1f1;
+    padding-Left: 100px; 
+    direction: ltr;
+}
+
+.chat-input-container{
+    display: flex;
+    align-Items: center; 
+    margin-Bottom: 20px;
+    padding-Top: 200px;
+}
+
+.chat-input{
+    flex: 1;
+    width: 500px; 
+    height: 40px; 
+    margin-Right: 10px; 
+    padding: 8px;
+    border: 1px solid #868885;
+    position: relative;
+}
+
+.send-button{
+    padding: 8px;
+    border-Radius: 50%;
+    background-Color: #868885;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    position: sticky;
+    bottom:10;
+}

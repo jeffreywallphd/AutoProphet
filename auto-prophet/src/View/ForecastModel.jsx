@@ -6,6 +6,7 @@
 
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import { FinanceForecastChatbot } from "./FinanceForecastChatbot"
 
 class Forecast extends Component {
     render() {
@@ -16,7 +17,7 @@ class Forecast extends Component {
                     There are many different models that can be used to forecast movements in the market.
                 </p>
                 <div>
-                    
+                    <FinanceForecastChatbot/>
                 </div>
             </div>
         );
