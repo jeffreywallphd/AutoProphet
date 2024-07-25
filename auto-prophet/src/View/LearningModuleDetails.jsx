@@ -24,9 +24,20 @@ export function LearningModuleDetails(props) {
       // so that it can easily be configured with other databases later
       const inputData = [];
       var query =
-        "SELECT * FROM LearningModulePage WHERE moduleId=? ORDER BY pageNumber ASC";
+        // "SELECT * FROM tutor_section WHERE topic_id=? ORDER BY order_idx ASC";
 
-      inputData.push(location.state.moduleId);
+        "SELECT tutor_section.*, tutor_topic.heading AS topic_heading, section_type.code AS st_code " +
+        "FROM tutor_section " +
+        "LEFT JOIN tutor_topic ON tutor_topic.id = tutor_section.topic_id " +
+        "LEFT JOIN section_type ON section_type.id = tutor_section.sect_type_id " +
+        "WHERE topic_id=? " +
+        "ORDER BY order_idx ASC";
+
+      // "SELECT * FROM LearningModulePage WHERE moduleId=? ORDER BY pageNumber ASC";
+
+      console.log("topicId:", location.state.topicId);
+
+      inputData.push(location.state.topicId);
       await window.electron.ipcRenderer
         .invoke("select-data", { query, inputData })
         .then((data) => {
@@ -43,9 +54,9 @@ export function LearningModuleDetails(props) {
   return (
     <div className="page">
       <div>
-        <h3>{location.state.title}</h3>
+        <h3>{location.state.heading}</h3>
         <p>Description: {location.state.description}</p>
-        <p>Estimated Time: {location.state.timeEstimate} minutes</p>
+        <p>Estimated Time: {location.state.duraMin} minutes</p>
       </div>
       {state.isLoading ? (
         <div>Loading...</div>

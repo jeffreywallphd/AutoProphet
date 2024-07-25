@@ -29,24 +29,31 @@ function NewsListing({ listingData }) {
   return (
     <div
       className="news-item"
-      style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      style={{
+        display: "flex",
+        // alignItems: "center",
+        marginBottom: "10px",
+      }}
     >
-      <div style={{ marginRight: "10px" }}>
+      <div style={{ marginRight: "20px" }}>
         <img
           src={listingData.thumbnail}
-          alt="Thumbnail"
-          style={{ width: "100px", height: "auto", borderRadius: "4px" }}
+          alt="..."
+          style={{ width: "200px", height: "120px", borderRadius: "4px" }}
         />
       </div>
       <div style={{ flex: 1 }}>
-        <h4 style={{ margin: "0" }}>
+        <h5 style={{ margin: "0", fontWeight: "bold" }}>
           <a
             href={listingData.url}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{ color: "#007bff", textDecoration: "none" }}
           >
             {listingData.title}
           </a>
-        </h4>
+        </h5>
+
         <p style={{ margin: "5px 0" }}>{listingData.summary}</p>
         <p style={{ fontSize: "0.8rem", color: "#555" }}>
           {formatDate(listingData.date)} {formatTime(listingData.time)} - Src:{" "}

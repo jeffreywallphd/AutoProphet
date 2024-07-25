@@ -22,7 +22,7 @@ export function Learn2vws() {
 
   useEffect(() => {
     selectData();
-    selectPageData();
+    // selectPageData();
   }, []);
 
   //Checks the keyUp event to determine if a key was hit
@@ -44,23 +44,30 @@ export function Learn2vws() {
       // TODO: move this query building to a Gateway implementation for SQLite
       // so that it can easily be configured with other databases later
       const inputData = [];
-      var query = "SELECT * FROM LearningModule";
+      var query =
+        "SELECT tutor_topic.*,tutor_categ.code AS categ_code, tutor_categ.name AS category " +
+        "FROM tutor_topic LEFT JOIN tutor_categ ON tutor_topic.categ_id = tutor_categ.id";
+
+      // "SELECT * FROM LearningModule";
 
       // TODO: use more sophisticated NLP query, such as: https://www.sqlite.org/fts5.html
+      // console.log("out > ...");
+
       if (searchRef.current.value !== "") {
         query += " WHERE keywords LIKE '%' || ? || '%'";
         inputData.push(searchRef.current.value);
       }
 
       if (filterRef.current.value !== "" && searchRef.current.value !== "") {
-        query += " AND category=?";
+        query += " AND categ_code=?";
         inputData.push(filterRef.current.value);
       } else if (filterRef.current.value !== "") {
-        query += " WHERE category=?";
+        query += " WHERE categ_code=?";
         inputData.push(filterRef.current.value);
       }
 
-      query += " ORDER BY dateCreated DESC, title ASC";
+      query += " ORDER BY created DESC, heading ASC";
+      // query += " ORDER BY dateCreated DESC, title ASC";
 
       query += " LIMIT ?";
       const limit = 25;
@@ -72,28 +79,6 @@ export function Learn2vws() {
             modules: data,
             isLoading: false,
             searching: false,
-          });
-        });
-    } catch (error) {
-      console.error("Error fetching data:" + error);
-    }
-  };
-
-  const selectPageData = async () => {
-    try {
-      // TODO: move this query building to a Gateway implementation for SQLite
-      // so that it can easily be configured with other databases later
-      const inputData1 = [];
-      var query1 =
-        "SELECT * FROM LearningModulePage WHERE moduleId=? ORDER BY pageNumber ASC";
-
-      inputData1.push(location.state.moduleId);
-      await window.electron.ipcRenderer
-        .invoke("select-data", { query1, inputData1 })
-        .then((data) => {
-          setState({
-            pages: data,
-            isLoading: false,
           });
         });
     } catch (error) {
@@ -143,7 +128,7 @@ export function Learn2vws() {
                     ref={searchRef}
                     onKeyUp={(e) => checkInput(e)}
                     placeholder="Custom search topic to learn about"
-                    aria-label="Recipient's username"
+                    aria-label="topic custom search"
                     aria-describedby="button-addon2"
                     style={{ height: "40px" }}
                   />
@@ -207,18 +192,18 @@ export function Learn2vws() {
             state.modules.map((module, index) => (
               <div className="col-md-6" key={index}>
                 <div
-                  className="card mb-4"
+                  className="card card border-light mb-4"
                   style={{
                     height: "90%",
                     margin: "5px",
                   }}
                 >
                   <div
-                    className="card-body"
+                    className="card-body "
                     style={{ display: "flex", flexDirection: "column" }}
                   >
                     <h5 className="card-title text-primary ellipsis">
-                      {module.title}
+                      {module.heading}
                     </h5>
                     <p
                       className="ellipsis text-xs"
@@ -233,32 +218,23 @@ export function Learn2vws() {
                           className="text-danger ellipsis"
                           style={{ fontSize: "0.8rem", color: "#555" }}
                         >
-                          {module.timeEstimate} min read
+                          {module.dura_min} min read
                         </p>
                       </div>
 
                       <div class="col-sm d-flex align-items-center justify-content-end">
-                        {/* <button
-                          type="button"
-                          class="btn btn-sm btn-outline-info"
-                          data-bs-toggle="modal"
-                          data-bs-target="#currModModal"
-                          style={{ fontSize: "0.9rem; " }}
-                        >
-                          Peek Info
-                        </button>
-                        &nbsp; */}
-                        {/*  &bull; &nbsp; */}
                         &nbsp;
                         <NavLink
                           to="/learningModule"
                           state={{
-                            moduleId: module.id,
-                            title: module.title,
+                            topicId: module.id,
+                            heading: module.heading,
+                            // title: module.title,
                             description: module.description,
-                            timeEstimate: module.timeEstimate,
-                            dateCreated: module.dateCreated,
-                            pages: null,
+                            duraMin: module.dura_min,
+                            // dateCreated: module.dateCreated,
+                            created: module.created,
+                            // pages: null,
                           }}
                           className="btn btn-sm btn-outline-secondary mt-auto text-xs"
                           data-bs-toggle="modal"
@@ -268,57 +244,32 @@ export function Learn2vws() {
                           Peek Info
                         </NavLink>
                         &nbsp;
-                        {/* <button
-                          type="button"
-                          class="btn btn-sm btn-info"
-                          style={{ fontSize: "0.9rem;" }}
-                        >
-                          <NavLink
-                            to="/learningModule"
-                            state={{
-                              moduleId: module.id,
-                              title: module.title,
-                              description: module.description,
-                              timeEstimate: module.timeEstimate,
-                              dateCreated: module.dateCreated,
-                              pages: null,
-                            }}
-                            className="btn btn-sm btn-info mt-auto text-sm"
-                            style={{ textDecoration: 'none' }}
-                          >
-                            Open Module
-                          </NavLink>
-                        </button> */}
                         <NavLink
-                          to="/learningModule"
+                          to="/learningTopicPage"
                           state={{
-                            moduleId: module.id,
-                            title: module.title,
+                            topicId: module.id,
+                            heading: module.heading,
+                            // title: module.title,
                             description: module.description,
-                            timeEstimate: module.timeEstimate,
-                            dateCreated: module.dateCreated,
-                            pages: null,
+                            duraMin: module.dura_min,
+                            // dateCreated: module.dateCreated,
+                            created: module.created,
                           }}
+                          // to="/learningModule"
+                          // state={{
+                          //   topicId: module.id,
+                          //   heading: module.heading,
+                          //   description: module.description,
+                          //   duraMin: module.dura_min,
+                          //   // dateCreated: module.dateCreated,
+                          //   created: module.created,
+                          //   pages: null,
+                          // }}
                           className="btn btn-sm btn-primary mt-auto text-xs"
                           style={{ textDecoration: "none" }}
                         >
                           Open Module
                         </NavLink>
-                        {/* <LearningModuleDetails
-                          page={props.pages[props.currentPageIndex]}
-                          registerSlide={handleSlide}
-                        /> */}
-                        {/* &nbsp;
-                        <NavLink
-                          to="/learningModulePage"
-                          state={{
-                            moduleId: module.id,
-                            pages: state.pages,
-                            currentPageIndex: 0,
-                          }}
-                        >
-                          Start...
-                        </NavLink> */}
                       </div>
                     </div>
                   </div>

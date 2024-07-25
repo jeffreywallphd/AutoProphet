@@ -308,14 +308,14 @@ code {
 }
 
 .slide div.titleContainer {
-  height: 350px;
+  height: auto; /*350px;*/
   width: auto;
   text-align: center;
   vertical-align: center; 
 }
 
 .slide div.contentContainer {
-  height: 350px;
+  height:auto; /*  350px; */
   width: auto;
 }
 

@@ -57,6 +57,7 @@ function Slide(props) {
   };
 
   const contents =
+    // "<ul> <li>A Beginner's Overview To Blockchain</li> <li>Blockchain</li> <li>How to Invest</li> <li>Risks and Obligations</li> </ul>";
     props.page.pageContentUrl !== null
       ? window.fs.fs.readFileSync(
           `src/View/LearningModuleSlideshows/${props.page.pageContentUrl}`,
@@ -113,11 +114,19 @@ function Slide(props) {
         </div>
       )}
 
+      {props.page.pageType !== null ? (
+        <p>{props.page.pageType}</p>
+      ) : // <div className="contentContainer">
+      //   {parseHtmlToComponents(<p>{props.page.pageType}</p>)}
+      // </div>
+      null}
+
       {contents !== null ? (
         <div className="contentContainer">
           {parseHtmlToComponents(contents)}
         </div>
       ) : null}
+
       {props.page.voiceoverUrl !== null ? (
         <div className="audioBar">
           <button onClick={playAudio} disabled={state.disable}>

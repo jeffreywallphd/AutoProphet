@@ -7,7 +7,8 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { Slide } from "./Slide";
+import { SlideMaster } from "./SlideMaster";
+// import { Slide } from "./Slide";
 
 function SlideshowWindow(props) {
   const nextPageIndex = props.currentPageIndex + 1;
@@ -51,6 +52,8 @@ function SlideshowWindow(props) {
 
   return (
     <div className="slideshowWindow">
+      {/* ... new window ... */}
+
       {/* <div className="slideWindowControlBar"> 
         {props.currentPageIndex > 0 ? (
           <div>
@@ -90,12 +93,15 @@ function SlideshowWindow(props) {
           </div>
         )}
       </div> */}
-
-      <Slide
+      <SlideMaster
         page={props.pages[props.currentPageIndex]}
         registerSlide={handleSlide}
       />
-
+      {/* 
+      <Slide
+        page={props.pages[props.currentPageIndex]}
+        registerSlide={handleSlide}
+      /> */}
       <div className="slideWindowControlBar">
         <div className="slidePageNumber">Page {props.currentPageIndex + 1}</div>
 

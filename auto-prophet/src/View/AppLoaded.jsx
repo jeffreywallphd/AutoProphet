@@ -5,12 +5,7 @@
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 import React, { Component } from "react";
-import {
-  Routes,
-  Route,
-  NavLink,
-  HashRouter
-} from "react-router-dom";
+import { Routes, Route, NavLink, HashRouter } from "react-router-dom";
 
 //Imports for react pages and assets
 import Home from "./Home";
@@ -30,78 +25,99 @@ import ForecastFeature from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
 import { Learn2vws } from "./Learn2vws";
+import { LearningTopicPage } from "./LearningTopicPage";
 
 class AppLoaded extends Component {
-    // --Code for collapsible menu--
-    constructor(props) {
-        super(props);
-        this.state = {
-            menuCollapsed: false
-        };
-        this.toggleMenu = this.toggleMenu.bind(this);
-    }
+  // --Code for collapsible menu--
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuCollapsed: false,
+    };
+    this.toggleMenu = this.toggleMenu.bind(this);
+  }
 
-    toggleMenu() {
-        this.setState(prevState => ({
-            menuCollapsed: !prevState.menuCollapsed
-        }));
-    }
-    // --End: Code for collapsible menu--
+  toggleMenu() {
+    this.setState((prevState) => ({
+      menuCollapsed: !prevState.menuCollapsed,
+    }));
+  }
+  // --End: Code for collapsible menu--
 
-    render() {
-        const { menuCollapsed } = this.state;
+  render() {
+    const { menuCollapsed } = this.state;
 
-        return (
-            <HashRouter>
-                <>
-                    <div className="main">
-                        <div className={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
-                            <button id="navButton">
-                                <img className="toggle-menu" id="navIcon" onClick={this.toggleMenu} src={menuCollapsed ? navIcon : navIcon} alt="navIcon" />
-                            </button>
-                            <header className={`header ${menuCollapsed ? 'collapsed' : ''}`}>
-                                <img src={logo} alt="Logo" width="150" />
-                            </header>
-                            <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
-                                <NavLink to="/">Home</NavLink>
-                                <NavLink to="/portfolio">Portfolio</NavLink>
-                                <NavLink to="/price">Stock & Fund</NavLink>
-                                <NavLink to="/analysis">Risk Analysis</NavLink>
-                                <NavLink to="/forecast">Forecast</NavLink>
-                                <NavLink to="/news">News</NavLink>
-                                <NavLink to="/learn">Learn</NavLink>
-                                <NavLink to="/learn2vws">Learn [New] </NavLink>
-                                <NavLink to="/settings">Settings</NavLink>                                
-                            </div>
-                        </div>
-                        <div className="content">
-                            <Routes>
-                                <Route path="/" element={<Home />}/>
-                                <Route path="/portfolio" element={<Portfolio />}/>
-                                <Route path="/analysis" element={<Analysis />}/>
-                                <Route path="/buy-report" element={<BuyReport />}/>
-                                <Route path="/price" element={<TimeSeries />}/>
-                                <Route path="/news" element={<News />}/>
-                                <Route path="/learn" element={<Learn />}/>
-                                <Route path="/learn2vws" element={<Learn2vws />}/>
-                                <Route path="/learningModule" element={<LearningModuleDetails />}/>
-                                <Route path="/learningModulePage" element={<LearningModulePage />}/>
-                                <Route path="/settings" element={<Settings />}/>
-                                <Route path="/forecast" element={<Forecast />} />
-                                <Route path="/forecast-features" element={<ForecastFeature />} />
-                                <Route path="/forecast-models" element={<ForecastModel />} />
-                                <Route path="/sec-report" element={<SecReport />} />
-                            </Routes>
-                            <footer>
-                                This software is licensed under the GPL-3.0 license. 
-                            </footer>
-                        </div>
-                    </div>
-                    
-                </>
-            </HashRouter>
-        );
-    }
+    return (
+      <HashRouter>
+        <>
+          <div className="main">
+            <div className={`sidebar ${menuCollapsed ? "collapsed" : ""}`}>
+              <button id="navButton">
+                <img
+                  className="toggle-menu"
+                  id="navIcon"
+                  onClick={this.toggleMenu}
+                  src={menuCollapsed ? navIcon : navIcon}
+                  alt="navIcon"
+                />
+              </button>
+              <header className={`header ${menuCollapsed ? "collapsed" : ""}`}>
+                <img src={logo} alt="Logo" width="150" />
+              </header>
+              <div className={`menu-items ${menuCollapsed ? "collapsed" : ""}`}>
+                <NavLink to="/">Home</NavLink>
+                <NavLink to="/portfolio">Portfolio</NavLink>
+                <NavLink to="/price">Stock & Fund</NavLink>
+                <NavLink to="/analysis">Risk Analysis</NavLink>
+                <NavLink to="/forecast">Forecast</NavLink>
+                <NavLink to="/news">News</NavLink>
+                <NavLink to="/learn2vws">Tutorials</NavLink> {/* Learn */}
+                <NavLink to="/settings">Settings</NavLink>
+                <NavLink to="/learn">Learn ***</NavLink>
+              </div>
+            </div>
+            <div className="content">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/analysis" element={<Analysis />} />
+                <Route path="/buy-report" element={<BuyReport />} />
+                <Route path="/price" element={<TimeSeries />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/learn" element={<Learn />} />
+                <Route path="/learn2vws" element={<Learn2vws />} />
+                <Route
+                  path="/learningTopicPage"
+                  element={<LearningTopicPage />}
+                />
+
+                <Route
+                  path="/learningModule"
+                  element={<LearningModuleDetails />}
+                />
+                <Route
+                  path="/learningModulePage"
+                  element={<LearningModulePage />}
+                />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/forecast" element={<Forecast />} />
+                <Route
+                  path="/forecast-features"
+                  element={<ForecastFeature />}
+                />
+                <Route path="/forecast-models" element={<ForecastModel />} />
+                <Route path="/sec-report" element={<SecReport />} />
+                {/* <Route path="/stockapisettings" element={<StockAPISettings />} /> */}
+              </Routes>
+              <footer>
+                This software is licensed under the GPL-3.0 license.
+              </footer>
+            </div>
+          </div>
+        </>
+      </HashRouter>
+    );
+  }
 }
 
 export default AppLoaded;

@@ -18,10 +18,13 @@ const createWindow = () => {
     show: false,
     webPreferences: {
       preload: path.join(app.getAppPath(), 'src/preload.js'),
-      //contextIsolation: true
-      nodeIntegration: true
+      //contextIsolation: true  // Disables context isolation
+      nodeIntegration: true // Enables Node.js integration
+
+      // webSecurity: false, // This disables the web security policies 
     } 
   });
+  
   //win.setMenu(null); // this doesn't allow opening developer tools
   win.maximize();
   win.show();
@@ -32,6 +35,10 @@ const createWindow = () => {
   });
 
   win.loadFile('./public/index.html');
+
+  // Open DevTools --- remember to comment this line!
+  win.webContents.openDevTools();
+
 };
 
 app.whenReady().then(() => {
@@ -51,7 +58,9 @@ let db;
 
 const initDatabase = async () => {
   try {
+    // db = new sqlite3.Database('./src/Asset/DB/db_auto_prophet.db');
     db = new sqlite3.Database('./src/Asset/DB/AutoProphet.db');
+    // const schema = await fs.promises.readFile('./src/Asset/DB/db_auto_prophet_schema.sql', 'utf-8');
     const schema = await fs.promises.readFile('./src/Asset/DB/schema.sql', 'utf-8');
     await db.exec(schema);
   } catch (error) {

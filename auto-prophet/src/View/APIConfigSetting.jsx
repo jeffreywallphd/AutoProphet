@@ -1,17 +1,15 @@
 import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
 import ConfigUpdater from "../Utility/ConfigManager";
+// import { LearnSlideSet } from "./LearnSlideSet";
+import { NavLink, useLocation } from "react-router-dom";
+import { AppSettingsStocksAPI } from "./AppSettingsStocksAPI";
+import TopicList from "./AppSettingsComp/TopicList";
+import SectionList from "./AppSettingsComp/SectionList";
+import CategoryList from "./AppSettingsComp/CategoryList";
+// import { FaSearch } from "react-icons/fa";
 
 function Settings(props) {
-  const stockApiRef = useRef("AlphaVantageStockGateway");
-  const newsApiRef = useRef("AlphaVantageNewsGateway");
-  const reportApiRef = useRef("SecAPIGateway");
-  const ratioApiRef = useRef("AlphaVantageRatioGateway");
-
-  var stockApiKeyRef = useRef();
-  var newsApiKeyRef = useRef();
-  var reportApiKeyRef = useRef();
-  var ratioApiKeyRef = useRef();
-
+  // const location = useLocation();
   const [state, setState] = useState({
     hasStockApiKey: false,
     hasNewsApiKey: false,
@@ -23,7 +21,74 @@ function Settings(props) {
     currentRatioApiKey: null,
     apiSize: 40,
     message: null,
+
+    filterRefVal: null,
+    searching: false,
+    isLoading: false,
+    dsTopics: null,
+    dsSections: null,
+    dsCategories: null,
+
+    modTopic: null,
+
+    modTopic1: [],
+    // isLoading: false,
+    form: {
+      id: "",
+      heading: "",
+      description: "",
+      keywords: "",
+      categ_id: "",
+      dura_min: "",
+      is_pub: "",
+      source: "",
+      author: "",
+      last_upd: "",
+    },
   });
+
+  // useEffect(() => {
+  //   updateConfigAndState();
+
+  //   // const config = getConfigAPI(); // Get the current API from config
+  //   // stockApiRef.current.value = config.StockGateway;
+  //   // newsApiRef.current.value = config.NewsGateway;
+  //   // reportApiRef.current.value = config.ReportGateway;
+  //   // ratioApiRef.current.value = config.RatioGateway;
+  //   // var newState = state;
+  //   // newState = handleStockApiChange(null, newState, true);
+  //   // newState = handleNewsApiChange(null, newState, true);
+  //   // newState = handleReportApiChange(null, newState, true);
+  //   // newState = handleRatioApiChange(null, newState, true);
+  //   // setState({ ...newState });
+
+  //   selectData_Topics();
+  // }, []);
+
+  // useEffect(() => {
+
+  //   selectData_Topics();
+  // }, []); // Runs once after initial render
+
+  // const searchRef = useRef("SearchTextField");
+  const filterRef = useRef("FilterSelect");
+
+  const stockApiRef = useRef("AlphaVantageStockGateway");
+  const newsApiRef = useRef("AlphaVantageNewsGateway");
+  const reportApiRef = useRef("SecAPIGateway");
+  const ratioApiRef = useRef("AlphaVantageRatioGateway");
+
+  var stockApiKeyRef = useRef();
+  var newsApiKeyRef = useRef();
+  var reportApiKeyRef = useRef();
+  var ratioApiKeyRef = useRef();
+
+  // const express = require("express");
+  // const mysql = require("mysql");
+  // const path = require("path");
+  // const app = express();
+
+  // const location = useLocation();
 
   const getConfigAPI = () => {
     const updater = new ConfigUpdater();
@@ -111,6 +176,7 @@ function Settings(props) {
 
     // set the value of the API Key textbox; don't include API here if no API key
     // will need if statements if future keyed gateways are used
+
     newState["hasReportApiKey"] = false;
     newState["currentReportApiKey"] = null;
     newState["message"] = null;
@@ -152,7 +218,10 @@ function Settings(props) {
     return newState;
   };
 
-  useEffect(() => {
+  function updateConfigAndState() {
+    // const updateConfigAndState = () => {
+    // console.log("reset...");
+
     const config = getConfigAPI(); // Get the current API from config
 
     stockApiRef.current.value = config.StockGateway;
@@ -160,14 +229,14 @@ function Settings(props) {
     reportApiRef.current.value = config.ReportGateway;
     ratioApiRef.current.value = config.RatioGateway;
 
-    var newState = state;
+    let newState = state;
     newState = handleStockApiChange(null, newState, true);
     newState = handleNewsApiChange(null, newState, true);
     newState = handleReportApiChange(null, newState, true);
     newState = handleRatioApiChange(null, newState, true);
 
     setState({ ...newState });
-  }, []);
+  }
 
   const handleSubmit = (event) => {
     // Handle form submission logic here
@@ -286,11 +355,69 @@ function Settings(props) {
     }
   };
 
+  // const selectData_Topics = async () => {
+  //   try {
+  //     console.log("calling... sql select");
+
+  //     // updateConfigAndState();
+
+  //     setState({
+  //       modTopic: state.modTopic,
+  //       isLoading: state.isLoading,
+  //       filterRefVal: filterRef.current.value,
+  //       searching: true,
+  //     });
+
+  //     // TODO: move this query building to a Gateway implementation for SQLite
+  //     // so that it can easily be configured with other databases later
+  //     const inputData = [];
+  //     var query =
+  //       "SELECT tutor_topic.*,tutor_categ.code AS categ_code, tutor_categ.name AS category " +
+  //       "FROM tutor_topic LEFT JOIN tutor_categ ON tutor_topic.categ_id = tutor_categ.id";
+
+  //     console.log("filterRef val before call: " + filterRef.current.value);
+  //     console.log("filterRef: " + filterRef.current.value);
+
+  //     if (filterRef.current.value !== "") {
+  //       query += " WHERE categ_code=?";
+  //       inputData.push(filterRef.current.value);
+  //     }
+
+  //     query += " ORDER BY created DESC, heading ASC";
+  //     query += " LIMIT ?";
+
+  //     const limit = 25;
+  //     inputData.push(limit);
+  //     await window.electron.ipcRenderer
+  //       .invoke("select-data", { query, inputData })
+  //       .then((data) => {
+  //         setState({
+  //           modTopic: data,
+  //           isLoading: false,
+  //           searching: false,
+  //         });
+  //       });
+
+  //     // console.log("sql: " + query);
+  //   } catch (error) {
+  //     console.error("Error fetching data:" + error);
+  //   }
+  // };
+
+  console.log(state.modTopic);
+
+  // // hadle topics -- CRUD ***
+  // const handleSubmit_Topics = (event) => {
+  //   // Handle form submission logic here
+  //   event.preventDefault();
+  // };
+
   return (
     // <div>Hello</div>
 
     <div className="page">
       <h2>Settings</h2>
+
       <div>
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -356,461 +483,8 @@ function Settings(props) {
             &nbsp;
             <h5>Stock Data API Configuration</h5>
             &nbsp; &nbsp;
-            <form className="row g-3 was-validated" onSubmit={handleSubmit}>
-              <div className="row mb-3">
-                <div className="col-md-4">
-                  <label htmlFor="stockApi" className="form-label">
-                    {" "}
-                    {/* Select a  */}
-                    Stock Data API:{" "}
-                  </label>
-                  <select
-                    className="form-select"
-                    id="stockApi"
-                    name="stockApi"
-                    ref={stockApiRef}
-                    onChange={handleStockApiChange}
-                    aria-describedby="stockApiFeedback"
-                    required
-                  >
-                    <option selected disabled value="">
-                      Choose API
-                    </option>
-                    <option value="AlphaVantageStockGateway">
-                      {" "}
-                      Alpha Vantage Stock API{" "}
-                    </option>
-                    <option value="FinancialModelingPrepGateway">
-                      {" "}
-                      Financial Modeling Prep Stock API{" "}
-                    </option>
-                    <option value="YFinanceStockGateway">
-                      {" "}
-                      Yahoo Finance (unofficial community) API{" "}
-                    </option>
-                  </select>
-                  <div id="stockApiFeedback" className="invalid-feedback">
-                    Please select the Stock API
-                  </div>
-                </div>
-
-                {/* 
-              <div>
-                <label htmlFor="stockApi">Select a Stock Data API:</label>
-              </div>
-              <select
-                id="stockApi"
-                name="stockApi"
-                ref={stockApiRef}
-                onChange={handleStockApiChange}
-              >
-                <option value="AlphaVantageStockGateway">
-                  Alpha Vantage Stock API
-                </option>
-                <option value="FinancialModelingPrepGateway">
-                  Financial Modeling Prep Stock API
-                </option>
-                <option value="YFinanceStockGateway">
-                  Yahoo Finance (unofficial community) API
-                </option>
-              </select>
-              <br /> */}
-
-                {/* only show API key textbox if the API requires one */}
-                {state.hasStockApiKey ? (
-                  <>
-                    <div className="col-md-5">
-                      <label htmlFor="stockApiKey" className="form-label">
-                        &nbsp; {/* Stock API Key: */}
-                      </label>
-                      <div className="input-group">
-                        <span
-                          className="input-group-text"
-                          id="inputGroupPrepend3"
-                        >
-                          API Key
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="stockApiKey"
-                          name="stockApiKey"
-                          size={state.apiSize}
-                          ref={stockApiKeyRef}
-                          value={state.currentStockApiKey}
-                          onChange={(e) => {
-                            setState({
-                              ...state,
-                              currentStockApiKey: e.target.value,
-                              message: null,
-                            });
-                          }}
-                          aria-describedby="inputGroupPrepend3 stockApiKeyFeedback"
-                          required
-                        />
-                        {/* <div
-                        id="stockApiKeyFeedback"
-                        className="invalid-feedback"
-                      >
-                        Please specify API key.
-                      </div> */}
-                        <div id="stockApiKeyFeedback" class="invalid-feedback">
-                          Please specify API key.
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* <div>
-                    <label htmlFor="stockApiKey">Stock API Key:</label>
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      id="stockApiKey"
-                      name="stockApiKey"
-                      size={state.apiSize}
-                      ref={stockApiKeyRef}
-                      value={state.currentStockApiKey}
-                      onChange={(e) => {
-                        setState({
-                          ...state,
-                          currentStockApiKey: e.target.value,
-                          message: null,
-                        });
-                      }}
-                    />
-                  </div> */}
-                  </>
-                ) : null}
-              </div>
-              <div className="row mb-3">
-                <div className="col-md-4">
-                  <label htmlFor="newsApi" className="form-label">
-                    {" "}
-                    {/* Select a  */}
-                    News Data API
-                  </label>
-                  <select
-                    className="form-select"
-                    id="newsApi"
-                    name="newsApi"
-                    ref={newsApiRef}
-                    onChange={handleNewsApiChange}
-                    aria-describedby="newsApiFeedback"
-                    required
-                  >
-                    <option selected disabled value="">
-                      Choose API
-                    </option>
-                    <option value="AlphaVantageNewsGateway">
-                      Alpha Vantage News API
-                    </option>
-                  </select>
-                  <div id="newsApiFeedback" className="invalid-feedback">
-                    Please select the News API
-                  </div>
-                </div>
-
-                {/* <div>
-                <label htmlFor="newsApi">Select a News Data API:</label>
-              </div>
-              <select
-                id="newsApi"
-                name="newsApi"
-                ref={newsApiRef}
-                onChange={handleNewsApiChange}
-              >
-                <option value="AlphaVantageNewsGateway">
-                  Alpha Vantage News API
-                </option>
-              </select> */}
-
-                {/* <br /> */}
-                {/* only show API key textbox if the API requires one */}
-                {state.hasNewsApiKey ? (
-                  <>
-                    <div className="col-md-5">
-                      <label htmlFor="newsApiKey" className="form-label">
-                        &nbsp; {/* News API Key: */}
-                      </label>
-                      <div className="input-group">
-                        <span
-                          className="input-group-text"
-                          id="inputGroupPrepend3"
-                        >
-                          API Key
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="newsApiKey"
-                          name="newsApiKey"
-                          size={state.apiSize}
-                          ref={newsApiKeyRef}
-                          value={state.currentNewsApiKey}
-                          onChange={(e) => {
-                            setState({
-                              ...state,
-                              currentNewsApiKey: e.target.value,
-                              message: null,
-                            });
-                          }}
-                          aria-describedby="inputGroupPrepend3 newsApiKeyFeedback"
-                          required
-                        />
-                        <div id="newsApiKeyFeedback" class="invalid-feedback">
-                          Please specify News API key.
-                        </div>
-                      </div>
-                    </div>
-                    {/* 
-                  <div>
-                    <label htmlFor="newsApiKey">News API Key:</label>
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      id="newsApiKey"
-                      name="newsApiKey"
-                      size={state.apiSize}
-                      ref={newsApiKeyRef}
-                      value={state.currentNewsApiKey}
-                      onChange={(e) => {
-                        setState({
-                          ...state,
-                          currentNewsApiKey: e.target.value,
-                          message: null,
-                        });
-                      }}
-                    />
-                  </div> */}
-                  </>
-                ) : null}
-              </div>
-              <div className="row mb-3">
-                <div className="col-md-4">
-                  <label htmlFor="reportApi" className="form-label">
-                    {" "}
-                    {/* Select a  */}
-                    Financial Report API
-                  </label>
-                  <select
-                    className="form-select"
-                    id="reportApi"
-                    name="reportApi"
-                    ref={reportApiRef}
-                    onChange={handleReportApiChange}
-                    aria-describedby="reportApiFeedback"
-                    required
-                  >
-                    <option selected disabled value="">
-                      Choose API
-                    </option>
-                    <option value="SecAPIGateway">SEC Reporting API</option>
-                  </select>
-                  <div id="reportApiFeedback" className="invalid-feedback">
-                    Please select the News API
-                  </div>
-                </div>
-
-                {/* <div>
-                <label htmlFor="reportApi">
-                  Select a Financial Report API:
-                </label>
-              </div>
-              <select
-                id="reportApi"
-                name="reportApi"
-                ref={reportApiRef}
-                onChange={handleReportApiChange}
-              >
-                <option value="SecAPIGateway">SEC Reporting API</option>
-              </select> */}
-
-                {/* <br /> */}
-
-                {/* only show API key textbox if the API requires one */}
-                {state.hasReportApiKey ? (
-                  <>
-                    <div className="col-md-5">
-                      <label htmlFor="reportApiKey" className="form-label">
-                        &nbsp; {/* Financial Report API Key: */}
-                      </label>
-                      <div className="input-group">
-                        <span
-                          className="input-group-text"
-                          id="inputGroupPrepend3"
-                        >
-                          API Key
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="reportApiKey"
-                          name="reportApiKey"
-                          size={state.apiSize}
-                          ref={reportApiKeyRef}
-                          value={state.currentReportApiKey}
-                          onChange={(e) => {
-                            setState({
-                              ...state,
-                              currentReportApiKey: e.target.value,
-                              message: null,
-                            });
-                          }}
-                          aria-describedby="inputGroupPrepend3 reportApiKeyFeedback"
-                          required
-                        />
-                        <div id="reportApiKeyFeedback" class="invalid-feedback">
-                          Please specify Financial Report API key.
-                        </div>
-                      </div>
-                    </div>
-                    {/* 
-                  <div>
-                    <label htmlFor="reportApiKey">
-                      Financial Report API Key:
-                    </label>
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      id="reportApiKey"
-                      name="reportApiKey"
-                      size={state.apiSize}
-                      ref={reportApiKeyRef}
-                      value={state.currentReportApiKey}
-                      onChange={(e) => {
-                        setState({
-                          ...state,
-                          currentReportApiKey: e.target.value,
-                          message: null,
-                        });
-                      }}
-                    />
-                  </div> */}
-                  </>
-                ) : null}
-              </div>
-              <div className="row mb-3">
-                <div className="col-md-4">
-                  <label htmlFor="ratioApi" className="form-label">
-                    {" "}
-                    {/* Select a  */}
-                    Financial Ratios API
-                  </label>
-                  <select
-                    className="form-select"
-                    id="ratioApi"
-                    name="ratioApi"
-                    ref={ratioApiRef}
-                    onChange={handleRatioApiChange}
-                    aria-describedby="ratioApiFeedback"
-                    required
-                  >
-                    <option selected disabled value="">
-                      Choose API
-                    </option>
-                    <option value="AlphaVantageRatioGateway">
-                      Alpha Vantage Ratio API
-                    </option>
-                  </select>
-                  <div id="ratioApiFeedback" className="invalid-feedback">
-                    Please select the Ratio API
-                  </div>
-                </div>
-
-                {/* <div>
-                <label htmlFor="ratioApi">Select a Financial Ratios API:</label>
-              </div>
-              <select
-                id="ratioApi"
-                name="ratioApi"
-                ref={ratioApiRef}
-                onChange={handleRatioApiChange}
-              >
-                <option value="AlphaVantageRatioGateway">
-                  Alpha Vantage Ratio API
-                </option>
-              </select> */}
-
-                {/* <br /> */}
-
-                {/* only show API key textbox if the API requires one */}
-                {state.hasRatioApiKey ? (
-                  <>
-                    <div className="col-md-5">
-                      <label htmlFor="ratioApiKey" className="form-label">
-                        &nbsp; {/* Financial Ratio API Key: */}
-                      </label>
-                      <div className="input-group">
-                        <span
-                          className="input-group-text"
-                          id="inputGroupPrepend3"
-                        >
-                          API Key
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="ratioApiKey"
-                          name="ratioApiKey"
-                          size={state.apiSize}
-                          ref={ratioApiKeyRef}
-                          value={state.currentRatioApiKey}
-                          onChange={(e) => {
-                            setState({
-                              ...state,
-                              currentRatioApiKey: e.target.value,
-                              message: null,
-                            });
-                          }}
-                          aria-describedby="inputGroupPrepend3 ratioApiKeyFeedback"
-                          required
-                        />
-                        <div id="ratioApiKeyFeedback" class="invalid-feedback">
-                          Please specify Financial Ratio API key.
-                        </div>
-                      </div>
-                    </div>
-                    {/* 
-                  <div>
-                    <label htmlFor="ratioApiKey">
-                      Financial Ratio API Key:
-                    </label>
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      id="ratioApiKey"
-                      name="ratioApiKey"
-                      size={state.apiSize}
-                      ref={ratioApiKeyRef}
-                      value={state.currentRatioApiKey}
-                      onChange={(e) => {
-                        setState({
-                          ...state,
-                          currentRatioApiKey: e.target.value,
-                          message: null,
-                        });
-                      }}
-                    />
-                  </div> */}
-                  </>
-                ) : null}
-              </div>
-
-              {/* <button type="submit">Save Configuration</button> */}
-              <div className="row mt-5">
-                <div className="col-sm-9 d-flex justify-content-end">
-                  <button type="submit" className="btn btn-secondary">
-                    Save Configuration
-                  </button>
-                </div>
-              </div>
-
-              <p>{state.message}</p>
-            </form>
+            {/* <AppSettings_StockAPI /> */}
+            <AppSettingsStocksAPI />
           </div>
           <div
             class="tab-pane fade"
@@ -820,8 +494,104 @@ function Settings(props) {
             tabindex="0"
           >
             &nbsp;
-            <h5>Tutorials details</h5>
+            <h6>
+              Manage slides of tutorials by creating <b>topics</b> per
+              respective <b>categories</b>, and adding <b>sections</b>. The
+              sections give the layout of the topic. Sections can consist of
+              codes, examples, tables, figures, images or descriptive text.{" "}
+            </h6>
             &nbsp; &nbsp;
+            <div class="d-flex align-items-start">
+              <div
+                className="nav flex-column nav-pills me-3"
+                id="v-pills-tab"
+                role="tablist"
+                aria-orientation="vertical"
+                style={{ borderRight: "1px solid grey", paddingRight: "10px" }}
+              >
+                <button
+                  className="nav-link active"
+                  id="v-pills-topics-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-topics"
+                  type="button"
+                  role="tab"
+                  aria-controls="v-pills-topics"
+                  aria-selected="true"
+                  style={{ textAlign: "left" }}
+                >
+                  Topics
+                </button>
+
+                <button
+                  className="nav-link"
+                  id="v-pills-sections-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-sections"
+                  type="button"
+                  role="tab"
+                  aria-controls="v-pills-sections"
+                  aria-selected="false"
+                  style={{ textAlign: "left" }}
+                >
+                  Sections
+                </button>
+
+                <button
+                  className="nav-link"
+                  id="v-pills-categories-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-categories"
+                  type="button"
+                  role="tab"
+                  aria-controls="v-pills-categories"
+                  aria-selected="false"
+                  style={{ textAlign: "left" }}
+                >
+                  Categories
+                </button>
+              </div>
+
+              {/* Topics -- modal...  */}
+
+              {/* Topics -- modal */}
+
+              <div class="tab-content" id="v-pills-tabContent">
+                {/* Topics -- content */}
+
+                <TopicList />
+
+                {/* <TopicList
+                  oTopic={state.modTopic}
+                  isLoading={state.isLoading}
+                  filterRefVal={state.filterRefVal}
+                  filterRefObj={state.filterRef}
+                /> */}
+
+                {/* Topics -- content */}
+                <div
+                  class="tab-pane fade"
+                  id="v-pills-sections"
+                  role="tabpanel"
+                  aria-labelledby="v-pills-sections-tab"
+                  tabindex="0"
+                >
+                  {/* Sections ... */}
+                  <SectionList />
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="v-pills-categories"
+                  role="tabpanel"
+                  aria-labelledby="v-pills-categories-tab"
+                  tabindex="0"
+                >
+                  {/* Categories ... */}
+
+                  <CategoryList />
+                </div>
+              </div>
+            </div>
           </div>
           {/* <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">...</div> */}
         </div>
