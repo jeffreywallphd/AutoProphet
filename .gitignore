@@ -31,3 +31,27 @@ yarn-error.log*
 # IDE files
 .ipynb_checkpoints
 .vscode
+
+
+# Virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Django specific files
+*.log
+*.pot
+*.pyc
+
+# Database
+*.sqlite3
+
+# Static and media files
+/static/
+/media/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
