@@ -69,7 +69,7 @@ ROOT_URLCONF = 'django_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'chatBot_be', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,8 +90,12 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # Use MySQL backend
+        'NAME': 'Autoprophet',  # Replace with your MySQL database name
+        'USER': 'root',  # Replace with your MySQL database user
+        'PASSWORD': 'Autoprophet',  # Replace with your MySQL database password
+        'HOST': 'localhost',  # Or your MySQL server address
+        'PORT': '3306',  # Default MySQL port
     }
 }
 
