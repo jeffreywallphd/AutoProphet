@@ -62,7 +62,11 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = False  
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000', 
+    "http://127.0.0.1",  # Add your Electron app URL
+    "http://localhost"
 ]
+CORS_ALLOW_CREDENTIALS = True
+
 
 ROOT_URLCONF = 'django_backend.urls'
 
