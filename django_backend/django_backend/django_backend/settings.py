@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Use MySQL backend
-        'NAME': 'Autoprophet',  # Replace with your MySQL database name
+        'NAME': 'Autoprophet_Model',  # Replace with your MySQL database name
         'USER': 'root',  # Replace with your MySQL database user
         'PASSWORD': 'Autoprophet',  # Replace with your MySQL database password
         'HOST': 'localhost',  # Or your MySQL server address
