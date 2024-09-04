@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -95,11 +96,11 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Use MySQL backend
-        'NAME': 'Autoprophet_Model',  # Replace with your MySQL database name
-        'USER': 'root',  # Replace with your MySQL database user
-        'PASSWORD': 'Autoprophet',  # Replace with your MySQL database password
-        'HOST': 'localhost',  # Or your MySQL server address
-        'PORT': '3306',  # Default MySQL port
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASSWORD'),
+        'HOST': config('DATABASE_HOST'),
+        'PORT': config('DATABASE_PORT', default=3306, cast=int),
     }
 }
 
