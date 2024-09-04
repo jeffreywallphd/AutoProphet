@@ -1,8 +1,4 @@
 from django.contrib import admin
-from .models import Chatbots
+from .models import Conversation as ConversationTable
 
-class ChatbotAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
-    search_fields = ('name',)
-
-admin.site.register(Chatbots,ChatbotAdmin)
+admin.site.register(ConversationTable)
