@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Conversation</title>
+    <script>
+        async function getSessionId() {
+            let sessionId = localStorage.getItem('session_id');
+
+            if (!sessionId) {
+                // Create a new session if it does not exist
+                const response = await fetch('/api/chatbot/', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+                if (response.ok) {
+                    const data = await response.json();
+                    sessionId = data.session_id;
+                    localStorage.setItem('session_id', sessionId);
+                } else {
+                    console.error('Failed to create session');
+                }
+            }
+
+            return sessionId;
+        }
+
+        async function sendMessage() {
+            const message = document.getElementById('message').value;
+            const sessionId = await getSessionId();
+
+            const response = await fetch(`/api/chatbot/${sessionId}/add/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message, is_user: true })
+            });
+
+            if (response.ok) {
+                displayMessages();
+                document.getElementById('message').value = ''; // Clear the input field
+            } else {
+                console.error('Failed to send message');
+            }
+        }
+
+        async function displayMessages() {
+            const sessionId = await getSessionId();
+
+            const response = await fetch(`/api/chatbot/${sessionId}/`);
+            const messages = await response.json();
+
+            const messageContainer = document.getElementById('messages');
+            messageContainer.innerHTML = '';  // Clear previous messages
+
+            messages.forEach(msg => {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `${msg.is_user ? 'User' : 'Chatbot'}: ${msg.message}`;
+                messageContainer.appendChild(messageElement);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', displayMessages);
+    </script>
+</head>
+<body>
+    <div>
+        <h1>Chatbot Conversation</h1>
+        <div id="messages"></div>
+        <input type="text" id="message" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</body>
+</html>
