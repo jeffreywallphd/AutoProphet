@@ -59,7 +59,9 @@ class AppLoaded extends Component {
                                 <img className="toggle-menu" id="navIcon" onClick={this.toggleMenu} src={menuCollapsed ? navIcon : navIcon} alt="navIcon" />
                             </button>
                             <header className={`header ${menuCollapsed ? 'collapsed' : ''}`}>
-                                <img src={logo} alt="Logo" width="150" />
+                            <button id="navButton">
+                                <NavLink to="/"> <img src={logo} alt="Logo" width="150" /> </NavLink>
+                            </button>
                             </header>
                             <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <NavLink to="/">Home</NavLink>
