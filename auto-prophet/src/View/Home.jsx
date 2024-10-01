@@ -21,7 +21,7 @@ class Home extends Component {
                   <p>Open source</p>
                   <p>AI-enabled</p>
                   <p>Configurable</p>
-                  <p>Adaptive to Experience</p>
+                  <p>This is a test</p>
                 </div>
             </div>
         );
