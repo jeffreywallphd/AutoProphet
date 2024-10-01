@@ -1,4 +1,0 @@
-<<<<<<< HEAD
-=======
-hello this is a test text
->>>>>>> FALL2024-dev-combined(BA5200/MIS4000)
