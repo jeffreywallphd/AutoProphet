@@ -1,0 +1,29 @@
+html {
+    background-color: #fffdd0;
+    font-size: large;
+    text-align: center;
+}
+
+header {
+    background-color: #fffdd0;
+    font-size: xx-large;
+}
+
+form {
+    background-color: #002168;
+    color: white;
+    font-size: large;
+    border-style: solid;
+    max-width: 500px;
+    margin: auto;
+}
+
+body {
+    text-align: center;
+}
+
+table, th, td {
+    margin: auto;
+    border-style: solid;
+    border-color: #002168;
+}
