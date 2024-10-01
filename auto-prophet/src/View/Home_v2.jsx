@@ -20,8 +20,6 @@ class Home extends Component {
                 <div className="homeContainer">
                   <p>Open source</p>
                   <p>AI-enabled</p>
-                  <p>Configurable</p>
-                  <p>A new phrase</p>
                 </div>
             </div>
         );
