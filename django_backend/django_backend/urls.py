@@ -21,6 +21,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('chatbot_be.urls')),
-    path('', lambda request: redirect('/api/chatbot_view/', permanent=False)),
+    path('', lambda request: redirect('/api/home_view/', permanent=False)),
 
 ]
