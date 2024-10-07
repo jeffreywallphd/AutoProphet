@@ -29,6 +29,8 @@ import Forecast from "./Forecast";
 import { ForecastFeature } from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
+//User tab
+import Profile from "./ProfileTab/Profile";
 
 class AppLoaded extends Component {
     // --Code for collapsible menu--
@@ -63,13 +65,16 @@ class AppLoaded extends Component {
                             </header>
                             <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <NavLink to="/">Home</NavLink>
+                                {/* <-- Added User tab */}  
+                                <NavLink to="/user">Profile</NavLink>             
                                 <NavLink to="/portfolio">Portfolio</NavLink>
                                 <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
                                 <NavLink to="/forecast">Forecast</NavLink>
                                 <NavLink to="/news">News</NavLink>
                                 <NavLink to="/learn">Learn</NavLink>
-                                <NavLink to="/settings">Settings</NavLink>                                
+                                <NavLink to="/settings">Settings</NavLink>   
+                                             
                             </div>
                         </div>
                         <div className="content">
@@ -88,6 +93,8 @@ class AppLoaded extends Component {
                                 <Route path="/forecast-features" element={<ForecastFeature />} />
                                 <Route path="/forecast-models" element={<ForecastModel />} />
                                 <Route path="/sec-report" element={<SecReport />} />
+                                {/* <-- Added User route */}
+                                <Route path="/user" element={<Profile />} />
                             </Routes>
                             <footer>
                                 This software is licensed under the GPL-3.0 license. 
