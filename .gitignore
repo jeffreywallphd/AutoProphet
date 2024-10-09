@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/node_modules
 /.pnp
 .pnp.js
 
@@ -54,3 +55,8 @@ __pycache__/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Scraped data 
+*.xml
+*.json
+*.csv
