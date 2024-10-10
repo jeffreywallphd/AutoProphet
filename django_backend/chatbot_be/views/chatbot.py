@@ -4,6 +4,8 @@ from rest_framework import status
 from ..models import Conversation
 from ..serializers import ConversationSerializer
 import uuid
+from django.shortcuts import render
+
 
 class SessionCreateView(APIView):
     """
@@ -42,3 +44,6 @@ class ConversationCreateView(APIView):
             serializer.save()
             return Response({'session_id': session_id, **serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def chatbot_view(request):
+    return render(request, 'chatbot.html')
