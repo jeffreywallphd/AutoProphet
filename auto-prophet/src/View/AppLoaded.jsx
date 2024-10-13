@@ -49,10 +49,10 @@ class AppLoaded extends Component {
         <>
           <div className="main">
             <aside className={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
-              <div className="logo">
+              <div className="logo sidebar-padding">
                 <img src={logo} alt="AutoProphet Logo" />
               </div>
-              <nav>
+              <nav className="sidebar-padding">
                 <h5>Main</h5>
                 <ul>
                   <li><NavLink to="/"><span className="material-icons">dashboard</span> Dashboard</NavLink></li>
@@ -62,8 +62,8 @@ class AppLoaded extends Component {
                   <li><NavLink to="/investment-pool"><span className="material-icons">inventory_2</span> Investment Pool</NavLink></li>
                 </ul>
               </nav>
-              <div className="tools">
-                <h5>Tools</h5>
+              <div className="tools sidebar-padding">
+                <h5 className="mt-1">Tools</h5>
                 <ul>
                   <li><NavLink to="/forecast"><span className="material-icons">timeline</span> Forecast</NavLink></li>
                   <li><NavLink to="/news"><span className="material-icons">article</span> News</NavLink></li>

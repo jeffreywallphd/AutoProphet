@@ -172,8 +172,8 @@ code {
 /* Styling for Main Container and Sidebar */
 
 .main {
-  margin: 0;
-  padding: 0;
+  margin-left: 250px;
+  padding: 20px;
   display: flex;
   height: 100vh;
   /* overflow: hidden; */
@@ -721,13 +721,19 @@ body {
 }
 
 .sidebar {
-  width: 250px;
-  background-color: #fff;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px; /* Adjust width as needed */
+  height: 100%;
+  background-color: #fff; /* Adjust background color as needed */
+  z-index: 1000; /* Ensure it stays on top of other elements */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional: add a shadow for better visibility */
+  overflow-y: auto; /* Allow scrolling within the sidebar if needed */
+}
+
+.sidebar-padding {
+  padding: 10px;
 }
 
 .logo img {
@@ -763,7 +769,9 @@ nav ul li a .material-icons {
 nav ul li a:hover {
   background-color: #E0E4E7;
 }
-
+.mt-1{
+  margin-top: 10px;
+}
 .tools h4 {
   font-size: 14px;
   margin-bottom: 5px;
