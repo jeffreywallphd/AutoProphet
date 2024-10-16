@@ -40,6 +40,49 @@
             margin-left: 250px;
             padding: 20px;
         }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: calc(100% - 16px);  /* Make input fields responsive */
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #575757;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        #scrapedData {
+            display: none;  /* Hide scraped data section initially */
+        }
     </style>
 </head>
 <body>
@@ -61,14 +104,19 @@
     <div class="content">
         <h1>Data Scraper</h1>
         <label for="url">URL:</label>
-        <input type="text" id="url" required>
+        <input type="text" id="url" placeholder="Enter the URL to scrape" required>
         
         <label for="output_file">Output File Name:</label>
-        <input type="text" id="output_file" required>
+        <input type="text" id="output_file" placeholder="Enter desired output file name" required>
         
         <button id="scrapeBtn">Scrape</button>
         <div id="result"></div>
     
+        <!-- Scraped Data Section - Hidden Initially -->
+        <div id="scrapedData">
+            <h2>Last Scraped Data</h2>
+            <div id="scrapedContent"></div>  <!-- Container for scraped content -->
+        </div>
     </div>
     
     <script>
@@ -91,8 +139,27 @@
                 })
                 .then(data => {
                     const resultDiv = document.getElementById('result');
+                    const scrapedDataDiv = document.getElementById('scrapedData');
+                    const scrapedContentDiv = document.getElementById('scrapedContent');
+                    
                     if (data.success) {
                         resultDiv.innerHTML = `<p style="color: green;">${data.success}</p>`;
+
+                        // Dynamically render the scraped content
+                        let content = '';
+                        if (data.file_type === 'json' || data.file_type === 'xml' || data.file_type === 'html' || data.file_type === 'csv') {
+                            content = `<pre>${data.content}</pre>`;
+                        } else if (data.file_type === 'xlsx') {
+                            content = `<p>Excel file content available. <a href="/download/${data.id}">Download</a></p>`;
+                        }
+
+                        scrapedContentDiv.innerHTML = `
+                            <h3>Data from ${data.url} (${data.file_type})</h3>
+                            ${content}
+                        `;
+                        
+                        // Show the scraped data section
+                        scrapedDataDiv.style.display = 'block';
                     } else if (data.error) {
                         resultDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
                     }

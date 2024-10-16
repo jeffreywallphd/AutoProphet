@@ -67,8 +67,26 @@ class ScrapeDataView(APIView):
             binary_content=binary_content if binary_content else None  # Store binary content if available
         )
 
-        return Response({'success': f'Successfully saved data from {url} to the database.'}, status=status.HTTP_200_OK)
+        # return Response({'success': f'Successfully saved data from {url} to the database.'}, status=status.HTTP_200_OK)
+    
+        # Fetch the latest scraped data after saving
+        latest_scraped_data = ScrapedData.objects.latest('created_at')
 
-# Template view to render the HTML file
+        # API response after saving the data
+        return Response({
+            'success': f'Successfully saved data from {url} to the database.',
+            'url': latest_scraped_data.url,
+            'file_type': latest_scraped_data.file_type,
+            'content': latest_scraped_data.content
+        }, status=status.HTTP_200_OK)
+
+# Template view to render the latest scraped data
 def scrape_view(request):
-    return render(request, 'scrape.html')
+    # Fetch the most recent scraped data
+    try:
+        latest_scraped_data = ScrapedData.objects.latest('created_at')  # Get the latest entry
+    except ScrapedData.DoesNotExist:
+        latest_scraped_data = None  # Handle case if no data exists
+
+    # Pass the latest data to the template
+    return render(request, 'scrape.html', {'latest_scraped_data': latest_scraped_data})
