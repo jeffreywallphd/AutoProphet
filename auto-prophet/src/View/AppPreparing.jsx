@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 //Imports for react pages and assets
 import { StockInteractor } from "../Interactor/StockInteractor";
 import { JSONRequest } from "../Gateway/Request/JSONRequest";
-import logo from "../Asset/Image/logo.png";
+import logo from "../Asset/Image/logo-dark.png";
 import ConfigUpdater from "../Utility/ConfigManager";
 
 export function AppPreparing(props) {
