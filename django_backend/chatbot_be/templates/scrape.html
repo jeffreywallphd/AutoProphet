@@ -148,13 +148,13 @@
                         let content = '';
 
                         if (data.file_type === 'xml') {
-                            // Parse the XML and manually replace special characters
+                            // Parse the XML and pretty print
                             const parser = new DOMParser();
                             const xmlDoc = parser.parseFromString(data.content, 'application/xml');
                             
-                            // Serialize and manually replace special characters to avoid rendering issues
+                            // Serialize and pretty print the XML
                             const xmlString = new XMLSerializer().serializeToString(xmlDoc);
-                            content = `<pre>${escapeXML(xmlString)}</pre>`;
+                            content = `<pre>${escapeXML(prettyPrintXML(xmlString))}</pre>`;
                             
                         } else if (data.file_type === 'html') {
                             content = `<pre>${escapeHTML(data.content)}</pre>`;
@@ -200,6 +200,37 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
         }
+
+        // Helper function to pretty-print the XML string
+        function prettyPrintXML(xml) {
+            let formatted = '';
+            const reg = /(>)(<)(\/*)/g;
+            let pad = 0;
+            
+            // Add line breaks and indentation
+            xml = xml.replace(reg, '$1\r\n$2$3');
+            xml.split('\r\n').forEach((node) => {
+                let indent = 0;
+                if (node.match(/.+<\/\w[^>]*>$/)) {
+                    indent = 0; // no change to indentation for self-closing tags
+                } else if (node.match(/^<\/\w/)) {
+                    // Decrease indent for closing tags
+                    if (pad !== 0) {
+                        pad -= 1;
+                    }
+                } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+                    indent = 1; // increase indent for opening tags
+                } else {
+                    indent = 0; // no indent for single-line elements
+                }
+
+                formatted += new Array(pad + 1).join('  ') + node + '\r\n';
+                pad += indent; // increase padding for the next tag
+            });
+
+            return formatted;
+        }
+
     </script>    
 </body>
 </html>
