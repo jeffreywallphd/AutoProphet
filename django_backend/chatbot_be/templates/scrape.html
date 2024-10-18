@@ -40,6 +40,49 @@
             margin-left: 250px;
             padding: 20px;
         }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: calc(100% - 16px);  /* Make input fields responsive */
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #575757;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        #scrapedData {
+            display: none;  /* Hide scraped data section initially */
+        }
     </style>
 </head>
 <body>
@@ -61,26 +104,31 @@
     <div class="content">
         <h1>Data Scraper</h1>
         <label for="url">URL:</label>
-        <input type="text" id="url" required>
+        <input type="text" id="url" placeholder="Enter the URL to scrape" required>
         
         <label for="output_file">Output File Name:</label>
-        <input type="text" id="output_file" required>
+        <input type="text" id="output_file" placeholder="Enter desired output file name" required>
         
         <button id="scrapeBtn">Scrape</button>
         <div id="result"></div>
     
+        <!-- Scraped Data Section - Hidden Initially -->
+        <div id="scrapedData">
+            <h2>Last Scraped Data</h2>
+            <div id="scrapedContent"></div>  <!-- Container for scraped content -->
+        </div>
     </div>
     
     <script>
         document.getElementById('scrapeBtn').addEventListener('click', () => {
             const url = document.getElementById('url').value;
             const outputFile = document.getElementById('output_file').value;
-    
+
             if (!url || !outputFile) {
                 alert('Please provide both URL and output file name.');
                 return;
             }
-    
+
             // Correct the fetch URL to match your Django endpoint
             fetch(`/api/scrape/?url=${encodeURIComponent(url)}&output_file=${encodeURIComponent(outputFile)}`)
                 .then(response => {
@@ -91,8 +139,38 @@
                 })
                 .then(data => {
                     const resultDiv = document.getElementById('result');
+                    const scrapedDataDiv = document.getElementById('scrapedData');
+                    const scrapedContentDiv = document.getElementById('scrapedContent');
+                    
                     if (data.success) {
                         resultDiv.innerHTML = `<p style="color: green;">${data.success}</p>`;
+
+                        let content = '';
+
+                        if (data.file_type === 'xml') {
+                            // Parse the XML and pretty print
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(data.content, 'application/xml');
+                            
+                            // Serialize and pretty print the XML
+                            const xmlString = new XMLSerializer().serializeToString(xmlDoc);
+                            content = `<pre>${escapeXML(prettyPrintXML(xmlString))}</pre>`;
+                            
+                        } else if (data.file_type === 'html') {
+                            content = `<pre>${escapeHTML(data.content)}</pre>`;
+                        } else if (data.file_type === 'json' || data.file_type === 'csv') {
+                            content = `<pre>${data.content}</pre>`;
+                        } else if (data.file_type === 'xlsx') {
+                            content = `<p>Excel file content available. <a href="/download/${data.id}">Download</a></p>`;
+                        }
+
+                        scrapedContentDiv.innerHTML = `
+                            <h3>Data from ${data.url} (${data.file_type})</h3>
+                            ${content}
+                        `;
+                        
+                        // Show the scraped data section
+                        scrapedDataDiv.style.display = 'block';
                     } else if (data.error) {
                         resultDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
                     }
@@ -102,6 +180,57 @@
                     document.getElementById('result').innerHTML = `<p style="color: red;">An error occurred: ${error.message}</p>`;
                 });
         });
+
+        // Helper function to escape HTML special characters
+        function escapeHTML(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Helper function to escape XML special characters (ensuring no tags are rendered)
+        function escapeXML(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Helper function to pretty-print the XML string
+        function prettyPrintXML(xml) {
+            let formatted = '';
+            const reg = /(>)(<)(\/*)/g;
+            let pad = 0;
+            
+            // Add line breaks and indentation
+            xml = xml.replace(reg, '$1\r\n$2$3');
+            xml.split('\r\n').forEach((node) => {
+                let indent = 0;
+                if (node.match(/.+<\/\w[^>]*>$/)) {
+                    indent = 0; // no change to indentation for self-closing tags
+                } else if (node.match(/^<\/\w/)) {
+                    // Decrease indent for closing tags
+                    if (pad !== 0) {
+                        pad -= 1;
+                    }
+                } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+                    indent = 1; // increase indent for opening tags
+                } else {
+                    indent = 0; // no indent for single-line elements
+                }
+
+                formatted += new Array(pad + 1).join('  ') + node + '\r\n';
+                pad += indent; // increase padding for the next tag
+            });
+
+            return formatted;
+        }
+
     </script>    
 </body>
 </html>
