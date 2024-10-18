@@ -142,12 +142,24 @@
                     const scrapedDataDiv = document.getElementById('scrapedData');
                     const scrapedContentDiv = document.getElementById('scrapedContent');
                     
-                    if (data.success) {
-                        resultDiv.innerHTML = `<p style="color: green;">${data.success}</p>`;
+                if (data.success) {
+                    resultDiv.innerHTML = `<p style="color: green;">${data.success}</p>`;
+
+                    // Helper function to escape HTML special characters
+                    const escapeHTML = (str) => {
+                        return str
+                            .replace(/&/g, "&amp;")
+                            .replace(/</g, "&lt;")
+                            .replace(/>/g, "&gt;")
+                            .replace(/"/g, "&quot;")
+                            .replace(/'/g, "&#039;");
+                    };
 
                         // Dynamically render the scraped content
                         let content = '';
-                        if (data.file_type === 'json' || data.file_type === 'xml' || data.file_type === 'html' || data.file_type === 'csv') {
+                        if (data.file_type === 'html') {
+                             content = `<pre>${escapeHTML(data.content)}</pre>`;  // Escape HTML content
+                        } else if (data.file_type === 'json' || data.file_type === 'xml' || data.file_type === 'html' || data.file_type === 'csv') {
                             content = `<pre>${data.content}</pre>`;
                         } else if (data.file_type === 'xlsx') {
                             content = `<p>Excel file content available. <a href="/download/${data.id}">Download</a></p>`;
