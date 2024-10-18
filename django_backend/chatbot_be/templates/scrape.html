@@ -123,12 +123,12 @@
         document.getElementById('scrapeBtn').addEventListener('click', () => {
             const url = document.getElementById('url').value;
             const outputFile = document.getElementById('output_file').value;
-    
+
             if (!url || !outputFile) {
                 alert('Please provide both URL and output file name.');
                 return;
             }
-    
+
             // Correct the fetch URL to match your Django endpoint
             fetch(`/api/scrape/?url=${encodeURIComponent(url)}&output_file=${encodeURIComponent(outputFile)}`)
                 .then(response => {
@@ -142,24 +142,23 @@
                     const scrapedDataDiv = document.getElementById('scrapedData');
                     const scrapedContentDiv = document.getElementById('scrapedContent');
                     
-                if (data.success) {
-                    resultDiv.innerHTML = `<p style="color: green;">${data.success}</p>`;
+                    if (data.success) {
+                        resultDiv.innerHTML = `<p style="color: green;">${data.success}</p>`;
 
-                    // Helper function to escape HTML special characters
-                    const escapeHTML = (str) => {
-                        return str
-                            .replace(/&/g, "&amp;")
-                            .replace(/</g, "&lt;")
-                            .replace(/>/g, "&gt;")
-                            .replace(/"/g, "&quot;")
-                            .replace(/'/g, "&#039;");
-                    };
-
-                        // Dynamically render the scraped content
                         let content = '';
-                        if (data.file_type === 'html') {
-                             content = `<pre>${escapeHTML(data.content)}</pre>`;  // Escape HTML content
-                        } else if (data.file_type === 'json' || data.file_type === 'xml' || data.file_type === 'html' || data.file_type === 'csv') {
+
+                        if (data.file_type === 'xml') {
+                            // Parse the XML and manually replace special characters
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(data.content, 'application/xml');
+                            
+                            // Serialize and manually replace special characters to avoid rendering issues
+                            const xmlString = new XMLSerializer().serializeToString(xmlDoc);
+                            content = `<pre>${escapeXML(xmlString)}</pre>`;
+                            
+                        } else if (data.file_type === 'html') {
+                            content = `<pre>${escapeHTML(data.content)}</pre>`;
+                        } else if (data.file_type === 'json' || data.file_type === 'csv') {
                             content = `<pre>${data.content}</pre>`;
                         } else if (data.file_type === 'xlsx') {
                             content = `<p>Excel file content available. <a href="/download/${data.id}">Download</a></p>`;
@@ -181,6 +180,26 @@
                     document.getElementById('result').innerHTML = `<p style="color: red;">An error occurred: ${error.message}</p>`;
                 });
         });
+
+        // Helper function to escape HTML special characters
+        function escapeHTML(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Helper function to escape XML special characters (ensuring no tags are rendered)
+        function escapeXML(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     </script>    
 </body>
 </html>
