@@ -56,6 +56,5 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Scraped data saved on local machine
-local_data/
+
 
