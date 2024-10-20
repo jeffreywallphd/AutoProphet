@@ -56,5 +56,5 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-
-
+# To save data locally
+local_data/
