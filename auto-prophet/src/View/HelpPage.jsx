@@ -14,7 +14,8 @@ class Help extends Component {
                 <h2>Help</h2>
                 <p>Tab 1</p>
                 <p>Tab 2</p>
-                <p>Tab3...1</p>
+                <p>Tab3</p>
+                <p>...</p>
             </div>
         );
     }
