@@ -8,7 +8,7 @@
 class Help {
     render() {
         return (
-            <div className="page">
+            <div class="helpPage">
                 <h1>Welcome to the help page!</h1>
                   <p>Tab 1</p>
                   <p>Tab 2</p>
