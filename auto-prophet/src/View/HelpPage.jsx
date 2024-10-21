@@ -4,13 +4,20 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-export function Help() {
-    return (
-        <div className="page">
-            <h2>Help Page!</h2>
+import React, { Component } from "react";
+
+class Help extends Component {
+
+    render() {
+        return (
+            <div className="page">
+                <h2>Help</h2>
                 <p>Tab 1</p>
                 <p>Tab 2</p>
-                <p>Tab 3...</p>
-        </div>
-    );
+                <p>Tab3...1</p>
+            </div>
+        );
+    }
 }
+
+export default Help;

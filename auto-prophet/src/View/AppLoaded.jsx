@@ -14,7 +14,7 @@ import {
 
 //Imports for react pages and assets
 import Home from "./Home";
-import { Help } from "./HelpPage";
+import Help from "./HelpPage";
 import Portfolio from "./Portfolio";
 import { Analysis } from "./Analysis";
 import BuyReport from "./BuyReport";
@@ -64,7 +64,7 @@ class AppLoaded extends Component {
                             </header>
                             <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
                                 <NavLink to="/">Home</NavLink>
-                                <NavLink to="/">Help</NavLink>
+                                <NavLink to="/help">Help</NavLink>
                                 <NavLink to="/portfolio">Portfolio</NavLink>
                                 <NavLink to="/price">Stock & Fund</NavLink>
                                 <NavLink to="/analysis">Risk Analysis</NavLink>
