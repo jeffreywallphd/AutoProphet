@@ -8,6 +8,8 @@ from django.shortcuts import render
 from openpyxl import load_workbook
 from io import BytesIO
 from ..models.scraped_data import ScrapedData  # Import the model to save data
+import pdfplumber
+import markdown
 
 class ScrapeDataView(APIView):
     def get(self, request):
@@ -80,6 +82,62 @@ class ScrapeDataView(APIView):
             'content': latest_scraped_data.content
         }, status=status.HTTP_200_OK)
 
+class UploadPDFView(APIView):
+    def post(self, request):
+        pdf_file = request.FILES.get('pdf_file')
+        output_format = request.POST.get('output_format')
+
+        if not pdf_file or not output_format:
+            return Response({'error': 'PDF file and output format are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Extract text from PDF using pdfplumber
+            extracted_text = ""
+            with pdfplumber.open(pdf_file) as pdf:
+                for page in pdf.pages:
+                    extracted_text += page.extract_text() + "\n\n"
+
+            # Convert the extracted text to HTML or JSON
+            file_type = ''
+            converted_content = ''
+
+            if output_format == 'html':
+                # Convert extracted text to HTML
+                converted_content = markdown.markdown(extracted_text)
+                file_type = 'html'
+
+            elif output_format == 'json':
+                # Convert extracted text to JSON (as an array of lines)
+                json_content = {"content": extracted_text.strip().split('\n')}
+                converted_content = json_content
+                file_type = 'json'
+
+            else:
+                return Response({'error': 'Unsupported output format.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Save the converted HTML or JSON to the database
+            scraped_data = ScrapedData.objects.create(
+                file_type=file_type,
+                content=converted_content if file_type == 'html' else str(converted_content)
+            )
+
+            # Fetch the latest scraped data after saving
+            latest_scraped_data = ScrapedData.objects.latest('created_at')
+
+            return Response({
+                'success': f'PDF successfully converted to {output_format.upper()}.',
+                'file_type': file_type,
+                'content': converted_content,
+                'latest_scraped_data': {
+                    'url': latest_scraped_data.url,
+                    'file_type': latest_scraped_data.file_type,
+                    'content': latest_scraped_data.content
+                }
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': f'Error processing PDF: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
 # Template view to render the latest scraped data
 def scrape_view(request):
     # Fetch the most recent scraped data
