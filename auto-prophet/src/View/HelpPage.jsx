@@ -4,18 +4,17 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 
-class Help {
-    render() {
-        return (
-            <div class="helpPage">
-                <h1>Welcome to the help page!</h1>
-                  <p>Tab 1</p>
-                  <p>Tab 2</p>
-                  <p>Tab 3...</p>
-            </div>
-        );
-    }
+export function Learn() {
+    return (
+        <div className="page">
+            <h2>Help Page!</h2>
+                <p>Tab 1</p>
+                <p>Tab 2</p>
+                <p>Tab 3...</p>
+        </div>
+    );
 }
-
-export default Help;
