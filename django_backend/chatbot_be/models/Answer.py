@@ -1,8 +1,13 @@
 from django.db import models
+from Answer import Document as DocumentTable
+from Answer import License as LicenseTable
+from Answer import Question as QuestionTable
+
+
 
 
 class Answer(models.Model):
-    AnswerID = models.IntegerField(primary_key= True)
+    Answer_ID = models.IntegerField(primary_key= True)
     Link = models.CharField(max_length=255, null=True)
     PageNum = models.IntegerField()
     Answer = models.CharField(max_length=255)
@@ -21,9 +26,17 @@ class Answer(models.Model):
         choices=AnswerValid.choices, 
         default=AnswerValid.RANDOM_UNVERIFIED
     )
-    DocID = models.CharField(max_length=255)
-    LiscenseID = models.CharField(max_length=255)
-    QuestionID = models.CharField(max_length=255)
+    Doc_id = models.ForeignKey(DocumentTable,  on_delete=models.CASCADE, blank= False, null = False)
+    License_ID = models.ForeignKey(LicenseTable,  on_delete=models.CASCADE, blank= False, null = False)
+    Question_ID = models.ForeignKey(QuestionTable,  on_delete=models.CASCADE, blank= False, null = False)
 
-    def str(self):
-        return f"Answer {self.AnswerID} - {self.Link} - {self.PageNum} - {self.Answer} - {self.LastDayScraped} - {self.CopyrightDate} - {self.OutdatedFlag} - {self.FlagNewAnswerID} - {self.DocID} - {self.LiscenseID} - {self.QuestionID} (Status: {self.get_AnswerValid_display()})"
+
+
+
+    def __str__(self):
+        return (
+            f"Answer {self.AnswerID} - Link: {self.Link} - Page: {self.PageNum} - "
+            f"Answer: {self.Answer} - Scraped: {self.LastDayScraped} - Copyright: {self.CopyrightDate} - "
+            f"Doc: {self.Doc_id} - License: {self.License_ID} - Question: {self.Question_ID} "
+            f"(Status: {self.get_AnswerValid_display()})"
+        )

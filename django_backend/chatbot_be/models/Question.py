@@ -1,12 +1,12 @@
 from django.db import models
 
+from models import Answer
+
+
 class Question(models.Model):
     Question_ID = models.AutoField(primary_key=True)  # Primary key auto-increment
-    Question = models.CharField(max=255)  # The question itself
-    answer = models.ForeignKey(
-  #FOREIGN KEY
-  #       Answer, on_delete=models.CASCADE, related_name='review_answers'
-    )  # Foreign key linking to Answer model
-    #
+    Question = models.CharField(max_length=255)  # The question itself
+    answer_id = models.ForeignKey(Answer,  on_delete=models.CASCADE, blank= False, null = False)
+
     def __str__(self):
-        return f"ReviewAnswer {self.RevAnswer_ID} - Score: {self.ScoreScale}"
+      return f"Question: {self.Question} - Answer: {self.answer_id}"
