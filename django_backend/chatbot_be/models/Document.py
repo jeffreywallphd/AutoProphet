@@ -1,6 +1,6 @@
 from django.db import models
-from Answer import Source as SourceTable
-from Answer import License as LicenseTable
+import Source as SourceTable
+import License as LicenseTable
 
 class Document(models.Model):
     DocID = models.CharField(max_length=255, primary_key= True)

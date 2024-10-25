@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from Question import Question as QuestionTable
-from Reviewer import Reviewer as ReviewerTable
+import Question as QuestionTable
+import Reviewer as ReviewerTable
 
 
 class ReviewAnswer(models.Model):

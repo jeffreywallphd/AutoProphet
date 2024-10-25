@@ -1,7 +1,7 @@
 from django.db import models
-from Answer import Document as DocumentTable
-from Answer import License as LicenseTable
-from Answer import Question as QuestionTable
+import Document as DocumentTable
+import License as LicenseTable
+import Question as QuestionTable
 
 
 
