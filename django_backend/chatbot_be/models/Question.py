@@ -1,6 +1,6 @@
 from django.db import models
 
-from models import Answer
+from models.Answer import Answer
 
 
 class Question(models.Model):
