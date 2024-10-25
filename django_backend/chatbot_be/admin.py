@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models.scraped_data import ScrapedData as ScrapedDataTable
 # (EXAMPLE) from .models import Conversation as ConversationTable
 from .models import License as LicenseTable
 from .models import Question as QuestionTable
@@ -11,7 +12,8 @@ from .models import Document as DocumentTable
 
 
 
-#(EXAMPLE) admin.site.register(ConversationTable)
+#(EXAMPLE) admin.site.register(ConversationTable),
+admin.site.register(ScrapedDataTable)
 admin.site.register(LicenseTable)
 admin.site.register(QuestionTable)
 admin.site.register(ReviewAnswerTable)

@@ -28,3 +28,18 @@
 - python manage.py runserver
 
 * And it is all set..
+
+# Django Quick setup
+
+Only to be used after doing Django Setup Steps
+
+1. activate virtual environment
+- Windows: .\venv\Scripts\activate
+- Linux / macOS: source venv/bin/activate
+
+2. pip install -r requirements.txt
+
+3. move to ...\AutoProphet\django_backend. run "python manage.py runserver"
+
+# When adding new dependacys
+Whenever you need to run pip install make sure to add the library to the requirements.txt [file](requirements.txt)
