@@ -696,3 +696,9 @@ code {
 div.valueContainer span.numericValue {
   text-align: right;
 }
+
+/* Styling for Help Page */
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}

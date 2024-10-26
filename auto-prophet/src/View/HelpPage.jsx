@@ -11,11 +11,33 @@ class Help extends Component {
     render() {
         return (
             <div className="page">
-                <h2>Help</h2>
-                <p>Tab 1</p>
-                <p>Tab 2</p>
-                <p>Tab3</p>
-                <p>...</p>
+            <body>
+                <h2>Insight Hub</h2>
+                <h3>Tab Definitions:</h3>
+
+                <div class="grid-container">
+
+                    <div style="background-color:#FFF4A3;">
+                        <h4>Porfolio</h4>
+                        <p>Term- definition</p>
+                        <p>Acronym (full-term)- definition</p>
+                    </div>
+
+                    <div style="background-color:#FFC0C7;">
+                        <h4>Stock & Fund</h4>
+                        <p>Term- definition</p>
+                        <p>Acronym (full-term)- definition</p>
+                    </div>
+
+                    <div style="background-color:#D9EEE1;">
+                        <h4>Risk Analysis</h4>
+                        <p>Term- definition</p>
+                        <p>Acronym (full-term)- definition</p>
+                    </div>
+
+                </div>
+
+            </body>
             </div>
         );
     }
