@@ -698,7 +698,7 @@ div.valueContainer span.numericValue {
 }
 
 /* Styling for Help Page */
-.grid-container {
+.gridContainer {
   display: grid;
   grid-template-columns: 50% 50%;
 }
