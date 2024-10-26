@@ -15,7 +15,6 @@ class Help extends Component {
                 <h2>Insight Hub</h2>
                 <h3>Tab Definitions:</h3>
 
-                <div class="grid-container">
 
                     <div style="background-color:#FFF4A3;">
                         <h4>Porfolio</h4>
@@ -35,7 +34,6 @@ class Help extends Component {
                         <p>Acronym (full-term)- definition</p>
                     </div>
 
-                </div>
 
             </body>
             </div>
