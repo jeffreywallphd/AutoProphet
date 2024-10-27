@@ -134,10 +134,11 @@ class SignUp extends Component {
     });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const {
       firstName,
+      middleName,
       lastName,
       email,
       password,
@@ -152,30 +153,34 @@ class SignUp extends Component {
     if (!this.validateField("lastName", lastName)) isFormValid = false;
     if (!this.validateField("email", email)) isFormValid = false;
     if (!this.validateField("password", password)) isFormValid = false;
-    if (!this.validateField("confirmPassword", confirmPassword))
-      isFormValid = false;
+    if (!this.validateField("confirmPassword", confirmPassword)) isFormValid = false;
     if (!this.validateField("termsChecked", termsChecked)) isFormValid = false;
-    if (!this.validateField("privacyChecked", privacyChecked))
-      isFormValid = false;
+    if (!this.validateField("privacyChecked", privacyChecked)) isFormValid = false;
 
     if (isFormValid) {
-      // condtion to check if user exists
-      if(true){
-        const userDto = new UserDTO(firstName, middleName, lastName, email, password); 
-        //method to create user
-        console.log("User DTO:", userDto);
-        alert("Form submitted successfully!");
-        this.resetForm();
-      } else{
-        this.setState({
-          email: "",
-          password: "",
-          confirmPassword: "",
-      });
-    }
-  }
-  };
+      const userDto = new UserDTO(firstName, middleName, lastName, email, password);
+      
+      try {
+        const response = await fetch('http://localhost:5000/api/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userDto),
+        });
 
+        const data = await response.json();
+
+        if (data.message) {
+          alert(data.message);
+          this.resetForm();
+        }
+      } catch (error) {
+        console.error("There was an error registering the user!", error);
+        alert("Error registering user: " + error.message || "Please try again later.");
+      }
+    }
+  };
   render() {
     const { errors } = this.state;
 
