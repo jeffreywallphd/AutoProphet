@@ -1,6 +1,6 @@
 import { StockRequest } from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
-import {ISqlDataGateway} from "../Data/ISqlDataGateway";
+import {ISqlDataGateway} from "./ISqlDataGateway";
 import { parse } from 'node-html-parser';
 
 // allow the yahoo.finance contextBridge to be used in TypeScript
@@ -9,7 +9,7 @@ declare global {
 }
 
 export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
-    databasePath = "./src/Asset/DB/AutoProphet.db";
+    databasePath = "./src/Asset/DB/OpenFinAL.db";
     connection: any = null;
     sourceName: string = "SQLite Database";
 

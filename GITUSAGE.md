@@ -35,7 +35,7 @@ Use the command line to interact with Git. If you’re using:
 Step 2: Clone the Repository
 To start working on a project, you need to clone (download) the project from GitHub to your computer. Use the following command:
 ```bash
-git clone https://github.com/jeffreywallphd/AutoProphet.git
+git clone https://github.com/jeffreywallphd/OpenFinAL.git
 ```
 
 3. Working on the `FALL2024-BA5200-TEAM#` Branch

@@ -20,12 +20,12 @@ An idea that was discussed was having a live ticker that is across the the top o
 
 ## These were the mockups that we finished:
 
-![image](https://github.com/jeffreywallphd/AutoProphet/assets/147175765/b18e7491-3630-4159-b5c1-ba95e49e5d48)
-![image](https://github.com/jeffreywallphd/AutoProphet/assets/147175765/bd1eec55-9466-4b89-9dd9-81e55575de20)
+![image](https://github.com/jeffreywallphd/OpenFinAL/assets/147175765/b18e7491-3630-4159-b5c1-ba95e49e5d48)
+![image](https://github.com/jeffreywallphd/OpenFinAL/assets/147175765/bd1eec55-9466-4b89-9dd9-81e55575de20)
 
 ### Ticker:
-![image](https://github.com/jeffreywallphd/AutoProphet/assets/147175765/10562476-5020-4416-a59c-28238b2fe75e)
+![image](https://github.com/jeffreywallphd/OpenFinAL/assets/147175765/10562476-5020-4416-a59c-28238b2fe75e)
 ### Twitter Feed:
-![image](https://github.com/jeffreywallphd/AutoProphet/assets/147175765/31c8b4c4-bf71-4e2f-9734-74e03ae98908)
+![image](https://github.com/jeffreywallphd/OpenFinAL/assets/147175765/31c8b4c4-bf71-4e2f-9734-74e03ae98908)
 
 

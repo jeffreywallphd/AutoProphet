@@ -1,4 +1,4 @@
-import {IRequestModel} from "../Request/IRequestModel";
+import {IRequestModel} from "./IRequestModel";
 
 export class JSONRequest implements IRequestModel {
     type: "JSON";

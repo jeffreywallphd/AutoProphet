@@ -1,5 +1,5 @@
 import {IEntity} from "../../Entity/IEntity";
-import {IDataGateway} from "../Data/IDataGateway";
+import {IDataGateway} from "./IDataGateway";
 
 export class AlphaVantageRatioGateway implements IDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";

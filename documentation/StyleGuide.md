@@ -1,4 +1,4 @@
-# AutoProphet Style Guide
+# OpenFinAL Style Guide
 The following style guide should be used when updating the user interface. Changes to styling should be documented here BEFORE implementing style changes in the code.
 
 ## Main Content Areas
@@ -18,7 +18,7 @@ Main Content Areas are referring to the main focus of the page (not including th
 The color palette depicted below is to be the exclusive color palette used in the AutoProfit program.
 
 ### General Color Palette:
-![Style Guide Colors CORRECT](https://github.com/jeffreywallphd/AutoProphet/assets/158068249/815cb4d6-c452-499e-87d5-1dabd51392b2)
+![Style Guide Colors CORRECT](https://github.com/jeffreywallphd/OpenFinAL/assets/158068249/815cb4d6-c452-499e-87d5-1dabd51392b2)
 
 For text color, follow the text color represented per image above. (ex. #2B388F should have white text whereas #C3FBF1 should have black text) 
 - #2B388F - with text color #ffffff

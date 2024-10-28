@@ -1,6 +1,6 @@
 import {StockRequest} from "../../Entity/StockRequest";
 import {IEntity} from "../../Entity/IEntity";
-import {IKeyedDataGateway} from "../Data/IKeyedDataGateway";
+import {IKeyedDataGateway} from "./IKeyedDataGateway";
 
 export class AlphaVantageStockGateway implements IKeyedDataGateway {
     baseURL: string = "https://www.alphavantage.co/query";
