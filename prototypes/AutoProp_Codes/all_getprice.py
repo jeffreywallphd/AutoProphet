@@ -1,9 +1,15 @@
 import requests
 import openai
+import os
+from dotenv import load_dotenv
 
+# Load environment variables from the .env file
+load_dotenv()
+
+# Access the API key
+financial_api_key = os.getenv('API_KEY')
 # Set your API keys
 # openai.api_key = 'your_openai_api_key'
-financial_api_key = 'ENIPDF3XPHW9IUUE'
 
 # #Function to get current stock price
 def get_current_price(symbol):
