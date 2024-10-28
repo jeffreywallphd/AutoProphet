@@ -186,6 +186,8 @@ class SignUp extends Component {
 
     return (
       <div class="signup">
+        <h2>Create an Account</h2>
+        <p>Join us and start your journey!</p>
         <form onSubmit={this.handleSubmit}>
           <div class="form-grid">
             <div class="form-group">
@@ -268,7 +270,7 @@ class SignUp extends Component {
               />
               <label>
                 I agree to the{" "}
-                <a href="#" target="_blank" rel="noopener noreferrer">
+                <a href="https://docs.google.com/document/d/1rKikrpb_zjOqbs4rEt83A5pI_7DMgKPkPn-sSXscNmI" target="_blank" rel="noopener noreferrer">
                   Privacy Policy
                 </a>
                 <span class="required">*</span>&nbsp;

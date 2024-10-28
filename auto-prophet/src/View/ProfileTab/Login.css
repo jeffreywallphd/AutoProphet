@@ -1,0 +1,88 @@
+/* Login Form Styles */
+.login-form {
+    max-width: 600px; /* Adjust to match reset password form width */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form p {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.login-form-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* One column layout */
+    gap: 15px;
+}
+
+.login-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.login-form-group input[type="email"],
+.login-form-group input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.login-error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    height: 1em; /* Keeps space for error message */
+}
+
+.login-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-button-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff; /* Blue background for submit button */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button-container button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.forgot-password-link,
+.login-signup-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.forgot-password-link a,
+.login-signup-link a {
+    color: #007bff; /* Blue link color */
+    text-decoration: none;
+}
+
+.forgot-password-link a:hover,
+.login-signup-link a:hover {
+    text-decoration: underline;
+}
