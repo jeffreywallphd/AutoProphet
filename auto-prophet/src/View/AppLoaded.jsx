@@ -16,6 +16,7 @@ import {
 import Home from "./Home";
 import Portfolio from "./Portfolio";
 import { Analysis } from "./Analysis";
+import BrowseFAQ from "./BrowseFAQ";
 import BuyReport from "./BuyReport";
 import { TimeSeries } from "./TimeSeriesPage";
 import { News } from "./NewsPage";
@@ -65,6 +66,7 @@ class AppLoaded extends Component {
                   <li><NavLink to="/portfolio"><span className="material-icons">pie_chart</span> Portfolio</NavLink></li>
                   <li><NavLink to="/price"><span className="material-icons">attach_money</span> Stock & Fund</NavLink></li>
                   <li><NavLink to="/analysis"><span className="material-icons">assessment</span> Risk Analysis</NavLink></li>
+                  <li><NavLink to="/browsefaq"> Browse our FAQs</NavLink></li>
                   <li><NavLink to="/investment-pool"><span className="material-icons">inventory_2</span> Investment Pool</NavLink></li>
                 </ul>
               </nav>
@@ -84,6 +86,7 @@ class AppLoaded extends Component {
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/analysis" element={<Analysis />} />
                 <Route path="/buy-report" element={<BuyReport />} />
+                <Route path="/browsefaq" element={<BrowseFAQ />}/>
                 <Route path="/price" element={<TimeSeries />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/learn" element={<Learn />} />
