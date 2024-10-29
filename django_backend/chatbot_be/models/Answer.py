@@ -1,9 +1,7 @@
 from django.db import models
-import Document as DocumentTable
-import License as LicenseTable
-import Question as QuestionTable
-
-
+from .Document import Document as DocumentTable
+from .License import License as LicenseTable
+from .Question import Question as QuestionTable
 
 
 class Answer(models.Model):

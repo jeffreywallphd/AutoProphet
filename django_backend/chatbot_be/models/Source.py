@@ -1,5 +1,5 @@
 from django.db import models
-import License as LicenseTable
+from .License import License as LicenseTable
 
 
 
