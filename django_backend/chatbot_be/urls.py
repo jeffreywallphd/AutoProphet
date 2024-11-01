@@ -1,7 +1,7 @@
 from django.urls import path
 from .views.chatbot import chatbot_view
 from .views.home import home_view
-from .views.scarpe import ScrapeDataView, UploadPDFView, scrape_view
+from .views.scrape import ScrapeDataView, UploadPDFView, scrape_view
 from .views import SessionCreateView, ConversationListView, ConversationCreateView, SessionListView
 
 urlpatterns = [
