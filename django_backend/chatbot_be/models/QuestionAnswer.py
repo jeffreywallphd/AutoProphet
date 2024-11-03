@@ -1,6 +1,6 @@
 from django.db import models
-import Question as QuestionTable
-import Answer as AnswerTable
+from .models import Question as QuestionTable, Answer as AnswerTable
+
 
 class QuestionAnswer(models.Model):
     question_id = models.ForeignKey(QuestionTable, on_delete=models.CASCADE, blank= False, null = False)
