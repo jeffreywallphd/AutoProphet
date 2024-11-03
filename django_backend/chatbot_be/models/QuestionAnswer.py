@@ -1,5 +1,6 @@
 from django.db import models
-from .models import Question as QuestionTable, Answer as AnswerTable
+from .Question import Question as QuestionTable
+from .Answer import Answer as AnswerTable
 
 
 class QuestionAnswer(models.Model):
