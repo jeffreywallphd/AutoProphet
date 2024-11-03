@@ -23,9 +23,9 @@ import Forecast from "./Forecast";
 import { ForecastFeature } from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
+import InvestmentPool from "./InvestmentPool";
 
 class AppLoaded extends Component {
-  // --Code for collapsible menu--
   constructor(props) {
     super(props);
     this.state = {
@@ -39,7 +39,6 @@ class AppLoaded extends Component {
       menuCollapsed: !prevState.menuCollapsed
     }));
   }
-  // --End: Code for collapsible menu--
 
   render() {
     const { menuCollapsed } = this.state;
@@ -88,6 +87,7 @@ class AppLoaded extends Component {
                 <Route path="/forecast-features" element={<ForecastFeature />} />
                 <Route path="/forecast-models" element={<ForecastModel />} />
                 <Route path="/sec-report" element={<SecReport />} />
+                <Route path="/investment-pool" element={<InvestmentPool />} /> 
               </Routes>
               <footer>
                 This software is licensed under the GPL-3.0 license.
