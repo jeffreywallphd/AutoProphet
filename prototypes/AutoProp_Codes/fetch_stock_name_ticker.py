@@ -39,6 +39,7 @@ def fetch_stock_name(prompt):
             name, ticker = pair.split(":")
             stocks[name.strip()] = ticker.strip()
     fetch_first_stock=list(stocks.keys())[0]
+    # fetch_first_stock=list(stocks.keys())
     return stocks[fetch_first_stock]
 # str_m1="price of apple"
 # final_out=(fetch_stock_name(str_m1))
