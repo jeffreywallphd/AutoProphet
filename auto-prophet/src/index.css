@@ -472,6 +472,10 @@ code {
   grid-template-columns: 50% 50%;
 }
 
+.divSpacing {
+  padding: 10px;
+}
+
 /* Styling for Risk Analysis Page */
 
 .riskHeaders {
