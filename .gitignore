@@ -56,7 +56,5 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Scraped data 
-*.xml
-*.json
-*.csv
+# To save data locally
+local_data/
