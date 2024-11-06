@@ -4,7 +4,7 @@ from .License import License as LicenseTable
 
 class Document(models.Model):
     DocID = models.CharField(max_length=255, primary_key= True)
-    DocDescription = models.CharField()
+    DocDescription = models.CharField(max_length=255)
     DocLink = models.CharField(max_length=255)
     LastDateScraped = models.DateField()
     DocName = models.CharField(max_length=255)
