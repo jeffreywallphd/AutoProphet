@@ -465,6 +465,17 @@ code {
   padding-right: 30px;
 }
 
+/* Styling for BrowseFAQ Page */
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.divSpacing {
+  padding: 10px;
+}
+
 /* Styling for Risk Analysis Page */
 
 .riskHeaders {
