@@ -5,73 +5,98 @@ class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      newPassword: "",
-      confirmPassword: "",
-      errors: {},
+      // Field values
+      fields: {
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+      // Validation errors
+      errors: {
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
     };
   }
 
+  resetFields = () => {
+    this.setState({
+      fields: {
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+      errors: {
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+      showPassword: false,
+      showConfirmPassword: false,
+    });
+  };
+  
   validateField = (name, value) => {
-    let errors = {};
+    let { errors } = this.state;
     let isValid = true;
 
+    // Validation logic for each field
     switch (name) {
       case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!value) {
           isValid = false;
           errors["email"] = "Email is required.";
-        } else if (!emailRegex.test(value)) {
+        } else if (!/\S+@\S+\.\S+/.test(value)) {
           isValid = false;
-          errors["email"] = "Invalid email format.";
+          errors["email"] = "Email is invalid.";
+        } else {
+          errors["email"] = ""; // Clear error if valid
         }
         break;
-
-      case "newPassword":
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+      case "password":
         if (!value) {
           isValid = false;
-          errors["newPassword"] = "New password is required.";
-        } else if (!passwordRegex.test(value)) {
+          errors["password"] = "Password is required.";
+        } else if (value.length < 6) {
           isValid = false;
-          errors["newPassword"] =
-            "Password must be 8-16 characters long and include at least one letter, one number, and one special character.";
+          errors["password"] = "Password must be at least 6 characters.";
+        } else {
+          errors["password"] = ""; // Clear error if valid
         }
         break;
-
       case "confirmPassword":
-        const { newPassword } = this.state;
-        if (value !== newPassword) {
+        if (value !== this.state.fields.password) {
           isValid = false;
           errors["confirmPassword"] = "Passwords do not match.";
+        } else {
+          errors["confirmPassword"] = ""; // Clear error if valid
         }
         break;
-
       default:
         break;
     }
 
-    if (Object.keys(errors).length > 0) {
-      this.setState((prevState) => ({
-        errors: { ...prevState.errors, ...errors },
-      }));
-    } else {
-      this.setState((prevState) => {
-        const newErrors = { ...prevState.errors };
-        delete newErrors[name];
-        return { errors: newErrors };
-      });
-    }
-
+    // Update errors in the state
+    this.setState({ errors });
     return isValid;
   };
 
   handleChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value }, () => {
-      this.validateField(name, value);
-    });
+    const { name, value, type, checked } = e.target;
+    const fieldValue = type === "checkbox" ? checked : value;
+
+    this.setState(
+      (prevState) => ({
+        fields: {
+          ...prevState.fields,
+          [name]: fieldValue,
+        },
+      }),
+      () => {
+        this.validateField(name, fieldValue); // Validate after change
+      }
+    );
   };
 
   checkEmailExists = async (email) => {
@@ -91,46 +116,51 @@ class ResetPassword extends Component {
     }
   };
 
-  handleSubmit = async (e) => {
-  e.preventDefault();
-  const { email, newPassword, confirmPassword } = this.state;
-
-  let isFormValid = true;
-  if (!this.validateField("email", email)) isFormValid = false;
-  if (!this.validateField("newPassword", newPassword)) isFormValid = false;
-  if (!this.validateField("confirmPassword", confirmPassword)) isFormValid = false;
-
-  if (isFormValid) {
-    // Check if the email exists
-    const emailExists = await this.checkEmailExists(email);
-    if (!emailExists) {
-      alert("Email does not exist. Please enter a registered email.");
-      return;
-    }
-
-    // Proceed with password reset
+  resetPassword = async (email, password) => {
     try {
       const response = await fetch('http://localhost:5000/api/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, newPassword }),
+        body: JSON.stringify({ email, password }),
       });
-
+  
       const result = await response.json();
       if (response.ok) {
-        alert(result.message); // Alert success message from server
-        this.props.onToggleForm(); // Redirect to login form
+        alert(result.message || "Password reset successful. Redirecting to login...");
+        this.props.onToggleForm(); // Directly trigger form switch
       } else {
-        alert(result.message); // Show error message from server
+        alert(result.message || "Error during password reset.");
       }
     } catch (error) {
       console.error("Error during password reset:", error);
       alert("An error occurred. Please try again later.");
     }
-  }
-};
+  };
+
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    const { fields } = this.state;
+    const { email, password, confirmPassword } = fields;
+
+    let isFormValid = true;
+    if (!this.validateField("email", email)) isFormValid = false;
+    if (!this.validateField("password", password)) isFormValid = false;
+    if (!this.validateField("confirmPassword", confirmPassword)) isFormValid = false;
+
+    if (isFormValid) {
+      this.resetFields();
+      // Check if the email exists
+      const emailExists = await this.checkEmailExists(email);
+      if (!emailExists) {
+        alert("Email does not exist. Please enter a registered email.");
+        return;
+      }
+      // Proceed with password reset
+      await this.resetPassword(email, password);
+    }
+  };
 
   handleLoginRedirect = (e) => {
     e.preventDefault();
@@ -138,7 +168,7 @@ class ResetPassword extends Component {
   };
 
   render() {
-    const { errors } = this.state;
+    const { errors, fields } = this.state;
 
     return (
       <div className="reset-password-form">
@@ -150,21 +180,36 @@ class ResetPassword extends Component {
               <label>
                 Email:<span className="required">*</span>
               </label>
-              <input type="email" name="email" onChange={this.handleChange} />
+              <input 
+                type="email" 
+                name="email" 
+                value={fields.email}
+                onChange={this.handleChange} 
+              />
               {errors.email && <div className="reset-password-error">{errors.email}</div>}
             </div>
             <div className="reset-password-form-group">
               <label>
                 New Password:<span className="required">*</span>
               </label>
-              <input type="password" name="newPassword" onChange={this.handleChange} />
-              {errors.newPassword && <div className="reset-password-error">{errors.newPassword}</div>}
+              <input 
+                type="password" 
+                name="password" 
+                value={fields.password}
+                onChange={this.handleChange} 
+              />
+              {errors.password && <div className="reset-password-error">{errors.password}</div>}
             </div>
             <div className="reset-password-form-group">
               <label>
                 Confirm Password:<span className="required">*</span>
               </label>
-              <input type="password" name="confirmPassword" onChange={this.handleChange} />
+              <input 
+                type="password" 
+                name="confirmPassword" 
+                value={fields.confirmPassword}
+                onChange={this.handleChange} 
+              />
               {errors.confirmPassword && <div className="reset-password-error">{errors.confirmPassword}</div>}
             </div>
           </div>

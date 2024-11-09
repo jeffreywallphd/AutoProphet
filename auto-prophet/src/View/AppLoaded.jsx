@@ -37,7 +37,8 @@ class AppLoaded extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuCollapsed: false
+            menuCollapsed: false,
+            isUserLoggedIn: false,
         };
         this.toggleMenu = this.toggleMenu.bind(this);
     }
@@ -50,7 +51,7 @@ class AppLoaded extends Component {
     // --End: Code for collapsible menu--
 
     render() {
-        const { menuCollapsed } = this.state;
+        const { menuCollapsed} = this.state;
 
         return (
             <HashRouter>
@@ -93,8 +94,8 @@ class AppLoaded extends Component {
                                 <Route path="/forecast-features" element={<ForecastFeature />} />
                                 <Route path="/forecast-models" element={<ForecastModel />} />
                                 <Route path="/sec-report" element={<SecReport />} />
-                                {/* <-- Added User route */}
-                                <Route path="/user" element={<Profile />} />
+                                {/* <-- Added User route --> */}
+                                <Route path="/user" element={<Profile/>}/>
                             </Routes>
                             <footer>
                                 This software is licensed under the GPL-3.0 license. 

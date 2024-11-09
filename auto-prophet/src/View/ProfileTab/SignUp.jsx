@@ -7,38 +7,62 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      errors: {},
-      termsChecked: false,
+      // Field values
+      fields: {
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        privacyChecked: false,
+      },
+      // Validation errors
+      errors: {
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        privacyChecked: "",
+      },
       privacyChecked: false,
       showPassword: false,
       showConfirmPassword: false,
     };
   }
 
-  resetForm = () => {
+  resetFields = () => {
     this.setState({
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      errors: {},
-      termsChecked: false,
-      privacyChecked: false,
+      fields: {
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        privacyChecked: false,
+      },
+      errors: {
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        privacyChecked: "",
+      },
+      showPassword: false,
+      showConfirmPassword: false,
     });
   };
 
   validateField = (name, value) => {
-    let errors = {};
+    let { errors } = this.state;
     let isValid = true;
 
+    // Validation logic for each field
     switch (name) {
       case "firstName":
         if (!value) {
@@ -47,9 +71,13 @@ class SignUp extends Component {
         } else if (value.length > 16) {
           isValid = false;
           errors["firstName"] = "First name must be less than 16 characters.";
+        } else {
+          errors["firstName"] = ""; // Clear error if valid
         }
         break;
-
+      case "middleName":
+        errors["middleName"] = ""; // Clear error for middle name
+        break;
       case "lastName":
         if (!value) {
           isValid = false;
@@ -57,71 +85,54 @@ class SignUp extends Component {
         } else if (value.length > 16) {
           isValid = false;
           errors["lastName"] = "Last name must be less than 16 characters.";
+        } else {
+          errors["lastName"] = ""; // Clear error if valid
         }
         break;
-
       case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!value) {
           isValid = false;
           errors["email"] = "Email is required.";
-        } else if (!emailRegex.test(value)) {
+        } else if (!/\S+@\S+\.\S+/.test(value)) {
           isValid = false;
-          errors["email"] = "Invalid email format.";
+          errors["email"] = "Email is invalid.";
         } else {
-          const existingEmails = ["test@example.com"];
-          if (existingEmails.includes(value)) {
-            isValid = false;
-            errors["email"] = "Email already exists.";
-          }
+          errors["email"] = ""; // Clear error if valid
         }
         break;
-
       case "password":
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
         if (!value) {
           isValid = false;
           errors["password"] = "Password is required.";
-        } else if (!passwordRegex.test(value)) {
+        } else if (value.length < 6) {
           isValid = false;
-          errors["password"] =
-            "8-16 length with a digit, a letter and a special character.";
+          errors["password"] = "Password must be at least 6 characters.";
+        } else {
+          errors["password"] = ""; // Clear error if valid
         }
         break;
-
       case "confirmPassword":
-        const { password } = this.state;
-        if (value !== password) {
+        if (value !== this.state.fields.password) {
           isValid = false;
           errors["confirmPassword"] = "Passwords do not match.";
+        } else {
+          errors["confirmPassword"] = ""; // Clear error if valid
         }
         break;
-
-      case "termsChecked":
       case "privacyChecked":
         if (!value) {
           isValid = false;
-          errors[name] =
-            `You must agree to the ${name === "termsChecked" ? "terms and conditions" : "privacy policy"}.`;
+          errors["privacyChecked"] = "You must agree to the privacy policy.";
+        } else {
+          errors["privacyChecked"] = ""; // Clear error if valid
         }
         break;
-
       default:
         break;
     }
 
-    if (Object.keys(errors).length > 0) {
-      this.setState((prevState) => ({
-        errors: { ...prevState.errors, ...errors },
-      }));
-    } else {
-      this.setState((prevState) => {
-        const newErrors = { ...prevState.errors };
-        delete newErrors[name];
-        return { errors: newErrors };
-      });
-    }
-
+    // Update errors in the state
+    this.setState({ errors });
     return isValid;
   };
 
@@ -129,23 +140,23 @@ class SignUp extends Component {
     const { name, value, type, checked } = e.target;
     const fieldValue = type === "checkbox" ? checked : value;
 
-    this.setState({ [name]: fieldValue }, () => {
-      this.validateField(name, fieldValue);
-    });
+    this.setState(
+      (prevState) => ({
+        fields: {
+          ...prevState.fields,
+          [name]: fieldValue,
+        },
+      }),
+      () => {
+        this.validateField(name, fieldValue); // Validate after change
+      }
+    );
   };
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const {
-      firstName,
-      middleName,
-      lastName,
-      email,
-      password,
-      confirmPassword,
-      termsChecked,
-      privacyChecked,
-    } = this.state;
+    const { fields } = this.state;
+    const { firstName, lastName, email, password, confirmPassword, privacyChecked } = fields;
 
     let isFormValid = true;
 
@@ -154,12 +165,17 @@ class SignUp extends Component {
     if (!this.validateField("email", email)) isFormValid = false;
     if (!this.validateField("password", password)) isFormValid = false;
     if (!this.validateField("confirmPassword", confirmPassword)) isFormValid = false;
-    if (!this.validateField("termsChecked", termsChecked)) isFormValid = false;
     if (!this.validateField("privacyChecked", privacyChecked)) isFormValid = false;
 
     if (isFormValid) {
-      const userDto = new UserDTO(firstName, middleName, lastName, email, password);
-      
+      const userDto = new UserDTO(
+        fields.firstName, 
+        fields.middleName, 
+        fields.lastName, 
+        fields.email, 
+        fields.password
+      );
+      this.resetFields();      
       try {
         const response = await fetch('http://localhost:5000/api/signup', {
           method: 'POST',
@@ -172,8 +188,10 @@ class SignUp extends Component {
         const data = await response.json();
 
         if (data.message) {
-          alert(data.message);
-          this.resetForm();
+          alert("Signup successful, redirecting to Login...");
+          setTimeout(() => {
+            this.props.onToggleForm(); 
+          }, 100);
         }
       } catch (error) {
         console.error("There was an error registering the user!", error);
@@ -182,7 +200,7 @@ class SignUp extends Component {
     }
   };
   render() {
-    const { errors } = this.state;
+    const { errors, fields } = this.state;
 
     return (
       <div class="signup">
@@ -195,6 +213,7 @@ class SignUp extends Component {
               <input
                 type="text"
                 name="firstName"
+                value={fields.firstName}
                 onChange={this.handleChange}
               />
               <div class="error">{errors.firstName}</div>
@@ -204,6 +223,7 @@ class SignUp extends Component {
               <input
                 type="text"
                 name="middleName"
+                value={fields.middleName}
                 onChange={this.handleChange}
               />
             </div>
@@ -211,14 +231,22 @@ class SignUp extends Component {
               <label>
                 Last Name:<span class="required">*</span>
               </label>
-              <input type="text" name="lastName" onChange={this.handleChange} />
+              <input 
+                type="text" 
+                name="lastName"
+                value={fields.lastName}
+                onChange={this.handleChange} />
               <div class="error">{errors.lastName}</div>
             </div>
             <div class="form-group">
               <label>
                 Email:<span class="required">*</span>
               </label>
-              <input type="email" name="email" onChange={this.handleChange} />
+              <input 
+                type="email" 
+                name="email"
+                value={fields.email}
+                onChange={this.handleChange} />
               <div class="error">{errors.email}</div>
             </div>
             <div class="form-group">
@@ -228,6 +256,7 @@ class SignUp extends Component {
               <input
                 type="password"
                 name="password"
+                value={fields.password}
                 onChange={this.handleChange}
               />
               <div class="error">{errors.password}</div>
@@ -239,6 +268,7 @@ class SignUp extends Component {
               <input
                 type="password"
                 name="confirmPassword"
+                value={fields.confirmPassword}
                 onChange={this.handleChange}
               />
               <div class="error"> {errors.confirmPassword}</div>
@@ -248,24 +278,8 @@ class SignUp extends Component {
             <div class="checkbox-row">
               <input
                 type="checkbox"
-                name="termsChecked"
-                onChange={this.handleChange}
-              />
-              <label>
-                I agree to the{" "}
-                <a href="#" target="_blank" rel="noopener noreferrer">
-                  Terms and Conditions
-                </a>
-                <span class="required">*</span>&nbsp;
-              </label>
-              <div class="error"> {errors.termsChecked}</div>
-            </div>
-          </div>
-          <div class="checkbox-container">
-            <div class="checkbox-row">
-              <input
-                type="checkbox"
                 name="privacyChecked"
+                checked={fields.privacyChecked}
                 onChange={this.handleChange}
               />
               <label>

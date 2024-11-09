@@ -44,7 +44,7 @@ db.connect((err) => {
       }
       console.log(`Switched to database ${process.env.DB_NAME}`);
 
-      // Create users table if it doesn't exist
+      // Create or update users table to add new fields if they don’t exist
       const createTableQuery = `
         CREATE TABLE IF NOT EXISTS users (
           id INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,8 +53,12 @@ db.connect((err) => {
           lastName VARCHAR(50) NOT NULL,
           email VARCHAR(100) NOT NULL UNIQUE,
           password VARCHAR(255) NOT NULL,
+          lastLoggedIn TIMESTAMP NULL,
+          isLoggedIn BOOLEAN DEFAULT FALSE,
+          isValid BOOLEAN DEFAULT FALSE,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`;
+  
       db.query(createTableQuery, (err) => {
         if (err) {
           console.error('Error creating users table:', err.message);
@@ -65,7 +69,6 @@ db.connect((err) => {
     });
   });
 });
-
 
 // Signup Route
 app.post('/api/signup', async (req, res) => {
@@ -84,14 +87,14 @@ app.post('/api/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     db.query(
-      'INSERT INTO users (firstName, middleName, lastName, email, password) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO users (firstName, middleName, lastName, email, password, lastLoggedIn, isLoggedIn, isValid) VALUES (?, ?, ?, ?, ?, NULL, FALSE, FALSE)',
       [firstName, middleName, lastName, email, hashedPassword],
       (err, results) => {
         if (err) {
           console.error('Error saving user:', err);
           return res.status(500).json({ message: 'Server error' });
         }
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ message: 'User registered successfully, pending validation' });
       }
     );
   });
@@ -118,8 +121,19 @@ app.post('/api/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    // No token is generated or sent back
-    res.status(200).json({ message: 'Login successful', user });
+    // Update isLoggedIn and lastLoggedIn
+    db.query(
+      'UPDATE users SET isLoggedIn = TRUE, lastLoggedIn = NOW() WHERE id = ?',
+      [user.id],
+      (err) => {
+        if (err) {
+          console.error('Error updating login status:', err);
+          return res.status(500).json({ message: 'Server error' });
+        }
+
+        res.status(200).json({ message: 'Login successful', user });
+      }
+    );
   });
 });
 
@@ -133,22 +147,19 @@ app.post('/api/check-email', (req, res) => {
 
   db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
     if (err) throw err;
-    if (results.length > 0) {
-      return res.status(200).json({ exists: true });
-    }
-    res.status(200).json({ exists: false });
+    res.status(200).json({ exists: results.length > 0 });
   });
 });
 
 // Reset Password Route
 app.post('/api/reset-password', async (req, res) => {
-  const { email, newPassword } = req.body;
+  const { email, password } = req.body;
 
-  if (!email || !newPassword) {
+  if (!email || !password) {
     return res.status(400).json({ message: 'Email and new password are required' });
   }
 
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   db.query('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, email], (err, results) => {
     if (err) {
@@ -162,11 +173,17 @@ app.post('/api/reset-password', async (req, res) => {
   });
 });
 
-// Logout Route (Invalidate Token)
-// NOTE: This is a simplistic implementation. Token invalidation should be handled via a more secure mechanism (e.g., blacklisting).
+// Logout Route
 app.post('/api/logout', (req, res) => {
-  // For this basic implementation, just send a response
-  res.status(200).json({ message: 'Logout successful' });
+  const { userId } = req.body;
+
+  db.query('UPDATE users SET isLoggedIn = FALSE WHERE id = ?', [userId], (err) => {
+    if (err) {
+      console.error('Error during logout:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+    res.status(200).json({ message: 'Logout successful' });
+  });
 });
 
 // Start Server

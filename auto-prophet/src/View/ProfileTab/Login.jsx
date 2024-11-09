@@ -6,15 +6,34 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
-      errors: {},
-      showPassword: false,
+        fields: {
+          email: "",
+          password: "",
+        },
+        errors: {
+          email: "",
+          password: "",
+        },
+      isLoggedIn: false,
     };
   }
 
+  resetFields = () => {
+    this.setState({
+      fields: {
+        email: "",
+        password: "",
+      },
+      errors: {
+        email: "",
+        password: "",
+      },
+    });
+  };
+
+
   validateField = (name, value) => {
-    let errors = {};
+    let { errors } = this.state;
     let isValid = true;
 
     switch (name) {
@@ -26,6 +45,8 @@ class Login extends Component {
         } else if (!emailRegex.test(value)) {
           isValid = false;
           errors["email"] = "Invalid email format.";
+        } else {
+          errors["email"] = "";   
         }
         break;
 
@@ -38,69 +59,83 @@ class Login extends Component {
             isValid = false;
             errors["password"] =
               "8-16 length with a digit, a letter and a special character.";
+          } else {
+            errors["password"] = ""; 
           }
+          
           break;
 
       default:
         break;
     }
 
-    if (Object.keys(errors).length > 0) {
-      this.setState((prevState) => ({
-        errors: { ...prevState.errors, ...errors },
-      }));
-    } else {
-      this.setState((prevState) => {
-        const newErrors = { ...prevState.errors };
-        delete newErrors[name];
-        return { errors: newErrors };
-      });
-    }
-
+    this.setState({ errors });
     return isValid;
   };
 
   handleChange = (e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value }, () => {
-      this.validateField(name, value);
-    });
+
+    this.setState(
+      (prevState) => ({
+        fields: {
+          ...prevState.fields,
+          [name]: value,
+        },
+      }),
+      () => {
+        this.validateField(name, value); 
+      }
+    );
+  };
+
+  checkCredentials = async (email, password) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message || "Login failed");
+      }
+      return result; 
+    } catch (error) {
+      alert(error.message);
+      return null;
+    }
   };
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password } = this.state;
+    const { fields } = this.state;
+    const { email, password } = fields;
 
     let isFormValid = true;
     if (!this.validateField("email", email)) isFormValid = false;
     if (!this.validateField("password", password)) isFormValid = false;
 
+    this.resetFields();
+
     if (isFormValid) {
-      try {
-        const response = await fetch('http://localhost:5000/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Login failed');
-        }
-
-        alert('Login successful!'); // You can replace this with a redirect
-        // Optionally handle token storage, redirect, etc.
-      } catch (error) {
-        alert(error.message);
-      }
+      const result = await this.checkCredentials(email, password);
+      if (result) {
+        alert("Login successful! Welcome to Auto Prophet");
+        this.props.onLoginSuccess(result.user);
+        setTimeout(() => {
+          this.props.closeOverlay();
+        }, 100);
+    }
     }
   };
 
+
   render() {
-    const { errors } = this.state;
+    const { errors, fields } = this.state;
 
     return (
       <div className="login-form">
@@ -112,14 +147,24 @@ class Login extends Component {
               <label>
                 Email:<span className="required">*</span>
               </label>
-              <input type="email" name="email" onChange={this.handleChange} />
+              <input 
+                type="email" 
+                name="email" 
+                value={fields.email}
+                onChange={this.handleChange} 
+              />
               {errors.email && <div className="login-error">{errors.email}</div>}
             </div>
             <div className="login-form-group">
               <label>
                 Password:<span className="required">*</span>
               </label>
-              <input type="password" name="password" onChange={this.handleChange} />
+              <input 
+                type="password" 
+                name="password" 
+                value={fields.password}
+                onChange={this.handleChange} 
+              />
               {errors.password && <div className="login-error">{errors.password}</div>}
             </div>
           </div>
@@ -141,6 +186,6 @@ class Login extends Component {
       </div>
     );
   }
-}
+};
 
-export default Login;
+export default Login
