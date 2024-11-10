@@ -11,40 +11,124 @@ class BrowseFAQ extends Component {
     render() {
         return (
             <div className="page">
-                <h2>Page FAQs:</h2>
+                <h2>Browse Our FAQs:</h2>
 
-                <div class="divSpacing">
-                    <h3>Porfolio</h3>
-                    <h4>Page Overview:</h4>
-                    <p>Users can create a mock portfolio to own imaginary shares of real companies. Portfolio metrics include value and buying power, and portfolio metrics show stock holdings, stock values, and portfolio returns.</p>
-                    <h4>Term Definitions:</h4>
-                    <p>Portfolio Value - The total market value of all investments held in a portfolio at a specific time.</p>
-                    <p>Buying Power - The amount of money available to purchase additional securities, factoring in cash and margin allowances.</p>
-                    <p>Symbol - A unique series of letters assigned to a security for trading purposes, representing a specific stock or financial instrument.</p>
-                    <p>Company - The name of the business entity that issues the stock or financial instrument represented by the symbol.</p>
-                    <p>Current Price - The most recent market price at which a security is being traded.</p>
-                    <p>Purchase Price - The price at which an investor bought a security, also known as the cost basis.</p>
-                    <p>Quantity - The number of shares or units of a specific security held in the portfolio.</p>
-                    <p>Gains - The increase in value of an investment compared to its purchase price, indicating profit.</p>
-                    <p>% Gain - The percentage increase in value of an investment, calculated by comparing the current price to the purchase price.</p>
+                <div className="faq-card">
+                    <h3>Getting Started</h3>
+                    <h4>How do I sign up for the tool?</h4>
+                    <p>Simply visit our homepage and click on "Sign Up." Enter your email address, create a password, and follow the prompts to create your account.</p>
+                    <h4>Do I need any specific software to use the tool?</h4>
+                    <p>No special software is required. The tool runs entirely in your browser. We recommend using the latest versions of Chrome, Firefox, or Edge for the best experience.</p>
+                    <h4>Can I try the tool for free?</h4>
+                    <p>Yes, the tool is open-source.</p>
                 </div>
 
-                <div class="divSpacing">
-                    <h3>Stock & Fund</h3>
-                    <h4>Page Overview:</h4>
-                    <p>Allows users to research stocks for their trading price and volume.</p>
-                    <h4>Term Definitions:</h4>
-                    <p>Price - The market price at which a security is being traded.</p>
-                    <p>Volume - The total number of shares or contracts traded for a particular security during a specific period, indicating the level of activity and liquidity in the market.</p>
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>General Questions</h3>
+                    <h4>Is there a mobile app available?</h4>
+                    <p>Yes, we offer a mobile app available on both iOS and Android, which gives you access to all features on the go.</p>
+                    <h4>Can I export my data?</h4>
+                    <p>Yes, you can export your spending, investments, and other data into CSV format by navigating to the "Reports" section of your dashboard.</p>
+                    <h4>How do I contact support?</h4>
+                    <p>You can reach our support team through the "Help" section of the app, via email at support@example.com, or by using the live chat feature during business hours.</p>
                 </div>
 
-                <div class="divSpacing">
-                    <h3>Risk Analysis</h3>
-                    <h4>Page Overview:</h4>
-                    <p>Allows users to input a variety of company metrics to create a set of metrics that provide insight into a company's performance.</p>
-                    <h4>Term Definitions:</h4>
-                    <p>Term- definition</p>
-                    <p>Acronym (full-term)- definition</p>
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>Account and Login</h3>
+                    <h4>I forgot my password. How do I reset it?</h4>
+                    <p>Click on the "Forgot Password" link on the login page, enter your registered email, and follow the instructions sent to your inbox to reset your password.</p>
+                    <h4>Can I change my email address?</h4>
+                    <p>Yes, navigate to the Account Settings section, and under "Profile," you can update your email address. Make sure to verify it after making the change.</p>
+                    <h4>How can I close my account?</h4>
+                    <p>To close your account, go to Account Settings, select "Close Account," and follow the on-screen instructions. All data will be deleted upon confirmation.</p>
+                </div>
+
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>Bank Transfers and Linking</h3>
+                    <h4>How do I link my bank accounts?</h4>
+                    <p>Go to the "Bank Accounts" section, select "Link Account," and follow the prompts to securely connect your bank via Plaid or manual account entry.</p>
+                    <h4>Is my bank data secure?</h4>
+                    <p>Yes, we use bank-grade encryption to ensure your financial data is kept private and secure. We never share your information with third parties without consent.</p>
+                    <h4>Can I transfer money between accounts?</h4>
+                    <p>Our tool is for analytics only. To transfer funds, please use your bank’s website or app. We do not handle or facilitate money transfers.</p>
+                </div>
+
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>Category</h3>
+                    <h4>Question 1</h4>
+                    <p>Answer 1</p>
+                    <h4>Question 2</h4>
+                    <p>Answer 2</p>
+                    <h4>Question 3</h4>
+                    <p>Answer 3</p>
+                </div>
+
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>Category</h3>
+                    <h4>Question 1</h4>
+                    <p>Answer 1</p>
+                    <h4>Question 2</h4>
+                    <p>Answer 2</p>
+                    <h4>Question 3</h4>
+                    <p>Answer 3</p>
+                </div>
+
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>Category</h3>
+                    <h4>Question 1</h4>
+                    <p>Answer 1</p>
+                    <h4>Question 2</h4>
+                    <p>Answer 2</p>
+                    <h4>Question 3</h4>
+                    <p>Answer 3</p>
+                </div>
+
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>Category</h3>
+                    <h4>Question 1</h4>
+                    <p>Answer 1</p>
+                    <h4>Question 2</h4>
+                    <p>Answer 2</p>
+                    <h4>Question 3</h4>
+                    <p>Answer 3</p>
+                </div>
+
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>Category</h3>
+                    <h4>Question 1</h4>
+                    <p>Answer 1</p>
+                    <h4>Question 2</h4>
+                    <p>Answer 2</p>
+                    <h4>Question 3</h4>
+                    <p>Answer 3</p>
+                </div>
+
+                <div class="divSpacing"></div>
+
+                <div className="faq-card">
+                    <h3>Category</h3>
+                    <h4>Question 1</h4>
+                    <p>Answer 1</p>
+                    <h4>Question 2</h4>
+                    <p>Answer 2</p>
+                    <h4>Question 3</h4>
+                    <p>Answer 3</p>
                 </div>
 
             </div>
