@@ -2,7 +2,7 @@ import pandas as pd
 import nltk
 # nltk.download('wordnet')
 import joblib
-import fetch_ticker_withouth_eden as stocktick
+import fetch_ticker_without_eden as stocktick
 import all_getprice 
 import extract
 from sklearn.preprocessing import LabelEncoder

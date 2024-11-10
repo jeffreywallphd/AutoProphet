@@ -26,5 +26,6 @@ def extract_dates(query):
 # user_query = "what was the google price on 21st sept 2023"
 # user_query="what was the price of apple last year"
 # user_query="What was the price of AMD stock two years ago?"
+# user_query="what was the price of apple 3 days before?"
 # extracted_date = extract_dates(user_query)
 # print(f"Extracted date: {extracted_date.strftime('%Y-%m-%d') if extracted_date else 'No date found'}")
