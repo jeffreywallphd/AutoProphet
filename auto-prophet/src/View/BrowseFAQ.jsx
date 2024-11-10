@@ -62,73 +62,71 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Category</h3>
-                    <h4>Question 1</h4>
-                    <p>Answer 1</p>
-                    <h4>Question 2</h4>
-                    <p>Answer 2</p>
-                    <h4>Question 3</h4>
-                    <p>Answer 3</p>
+                    <h3>Documents and Taxes</h3>
+                    <h4>Does the tool help with tax documents?</h4>
+                    <p>Yes, you can track deductible expenses and export your tax-related transactions. However, we do not generate tax forms. Please consult your tax advisor.</p>
+                    <h4>Can I upload receipts for tax purposes?</h4>
+                    <p>Yes, you can upload receipts and other tax-related documents to your account and categorize them accordingly for easy tracking.</p>
+                    <h4>How do I download transaction history for tax filing?</h4>
+                    <p>Go to the "Reports" section and choose the time range. You can export your transaction history to use in tax preparation software or provide to your tax professional.</p>
                 </div>
 
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Category</h3>
-                    <h4>Question 1</h4>
-                    <p>Answer 1</p>
-                    <h4>Question 2</h4>
-                    <p>Answer 2</p>
-                    <h4>Question 3</h4>
-                    <p>Answer 3</p>
+                    <h3>Financial Terms</h3>
+                    <h4>What do the technical financial terms mean?</h4>
+                    <p>Click on this "link" to view a list of definitions of each technical term used. The terms are sorted by page in alphabetical order.</p>
+                    <h4>What do the acronyms stand for?</h4>
+                    <p>Some of the acronyms can be viewable as a popup or tooltip on each page. You can also view the full term of an acronym along with its definition by clicking the "Financial Term Definitions" link.</p>
                 </div>
 
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Category</h3>
-                    <h4>Question 1</h4>
-                    <p>Answer 1</p>
-                    <h4>Question 2</h4>
-                    <p>Answer 2</p>
-                    <h4>Question 3</h4>
-                    <p>Answer 3</p>
+                    <h3>Investing (Bonds, Stocks, Options)</h3>
+                    <h4>Can I track multiple investment accounts?</h4>
+                    <p>Yes, you can link multiple brokerage accounts, and our tool will consolidate all your investments into a single dashboard for easy tracking.</p>
+                    <h4>Does the tool offer investment recommendations?</h4>
+                    <p>We provide personalized insights based on your portfolio, but we do not offer direct investment advice. Always consult a financial advisor for investment decisions.</p>
+                    <h4>Yes, the tool allows you to track various asset classes, including stocks, bonds, and options, and view their performance over time.</h4>
+                    <p>Can I track stock options and bonds?</p>
                 </div>
 
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Category</h3>
-                    <h4>Question 1</h4>
-                    <p>Answer 1</p>
-                    <h4>Question 2</h4>
-                    <p>Answer 2</p>
-                    <h4>Question 3</h4>
-                    <p>Answer 3</p>
+                    <h3>Retirement</h3>
+                    <h4>Can I track my 401(k) or IRA in the tool?</h4>
+                    <p>Yes, you can link your 401(k), IRA, and other retirement accounts to get a comprehensive view of your retirement savings and performance over time.</p>
+                    <h4>Does the tool offer retirement planning?</h4>
+                    <p>We provide projections and insights based on your current savings, but we recommend working with a financial advisor for personalized retirement planning.</p>
+                    <h4>How often should I review my retirement accounts?</h4>
+                    <p>It’s a good practice to review your retirement accounts quarterly to ensure you’re on track with your goals and adjust contributions if needed.</p>
                 </div>
 
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Category</h3>
-                    <h4>Question 1</h4>
-                    <p>Answer 1</p>
-                    <h4>Question 2</h4>
-                    <p>Answer 2</p>
-                    <h4>Question 3</h4>
-                    <p>Answer 3</p>
+                    <h3>Spending</h3>
+                    <h4>How can I track my spending using the tool?</h4>
+                    <p>Our tool categorizes your transactions automatically. You can view and adjust spending categories in the "Spending" section of the dashboard.</p>
+                    <h4>Can I set a budget for specific categories?</h4>
+                    <p>Yes, you can set custom spending limits for categories like groceries, entertainment, or travel. You'll receive alerts if you approach or exceed your budget.</p>
+                    <h4>How frequently is spending data updated?</h4>
+                    <p>Your spending data is updated in real-time as soon as transactions post to your linked accounts.</p>
                 </div>
 
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Category</h3>
-                    <h4>Question 1</h4>
-                    <p>Answer 1</p>
-                    <h4>Question 2</h4>
-                    <p>Answer 2</p>
-                    <h4>Question 3</h4>
-                    <p>Answer 3</p>
+                    <h3>Trading/Margin</h3>
+                    <h4>Can I track margin trading?</h4>
+                    <p>Yes, our tool allows you to monitor both regular and margin trades, including the margin balances, interest rates, and associated costs.</p>
+                    <h4>Does the tool integrate with brokerage accounts for real-time tracking?</h4>
+                    <p>Yes, our tool links to your brokerage accounts to provide real-time updates on your trades, balances, and investment performance.</p>
+                    <h4>Can I see profit/loss for my trades?</h4>
+                    <p>Absolutely! The tool tracks your trade history and automatically calculates your realized and unrealized gains or losses.</p>
                 </div>
 
             </div>
