@@ -41,7 +41,7 @@ def fetch_stock_name(prompt):
     fetch_first_stock=list(stocks.keys())[0]
     # fetch_first_stock=list(stocks.keys())
     return stocks[fetch_first_stock]
-# str_m1="price of apple"
+# str_m1="price of Berkshire Hathaway Inc."
 # final_out=(fetch_stock_name(str_m1))
 # print(final_out)
 

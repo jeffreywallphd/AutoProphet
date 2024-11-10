@@ -2,7 +2,7 @@ import pandas as pd
 import nltk
 # nltk.download('wordnet')
 import joblib
-import fetch_stock_name_ticker as stocktick
+import fetch_ticker_withouth_eden as stocktick
 import all_getprice 
 import extract
 from sklearn.preprocessing import LabelEncoder
@@ -12,14 +12,14 @@ def general_question():
     return "That's a great question! Here's some information about the stock market..."
 
 def get_price():
-    ticker=stocktick.fetch_stock_name(user_input)
+    ticker=stocktick.get_company_ticker(user_input)
     print(ticker)
     curr_price=all_getprice.get_current_price(ticker)
     print(curr_price)
     return "Price of "+ticker+" is : "+curr_price
 
 def get_historical():
-    ticker=stocktick.fetch_stock_name(user_input)
+    ticker=stocktick.get_company_ticker(user_input)
     print(ticker)
     date_from_query= extract.extract_dates(user_input)
     print(date_from_query)
