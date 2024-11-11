@@ -33,6 +33,7 @@ import { ForecastFeature } from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
 import InvestmentPool from "./InvestmentPool";
+import StockAnalysis from "./StockAnalysis";
 
 // Scrolls to the top of a page after every route change
 function ScrollToTop() {
@@ -80,6 +81,7 @@ class AppLoaded extends Component {
                   <li><NavLink to="/analysis"><span className="material-icons">assessment</span> Risk Analysis</NavLink></li>
                   <li><NavLink to="/browsefaq"><span className="material-icons">help_outline</span> Browse Our FAQs</NavLink></li>
                   <li><NavLink to="/investment-pool"><span className="material-icons">inventory_2</span> Investment Pool</NavLink></li>
+                  <li><NavLink to="/StockAnalysis"><span className="material-icons">timeline</span> Stock Analysis</NavLink></li>
                 </ul>
               </nav>
               <div className="tools sidebar-padding">
@@ -112,6 +114,7 @@ class AppLoaded extends Component {
                 <Route path="/forecast-models" element={<ForecastModel />} />
                 <Route path="/sec-report" element={<SecReport />} />
                 <Route path="/investment-pool" element={<InvestmentPool />} /> 
+                <Route path="/StockAnalysis" element={<StockAnalysis />} />
               </Routes>
               <footer>
                 This software is licensed under the GPL-3.0 license.
