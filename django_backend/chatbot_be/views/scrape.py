@@ -11,6 +11,9 @@ from ..models.scraped_data import ScrapedData  # Import the model to save data
 import pdfplumber
 import markdown
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 class ScrapeDataView(APIView):
     def get(self, request):
         url = request.GET.get('url')

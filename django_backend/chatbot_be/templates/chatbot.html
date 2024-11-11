@@ -1,101 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autoprophet Chatbot Conversation</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .top-panel {
-            background-color: #333;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .side-panel {
-            height: 100vh;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            padding-top: 20px;
-        }
-        .side-panel a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-        }
-        .side-panel a:hover {
-            background-color: #575757;
-        }
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-    </style>
-    <script>
-        async function getSessionId() {
-            let sessionId = localStorage.getItem('session_id');
-
-            if (!sessionId) {
-                // Create a new session if it does not exist
-                const response = await fetch('/api/chatbot/', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-                if (response.ok) {
-                    const data = await response.json();
-                    sessionId = data.session_id;
-                    localStorage.setItem('session_id', sessionId);
-                } else {
-                    console.error('Failed to create session');
-                }
-            }
-
-            return sessionId;
-        }
-
-        async function sendMessage() {
-            const message = document.getElementById('message').value;
-            const sessionId = await getSessionId();
-
-            const response = await fetch(`/api/chatbot/${sessionId}/add/`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message, is_user: true })
-            });
-
-            if (response.ok) {
-                displayMessages();
-                document.getElementById('message').value = ''; // Clear the input field
-            } else {
-                console.error('Failed to send message');
-            }
-        }
-
-        async function displayMessages() {
-            const sessionId = await getSessionId();
-
-            const response = await fetch(`/api/chatbot/${sessionId}/`);
-            const messages = await response.json();
-
-            const messageContainer = document.getElementById('messages');
-            messageContainer.innerHTML = '';  // Clear previous messages
-
-            messages.forEach(msg => {
-                const messageElement = document.createElement('div');
-                messageElement.textContent = `${msg.is_user ? 'User' : 'Chatbot'}: ${msg.message}`;
-                messageContainer.appendChild(messageElement);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', displayMessages);
-    </script>
+    <link rel="stylesheet" href="{% static 'backend.css'%}">
 </head>
 <body>
      <!-- Top Panel -->

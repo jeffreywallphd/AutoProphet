@@ -6,6 +6,9 @@ from ..serializers import ConversationSerializer
 import uuid
 from django.shortcuts import render
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 class SessionCreateView(APIView):
     """
