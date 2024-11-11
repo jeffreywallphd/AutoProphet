@@ -32,22 +32,8 @@ import Forecast from "./Forecast";
 import { ForecastFeature } from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
-<<<<<<< HEAD
-//User tab
-import Profile from "./ProfileTab/Profile";
-
-class AppLoaded extends Component {
-    // --Code for collapsible menu--
-    constructor(props) {
-        super(props);
-        this.state = {
-            menuCollapsed: false,
-            isUserLoggedIn: false,
-        };
-        this.toggleMenu = this.toggleMenu.bind(this);
-    }
-=======
 import InvestmentPool from "./InvestmentPool";
+import Profile from "./ProfileTab/Profile"
 
 // Scrolls to the top of a page after every route change
 function ScrollToTop() {
@@ -68,7 +54,6 @@ class AppLoaded extends Component {
     };
     this.toggleMenu = this.toggleMenu.bind(this);
   }
->>>>>>> 8f22ff23c2489dc2ac59cc0b1f74ee4ee557afc7
 
   toggleMenu() {
     this.setState(prevState => ({
@@ -76,65 +61,6 @@ class AppLoaded extends Component {
     }));
   }
 
-<<<<<<< HEAD
-    render() {
-        const { menuCollapsed} = this.state;
-
-        return (
-            <HashRouter>
-                <>
-                    <div className="main">
-                        <div className={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
-                            <button id="navButton">
-                                <img className="toggle-menu" id="navIcon" onClick={this.toggleMenu} src={menuCollapsed ? navIcon : navIcon} alt="navIcon" />
-                            </button>
-                            <header className={`header ${menuCollapsed ? 'collapsed' : ''}`}>
-                                <img src={logo} alt="Logo" width="150" />
-                            </header>
-                            <div className={`menu-items ${menuCollapsed ? 'collapsed' : ''}`}>
-                                <NavLink to="/">Home</NavLink>
-                                {/* <-- Added User tab */}  
-                                <NavLink to="/user">Profile</NavLink>             
-                                <NavLink to="/portfolio">Portfolio</NavLink>
-                                <NavLink to="/price">Stock & Fund</NavLink>
-                                <NavLink to="/analysis">Risk Analysis</NavLink>
-                                <NavLink to="/forecast">Forecast</NavLink>
-                                <NavLink to="/news">News</NavLink>
-                                <NavLink to="/learn">Learn</NavLink>
-                                <NavLink to="/settings">Settings</NavLink>   
-                                             
-                            </div>
-                        </div>
-                        <div className="content">
-                            <Routes>
-                                <Route path="/" element={<Home />}/>
-                                <Route path="/portfolio" element={<Portfolio />}/>
-                                <Route path="/analysis" element={<Analysis />}/>
-                                <Route path="/buy-report" element={<BuyReport />}/>
-                                <Route path="/price" element={<TimeSeries />}/>
-                                <Route path="/news" element={<News />}/>
-                                <Route path="/learn" element={<Learn />}/>
-                                <Route path="/learningModule" element={<LearningModuleDetails />}/>
-                                <Route path="/learningModulePage" element={<LearningModulePage />}/>
-                                <Route path="/settings" element={<Settings />}/>
-                                <Route path="/forecast" element={<Forecast />} />
-                                <Route path="/forecast-features" element={<ForecastFeature />} />
-                                <Route path="/forecast-models" element={<ForecastModel />} />
-                                <Route path="/sec-report" element={<SecReport />} />
-                                {/* <-- Added User route --> */}
-                                <Route path="/user" element={<Profile/>}/>
-                            </Routes>
-                            <footer>
-                                This software is licensed under the GPL-3.0 license. 
-                            </footer>
-                        </div>
-                    </div>
-                    
-                </>
-            </HashRouter>
-        );
-    }
-=======
   render() {
     const { menuCollapsed } = this.state;
   
@@ -155,6 +81,7 @@ class AppLoaded extends Component {
                   <li><NavLink to="/analysis"><span className="material-icons">assessment</span> Risk Analysis</NavLink></li>
                   <li><NavLink to="/browsefaq"><span className="material-icons">help_outline</span> Browse Our FAQs</NavLink></li>
                   <li><NavLink to="/investment-pool"><span className="material-icons">inventory_2</span> Investment Pool</NavLink></li>
+                  <li><NavLink to="/user"><span className="material-icons">account_circle</span> Profile</NavLink></li>
                 </ul>
               </nav>
               <div className="tools sidebar-padding">
@@ -187,6 +114,7 @@ class AppLoaded extends Component {
                 <Route path="/forecast-models" element={<ForecastModel />} />
                 <Route path="/sec-report" element={<SecReport />} />
                 <Route path="/investment-pool" element={<InvestmentPool />} /> 
+                <Route path="/user" element={<Profile/>}/>
               </Routes>
               <footer>
                 This software is licensed under the GPL-3.0 license.
@@ -197,7 +125,6 @@ class AppLoaded extends Component {
       </HashRouter>
     );
   }
->>>>>>> 8f22ff23c2489dc2ac59cc0b1f74ee4ee557afc7
 }
 
 export default AppLoaded;
