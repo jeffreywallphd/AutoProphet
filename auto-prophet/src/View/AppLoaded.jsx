@@ -4,12 +4,13 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import {
   Routes,
   Route,
   NavLink,
-  HashRouter
+  HashRouter,
+  useLocation
 } from "react-router-dom";
 
 // Imports for react pages and assets
@@ -17,6 +18,7 @@ import Home from "./Home";
 import Portfolio from "./Portfolio";
 import { Analysis } from "./Analysis";
 import BrowseFAQ from "./BrowseFAQ";
+import TermDefinitions from "./TermDefinitions";
 import BuyReport from "./BuyReport";
 import { TimeSeries } from "./TimeSeriesPage";
 import { News } from "./NewsPage";
@@ -30,6 +32,17 @@ import Forecast from "./Forecast";
 import { ForecastFeature } from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
+
+// Scrolls to the top of a page after every route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 class AppLoaded extends Component {
   // --Code for collapsible menu--
@@ -50,7 +63,7 @@ class AppLoaded extends Component {
 
   render() {
     const { menuCollapsed } = this.state;
-
+  
     return (
       <HashRouter>
         <>
@@ -66,7 +79,7 @@ class AppLoaded extends Component {
                   <li><NavLink to="/portfolio"><span className="material-icons">pie_chart</span> Portfolio</NavLink></li>
                   <li><NavLink to="/price"><span className="material-icons">attach_money</span> Stock & Fund</NavLink></li>
                   <li><NavLink to="/analysis"><span className="material-icons">assessment</span> Risk Analysis</NavLink></li>
-                  <li><NavLink to="/browsefaq"> Browse our FAQs</NavLink></li>
+                  <li><NavLink to="/browsefaq"> Browse Our FAQs</NavLink></li>
                   <li><NavLink to="/investment-pool"><span className="material-icons">inventory_2</span> Investment Pool</NavLink></li>
                 </ul>
               </nav>
@@ -81,12 +94,14 @@ class AppLoaded extends Component {
               </div>
             </aside>
             <div className="content">
+              <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/analysis" element={<Analysis />} />
                 <Route path="/buy-report" element={<BuyReport />} />
                 <Route path="/browsefaq" element={<BrowseFAQ />}/>
+                <Route path="/termdefinitions" element={<TermDefinitions />}/>
                 <Route path="/price" element={<TimeSeries />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/learn" element={<Learn />} />
