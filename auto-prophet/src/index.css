@@ -483,6 +483,13 @@ code {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
 }
 
+.faq-tableOfContents {
+  background-color: #f5f5f5;
+  padding: 2%;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
+}
+
 /* Styling for Risk Analysis Page */
 
 .riskHeaders {

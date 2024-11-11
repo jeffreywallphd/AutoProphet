@@ -7,14 +7,31 @@
 import React, { Component } from "react";
 
 class BrowseFAQ extends Component {
-
     render() {
         return (
             <div className="page">
                 <h2>Browse Our FAQs:</h2>
 
+                <div className="faq-tableOfContents">
+                    <h3>Table of Contents:</h3>
+                    <ul>
+                        <li>Getting Started</li>
+                        <li>General Questions</li>
+                        <li>Account and Login</li>
+                        <li>Bank Transfers and Linking</li>
+                        <li>Documents and Taxes</li>
+                        <li>Financial Terms</li>
+                        <li>Investing (Bonds, Stocks, Options)</li>
+                        <li>Retirement</li>
+                        <li>Spending</li>
+                        <li>Trading/Margin</li>
+                    </ul>
+                </div>
+
+                <div class="divSpacing"></div>
+
                 <div className="faq-card">
-                    <h3>Getting Started</h3>
+                    <h3 id="getting-started">Getting Started</h3>
                     <h4>How do I sign up for the tool?</h4>
                     <p>Simply visit our homepage and click on "Sign Up." Enter your email address, create a password, and follow the prompts to create your account.</p>
                     <h4>Do I need any specific software to use the tool?</h4>
@@ -26,7 +43,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>General Questions</h3>
+                    <h3 id="general-questions">General Questions</h3>
                     <h4>Is there a mobile app available?</h4>
                     <p>Yes, we offer a mobile app available on both iOS and Android, which gives you access to all features on the go.</p>
                     <h4>Can I export my data?</h4>
@@ -38,7 +55,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Account and Login</h3>
+                    <h3 id="account-login">Account and Login</h3>
                     <h4>I forgot my password. How do I reset it?</h4>
                     <p>Click on the "Forgot Password" link on the login page, enter your registered email, and follow the instructions sent to your inbox to reset your password.</p>
                     <h4>Can I change my email address?</h4>
@@ -50,7 +67,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Bank Transfers and Linking</h3>
+                    <h3 id="bank-transfers">Bank Transfers and Linking</h3>
                     <h4>How do I link my bank accounts?</h4>
                     <p>Go to the "Bank Accounts" section, select "Link Account," and follow the prompts to securely connect your bank via Plaid or manual account entry.</p>
                     <h4>Is my bank data secure?</h4>
@@ -62,7 +79,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Documents and Taxes</h3>
+                    <h3 id="documents-taxes">Documents and Taxes</h3>
                     <h4>Does the tool help with tax documents?</h4>
                     <p>Yes, you can track deductible expenses and export your tax-related transactions. However, we do not generate tax forms. Please consult your tax advisor.</p>
                     <h4>Can I upload receipts for tax purposes?</h4>
@@ -74,7 +91,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Financial Terms</h3>
+                    <h3 id="financial-terms">Financial Terms</h3>
                     <h4>What do the technical financial terms mean?</h4>
                     <p>Click on this "link" to view a list of definitions of each technical term used. The terms are sorted by page in alphabetical order.</p>
                     <h4>What do the acronyms stand for?</h4>
@@ -84,7 +101,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Investing (Bonds, Stocks, Options)</h3>
+                    <h3 id="investing">Investing (Bonds, Stocks, Options)</h3>
                     <h4>Can I track multiple investment accounts?</h4>
                     <p>Yes, you can link multiple brokerage accounts, and our tool will consolidate all your investments into a single dashboard for easy tracking.</p>
                     <h4>Does the tool offer investment recommendations?</h4>
@@ -96,7 +113,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Retirement</h3>
+                    <h3 id="retirement">Retirement</h3>
                     <h4>Can I track my 401(k) or IRA in the tool?</h4>
                     <p>Yes, you can link your 401(k), IRA, and other retirement accounts to get a comprehensive view of your retirement savings and performance over time.</p>
                     <h4>Does the tool offer retirement planning?</h4>
@@ -108,7 +125,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Spending</h3>
+                    <h3 id="spending">Spending</h3>
                     <h4>How can I track my spending using the tool?</h4>
                     <p>Our tool categorizes your transactions automatically. You can view and adjust spending categories in the "Spending" section of the dashboard.</p>
                     <h4>Can I set a budget for specific categories?</h4>
@@ -120,7 +137,7 @@ class BrowseFAQ extends Component {
                 <div class="divSpacing"></div>
 
                 <div className="faq-card">
-                    <h3>Trading/Margin</h3>
+                    <h3 id="trading-margin">Trading/Margin</h3>
                     <h4>Can I track margin trading?</h4>
                     <p>Yes, our tool allows you to monitor both regular and margin trades, including the margin balances, interest rates, and associated costs.</p>
                     <h4>Does the tool integrate with brokerage accounts for real-time tracking?</h4>
