@@ -24,52 +24,67 @@ const InvestmentPool = () => {
         </button>
       </div>
       
-      <div className="metrics-grid">
-        <div className="metric-card">
-          <h3>Total Assets</h3>
-          <p className="metric-value">$2.45M</p>
-        </div>
-        
-        <div className="metric-card">
-          <h3>Total Return</h3>
-          <p className="metric-value green">+10.5%</p>
-        </div>
-        
-        <div className="metric-card">
-          <h3>Risk Score</h3>
-          <p className="metric-value">6.8/10</p>
-        </div>
-        
-        <div className="metric-card">
-          <h3>Active Investments</h3>
-          <p className="metric-value">12</p>
-        </div>
-      </div>
+      <div className="content-grid">
+        {/* Left Side - Metrics and Investment Table */}
+        <div className="metrics-and-investments">
+          <div className="metrics-grid">
+            <div className="metric-card">
+              <h3>Total Assets</h3>
+              <p className="metric-value">$2.45M</p>
+            </div>
+            <div className="metric-card">
+              <h3>Total Return</h3>
+              <p className="metric-value green">+10.5%</p>
+            </div>
+            <div className="metric-card">
+              <h3>Risk Score</h3>
+              <p className="metric-value">6.8/10</p>
+            </div>
+            <div className="metric-card">
+              <h3>Active Investments</h3>
+              <p className="metric-value">12</p>
+            </div>
+          </div>
 
-      <div className="table-container">
-        <h2>Investment Allocation</h2>
-        <table className="investment-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Risk Level</th>
-              <th>Returns</th>
-              <th>Allocation</th>
-            </tr>
-          </thead>
-          <tbody>
-            {investments.map((investment) => (
-              <tr key={investment.id}>
-                <td>{investment.name}</td>
-                <td>{investment.type}</td>
-                <td>{investment.risk}</td>
-                <td>{investment.returns}</td>
-                <td>{investment.allocation}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <div className="table-container">
+            <h2>Investment Allocation</h2>
+            <table className="investment-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Risk Level</th>
+                  <th>Returns</th>
+                  <th>Allocation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {investments.map((investment) => (
+                  <tr key={investment.id}>
+                    <td>{investment.name}</td>
+                    <td>{investment.type}</td>
+                    <td>{investment.risk}</td>
+                    <td>{investment.returns}</td>
+                    <td>{investment.allocation}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Right Side - Investment Pools */}
+        <div className="investment-pools">
+          <h2>Your Investment Pools</h2>
+          <p>Here you can manage your investment pools or join a new one.</p>
+          <button className="create-pool-button">Create New Pool</button>
+          <button className="join-pool-button">Join Pool</button>
+          <h3>Available Pools</h3>
+          <ul className="pool-list">
+            <li>Growth Pool - 20% Allocation</li>
+            <li>Stability Pool - 30% Allocation</li>
+          </ul>
+        </div>
       </div>
 
       {/* Modal/Popup for Survey */}
@@ -103,6 +118,7 @@ const InvestmentPool = () => {
           .page-title {
             font-size: 24px;
             margin: 0;
+            color: #333;
           }
 
           .survey-button {
@@ -120,6 +136,18 @@ const InvestmentPool = () => {
             background-color: #45a049;
           }
 
+          .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+          }
+
+          .metrics-and-investments {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          }
+
           .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -132,12 +160,6 @@ const InvestmentPool = () => {
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          }
-
-          .metric-card h3 {
-            margin: 0;
-            font-size: 16px;
-            color: #666;
           }
 
           .metric-value {
@@ -157,26 +179,44 @@ const InvestmentPool = () => {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           }
 
-          .investment-table {
+          .investment-pools {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+
+          .investment-pools h2 {
+            margin-top: 0;
+          }
+
+          .create-pool-button,
+          .join-pool-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
+            font-size: 16px;
           }
 
-          .investment-table th,
-          .investment-table td {
-            padding: 12px;
-            text-align: left;
+          .create-pool-button:hover,
+          .join-pool-button:hover {
+            background-color: #45a049;
+          }
+
+          .pool-list {
+            margin-top: 20px;
+            list-style: none;
+            padding: 0;
+          }
+
+          .pool-list li {
+            padding: 10px;
             border-bottom: 1px solid #eee;
-          }
-
-          .investment-table th {
-            font-weight: 600;
-            color: #666;
-          }
-
-          .investment-table tbody tr:hover {
-            background-color: #f9fafb;
           }
 
           /* Modal Styles */
@@ -190,7 +230,7 @@ const InvestmentPool = () => {
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 1000; /* Ensure overlay is above other content */
           }
 
           .modal-content {
@@ -202,6 +242,7 @@ const InvestmentPool = () => {
             max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
           }
 
           .close-button {
