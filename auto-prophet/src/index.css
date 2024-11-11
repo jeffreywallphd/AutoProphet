@@ -264,6 +264,7 @@ code {
   padding: 20px;
   background-color: var(--background-color);
   overflow-x: hidden;
+  position: static;
 }
 
 .homeContainer {

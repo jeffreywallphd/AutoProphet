@@ -5,6 +5,7 @@
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 
 class BrowseFAQ extends Component {
     render() {
@@ -93,9 +94,9 @@ class BrowseFAQ extends Component {
                 <div className="faq-card">
                     <h3 id="financial-terms">Financial Terms</h3>
                     <h4>What do the technical financial terms mean?</h4>
-                    <p>Click on this "link" to view a list of definitions of each technical term used. The terms are sorted by page in alphabetical order.</p>
+                    <p>Click on this <NavLink to="/termdefinitions">"link"</NavLink> to view a list of definitions of each technical term used. The terms are sorted by page in alphabetical order.</p>
                     <h4>What do the acronyms stand for?</h4>
-                    <p>Some of the acronyms can be viewable as a popup or tooltip on each page. You can also view the full term of an acronym along with its definition by clicking the "Financial Term Definitions" link.</p>
+                    <p>Some of the acronyms can be viewable as a popup or tooltip on each page. You can also view the full term of an acronym along with its definition by clicking the <NavLink to="/termdefinitions">"Financial Term Definitions"</NavLink> link.</p>
                 </div>
 
                 <div class="divSpacing"></div>
