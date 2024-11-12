@@ -38,19 +38,6 @@ Run the following SQL queries to create the database and the necessary table for
 CREATE DATABASE auto_prophetDB;
 
 USE auto_prophetDB;
-
-CREATE TABLE IF NOT EXISTS users (
-   id INT AUTO_INCREMENT PRIMARY KEY,
-   firstName VARCHAR(50) NOT NULL,
-   middleName VARCHAR(50),
-   lastName VARCHAR(50) NOT NULL,
-   email VARCHAR(100) NOT NULL UNIQUE,
-   password VARCHAR(255) NOT NULL,
-   lastLoggedIn TIMESTAMP NULL,
-   isLoggedIn BOOLEAN DEFAULT FALSE,
-   isValid BOOLEAN DEFAULT FALSE,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)`;
   
 ```
 ## Additional Information
