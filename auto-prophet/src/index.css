@@ -264,6 +264,7 @@ code {
   padding: 20px;
   background-color: var(--background-color);
   overflow-x: hidden;
+  position: static;
 }
 
 .homeContainer {
@@ -470,6 +471,24 @@ code {
 .gridContainer {
   display: grid;
   grid-template-columns: 50% 50%;
+}
+
+.divSpacing {
+  padding: 2%;
+}
+
+.faq-card {
+  background-color: #fff;
+  padding: 2%;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
+}
+
+.faq-tableOfContents {
+  background-color: #f5f5f5;
+  padding: 2%;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
 }
 
 /* Styling for Risk Analysis Page */
@@ -1228,4 +1247,103 @@ nav ul li a:hover {
 
 .portfolio-chart {
   margin-top: 20px;
+}
+
+/* updated /
+/ StockAnalysis.css */
+
+.stock-analysis {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 400px;
+  height: 35px;
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.search-bar button {
+  margin-left: 15px;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3;
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.stock-table th,
+.stock-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.stock-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.stock-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.stock-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.as-of-date {
+  font-style: italic;
+  font-size: 0.9em;
+  text-align: center;
+  padding-top: 15px;
+  color: #666;
+}
+
+.export-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.export-buttons button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.export-buttons button:hover {
+  background-color: #218838;
+}
+
+.stock-chart {
+  max-width: 600px;
+  margin: 20px auto;
 }
