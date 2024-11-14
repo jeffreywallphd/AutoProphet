@@ -6,133 +6,95 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        fields: {
-          email: "",
-          password: "",
-        },
-        errors: {
-          email: "",
-          password: "",
-        },
-      isLoggedIn: false,
+      fields: { email: "", password: "" },
+      errors: { email: "", password: "" },
     };
   }
 
+  // Reset form fields and errors
   resetFields = () => {
     this.setState({
-      fields: {
-        email: "",
-        password: "",
-      },
-      errors: {
-        email: "",
-        password: "",
-      },
+      fields: { email: "", password: "" },
+      errors: { email: "", password: "" },
     });
   };
 
-
+  // Validate fields individually
   validateField = (name, value) => {
-    let { errors } = this.state;
+    const errors = { ...this.state.errors };
     let isValid = true;
 
-    switch (name) {
-      case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!value) {
-          isValid = false;
-          errors["email"] = "Email is required.";
-        } else if (!emailRegex.test(value)) {
-          isValid = false;
-          errors["email"] = "Invalid email format.";
-        } else {
-          errors["email"] = "";   
-        }
-        break;
-
-        case "password":
-          const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-          if (!value) {
-            isValid = false;
-            errors["password"] = "Password is required.";
-          } else if (!passwordRegex.test(value)) {
-            isValid = false;
-            errors["password"] =
-              "8-16 length with a digit, a letter and a special character.";
-          } else {
-            errors["password"] = ""; 
-          }
-          
-          break;
-
-      default:
-        break;
+    if (name === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!value) {
+        errors.email = "Email is required.";
+        isValid = false;
+      } else if (!emailRegex.test(value)) {
+        errors.email = "Invalid email format.";
+        isValid = false;
+      } else {
+        errors.email = "";
+      }
+    } else if (name === "password") {
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+      if (!value) {
+        errors.password = "Password is required.";
+        isValid = false;
+      } else if (!passwordRegex.test(value)) {
+        errors.password = "8-16 characters with a digit, letter, and special character.";
+        isValid = false;
+      } else {
+        errors.password = "";
+      }
     }
 
     this.setState({ errors });
     return isValid;
   };
 
+  // Handle field changes and validate
   handleChange = (e) => {
     const { name, value } = e.target;
-
     this.setState(
       (prevState) => ({
-        fields: {
-          ...prevState.fields,
-          [name]: value,
-        },
+        fields: { ...prevState.fields, [name]: value },
       }),
-      () => {
-        this.validateField(name, value); 
-      }
+      () => this.validateField(name, value)
     );
   };
 
+  // Check credentials with API call
   checkCredentials = async (email, password) => {
     try {
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
       const result = await response.json();
-      if (!response.ok) {
-        throw new Error(result.message || "Login failed");
-      }
-      return result; 
+      if (!response.ok) throw new Error(result.message || "Login failed");
+      return result;
     } catch (error) {
       alert(error.message);
       return null;
     }
   };
 
+  // Handle form submission
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { fields } = this.state;
-    const { email, password } = fields;
+    const { email, password } = this.state.fields;
 
-    let isFormValid = true;
-    if (!this.validateField("email", email)) isFormValid = false;
-    if (!this.validateField("password", password)) isFormValid = false;
-
-    this.resetFields();
-
-    if (isFormValid) {
+    if (this.validateField("email", email) && this.validateField("password", password)) {
+      this.resetFields();
       const result = await this.checkCredentials(email, password);
       if (result) {
         alert("Login successful! Welcome to Auto Prophet");
         this.props.onLoginSuccess(result.user);
-        setTimeout(() => {
-          this.props.closeOverlay();
-        }, 100);
-    }
+        setTimeout(() => this.props.closeOverlay(), 100);
+      }
     }
   };
-
 
   render() {
     const { errors, fields } = this.state;
@@ -144,9 +106,7 @@ class Login extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="login-form-grid">
             <div className="login-form-group">
-              <label>
-                Email:<span className="required">*</span>
-              </label>
+              <label>Email:<span className="required">*</span></label>
               <input 
                 type="email" 
                 name="email" 
@@ -156,9 +116,7 @@ class Login extends Component {
               {errors.email && <div className="login-error">{errors.email}</div>}
             </div>
             <div className="login-form-group">
-              <label>
-                Password:<span className="required">*</span>
-              </label>
+              <label>Password:<span className="required">*</span></label>
               <input 
                 type="password" 
                 name="password" 
@@ -186,6 +144,6 @@ class Login extends Component {
       </div>
     );
   }
-};
+}
 
-export default Login
+export default Login;

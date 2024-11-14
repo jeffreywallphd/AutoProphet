@@ -1,4 +1,5 @@
 // SignUp.js
+
 import React, { Component } from "react";
 import "./SignUp.css";
 import UserDTO from "./UserDTO";
@@ -7,7 +8,7 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // Field values
+      // Initial field values for the form
       fields: {
         firstName: "",
         middleName: "",
@@ -17,7 +18,7 @@ class SignUp extends Component {
         confirmPassword: "",
         privacyChecked: false,
       },
-      // Validation errors
+      // Initial validation errors for each field
       errors: {
         firstName: "",
         middleName: "",
@@ -27,12 +28,11 @@ class SignUp extends Component {
         confirmPassword: "",
         privacyChecked: "",
       },
-      privacyChecked: false,
-      showPassword: false,
-      showConfirmPassword: false,
+      privacyChecked: false, // Privacy policy checkbox initial state
     };
   }
 
+  // Reset form fields and errors
   resetFields = () => {
     this.setState({
       fields: {
@@ -53,16 +53,17 @@ class SignUp extends Component {
         confirmPassword: "",
         privacyChecked: "",
       },
-      showPassword: false,
+      showPassword: false, // Hide passwords initially
       showConfirmPassword: false,
     });
   };
 
+  // Validate individual field values
   validateField = (name, value) => {
     let { errors } = this.state;
     let isValid = true;
 
-    // Validation logic for each field
+    // Validation logic based on field name
     switch (name) {
       case "firstName":
         if (!value) {
@@ -76,7 +77,7 @@ class SignUp extends Component {
         }
         break;
       case "middleName":
-        errors["middleName"] = ""; // Clear error for middle name
+        errors["middleName"] = ""; // No validation for middle name
         break;
       case "lastName":
         if (!value) {
@@ -136,10 +137,12 @@ class SignUp extends Component {
     return isValid;
   };
 
+  // Handle changes in form inputs
   handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const fieldValue = type === "checkbox" ? checked : value;
 
+    // Update state with new field value and validate
     this.setState(
       (prevState) => ({
         fields: {
@@ -153,6 +156,7 @@ class SignUp extends Component {
     );
   };
 
+  // Handle form submission
   handleSubmit = async (e) => {
     e.preventDefault();
     const { fields } = this.state;
@@ -160,6 +164,7 @@ class SignUp extends Component {
 
     let isFormValid = true;
 
+    // Validate each field before submitting
     if (!this.validateField("firstName", firstName)) isFormValid = false;
     if (!this.validateField("lastName", lastName)) isFormValid = false;
     if (!this.validateField("email", email)) isFormValid = false;
@@ -167,6 +172,7 @@ class SignUp extends Component {
     if (!this.validateField("confirmPassword", confirmPassword)) isFormValid = false;
     if (!this.validateField("privacyChecked", privacyChecked)) isFormValid = false;
 
+    // Submit form if valid
     if (isFormValid) {
       const userDto = new UserDTO(
         fields.firstName, 
@@ -175,7 +181,8 @@ class SignUp extends Component {
         fields.email, 
         fields.password
       );
-      this.resetFields();      
+      this.resetFields();
+
       try {
         const response = await fetch('http://localhost:5000/api/signup', {
           method: 'POST',
@@ -199,108 +206,67 @@ class SignUp extends Component {
       }
     }
   };
+
+  // Render form with inputs, error messages, and links
   render() {
     const { errors, fields } = this.state;
 
     return (
-      <div class="signup">
+      <div className="signup">
         <h2>Create an Account</h2>
         <p>Join us and start your journey!</p>
         <form onSubmit={this.handleSubmit}>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>First Name:<span class="required">*</span></label>
-              <input
-                type="text"
-                name="firstName"
-                value={fields.firstName}
-                onChange={this.handleChange}
-              />
-              <div class="error">{errors.firstName}</div>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>First Name:<span className="required">*</span></label>
+              <input type="text" name="firstName" value={fields.firstName} onChange={this.handleChange} />
+              <div className="error">{errors.firstName}</div>
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <label>Middle Name:</label>
-              <input
-                type="text"
-                name="middleName"
-                value={fields.middleName}
-                onChange={this.handleChange}
-              />
+              <input type="text" name="middleName" value={fields.middleName} onChange={this.handleChange} />
             </div>
-            <div class="form-group">
-              <label>
-                Last Name:<span class="required">*</span>
-              </label>
-              <input 
-                type="text" 
-                name="lastName"
-                value={fields.lastName}
-                onChange={this.handleChange} />
-              <div class="error">{errors.lastName}</div>
+            <div className="form-group">
+              <label>Last Name:<span className="required">*</span></label>
+              <input type="text" name="lastName" value={fields.lastName} onChange={this.handleChange} />
+              <div className="error">{errors.lastName}</div>
             </div>
-            <div class="form-group">
-              <label>
-                Email:<span class="required">*</span>
-              </label>
-              <input 
-                type="email" 
-                name="email"
-                value={fields.email}
-                onChange={this.handleChange} />
-              <div class="error">{errors.email}</div>
+            <div className="form-group">
+              <label>Email:<span className="required">*</span></label>
+              <input type="email" name="email" value={fields.email} onChange={this.handleChange} />
+              <div className="error">{errors.email}</div>
             </div>
-            <div class="form-group">
-              <label>
-                Password:<span class="required">*</span>
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={fields.password}
-                onChange={this.handleChange}
-              />
-              <div class="error">{errors.password}</div>
+            <div className="form-group">
+              <label>Password:<span className="required">*</span></label>
+              <input type="password" name="password" value={fields.password} onChange={this.handleChange} />
+              <div className="error">{errors.password}</div>
             </div>
-            <div class="form-group">
-              <label>
-                Confirm Password:<span class="required">*</span>
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={fields.confirmPassword}
-                onChange={this.handleChange}
-              />
-              <div class="error"> {errors.confirmPassword}</div>
+            <div className="form-group">
+              <label>Confirm Password:<span className="required">*</span></label>
+              <input type="password" name="confirmPassword" value={fields.confirmPassword} onChange={this.handleChange} />
+              <div className="error">{errors.confirmPassword}</div>
             </div>
           </div>
-          <div class="checkbox-container">
-            <div class="checkbox-row">
-              <input
-                type="checkbox"
-                name="privacyChecked"
-                checked={fields.privacyChecked}
-                onChange={this.handleChange}
-              />
+          <div className="checkbox-container">
+            <div className="checkbox-row">
+              <input type="checkbox" name="privacyChecked" checked={fields.privacyChecked} onChange={this.handleChange} />
               <label>
                 I agree to the{" "}
                 <a href="https://docs.google.com/document/d/1rKikrpb_zjOqbs4rEt83A5pI_7DMgKPkPn-sSXscNmI" target="_blank" rel="noopener noreferrer">
                   Privacy Policy
                 </a>
-                <span class="required">*</span>&nbsp;
+                <span className="required">*</span>&nbsp;
               </label>
-              <div class="error">{errors.privacyChecked}</div>
+              <div className="error">{errors.privacyChecked}</div>
             </div>
           </div>
-          <div class="login-link">
+          <div className="login-link">
             Already have an account?{" "}
             <a href="#" onClick={(e) => { e.preventDefault(); this.props.onToggleForm(); }}>
               Login
             </a>
           </div>
-          <div class="button-container">
-            <button type="submit">Sign Up</button>
-          </div>
+          <button type="submit">Create Account</button>
         </form>
       </div>
     );

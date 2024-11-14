@@ -5,13 +5,12 @@ class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // Field values
+      // Initial field values and errors
       fields: {
         email: "",
         password: "",
         confirmPassword: "",
       },
-      // Validation errors
       errors: {
         email: "",
         password: "",
@@ -20,6 +19,7 @@ class ResetPassword extends Component {
     };
   }
 
+  // Reset all fields and errors to initial state
   resetFields = () => {
     this.setState({
       fields: {
@@ -32,16 +32,15 @@ class ResetPassword extends Component {
         password: "",
         confirmPassword: "",
       },
-      showPassword: false,
-      showConfirmPassword: false,
     });
   };
-  
+
+  // Validate each field individually
   validateField = (name, value) => {
     let { errors } = this.state;
     let isValid = true;
 
-    // Validation logic for each field
+    // Field-specific validation logic
     switch (name) {
       case "email":
         if (!value) {
@@ -54,6 +53,7 @@ class ResetPassword extends Component {
           errors["email"] = ""; // Clear error if valid
         }
         break;
+
       case "password":
         if (!value) {
           isValid = false;
@@ -65,6 +65,7 @@ class ResetPassword extends Component {
           errors["password"] = ""; // Clear error if valid
         }
         break;
+
       case "confirmPassword":
         if (value !== this.state.fields.password) {
           isValid = false;
@@ -73,6 +74,7 @@ class ResetPassword extends Component {
           errors["confirmPassword"] = ""; // Clear error if valid
         }
         break;
+
       default:
         break;
     }
@@ -82,30 +84,29 @@ class ResetPassword extends Component {
     return isValid;
   };
 
+  // Handle field changes and validate field
   handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const fieldValue = type === "checkbox" ? checked : value;
+    const { name, value } = e.target;
 
     this.setState(
       (prevState) => ({
         fields: {
           ...prevState.fields,
-          [name]: fieldValue,
+          [name]: value,
         },
       }),
       () => {
-        this.validateField(name, fieldValue); // Validate after change
+        this.validateField(name, value); // Validate after change
       }
     );
   };
 
+  // Check if email is registered
   checkEmailExists = async (email) => {
     try {
-      const response = await fetch('http://localhost:5000/api/check-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch("http://localhost:5000/api/check-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
       const result = await response.json();
@@ -116,20 +117,19 @@ class ResetPassword extends Component {
     }
   };
 
+  // Send reset password request to server
   resetPassword = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/reset-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch("http://localhost:5000/api/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-  
+
       const result = await response.json();
       if (response.ok) {
         alert(result.message || "Password reset successful. Redirecting to login...");
-        this.props.onToggleForm(); // Directly trigger form switch
+        this.props.onToggleForm(); // Trigger form switch
       } else {
         alert(result.message || "Error during password reset.");
       }
@@ -139,32 +139,33 @@ class ResetPassword extends Component {
     }
   };
 
+  // Handle form submission
   handleSubmit = async (e) => {
     e.preventDefault();
     const { fields } = this.state;
     const { email, password, confirmPassword } = fields;
 
-    let isFormValid = true;
-    if (!this.validateField("email", email)) isFormValid = false;
-    if (!this.validateField("password", password)) isFormValid = false;
-    if (!this.validateField("confirmPassword", confirmPassword)) isFormValid = false;
+    // Validate all fields before submission
+    let isFormValid = this.validateField("email", email) &&
+                      this.validateField("password", password) &&
+                      this.validateField("confirmPassword", confirmPassword);
 
     if (isFormValid) {
-      this.resetFields();
-      // Check if the email exists
+      this.resetFields(); // Reset form fields after validation
       const emailExists = await this.checkEmailExists(email);
       if (!emailExists) {
         alert("Email does not exist. Please enter a registered email.");
         return;
       }
-      // Proceed with password reset
+      // Proceed with password reset if email exists
       await this.resetPassword(email, password);
     }
   };
 
+  // Handle redirect to login form
   handleLoginRedirect = (e) => {
     e.preventDefault();
-    this.props.onToggleForm(); // Switch back to login form
+    this.props.onToggleForm(); // Trigger form switch
   };
 
   render() {
