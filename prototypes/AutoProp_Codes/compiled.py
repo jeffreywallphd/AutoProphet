@@ -51,6 +51,9 @@ def fetch_stock_name(prompt):
     return stocks[fetch_first_stock]
 
 ##########################################################################################
+
+# content from ALL_GETPRICE.PY
+
 # Load environment variables from the .env file
 load_dotenv()
 
@@ -110,14 +113,6 @@ CORS(app)  # This will allow all cross-origin requests
 # Load the pre-trained intent model
 loaded_model = joblib.load('intent_model.pkl')
 
-# Define the intent mappings
-intent_map = {
-    "General_Info": lambda user_input: {"response": general_question()},
-    "Get_Historical": lambda user_input: {"response": get_historical(user_input)},
-    "Get_Price": lambda user_input: {"response": get_price(user_input)}
-}
-
-
 # Functions for intents
 def general_question():
     return "That's a great question! Here's some information about the stock market..."
@@ -149,6 +144,15 @@ def get_historical(user_input):
 
 def unknown_intent():
     return "We know that it is a great question but currently this is out of our scope. But, we will be back soon. AutoProphet rocks"
+
+
+# Define the intent mappings
+intent_map = {
+    "General_Info": lambda user_input: {"response": general_question()},
+    "Get_Historical": lambda user_input: {"response": get_historical(user_input)},
+    "Get_Price": lambda user_input: {"response": get_price(user_input)}
+}
+
 
 
 # Flask route to process user input
