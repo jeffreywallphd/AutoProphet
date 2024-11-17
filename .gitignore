@@ -55,3 +55,6 @@ __pycache__/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# To save data locally
+local_data/
