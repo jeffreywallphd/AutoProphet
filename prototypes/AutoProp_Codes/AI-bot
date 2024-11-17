@@ -1,4 +1,11 @@
 
+# downlod the fine tuned models from the provided drive link.
+
+# Intent: https://drive.google.com/drive/folders/1hykYr6Z9nqAuY9_Zqk22fj3LYwATGZ9Q?usp=drive_link
+# Price: https://drive.google.com/drive/folders/10V9Lh2NQoiOoGB4s_qIXJnkkxNq5dugE?usp=drive_link
+# Time: https://drive.google.com/drive/folders/10lFL2WT3A6kS3Ii6fT00BMZH-rZNb5Vg?usp=drive_link
+
+
 
 # Importing libraries
 import spacy
@@ -54,6 +61,18 @@ def extract_dates(query):
 
 # Known stock symbols for direct matching
 known_symbols = ["TSLA", "AMZN", "MSFT", "GOOGL", "META", "AAPL", "AMD", "NVDA"]
+
+def get_stock_symbol(company_name):
+    try:
+        ticker = yf.Ticker(company_name)
+        symbol = ticker.ticker
+        if not ticker.history(period="1d").empty:
+            return symbol
+        else:
+            print(f"Error: No data found for symbol {symbol}. The stock might be delisted.")
+            return None
+    except Exception as e:
+        return None
 
 # Function to extract company names or symbols
 def extract_company_names(query):
@@ -161,7 +180,15 @@ def fetch_stock_data(stock_symbol, price_type, time_period=None, specific_date=N
 # Visualization functions
 def plot_comparison(stock_data, stock_symbols, price_type, time_period):
     plt.figure(figsize=(10, 6))
-    plt.bar(stock_symbols, stock_data)
+
+    colors = ['skyblue', 'lightcoral']  # Add more colors if there are more stocks
+    bars = plt.bar(stock_symbols, stock_data, color=colors[:len(stock_symbols)])
+
+    for bar, price in zip(bars, stock_data):
+        plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), 
+                 f"{price:.2f}", ha='center', va='bottom', fontsize=10, color='black')
+
+    #plt.bar(stock_symbols, stock_data)
     plt.title(f"Comparison of {price_type.capitalize()} Prices for {' and '.join(stock_symbols)}")
     plt.ylabel(f"{price_type.capitalize()} Price")
     plt.xlabel("Stocks")
@@ -215,7 +242,7 @@ def handle_query(query):
     company_names = extract_company_names(query)
 
     if company_names:
-        stock_symbols = [company for company in company_names if company in known_symbols]
+        stock_symbols = [get_stock_symbol(company) for company in company_names]
 
         if stock_symbols:
             #print(f"Question: {query}")
@@ -228,12 +255,12 @@ def handle_query(query):
                 return
 
             # Load models only once to avoid reloading per query
-            intent_model = BertForSequenceClassification.from_pretrained("./fine_tuned_intent_model1")
-            intent_tokenizer = BertTokenizer.from_pretrained("./fine_tuned_intent_model1")
-            price_model = BertForSequenceClassification.from_pretrained("./fine_tuned_price_type_model")
-            price_tokenizer = BertTokenizer.from_pretrained("./fine_tuned_price_type_model")
-            time_model = BertForSequenceClassification.from_pretrained("./fine_tuned_time_period_model")
-            time_tokenizer = BertTokenizer.from_pretrained("./fine_tuned_time_period_model")
+            intent_model = BertForSequenceClassification.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_intent_model1")
+            intent_tokenizer = BertTokenizer.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_intent_model1")
+            price_model = BertForSequenceClassification.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_price_type_model")
+            price_tokenizer = BertTokenizer.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_price_type_model")
+            time_model = BertForSequenceClassification.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_time_period_model")
+            time_tokenizer = BertTokenizer.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_time_period_model")
 
             # Map intents, price types, and time periods
             intent_labels = {0: 'price_inquiry', 1: 'stock_comparison', 2: 'stock_trend', 3: 'summary'}
@@ -289,7 +316,7 @@ def handle_query(query):
                         valid_prices = [price for price in stock_prices if price is not None]
                         valid_symbols = [symbol for symbol, price in zip(stock_symbols, stock_prices) if price is not None]
                         if valid_prices and valid_symbols:
-                            plot_comparison(valid_prices, valid_symbols, predicted_price_type)
+                            plot_comparison(valid_prices, valid_symbols, predicted_price_type, predicted_time_period)
                         else:
                             print("Answer: Insufficient data to generate a comparison plot.")
                 return
@@ -301,7 +328,7 @@ def handle_query(query):
                     print(f"Answer: Summary for {symbol}: {summary}")
 
             else:
-                print(f"Answer: Unable to handle the intent '{predicted_intent}' for the query.")
+                print(f"Answer: Unable to handle the intent '{predicted_intent}' for the query.") 
 
         else:
             print("Answer: Could not find valid stock symbols in the query.")
