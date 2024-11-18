@@ -60,4 +60,4 @@ Thumbs.db
 local_data/
 
 # Trained Models
-/trained_models/
+trained_models/
