@@ -58,3 +58,6 @@ Thumbs.db
 
 # To save data locally
 local_data/
+
+# Trained Models
+/trained_models/
