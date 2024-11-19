@@ -28,6 +28,10 @@
 
     async function sendMessage() {
         const message = document.getElementById('message').value;
+        const maxLength = document.getElementById('max_length').value || 200;
+        const minLength = document.getElementById('min_length').value || 100;
+        const topK = document.getElementById('top_k').value || 50;
+        const topP = document.getElementById('top_p').value || 0.95;
         const sessionId = await getSessionId();
 
         // Ensure the message is not empty
@@ -48,7 +52,13 @@
             const chatbotResponse = await fetch(`/api/chatbot/${sessionId}/response/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: message })  // Ensure message is passed correctly
+                body: JSON.stringify({ 
+                    message: message,
+                    max_length: parseInt(maxLength),
+                    min_length: parseInt(minLength),
+                    top_k: parseInt(topK),
+                    top_p: parseFloat(topP),
+                })  // Ensure message is passed correctly
             });
 
             if (chatbotResponse.ok) {
@@ -100,6 +110,20 @@
     <!-- Main Content Area -->
     <div class="content">
         <h1>Chatbot Conversation</h1>
+        <div class="config-options">
+            <h2>Configuration Options</h2>
+            <label for="max_length">Max Length:</label>
+            <input type="number" id="max_length" placeholder="Default: 200">
+            <br>
+            <label for="min_length">Min Length:</label>
+            <input type="number" id="min_length" placeholder="Default: 100">
+            <br>
+            <label for="top_k">Top K:</label>
+            <input type="number" id="top_k" placeholder="Default: 50">
+            <br>
+            <label for="top_p">Top P:</label>
+            <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
+        </div>
         <div id="messages"></div>
         <input type="text" id="message" placeholder="Type your message...">
         <button onclick="sendMessage()">Send</button>

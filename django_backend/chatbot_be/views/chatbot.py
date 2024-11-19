@@ -8,21 +8,51 @@ from django.shortcuts import render
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from django.conf import settings
 from django.conf.urls.static import static
-
+import torch
 
 # Load the GPT-2 model and tokenizer once during server initialization
 MODEL_PATH = "chatbot_be/trained_models/trained_model_GPT_16K"
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 tokenizer = GPT2Tokenizer.from_pretrained(MODEL_PATH)
 model = GPT2LMHeadModel.from_pretrained(MODEL_PATH)
+model.to(device)
 
-def generate_gpt2_response(prompt, max_length=50):
+# Ensure pad_token_id is set
+if tokenizer.pad_token_id is None:
+    tokenizer.pad_token = tokenizer.eos_token
+
+def generate_gpt2_response(prompt, max_length=200, min_length=100, top_k=50, top_p=0.95):
     """
     Generate a response from the GPT-2 model based on the input prompt.
     """
-    inputs = tokenizer.encode(prompt, return_tensors='pt')
-    outputs = model.generate(inputs, max_length=max_length, num_return_sequences=1)
-    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return response
+    try:
+        # Tokenize the input prompt
+        inputs = tokenizer(
+            prompt,
+            return_tensors='pt',
+            padding=True,
+            truncation=True,
+            max_length=128
+        ).to(device)  # Move inputs to the same device as the model
+
+        # Generate a response
+        outputs = model.generate(
+            inputs['input_ids'],
+            attention_mask=inputs['attention_mask'],
+            max_length=max_length,
+            min_length=min_length,
+            do_sample=True,
+            top_k=top_k,
+            top_p=top_p,
+            num_return_sequences=1,
+            pad_token_id=tokenizer.pad_token_id
+        )
+        
+        # Decode and return the response
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return response
+    except Exception as e:
+        return f"Error during response generation: {str(e)}"
 
 class SessionCreateView(APIView):
     """
@@ -76,8 +106,43 @@ class ChatbotGenerateResponseView(APIView):
         if not user_message:
             return Response({'error': 'Message is required'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Extract configurable parameters from the request or set defaults
+        max_length = request.data.get('max_length', 200)
+        min_length = request.data.get('min_length', 100)
+        top_k = request.data.get('top_k', 50)
+        top_p = request.data.get('top_p', 0.95)
+
+        # Validate parameters
+        try:
+            max_length = int(max_length)
+            min_length = int(min_length)
+            top_k = int(top_k)
+            top_p = float(top_p)
+        except ValueError:
+            return Response({'error': 'Invalid parameters. Ensure max_length, min_length, and top_k are integers, and top_p is a float.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Ensure proper bounds for the parameters
+        if not (1 <= min_length <= max_length <= 1024):
+            return Response({'error': 'min_length must be <= max_length and within valid range.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not (0 <= top_p <= 1):
+            return Response({'error': 'top_p must be between 0 and 1.'}, status=status.HTTP_400_BAD_REQUEST)
+        if top_k < 0:
+            return Response({'error': 'top_k must be a non-negative integer.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Generate GPT-2 response with configurable parameters
+        try:
+            bot_response = generate_gpt2_response(
+                user_message,
+                max_length=max_length,
+                min_length=min_length,
+                top_k=top_k,
+                top_p=top_p
+            )
+        except Exception as e:
+            return Response({'error': f'Error during response generation: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         # Generate GPT-2 response
-        bot_response = generate_gpt2_response(user_message)
+        # bot_response = generate_gpt2_response(user_message)
 
         # Save user message to the database
         user_message_data = {
@@ -99,7 +164,16 @@ class ChatbotGenerateResponseView(APIView):
         if bot_serializer.is_valid():
             bot_serializer.save()
 
-        return Response({'user_message': user_message, 'bot_response': bot_response}, status=status.HTTP_200_OK)
+        return Response({
+            'user_message': user_message, 
+            'bot_response': bot_response,
+            'generation_params': {
+                'max_length': max_length,
+                'min_length': min_length,
+                'top_k': top_k,
+                'top_p': top_p,
+            }
+            }, status=status.HTTP_200_OK)
 
 def chatbot_view(request):
     return render(request, 'chatbot.html')
