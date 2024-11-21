@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="{% static 'backend.css'%}">
 </head>
 <script>
+    function handleEnter(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
     async function getSessionId() {
         let sessionId = localStorage.getItem('session_id');
 
@@ -125,7 +131,7 @@
             <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
         </div>
         <div id="messages"></div>
-        <input type="text" id="message" placeholder="Type your message...">
+        <input type="text" id="message" placeholder="Type your message..." onkeydown="handleEnter(event)">
         <button onclick="sendMessage()">Send</button>
     </div>
 </body>

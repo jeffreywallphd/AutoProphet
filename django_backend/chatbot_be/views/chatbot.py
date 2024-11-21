@@ -148,7 +148,7 @@ class ChatbotGenerateResponseView(APIView):
         user_message_data = {
             'session_id': session_id,
             'message': user_message,
-            'sender': 'user',  # Assuming 'sender' distinguishes user and bot
+            'is_user': True,  
         }
         user_serializer = ConversationSerializer(data=user_message_data)
         if user_serializer.is_valid():
@@ -158,7 +158,8 @@ class ChatbotGenerateResponseView(APIView):
         bot_message_data = {
             'session_id': session_id,
             'message': bot_response,
-            'sender': 'bot',  # Assuming 'sender' distinguishes user and bot
+            'is_user': False,  
+ 
         }
         bot_serializer = ConversationSerializer(data=bot_message_data)
         if bot_serializer.is_valid():
