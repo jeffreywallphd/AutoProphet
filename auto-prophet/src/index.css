@@ -264,6 +264,7 @@ code {
   padding: 20px;
   background-color: var(--background-color);
   overflow-x: hidden;
+  position: static;
 }
 
 .homeContainer {
@@ -463,6 +464,31 @@ code {
 .btn-group {
   text-align: right;
   padding-right: 30px;
+}
+
+/* Styling for BrowseFAQ Page */
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.divSpacing {
+  padding: 2%;
+}
+
+.faq-card {
+  background-color: #fff;
+  padding: 2%;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
+}
+
+.faq-tableOfContents {
+  background-color: #f5f5f5;
+  padding: 2%;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
 }
 
 /* Styling for Risk Analysis Page */
@@ -1221,4 +1247,555 @@ nav ul li a:hover {
 
 .portfolio-chart {
   margin-top: 20px;
+}
+
+/* updated /
+/ StockAnalysis.css */
+
+.stock-analysis {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 400px;
+  height: 35px;
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.search-bar button {
+  margin-left: 15px;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3;
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.stock-table th,
+.stock-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.stock-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.stock-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.stock-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.as-of-date {
+  font-style: italic;
+  font-size: 0.9em;
+  text-align: center;
+  padding-top: 15px;
+  color: #666;
+}
+
+.export-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.export-buttons button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.export-buttons button:hover {
+  background-color: #218838;
+}
+
+.stock-chart {
+  max-width: 600px;
+  margin: 20px auto;
+}
+.investment-pool-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  color:#000;
+}
+
+.survey-button,
+.create-pool-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.survey-button:hover,
+.create-pool-button:hover {
+  background-color: #0056b3;
+}
+
+.content-grid {
+  display: flex;
+  margin-top: 20px;
+}
+
+.metrics-and-investments {
+  flex: 2;
+  margin-right: 20px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.metric-card {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.metric-value {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.metric-value.green {
+  color: #28a745;
+}
+
+.table-container {
+  margin-top: 20px;
+}
+
+.investment-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.investment-table th,
+.investment-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.investment-table th {
+  background-color: #f1f1f1;
+}
+
+.investment-pools {
+  flex: 1;
+}
+
+.pool-list {
+  list-style: none;
+  padding: 0;
+}
+
+.pool-list li {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.pool-list button {
+  margin-left: 10px;
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pool-list button:hover {
+  background-color: #e0a800;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+.survey-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.survey-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.survey-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.question-container {
+  margin-bottom: 2rem;
+}
+
+.question-text {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.option-button {
+  padding: 1rem;
+  text-align: left;
+  background-color: #f5f5f5;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  color: black;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-button:hover {
+  background-color: #e5e5e5;
+}
+
+.option-button.selected {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #2563eb;
+}
+
+.navigation-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.nav-button, .submit-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.nav-button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.nav-button:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.nav-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.submit-button {
+  background-color: #10b981;
+  color: white;
+  border: none;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.progress-text {
+  text-align: center;
+  margin-top: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.result-container {
+  text-align: center;
+}
+
+.result-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.result-text {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  color: #444;
+}
+
+.close-survey-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.close-survey-button:hover {
+  background-color: #2563eb;
+}
+
+.survey-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.survey-button:hover {
+  background-color: #2563eb;
+}
+
+
+.disclaimer-container {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+.disclaimer-content {
+  background-color: white;
+  padding: 24px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.disclaimer-content h2 {
+  color: #333;
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.disclaimer-text {
+  margin-bottom: 24px;
+}
+
+.disclaimer-text ul {
+  list-style-type: disc;
+  padding-left: 24px;
+  color: #555;
+}
+
+.disclaimer-text li {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.disclaimer-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.agree-button {
+  background-color: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.agree-button:hover {
+  background-color: #1d4ed8;
+}
+
+.cancel-button {
+  background-color: #e5e7eb;
+  color: #374151;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #d1d5db;
+}
+
+.start-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.btn-success-sm {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-success-sm:hover {
+  background-color: #218838;
+}
+
+.btn-danger-sm {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-danger-sm:hover {
+  background-color: #c82333;
 }
