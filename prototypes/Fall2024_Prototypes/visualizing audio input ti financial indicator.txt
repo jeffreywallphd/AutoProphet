@@ -1,0 +1,157 @@
+import tkinter as tk
+from tkinter import messagebox, scrolledtext
+from tkinter import PhotoImage
+import csv
+import re
+import requests
+import spacy
+from gtts import gTTS
+import os
+import speech_recognition as sr
+from fuzzywuzzy import process
+
+# Initialize spaCy NLP model for entity recognition
+nlp = spacy.load("en_core_web_sm")
+
+# Alpha Vantage API Key
+ALPHA_VANTAGE_API_KEY = ''
+
+# Load Company Data from CSV
+def load_companies(filename):
+    companies = {}
+    try:
+        with open(filename, mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                company_name = row['Company Name'].strip().lower()
+                companies[company_name] = row['Ticker']
+    except FileNotFoundError:
+        print(f"Error: The file {filename} was not found.")
+    return companies
+
+# Extract Keywords from Text
+def extract_keywords(text):
+    words = re.findall(r'\b\w+\b', text.lower())
+    return set(words)
+
+# Fetch Financial Indicators from Alpha Vantage API
+def fetch_financials(ticker):
+    url = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={ALPHA_VANTAGE_API_KEY}'
+    response = requests.get(url)
+    if response.status_code != 200:
+        print(f"Error fetching data from Alpha Vantage: Status code {response.status_code}")
+        return None
+
+    data = response.json()
+    if 'Note' in data:
+        print("API request limit reached.")
+        return None
+
+    indicators = {
+        'Market Cap': data.get('MarketCapitalization', 'N/A'),
+        'P/E Ratio': data.get('PERatio', 'N/A'),
+        'Dividend Yield': data.get('DividendYield', 'N/A'),
+        'Revenue': data.get('RevenueTTM', 'N/A'),
+        'Earnings Per Share (EPS)': data.get('EPS', 'N/A'),
+        'Gross Profit Margin': data.get('GrossProfitMargin', 'N/A'),
+        'Operating Margin': data.get('OperatingMarginTTM', 'N/A'),
+        'Net Profit Margin': data.get('NetProfitMargin', 'N/A'),
+        'Return on Equity (ROE)': data.get('ReturnOnEquityTTM', 'N/A'),
+        'Return on Assets (ROA)': data.get('ReturnOnAssetsTTM', 'N/A'),
+        'Debt to Equity Ratio': data.get('DebtToEquity', 'N/A'),
+        'Current Ratio': data.get('CurrentRatio', 'N/A'),
+        'Quick Ratio': data.get('QuickRatio', 'N/A'),
+        'Book Value per Share': data.get('BookValuePerShare', 'N/A'),
+        'Free Cash Flow': data.get('FreeCashFlow', 'N/A'),
+        'Beta': data.get('Beta', 'N/A'),
+        '52-Week High': data.get('52WeekHigh', 'N/A'),
+        '52-Week Low': data.get('52WeekLow', 'N/A'),
+    }
+
+    return indicators
+
+# Fuzzy Match Company
+def fuzzy_match_company(input_keyword, companies):
+    input_keyword = input_keyword.strip().lower()
+    normalized_companies = {name.replace('inc', '').replace('corp', '').replace('ltd', '').strip(): ticker 
+                            for name, ticker in companies.items()}
+    best_match, score = process.extractOne(input_keyword, normalized_companies.keys())
+    return best_match, score, normalized_companies[best_match]
+
+# Get Audio Input for Company Name
+def on_audio_input():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Please speak a company name...")
+        recognizer.adjust_for_ambient_noise(source)
+        audio_data = recognizer.listen(source)
+        print("Recognizing...")
+        try:
+            company_name = recognizer.recognize_google(audio_data)
+            input_entry.delete(0, tk.END)  # Clear the input entry
+            input_entry.insert(0, company_name)  # Insert the recognized text
+        except sr.UnknownValueError:
+            print("Sorry, I could not understand the audio.")
+        except sr.RequestError as e:
+            print(f"Could not request results from Google Speech Recognition service; {e}")
+
+# Display Financial Indicators in Tkinter GUI
+def display_financial_data(financial_data):
+    output_text.delete(1.0, tk.END)
+    if financial_data:
+        output_text.insert(tk.END, "Financial Indicators:\n\n")
+        for indicator, value in financial_data.items():
+            output_text.insert(tk.END, f"{indicator}: {value}\n")
+    else:
+        output_text.insert(tk.END, "No financial data available.")
+
+# Main Query Handling Function
+def handle_query(input_text):
+    companies = load_companies('')  # Update with actual path
+    keywords = extract_keywords(input_text)
+    found_match = False
+
+    for keyword in keywords:
+        matched_company, score, ticker = fuzzy_match_company(keyword, companies)
+
+        if score >= 80:
+            found_match = True
+            financial_data = fetch_financials(ticker)
+            display_financial_data(financial_data)
+            break
+
+    if not found_match:
+        messagebox.showinfo("No Match", "No matching company found.")
+
+# GUI Setup
+app = tk.Tk()
+app.title("Financial Data App")
+app.geometry("800x600")
+
+# Input Field and Microphone Icon
+input_label = tk.Label(app, text="Enter a company name or press the microphone icon:", font=("Arial", 12))
+input_label.pack(pady=10)
+
+input_frame = tk.Frame(app)
+input_frame.pack(pady=10)
+
+input_entry = tk.Entry(input_frame, width=50, font=("Arial", 12))
+input_entry.pack(side=tk.LEFT)
+
+# Load the microphone icon image
+mic_icon = PhotoImage(file="microphone.png")  # Ensure 'microphone.png' is in the same directory
+mic_button = tk.Button(input_frame, image=mic_icon, command=on_audio_input, borderwidth=0, cursor="hand2")
+mic_button.pack(side=tk.LEFT, padx=5)
+
+def on_submit():
+    user_input = input_entry.get()
+    handle_query(user_input)
+
+submit_button = tk.Button(app, text="Submit", command=on_submit)
+submit_button.pack(pady=10)
+
+# Output Display
+output_text = scrolledtext.ScrolledText(app, width=80, height=20, font=("Arial", 10))
+output_text.pack(pady=10)
+
+app.mainloop()
