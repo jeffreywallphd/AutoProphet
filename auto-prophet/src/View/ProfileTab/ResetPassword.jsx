@@ -5,7 +5,6 @@ class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // Initial field values and errors
       fields: {
         email: "",
         password: "",
@@ -19,72 +18,42 @@ class ResetPassword extends Component {
     };
   }
 
-  // Reset all fields and errors to initial state
-  resetFields = () => {
-    this.setState({
-      fields: {
-        email: "",
-        password: "",
-        confirmPassword: "",
-      },
-      errors: {
-        email: "",
-        password: "",
-        confirmPassword: "",
-      },
-    });
-  };
-
-  // Validate each field individually
   validateField = (name, value) => {
     let { errors } = this.state;
     let isValid = true;
-
-    // Field-specific validation logic
-    switch (name) {
-      case "email":
-        if (!value) {
-          isValid = false;
-          errors["email"] = "Email is required.";
-        } else if (!/\S+@\S+\.\S+/.test(value)) {
-          isValid = false;
-          errors["email"] = "Email is invalid.";
-        } else {
-          errors["email"] = ""; // Clear error if valid
-        }
-        break;
-
-      case "password":
-        if (!value) {
-          isValid = false;
-          errors["password"] = "Password is required.";
-        } else if (value.length < 6) {
-          isValid = false;
-          errors["password"] = "Password must be at least 6 characters.";
-        } else {
-          errors["password"] = ""; // Clear error if valid
-        }
-        break;
-
-      case "confirmPassword":
-        if (value !== this.state.fields.password) {
-          isValid = false;
-          errors["confirmPassword"] = "Passwords do not match.";
-        } else {
-          errors["confirmPassword"] = ""; // Clear error if valid
-        }
-        break;
-
-      default:
-        break;
+  
+    const validations = {
+      email: {
+        regex: /\S+@\S+\.\S+/,
+        message: "Email is required and should be in a valid format.",
+      },
+      password: {
+        regex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
+        message: "Password should be 8-16 characters with a digit, letter, and special character.",
+      },
+      confirmPassword: {
+        check: value === this.state.fields.password,
+        message: "Passwords do not match.",
+      },
+    };
+  
+    if (!value) {
+      errors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`;
+      isValid = false;
+    } else if (validations[name]?.regex && !validations[name].regex.test(value)) {
+      errors[name] = validations[name].message;
+      isValid = false;
+    } else if (validations[name]?.check === false) {
+      errors[name] = validations[name].message;
+      isValid = false;
+    } else {
+      errors[name] = "";
     }
-
-    // Update errors in the state
+  
     this.setState({ errors });
     return isValid;
   };
 
-  // Handle field changes and validate field
   handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -96,76 +65,71 @@ class ResetPassword extends Component {
         },
       }),
       () => {
-        this.validateField(name, value); // Validate after change
+        this.validateField(name, value);
       }
     );
   };
 
-  // Check if email is registered
-  checkEmailExists = async (email) => {
-    try {
-      const response = await fetch("http://localhost:5000/api/check-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const result = await response.json();
-      return result.exists;
-    } catch (error) {
-      console.error("Error checking email existence:", error);
-      return false;
-    }
-  };
-
-  // Send reset password request to server
-  resetPassword = async (email, password) => {
-    try {
-      const response = await fetch("http://localhost:5000/api/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        alert(result.message || "Password reset successful. Redirecting to login...");
-        this.props.onToggleForm(); // Trigger form switch
-      } else {
-        alert(result.message || "Error during password reset.");
-      }
-    } catch (error) {
-      console.error("Error during password reset:", error);
-      alert("An error occurred. Please try again later.");
-    }
-  };
-
-  // Handle form submission
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { fields } = this.state;
     const { email, password, confirmPassword } = fields;
-
-    // Validate all fields before submission
+  
     let isFormValid = this.validateField("email", email) &&
                       this.validateField("password", password) &&
                       this.validateField("confirmPassword", confirmPassword);
-
+  
     if (isFormValid) {
-      this.resetFields(); // Reset form fields after validation
-      const emailExists = await this.checkEmailExists(email);
-      if (!emailExists) {
-        alert("Email does not exist. Please enter a registered email.");
-        return;
-      }
-      // Proceed with password reset if email exists
-      await this.resetPassword(email, password);
+      fetch("http://localhost:5000/api/check-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+        .then((response) => response.json())
+        .then((emailResult) => {
+          if (!emailResult.exists) {
+            alert("Email does not exist. Please enter a registered email.");
+            return;
+          }
+          fetch("http://localhost:5000/api/reset-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          })
+            .then((response) => response.json())
+            .then((resetResult) => {
+              if (resetResult.success) {
+                alert(resetResult.message || "Password reset successful. Redirecting to login...");
+                this.props.onToggleForm();
+              } else {
+                alert(resetResult.message || "Error during password reset.");
+              }
+            })
+            .catch((error) => {
+              alert("An error occurred while resetting the password. Please try again later.");
+              console.error("Error during password reset:", error);
+            });
+        })
+        .catch((error) => {
+          alert("Error checking email existence. Please try again later.");
+          console.error("Error checking email existence:", error);
+        })
+        .finally(() => {
+          this.setState((prevState) => ({
+            fields: {
+              ...prevState.fields,
+              email: "",
+              password: "",
+              confirmPassword: "",
+            },
+          }));
+        });
     }
   };
 
-  // Handle redirect to login form
   handleLoginRedirect = (e) => {
     e.preventDefault();
-    this.props.onToggleForm(); // Trigger form switch
+    this.props.onToggleForm();
   };
 
   render() {

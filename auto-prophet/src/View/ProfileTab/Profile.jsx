@@ -9,14 +9,13 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLogin: true,             // Controls display between Login and SignUp components
-            isOverlayVisible: true,     // Controls the visibility of the overlay
-            isResetPassword: false,     // Toggles Reset Password view
-            user: null,                 // Stores user data after successful login
+            isLogin: true,
+            isOverlayVisible: true,
+            isResetPassword: false,
+            user: null,
         };
     }
 
-    // Toggles between Login and SignUp forms, and hides Reset Password form if open
     toggleForm = () => {
         this.setState((prevState) => ({
             isLogin: !prevState.isLogin,
@@ -24,7 +23,6 @@ class Profile extends Component {
         }));
     };
 
-    // Shows Reset Password form if currently in Login view
     showResetPassword = () => {
         if (this.state.isLogin) {
             this.setState({
@@ -34,7 +32,6 @@ class Profile extends Component {
         }
     };
 
-    // Closes the overlay and resets to Login form
     closeOverlay = () => {
         this.setState({
             isLogin: true,
@@ -43,7 +40,6 @@ class Profile extends Component {
         });
     };
 
-    // Updates state with user data upon successful login and hides overlay
     onLoginSuccess = (userData) => {
         this.setState({
             user: userData,
@@ -51,7 +47,6 @@ class Profile extends Component {
         });
     };
 
-    // Handles user logout, sending a request to the server and updating the state
     handleLogout = async () => {
         const { user } = this.state;
 
@@ -70,13 +65,12 @@ class Profile extends Component {
                     throw new Error(result.message || 'Logout failed');
                 }
 
-                // Clear user data and reset to Login view
                 this.setState({
                     user: null,
                     isOverlayVisible: true,
                     isLogin: true,
                 });
-                alert(result.message); // Display logout success message
+                alert(result.message);
             } catch (error) {
                 console.error('Logout Error:', error);
                 alert('Error logging out');
@@ -90,10 +84,8 @@ class Profile extends Component {
         return (
             <div>
                 {user ? (
-                    // Display ProfilePage if user is logged in
                     <ProfilePage user={user} onLogout={this.handleLogout} />
                 ) : (
-                    // Show overlay with form selection if no user is logged in
                     isOverlayVisible && (
                         <div className="overlay-background visible">
                             <div className="overlay">
@@ -101,18 +93,18 @@ class Profile extends Component {
                                     &times;
                                 </button>
                                 {isResetPassword ? (
-                                    // Display Reset Password form
                                     <ResetPassword onToggleForm={this.toggleForm} />
                                 ) : isLogin ? (
-                                    // Display Login form
                                     <Login
                                         onToggleForm={this.toggleForm}
                                         onResetPassword={this.showResetPassword}
                                         onLoginSuccess={this.onLoginSuccess}
+                                        closeOverlay={this.closeOverlay}
                                     />
                                 ) : (
-                                    // Display SignUp form
-                                    <SignUp onToggleForm={this.toggleForm} />
+                                    <SignUp 
+                                        onToggleForm={this.toggleForm}
+                                    />
                                 )}
                             </div>
                         </div>

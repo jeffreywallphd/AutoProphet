@@ -1,5 +1,3 @@
-// SignUp.js
-
 import React, { Component } from "react";
 import "./SignUp.css";
 import UserDTO from "./UserDTO";
@@ -8,7 +6,6 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // Initial field values for the form
       fields: {
         firstName: "",
         middleName: "",
@@ -18,7 +15,6 @@ class SignUp extends Component {
         confirmPassword: "",
         privacyChecked: false,
       },
-      // Initial validation errors for each field
       errors: {
         firstName: "",
         middleName: "",
@@ -28,121 +24,41 @@ class SignUp extends Component {
         confirmPassword: "",
         privacyChecked: "",
       },
-      privacyChecked: false, // Privacy policy checkbox initial state
+      privacyChecked: false,
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // Reset form fields and errors
-  resetFields = () => {
-    this.setState({
-      fields: {
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        privacyChecked: false,
-      },
-      errors: {
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        privacyChecked: "",
-      },
-      showPassword: false, // Hide passwords initially
-      showConfirmPassword: false,
-    });
-  };
-
-  // Validate individual field values
   validateField = (name, value) => {
     let { errors } = this.state;
     let isValid = true;
-
-    // Validation logic based on field name
-    switch (name) {
-      case "firstName":
-        if (!value) {
-          isValid = false;
-          errors["firstName"] = "First name is required.";
-        } else if (value.length > 16) {
-          isValid = false;
-          errors["firstName"] = "First name must be less than 16 characters.";
-        } else {
-          errors["firstName"] = ""; // Clear error if valid
-        }
-        break;
-      case "middleName":
-        errors["middleName"] = ""; // No validation for middle name
-        break;
-      case "lastName":
-        if (!value) {
-          isValid = false;
-          errors["lastName"] = "Last name is required.";
-        } else if (value.length > 16) {
-          isValid = false;
-          errors["lastName"] = "Last name must be less than 16 characters.";
-        } else {
-          errors["lastName"] = ""; // Clear error if valid
-        }
-        break;
-      case "email":
-        if (!value) {
-          isValid = false;
-          errors["email"] = "Email is required.";
-        } else if (!/\S+@\S+\.\S+/.test(value)) {
-          isValid = false;
-          errors["email"] = "Email is invalid.";
-        } else {
-          errors["email"] = ""; // Clear error if valid
-        }
-        break;
-      case "password":
-        if (!value) {
-          isValid = false;
-          errors["password"] = "Password is required.";
-        } else if (value.length < 6) {
-          isValid = false;
-          errors["password"] = "Password must be at least 6 characters.";
-        } else {
-          errors["password"] = ""; // Clear error if valid
-        }
-        break;
-      case "confirmPassword":
-        if (value !== this.state.fields.password) {
-          isValid = false;
-          errors["confirmPassword"] = "Passwords do not match.";
-        } else {
-          errors["confirmPassword"] = ""; // Clear error if valid
-        }
-        break;
-      case "privacyChecked":
-        if (!value) {
-          isValid = false;
-          errors["privacyChecked"] = "You must agree to the privacy policy.";
-        } else {
-          errors["privacyChecked"] = ""; // Clear error if valid
-        }
-        break;
-      default:
-        break;
-    }
-
-    // Update errors in the state
+  
+    const fieldValidations = {
+      firstName: () => !value ? "First name is required." : value.length > 16 ? "First name must be less than 16 characters." : "",
+      middleName: () => "",
+      lastName: () => !value ? "Last name is required." : value.length > 16 ? "Last name must be less than 16 characters." : "",
+      email: () => !value ? "Email is required." : !/\S+@\S+\.\S+/.test(value) ? "Email is invalid." : "",
+      password: () => {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,16}$/;
+        return !value ? "Password is required." : !passwordRegex.test(value) ? "Password must be 8-16 characters with a digit, letter, and special character." : "";
+      },
+      confirmPassword: () => value !== this.state.fields.password ? "Passwords do not match." : "",
+      privacyChecked: () => !value ? "You must agree to the privacy policy." : "",
+    };
+  
+    const errorMsg = fieldValidations[name]();
+    errors[name] = errorMsg;
+    isValid = !errorMsg; // If there is an error message, it's invalid
+  
     this.setState({ errors });
     return isValid;
   };
 
-  // Handle changes in form inputs
   handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const fieldValue = type === "checkbox" ? checked : value;
 
-    // Update state with new field value and validate
     this.setState(
       (prevState) => ({
         fields: {
@@ -151,20 +67,18 @@ class SignUp extends Component {
         },
       }),
       () => {
-        this.validateField(name, fieldValue); // Validate after change
+        this.validateField(name, fieldValue);
       }
     );
   };
 
-  // Handle form submission
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { fields } = this.state;
     const { firstName, lastName, email, password, confirmPassword, privacyChecked } = fields;
 
     let isFormValid = true;
 
-    // Validate each field before submitting
     if (!this.validateField("firstName", firstName)) isFormValid = false;
     if (!this.validateField("lastName", lastName)) isFormValid = false;
     if (!this.validateField("email", email)) isFormValid = false;
@@ -172,42 +86,58 @@ class SignUp extends Component {
     if (!this.validateField("confirmPassword", confirmPassword)) isFormValid = false;
     if (!this.validateField("privacyChecked", privacyChecked)) isFormValid = false;
 
-    // Submit form if valid
     if (isFormValid) {
-      const userDto = new UserDTO(
-        fields.firstName, 
-        fields.middleName, 
-        fields.lastName, 
-        fields.email, 
-        fields.password
-      );
-      this.resetFields();
-
-      try {
-        const response = await fetch('http://localhost:5000/api/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userDto),
-        });
-
-        const data = await response.json();
-
-        if (data.message) {
-          alert("Signup successful, redirecting to Login...");
-          setTimeout(() => {
-            this.props.onToggleForm(); 
-          }, 100);
+      fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(new UserDTO(
+          fields.firstName, 
+          fields.middleName, 
+          fields.lastName, 
+          fields.email, 
+          fields.password
+        )),
+      }).then(response => {
+        if(!response.ok){
+          return response.json().then(errorData => {
+            throw new Error(errorData.message || `Error: ${response.status} - ${response.statusText}`);
+          });
         }
-      } catch (error) {
-        console.error("There was an error registering the user!", error);
+        alert("Signup successful, redirecting to Login...");
+        setTimeout(() => {
+          this.props.onToggleForm(); 
+        }, 100);
+      }).catch(error => {
         alert("Error registering user: " + error.message || "Please try again later.");
-      }
+      }).finally(() => {
+        this.setState((prevState) => ({
+          fields: {
+            ...prevState.fields,
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            privacyChecked: false,
+          },
+          errors: {
+            ...prevState.errors,
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            privacyChecked: "",
+          },
+        }));
+      })
     }
   };
 
-  // Render form with inputs, error messages, and links
   render() {
     const { errors, fields } = this.state;
 

@@ -1,4 +1,3 @@
-// Login.js
 import React, { Component } from "react";
 import "./Login.css";
 
@@ -8,91 +7,88 @@ class Login extends Component {
     this.state = {
       fields: { email: "", password: "" },
       errors: { email: "", password: "" },
+      formKey: 0,
     };
   }
 
-  // Reset form fields and errors
-  resetFields = () => {
-    this.setState({
-      fields: { email: "", password: "" },
-      errors: { email: "", password: "" },
-    });
-  };
-
-  // Validate fields individually
   validateField = (name, value) => {
     const errors = { ...this.state.errors };
-    let isValid = true;
+    const validations = {
+      email: {
+        regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        errorMessage: "Email is required and should be in a valid format."
+      },
+      password: {
+        regex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
+        errorMessage: "Password should be 8-16 characters with a digit, letter, and special character."
+      }
+    };
 
-    if (name === "email") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!value) {
-        errors.email = "Email is required.";
-        isValid = false;
-      } else if (!emailRegex.test(value)) {
-        errors.email = "Invalid email format.";
-        isValid = false;
-      } else {
-        errors.email = "";
-      }
-    } else if (name === "password") {
-      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-      if (!value) {
-        errors.password = "Password is required.";
-        isValid = false;
-      } else if (!passwordRegex.test(value)) {
-        errors.password = "8-16 characters with a digit, letter, and special character.";
-        isValid = false;
-      } else {
-        errors.password = "";
-      }
+    if (!value) {
+      errors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`;
+    } else if (!validations[name].regex.test(value)) {
+      errors[name] = validations[name].errorMessage;
+    } else {
+      errors[name] = "";
     }
 
     this.setState({ errors });
-    return isValid;
+    return !errors[name];
   };
 
-  // Handle field changes and validate
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState(
-      (prevState) => ({
+      prevState => ({
         fields: { ...prevState.fields, [name]: value },
       }),
       () => this.validateField(name, value)
     );
   };
 
-  // Check credentials with API call
-  checkCredentials = async (email, password) => {
-    try {
-      const response = await fetch('http://localhost:5000/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || "Login failed");
-      return result;
-    } catch (error) {
-      alert(error.message);
-      return null;
-    }
-  };
-
-  // Handle form submission
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { email, password } = this.state.fields;
 
-    if (this.validateField("email", email) && this.validateField("password", password)) {
-      this.resetFields();
-      const result = await this.checkCredentials(email, password);
-      if (result) {
-        alert("Login successful! Welcome to Auto Prophet");
-        this.props.onLoginSuccess(result.user);
-        setTimeout(() => this.props.closeOverlay(), 100);
-      }
+    const isEmailValid = this.validateField("email", email);
+    const isPasswordValid = this.validateField("password", password);
+
+    if (isEmailValid && isPasswordValid) {
+      fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((result) => {
+              throw new Error(result.message || "Login failed");
+            });
+          }
+          return response.json();
+        })
+        .then((result) => {
+          alert("Login successful! Welcome to Auto Prophet");
+          this.props.onLoginSuccess(result.user);
+
+          setTimeout(() => this.props.closeOverlay(), 100);
+        })
+        .catch((error) => {
+          alert(`Error: ${error.message}`);
+        }).finally(() => {
+          this.setState((prevState) => ({
+            fields: {
+              ...prevState.fields,
+              email: "",
+              password: ""
+            },
+            errors: {
+              ...prevState.errors,
+              email: "",
+              password: ""
+            },
+          }));
+        })
     }
   };
 
