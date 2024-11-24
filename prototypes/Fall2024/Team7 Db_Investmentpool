@@ -1,0 +1,161 @@
+-- ========================================
+-- Drop Tables if They Exist 
+-- ========================================
+DROP TABLE IF EXISTS ActivityLogs;
+DROP TABLE IF EXISTS Investments;
+DROP TABLE IF EXISTS PoolParticipants;
+DROP TABLE IF EXISTS Performances;
+DROP TABLE IF EXISTS Notifications;
+DROP TABLE IF EXISTS Admins;
+DROP TABLE IF EXISTS InvestmentPools;
+DROP TABLE IF EXISTS Users;
+
+-- ========================================
+-- Table: Users
+-- ========================================
+CREATE TABLE IF NOT EXISTS Users (
+    UserID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username TEXT NOT NULL UNIQUE, -- Unique username
+    Email TEXT NOT NULL UNIQUE, -- Unique email
+    PasswordHash TEXT NOT NULL, -- Hashed password for security
+    JoinedDate DATE DEFAULT (DATE('now')) -- User's registration date
+);
+
+-- ========================================
+-- Table: InvestmentPools
+-- ========================================
+CREATE TABLE IF NOT EXISTS InvestmentPools (
+    PoolID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PoolName TEXT NOT NULL, -- Pool's name
+    CreatorID INTEGER NOT NULL, -- ID of the pool creator
+    TotalAmount REAL NOT NULL, -- Total amount invested in the pool
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Pool creation timestamp
+    Status TEXT CHECK(Status IN ('Open', 'Closed')) DEFAULT 'Open', -- Pool status
+    StrategyType TEXT NOT NULL, -- Type of investment strategy
+    FOREIGN KEY (CreatorID) REFERENCES Users(UserID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ========================================
+-- Table: PoolParticipants
+-- ========================================
+CREATE TABLE IF NOT EXISTS PoolParticipants (
+    ParticipantID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PoolID INTEGER NOT NULL, -- ID of the associated pool
+    UserID INTEGER NOT NULL, -- ID of the participant
+    InvestmentAmount REAL NOT NULL, -- Amount invested by the participant
+    JoinedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Join timestamp
+    Role TEXT DEFAULT 'Member', -- Role of the participant (e.g., Member or Admin)
+    FOREIGN KEY (PoolID) REFERENCES InvestmentPools(PoolID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ========================================
+-- Table: Investments
+-- ========================================
+CREATE TABLE IF NOT EXISTS Investments (
+    InvestmentID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PoolID INTEGER NOT NULL, -- ID of the associated pool
+    Amount REAL NOT NULL, -- Investment amount
+    DateInvested DATE DEFAULT (DATE('now')), -- Date of investment
+    AssetType TEXT NOT NULL, -- Type of asset (e.g., Stocks, Bonds)
+    Status TEXT CHECK(Status IN ('Active', 'Closed')) DEFAULT 'Active', -- Status of the investment
+    FOREIGN KEY (PoolID) REFERENCES InvestmentPools(PoolID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ========================================
+-- Table: Performances
+-- ========================================
+CREATE TABLE IF NOT EXISTS Performances (
+    PerformanceID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PoolID INTEGER NOT NULL, -- ID of the associated pool
+    Date DATE NOT NULL, -- Date of performance record
+    ReturnPercentage DECIMAL NOT NULL, -- Return percentage
+    RiskLevel TEXT NOT NULL, -- Risk level of the pool
+    FOREIGN KEY (PoolID) REFERENCES InvestmentPools(PoolID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ========================================
+-- Table: Notifications
+-- ========================================
+CREATE TABLE IF NOT EXISTS Notifications (
+    NotificationID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER NOT NULL, -- User to whom the notification belongs
+    Message TEXT NOT NULL, -- Notification message
+    NotificationDate DATE DEFAULT (DATE('now')), -- Notification date
+    IsRead BOOLEAN DEFAULT FALSE, -- Whether the notification has been read
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ========================================
+-- Table: Admins
+-- ========================================
+CREATE TABLE IF NOT EXISTS Admins (
+    AdminID INTEGER PRIMARY KEY AUTOINCREMENT,
+    AdminName TEXT NOT NULL, -- Administrator's name
+    Email TEXT NOT NULL UNIQUE, -- Unique email for admin
+    Role TEXT NOT NULL -- Role of the administrator (e.g., SuperAdmin)
+);
+
+-- ========================================
+-- Table: ActivityLogs
+-- ========================================
+CREATE TABLE IF NOT EXISTS ActivityLogs (
+    ActivityID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PoolID INTEGER NOT NULL, -- ID of the associated pool
+    UserID INTEGER NOT NULL, -- ID of the user performing the action
+    Action TEXT NOT NULL, -- Description of the action
+    ActionDate DATE DEFAULT (DATE('now')), -- Date of the action
+    Notes TEXT, -- Additional notes
+    FOREIGN KEY (PoolID) REFERENCES InvestmentPools(PoolID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ========================================
+-- Add Sample Data for Testing
+-- ========================================
+-- Add sample user
+INSERT INTO Users (Username, Email, PasswordHash) 
+VALUES 
+('User1', 'user1@example.com', 'password1'),
+('User2', 'user2@example.com', 'password2');
+
+-- Add sample investment pools
+INSERT INTO InvestmentPools (PoolName, CreatorID, TotalAmount, StrategyType)
+VALUES 
+('Tech Growth Pool', 1, 10000.0, 'Growth'),
+('Real Estate Pool', 2, 20000.0, 'Real Estate');
+
+-- Add sample participants
+INSERT INTO PoolParticipants (PoolID, UserID, InvestmentAmount, Role)
+VALUES 
+(1, 1, 5000.0, 'Admin'),
+(2, 2, 10000.0, 'Member');
+
+-- Add sample investments
+INSERT INTO Investments (PoolID, Amount, AssetType, Status)
+VALUES 
+(1, 3000.0, 'Stocks', 'Active'),
+(2, 5000.0, 'Bonds', 'Active');
+
+-- Add sample performance data
+INSERT INTO Performances (PoolID, Date, ReturnPercentage, RiskLevel)
+VALUES 
+(1, DATE('now'), 12.5, 'Medium'),
+(2, DATE('now'), 8.2, 'Low');
+
+-- Add sample notifications
+INSERT INTO Notifications (UserID, Message)
+VALUES 
+(1, 'Your investment pool has achieved a 10% return!'),
+(2, 'New opportunities available in Real Estate Pool.');
+
+-- Add sample admin
+INSERT INTO Admins (AdminName, Email, Role)
+VALUES 
+('Admin1', 'admin1@example.com', 'SuperAdmin');
+
+-- Add sample activity logs
+INSERT INTO ActivityLogs (PoolID, UserID, Action, Notes)
+VALUES 
+(1, 1, 'Created a new investment pool', 'Growth strategy initialized.'),
+(2, 2, 'Joined an investment pool', 'Participated as a Member.');
