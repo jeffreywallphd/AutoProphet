@@ -16,19 +16,13 @@ const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
   port: process.env.DB_PORT,
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL:', err.message);
-    return;
-  }
-  console.log('Connected to MySQL database');
-
-  // Create or use existing database
+function setupDatabase() {
   const createDatabaseQuery = `CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`;
+  
+  // Create the database if it doesn't exist
   db.query(createDatabaseQuery, (err) => {
     if (err) {
       console.error('Error creating database:', err.message);
@@ -36,15 +30,15 @@ db.connect((err) => {
     }
     console.log(`Database ${process.env.DB_NAME} is ready`);
 
-    // Switch to the specified database
+    // Switch to the created database
     db.changeUser({ database: process.env.DB_NAME }, (err) => {
       if (err) {
-        console.error('Error switching database:', err.message);
+        console.error('Error switching to database:', err.message);
         return;
       }
       console.log(`Switched to database ${process.env.DB_NAME}`);
 
-      // Create or update users table to add new fields if they don’t exist
+      // Create the users table
       const createTableQuery = `
         CREATE TABLE IF NOT EXISTS users (
           id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,7 +52,7 @@ db.connect((err) => {
           isValid BOOLEAN DEFAULT FALSE,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`;
-  
+
       db.query(createTableQuery, (err) => {
         if (err) {
           console.error('Error creating users table:', err.message);
@@ -68,6 +62,16 @@ db.connect((err) => {
       });
     });
   });
+}
+
+// Attempt to connect to MySQL server
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL server:', err.message);
+  } else {
+    console.log('Connected to MySQL server');
+    setupDatabase();
+  }
 });
 
 // Signup Route
