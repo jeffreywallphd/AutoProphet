@@ -11,7 +11,7 @@ from django.conf.urls.static import static
 import torch
 
 # Load the GPT-2 model and tokenizer once during server initialization
-MODEL_PATH = "chatbot_be/trained_models/trained_model_GPT_16K"
+MODEL_PATH = "OpenFinAL/GPT2_FINGPT_QA"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 tokenizer = GPT2Tokenizer.from_pretrained(MODEL_PATH)
 model = GPT2LMHeadModel.from_pretrained(MODEL_PATH)
