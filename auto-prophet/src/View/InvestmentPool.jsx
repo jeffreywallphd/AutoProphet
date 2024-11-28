@@ -1,31 +1,113 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RiskSurvey from './RiskSurvey';
 
 const InvestmentPool = () => {
   const [showSurvey, setShowSurvey] = useState(false);
+  const [showCreatePoolModal, setShowCreatePoolModal] = useState(false);
+  const [pools, setPools] = useState([]);
+  const [newPool, setNewPool] = useState({
+    name: '',
+    riskLevel: 'Low',
+    amountMin: '',
+    isPrivate: false,
+  });
+  const [editIndex, setEditIndex] = useState(null);
+  const [filter, setFilter] = useState('All');
 
-  // Sample data - replace with your actual data source
   const investments = [
-    { id: 1, name: "Tech Growth Fund", type: "Mutual Fund", risk: "Moderate", returns: "12.5%", allocation: "25%" },
-    { id: 2, name: "Blue Chip Portfolio", type: "Stocks", risk: "Low", returns: "8.2%", allocation: "30%" },
-    { id: 3, name: "Emerging Markets", type: "ETF", risk: "High", returns: "15.8%", allocation: "15%" },
-    { id: 4, name: "Bond Portfolio", type: "Bonds", risk: "Low", returns: "5.5%", allocation: "30%" },
+    { id: 1, name: 'Tech Growth Fund', type: 'Mutual Fund', risk: 'Moderate', returns: '12.5%', allocation: '25%' },
+    { id: 2, name: 'Blue Chip Portfolio', type: 'Stocks', risk: 'Low', returns: '8.2%', allocation: '30%' },
+    { id: 3, name: 'Emerging Markets', type: 'ETF', risk: 'High', returns: '15.8%', allocation: '15%' },
+    { id: 4, name: 'Bond Portfolio', type: 'Bonds', risk: 'Low', returns: '5.5%', allocation: '30%' },
   ];
+
+  useEffect(() => {
+    const savedPools = JSON.parse(localStorage.getItem('pools'));
+    if (savedPools) setPools(savedPools);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('pools', JSON.stringify(pools));
+  }, [pools]);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setNewPool((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!newPool.name || !newPool.amountMin || isNaN(newPool.amountMin)) {
+      alert('Please fill out all fields correctly. "Min Amount" should be a number.');
+      return;
+    }
+
+    if (editIndex !== null) {
+      const updatedPools = pools.map((pool, index) =>
+        index === editIndex ? newPool : pool
+      );
+      setPools(updatedPools);
+      setEditIndex(null);
+    } else {
+      setPools((prev) => [...prev, newPool]);
+    }
+
+    setNewPool({
+      name: '',
+      riskLevel: 'Low',
+      amountMin: '',
+      isPrivate: false,
+    });
+    setShowCreatePoolModal(false);
+  };
+
+  const handleEditPool = (index) => {
+    setNewPool(pools[index]);
+    setEditIndex(index);
+    setShowCreatePoolModal(true);
+  };
+
+  const handleDeletePool = (index) => {
+    const updatedPools = pools.filter((_, i) => i !== index);
+    setPools(updatedPools);
+  };
+
+  const filteredPools = pools.filter((pool) => {
+    if (filter === 'All') return true;
+    return filter === 'Public' ? !pool.isPrivate : pool.isPrivate;
+  });
 
   return (
     <div className="investment-pool-container">
       <div className="header-container">
-        <h1 className="page-title">Investment Pool</h1>
-        <button 
+        <h1 className="page-title">Investment Pools</h1>
+        <button
           className="survey-button"
           onClick={() => setShowSurvey(true)}
         >
           Take Risk Survey
         </button>
+        <button
+          className="create-pool-button"
+          onClick={() => {
+            setNewPool({
+              name: '',
+              riskLevel: 'Low',
+              amountMin: '',
+              isPrivate: false,
+            });
+            setShowCreatePoolModal(true);
+          }}
+        >
+          Create New Pool
+        </button>
       </div>
-      
+
       <div className="content-grid">
-        {/* Left Side - Metrics and Investment Table */}
+        {/* Left Side */}
         <div className="metrics-and-investments">
           <div className="metrics-grid">
             <div className="metric-card">
@@ -73,25 +155,50 @@ const InvestmentPool = () => {
           </div>
         </div>
 
-        {/* Right Side - Investment Pools */}
+        {/* Right Side */}
         <div className="investment-pools">
           <h2>Your Investment Pools</h2>
-          <p>Here you can manage your investment pools or join a new one.</p>
-          <button className="create-pool-button">Create New Pool</button>
-          <button className="join-pool-button">Join Pool</button>
-          <h3>Available Pools</h3>
-          <ul className="pool-list">
-            <li>Growth Pool - 20% Allocation</li>
-            <li>Stability Pool - 30% Allocation</li>
-          </ul>
+          <label>Filter Pools:</label>
+          <select onChange={(e) => setFilter(e.target.value)} value={filter}>
+            <option value="All">All</option>
+            <option value="Public">Public</option>
+            <option value="Private">Private</option>
+          </select>
+          <br />
+          <table className="investment-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Risk Level</th>
+                <th>Min Amount</th>
+                <th>Visibility</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredPools.map((pool, index) => (
+                <tr key={index}>
+                  <td>{pool.name}</td>
+                  <td>{pool.riskLevel}</td>
+                  <td>${pool.amountMin}</td>
+                  <td>{pool.isPrivate ? 'Private' : 'Public'}</td>
+                  <td>
+                    <button className='btn-success-sm' onClick={() => handleEditPool(index)}>Edit</button>
+                    <button className='btn-danger-sm' onClick={() => handleDeletePool(index)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
         </div>
       </div>
 
-      {/* Modal/Popup for Survey */}
+      {/* Survey Modal */}
       {showSurvey && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <button 
+            <button
               className="close-button"
               onClick={() => setShowSurvey(false)}
             >
@@ -102,165 +209,73 @@ const InvestmentPool = () => {
         </div>
       )}
 
-      <style>
-        {`
-          .investment-pool-container {
-            padding: 20px;
-          }
+      {/* Create Pool Modal */}
+      {showCreatePoolModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button
+              className="close-button"
+              onClick={() => setShowCreatePoolModal(false)}
+            >
+              ×
+            </button>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={newPool.name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Risk Level</label>
+                <select
+                  name="riskLevel"
+                  value={newPool.riskLevel}
+                  onChange={handleInputChange}
+                >
+                  <option value="Low">Low</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Minimum Amount</label>
+                <input
+                  type="number"
+                  name="amountMin"
+                  value={newPool.amountMin}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Privacy</label>
+                <select
+                  name="isPrivate"
+                  value={newPool.isPrivate ? "Private" : "Public"}
+                  onChange={(e) =>
+                    setNewPool((prev) => ({
+                      ...prev,
+                      isPrivate: e.target.value === "Private",
+                    }))
+                  }
+                >
+                  <option value="Public">Public</option>
+                  <option value="Private">Private</option>
+                </select>
+              </div>
 
-          .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-          }
-
-          .page-title {
-            font-size: 24px;
-            margin: 0;
-            color: #333;
-          }
-
-          .survey-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-          }
-
-          .survey-button:hover {
-            background-color: #45a049;
-          }
-
-          .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-          }
-
-          .metrics-and-investments {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-          }
-
-          .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-          }
-
-          .metric-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          }
-
-          .metric-value {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 10px 0 0 0;
-          }
-
-          .green {
-            color: #22c55e;
-          }
-
-          .table-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          }
-
-          .investment-pools {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          }
-
-          .investment-pools h2 {
-            margin-top: 0;
-          }
-
-          .create-pool-button,
-          .join-pool-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
-            font-size: 16px;
-          }
-
-          .create-pool-button:hover,
-          .join-pool-button:hover {
-            background-color: #45a049;
-          }
-
-          .pool-list {
-            margin-top: 20px;
-            list-style: none;
-            padding: 0;
-          }
-
-          .pool-list li {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-          }
-
-          /* Modal Styles */
-          .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000; /* Ensure overlay is above other content */
-          }
-
-          .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            position: relative;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-          }
-
-          .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-          }
-
-          .close-button:hover {
-            color: #000;
-          }
-        `}
-      </style>
+              <button type="submit" className="submit-button">
+                {editIndex !== null ? 'Save Changes' : 'Create Pool'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
