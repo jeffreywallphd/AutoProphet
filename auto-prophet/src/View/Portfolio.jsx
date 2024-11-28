@@ -4,78 +4,378 @@
 // Disclaimer of Liability
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
-import React, { Component } from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'; // For adding charts
 
-class Portfolio extends Component {
-    portfolioValue = 2534.26;
-    buyingPower = 500.00;
 
-    // Sample stock data for the chart
-    stockData = [
-        { name: 'Jan', price: 12.00 },
-        { name: 'Feb', price: 13.45 },
-        { name: 'Mar', price: 13.00 },
-        { name: 'Apr', price: 14.50 },
-        { name: 'May', price: 15.00 },
-        { name: 'Jun', price: 15.75 },
-    ];
+import React, { useState } from "react";
+import "../index.css";
 
-    render() {
-        return (
-            <div className="page portfolioPage">
-                <h2>My Portfolio</h2>
+const Portfolio = () => {
+  const [search, setSearch] = useState("");
+  const [stocks, setStocks] = useState([]);
+  const [overview, setOverview] = useState(null);
+  const [holdings, setHoldings] = useState([]);
+  const [watchlist, setWatchlist] = useState([]);
+  const [priceHistory, setPriceHistory] = useState([]);
+  const [buyQuantity, setBuyQuantity] = useState(1);
+  const [viewingWatchlist, setViewingWatchlist] = useState(false);
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null);
 
-                {/* Portfolio Value and Buying Power Section */}
-                <div className="portfolio-overview">
-                    <div className="portfolio-card">
-                        <h3>Portfolio Value</h3>
-                        <p className="portfolio-value">${this.portfolioValue.toFixed(2)}</p>
-                    </div>
-                    <div className="portfolio-card">
-                        <h3>Buying Power</h3>
-                        <p className="buying-power">${this.buyingPower.toFixed(2)}</p>
-                    </div>
-                </div>
+  const apiKey = "ENIPDF3XPHW9IUUE";
 
-                {/* Stock Cards Section */}
-                <div className="stock-list">
-                    {this.renderStockCard('Ford Motor Company', 'F', 13.45, 13.00, 10, 4.50, 3.46)}
-                    {this.renderStockCard('Alphabet Inc.', 'GOOG', 2725.60, 2500.00, 5, 112.50, 9.02)}
-                    {this.renderStockCard('Tesla', 'TSLA', 713.45, 700.00, 7, 93.15, 1.92)}
-                    {this.renderStockCard('Apple', 'AAPL', 145.32, 135.00, 12, 123.84, 7.64)}
-                    {this.renderStockCard('Dow', 'DOW', 64.45, 60.00, 50, 222.50, 7.42)}
-                </div>
-
-                {/* Example stock performance chart */}
-                <div className="portfolio-chart">
-                    <h3>Portfolio Performance</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={this.stockData}>
-                            <Line type="monotone" dataKey="price" stroke="#8884d8" />
-                            <CartesianGrid stroke="#ccc" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                        </LineChart>
-                    </ResponsiveContainer>
-                </div>
-            </div>
-        );
+  // Search Functionality
+  const handleSearch = async () => {
+    setLoading(true);
+    setError(null);
+    setStocks([]);
+    try {
+      const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${search}&apikey=${apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.bestMatches) {
+        const stockData = data.bestMatches.map((match) => ({
+          symbol: match["1. symbol"],
+          name: match["2. name"],
+          type: match["3. type"],
+          region: match["4. region"],
+        }));
+        setStocks(stockData);
+        setViewingWatchlist(false);
+      } else {
+        setError("No results found.");
+      }
+    } catch (error) {
+      setError("Failed to fetch stock data. Please try again.");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    renderStockCard(company, symbol, currentPrice, purchasePrice, quantity, gains, percentGain) {
-        return (
-            <div className="stock-card" key={symbol}>
-                <h4>{company} ({symbol})</h4>
-                <p>Current Price: <span className="numeric">${currentPrice.toFixed(2)}</span></p>
-                <p>Purchase Price: <span className="numeric">${purchasePrice.toFixed(2)}</span></p>
-                <p>Quantity: <span className="numeric">{quantity}</span></p>
-                <p>Gains: <span className={`numeric ${gains >= 0 ? 'positive' : 'negative'}`}>${gains.toFixed(2)}</span></p>
-                <p>% Gain: <span className={`numeric ${percentGain >= 0 ? 'positive' : 'negative'}`}>{percentGain.toFixed(2)}%</span></p>
-            </div>
-        );
-    }
+  // Fetch Stock Overview
+  const fetchOverview = async (symbol) => {
+    setLoading(true);
+    setError(null);
+    setOverview(null);
+    try {
+      const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      const globalQuote = data["Global Quote"];
+      if (globalQuote) {
+        setOverview({
+          symbol: globalQuote["01. symbol"],
+          open: parseFloat(globalQuote["02. open"]).toFixed(2),
+          high: parseFloat(globalQuote["03. high"]).toFixed(2),
+          low: parseFloat(globalQuote["04. low"]).toFixed(2),
+          price: parseFloat(globalQuote["05. price"]).toFixed(2),
+volume: globalQuote["06. volume"],
+previousClose: parseFloat(globalQuote["08. previous close"]).toFixed(2),
+change: parseFloat(globalQuote["09. change"]).toFixed(2),
+changePercent: globalQuote["10. change percent"],
+});
+
+// Fetch Price History Data
+fetchPriceHistory(symbol);
+} else {
+setError("No overview data available for the selected stock.");
 }
+} catch (error) {
+setError("Failed to fetch stock overview. Please try again.");
+} finally {
+setLoading(false);
+}
+};
+
+// Fetch Price History
+const fetchPriceHistory = async (symbol) => {
+setLoading(true);
+setError(null);
+setPriceHistory([]);
+try {
+const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${apiKey}`;
+const response = await fetch(url);
+const data = await response.json();
+const timeSeries = data["Time Series (Daily)"];
+if (timeSeries) {
+const history = Object.keys(timeSeries)
+.slice(0, 10) // Last 10 days
+.map((date) => ({
+  date,
+  close: parseFloat(timeSeries[date]["4. close"]).toFixed(2),
+}));
+setPriceHistory(history);
+} else {
+setError("No price history available for the selected stock.");
+}
+} catch (error) {
+setError("Failed to fetch price history. Please try again.");
+} finally {
+setLoading(false);
+}
+};
+
+// Add to Watchlist
+const addToWatchlist = (stock) => {
+if (watchlist.some((item) => item.symbol === stock.symbol)) {
+alert("This stock is already in your watchlist.");
+} else {
+setWatchlist((prevWatchlist) => [...prevWatchlist, stock]);
+}
+};
+
+// View Watchlist
+const viewWatchlist = () => {
+setViewingWatchlist(true);
+};
+
+// Confirm Buy
+const confirmBuy = () => {
+if (!overview) {
+alert("Select a stock before buying.");
+return;
+}
+const existingHolding = holdings.find((holding) => holding.symbol === overview.symbol);
+if (existingHolding) {
+const updatedHoldings = holdings.map((holding) =>
+holding.symbol === overview.symbol
+? {
+    ...holding,
+    quantity: holding.quantity + parseInt(buyQuantity, 10),
+    avgCost:
+      (holding.avgCost * holding.quantity +
+                overview.price * parseInt(buyQuantity, 10)) /
+                (holding.quantity + parseInt(buyQuantity, 10)).toFixed(2),
+              ltp: overview.price,
+              currentValue: (
+                (holding.quantity + parseInt(buyQuantity, 10)) *
+                overview.price
+              ).toFixed(2),
+              pnl: (
+                (overview.price -
+                  ((holding.avgCost * holding.quantity +
+                    overview.price * parseInt(buyQuantity, 10)) /
+                    (holding.quantity + parseInt(buyQuantity, 10))) *
+                  (holding.quantity + parseInt(buyQuantity, 10))).toFixed(2)
+              ),
+            }
+          : holding
+      );
+      setHoldings(updatedHoldings);
+    } else {
+      const newHolding = {
+        ...overview,
+        quantity: parseInt(buyQuantity, 10),
+        avgCost: overview.price,
+        ltp: overview.price,
+        currentValue: (overview.price * buyQuantity).toFixed(2),
+        pnl: 0,
+      };
+      setHoldings((prevHoldings) => [...prevHoldings, newHolding]);
+    }
+    alert(`Purchased ${buyQuantity} shares of ${overview.symbol}`);
+  };
+
+  // Download Holdings as CSV
+  const downloadCSV = () => {
+    const csvData = holdings.map(
+      (holding) =>
+        `${holding.symbol},${holding.quantity},${holding.avgCost},${holding.ltp},${holding.currentValue},${holding.pnl}`
+    );
+    const csvHeader = "Symbol,Quantity,Avg Cost,LTP,Current Value,P&L\n";
+    const csvContent = csvHeader + csvData.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "holdings.csv";
+    link.click();
+  };
+
+  // Save Watchlist as CSV
+  const saveWatchlist = () => {
+    const csvData = watchlist.map(
+      (stock) => `${stock.symbol},${stock.name},${stock.type},${stock.region}`
+    );
+    const csvHeader = "Symbol,Name,Type,Region\n";
+    const csvContent = csvHeader + csvData.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "watchlist.csv";
+    link.click();
+  };
+
+  return (
+    <div className="portfolio-container">
+      <h2>My Portfolio</h2>
+
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search Stock..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button onClick={handleSearch}>Search</button>
+        <button onClick={viewWatchlist}>View Watchlist</button>
+        <button onClick={saveWatchlist}>❤️ Save Watchlist</button>
+     
+        </div>
+
+{loading && <p>Loading...</p>}
+{error && <p className="error-message">{error}</p>}
+
+{!viewingWatchlist && (
+  <>
+    <h3>Search Results</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Region</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {stocks.map((stock, index) => (
+          <tr key={index}>
+            <td>{stock.symbol}</td>
+            <td>{stock.name}</td>
+            <td>{stock.type}</td>
+            <td>{stock.region}</td>
+            <td>
+              <button onClick={() => fetchOverview(stock.symbol)}>
+                View Overview
+              </button>
+              <button onClick={() => addToWatchlist(stock)}>
+                Add to Watchlist
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </>
+)}
+
+{viewingWatchlist && (
+  <>
+    <h3>Watchlist</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Region</th>
+        </tr>
+      </thead>
+      <tbody>
+        {watchlist.map((stock, index) => (
+          <tr key={index}>
+            <td>{stock.symbol}</td>
+            <td>{stock.name}</td>
+            <td>{stock.type}</td>
+            <td>{stock.region}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </>
+)}
+
+{overview && !viewingWatchlist && (
+  <div className="stock-overview">
+    <h3>Stock Overview: {overview.symbol}</h3>
+    <p>
+      <strong>Open:</strong> ${overview.open}
+    </p>
+    <p>
+      <strong>High:</strong> ${overview.high}
+    </p>
+    <p>
+      <strong>Low:</strong> ${overview.low}
+    </p>
+    <p>
+      <strong>Price:</strong> ${overview.price}
+    </p>
+    <p>
+      <strong>Volume:</strong> {overview.volume}
+    </p>
+    <p>
+      <strong>Previous Close:</strong> ${overview.previousClose}
+    </p>
+    <p>
+      <strong>Change:</strong> ${overview.change}
+    </p>
+    <p>
+      <strong>Change Percent:</strong> {overview.changePercent}
+    </p>
+    <input
+      type="number"
+      min="1"
+      value={buyQuantity}
+      onChange={(e) => setBuyQuantity(e.target.value)}
+    />
+    <button onClick={confirmBuy}>Confirm Buy</button>
+  </div>
+)}
+
+{priceHistory.length > 0 && (
+  <div className="price-history">
+    <h3>Price History (Last 10 Days)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Close Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {priceHistory.map((entry, index) => (
+          <tr key={index}>
+            <td>{entry.date}</td>
+            <td>${entry.close}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
+<h3>My Holdings</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Quantity</th>
+      <th>Avg Cost</th>
+      <th>LTP</th>
+      <th>Current Value</th>
+      <th>P&L</th>
+    </tr>
+  </thead>
+  <tbody>
+    {holdings.map((holding, index) => (
+      <tr key={index}>
+        <td>{holding.symbol}</td>
+        <td>{holding.quantity}</td>
+        <td>${holding.avgCost}</td>
+        <td>${holding.ltp}</td>
+        <td>${holding.currentValue}</td>
+        <td>${holding.pnl}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+<button onClick={downloadCSV}>Download Holdings as CSV</button>
+</div>
+);
+};
 
 export default Portfolio;
