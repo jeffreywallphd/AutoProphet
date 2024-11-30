@@ -21,7 +21,7 @@ const Portfolio = () => {
   const [loading, setLoading] = useState(false); 
   const [error, setError] = useState(null);
 
-  const apiKey = "ENIPDF3XPHW9IUUE";
+  const apiKey = "";
 
   // Search Functionality
   const handleSearch = async () => {
