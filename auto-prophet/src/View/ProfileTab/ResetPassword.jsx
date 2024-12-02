@@ -81,7 +81,7 @@ class ResetPassword extends Component {
   
     if (isFormValid) {
       fetch("http://localhost:5000/api/check-email", {
-        method: "POST",
+        method: "GET",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       })
@@ -92,7 +92,7 @@ class ResetPassword extends Component {
             return;
           }
           fetch("http://localhost:5000/api/reset-password", {
-            method: "POST",
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }),
           })

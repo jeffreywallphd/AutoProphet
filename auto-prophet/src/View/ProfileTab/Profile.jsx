@@ -6,15 +6,19 @@ import ProfilePage from "./ProfilePage";
 import "./Profile.css";
 
 class Profile extends Component {
+    
     constructor(props) {
         super(props);
+        const savedUser = localStorage.getItem('user');
         this.state = {
             isLogin: true,
             isOverlayVisible: true,
             isResetPassword: false,
-            user: null,
+            // Retrieve user from localStorage if available
+            user: savedUser ? JSON.parse(savedUser) : null,
         };
     }
+
 
     toggleForm = () => {
         this.setState((prevState) => ({
@@ -45,6 +49,8 @@ class Profile extends Component {
             user: userData,
             isOverlayVisible: false,
         });
+        // Save the user data to localStorage
+        localStorage.setItem('user', JSON.stringify(userData));
     };
 
     handleLogout = async () => {
@@ -53,7 +59,7 @@ class Profile extends Component {
         if (user) {
             try {
                 const response = await fetch('http://localhost:5000/api/logout', {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -64,6 +70,9 @@ class Profile extends Component {
                 if (!response.ok) {
                     throw new Error(result.message || 'Logout failed');
                 }
+
+                // Clear user data from localStorage upon logout
+                localStorage.removeItem('user');
 
                 this.setState({
                     user: null,

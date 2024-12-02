@@ -2,15 +2,23 @@
     max-width: 90%;
     margin: 0 auto;
     padding: 2rem;
-    background-color: #f9f9f9;
+    background-color: var(--row-primary-color);
     border: 1px solid #ccc;
     border-radius: 8px;
+}
+
+.signup h2, p {
+    text-align: center;
+}
+
+.signup h2 {
+    color: var(--primary-color); 
 }
 
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: 2.0rem;
 }
 
 .form-grid div {
@@ -21,6 +29,7 @@
 label {
     margin-bottom: 0.5rem;
     font-weight: bold;
+    color: var(--text-color-medium);
 }
 
 .required {
@@ -34,13 +43,15 @@ input[type="password"] {
     padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 16px;
+    color: var(--text-color-dark);
 }
 
 .error {
     color: red;
     font-size: 0.875rem;
-    height: 1em; 
-    line-height: 1.2; 
+    height: 1em;
+    line-height: 1.2;
     margin-bottom: 0.5em;
 }
 
@@ -55,18 +66,18 @@ button {
     padding: 0.75rem 1.25rem;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: var(--secondary-color);
 }
 
 a {
-    color: #007bff;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
@@ -92,4 +103,5 @@ a:hover {
     text-align: left;
     margin-top: 1rem;
     font-weight: bold;
-}
+    color: var(--primary-color);
+}  
