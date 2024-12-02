@@ -23,7 +23,6 @@ def get_historical():
     print(ticker)
     date_from_query= extract.extract_dates(user_input)
     print(date_from_query)
-
     if date_from_query is None:
         return "We know you are trying to get historical price of "+ticker+" . Can you be more specific on dates?"
     else:
