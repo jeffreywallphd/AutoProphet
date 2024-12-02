@@ -1,6 +1,8 @@
 
 # downlod the fine tuned models from the provided drive link.
 
+
+
 # Intent: https://drive.google.com/drive/folders/1hykYr6Z9nqAuY9_Zqk22fj3LYwATGZ9Q?usp=drive_link
 # Price: https://drive.google.com/drive/folders/10V9Lh2NQoiOoGB4s_qIXJnkkxNq5dugE?usp=drive_link
 # Time: https://drive.google.com/drive/folders/10lFL2WT3A6kS3Ii6fT00BMZH-rZNb5Vg?usp=drive_link
@@ -151,31 +153,22 @@ def fetch_stock_data(stock_symbol, price_type, time_period=None, specific_date=N
             print(f"Error: No data found for {stock_symbol} on {specific_date or time_period}. Try a different date or time period.")
             return None
 
+         # Enecessary columns for candlestick plotting
+        required_columns = ['Open', 'High', 'Low', 'Close']
+        if not all(column in historical_data.columns for column in required_columns):
+            print(f"Error: Missing necessary columns ({', '.join(required_columns)}) for candlestick plot for {stock_symbol}.")
+            return None
+
         if market_closed_message:
             print(market_closed_message)
 
-        if for_trend:
-            return historical_data[price_type.capitalize()] if price_type in ['open', 'close', 'high', 'low', 'volume'] else historical_data['Close']
-
-        if price_type == "volume" and not specific_date:
-            return historical_data['Volume'].mean()
-        else:
-            price_lookup = {
-                "high": historical_data['High'].max,
-                "low": historical_data['Low'].min,
-                "open": lambda: historical_data['Open'].iloc[0],
-                "close": lambda: historical_data['Close'].iloc[-1],
-                "volume": lambda: historical_data['Volume'].iloc[-1] if specific_date else historical_data['Volume'].sum,
-                "current": lambda: historical_data['Close'].iloc[-1]
-            }
-
-            return price_lookup[price_type]() if not historical_data.empty else None
+        return historical_data
 
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
 
-# Add the other required functions (plotting functions, main query handler, etc.)
+
 
 # Visualization functions
 def plot_comparison(stock_data, stock_symbols, price_type, time_period):
@@ -194,6 +187,11 @@ def plot_comparison(stock_data, stock_symbols, price_type, time_period):
     plt.xlabel("Stocks")
     plt.show()
 
+import mplfinance as mpf
+
+
+
+
 def plot_multiple_trends(stock_data_dict, price_type, time_period):
     main_title = f" Stock Price Movements over the period of {time_period.capitalize()}" if len(stock_data_dict) > 1 else f"{list(stock_data_dict.keys())[0]} Stock Price Movement ({time_period.capitalize()} Trend)"
 
@@ -204,18 +202,181 @@ def plot_multiple_trends(stock_data_dict, price_type, time_period):
         axes = [axes]
 
     for i, (symbol, data) in enumerate(stock_data_dict.items()):
-        start_date = data.index[0]
-        end_date = data.index[-1]
-        axes[i].plot(data, label=f"{symbol} Price", color='tab:blue')
-        axes[i].set_title(f"{symbol} Trend from {start_date.strftime('%B %d, %Y')} to {end_date.strftime('%B %d, %Y')}")
-        axes[i].set_ylabel(f"{price_type.capitalize()} Price")
-        axes[i].legend(loc="best")
-        axes[i].grid(axis='y', linestyle='--', linewidth=0.5)
-        trend_summary = generate_trend_summary(data, price_type, start_date, end_date)
-        print(f"Summary for {symbol}: {trend_summary}")
+        if not all(col in data.columns for col in ['Open', 'High', 'Low', 'Close']):
+            print(f"Error: Missing necessary columns (Open, High, Low, Close) for candlestick plot for {symbol}.")
+            continue
+
+        # candlestick chart
+        from mplfinance.original_flavor import candlestick_ohlc
+        import matplotlib.dates as mdates
+
+        data = data.reset_index()
+        data['Date'] = mdates.date2num(data['Date'])
+        ohlc = data[['Date', 'Open', 'High', 'Low', 'Close']]
+
+        axes[i].xaxis_date()
+        candlestick_ohlc(axes[i], ohlc.values, width=0.6, colorup='green', colordown='red', alpha=0.8)
+        axes[i].set_title(f"{symbol} Trend from {data['Date'].iloc[0]} to {data['Date'].iloc[-1]}")
+        axes[i].set_ylabel("Price")
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
     plt.show()
+
+
+import plotly.graph_objects as go
+
+
+
+
+
+
+def plot_candlestick_interactive(stock_data, time_period):
+    """
+    Create an interactive candlestick chart for single or multiple stocks using Plotly,
+    with summaries displayed directly on the graph.
+    Parameters:
+        - stock_data: A dictionary for multiple stocks {symbol: DataFrame} or a single DataFrame for one stock.
+        - time_period: String representing the time period (e.g., '6mo', '1y').
+    """
+    fig = go.Figure()
+    summaries = []
+
+    # Define a color palette for multiple stocks
+    color_palette = [
+        {"increasing": "green", "decreasing": "red"},
+        {"increasing": "blue", "decreasing": "orange"},
+        {"increasing": "purple", "decreasing": "brown"},
+        {"increasing": "pink", "decreasing": "gray"},
+    ]
+
+    annotations = []  # For storing summary annotations
+
+    if isinstance(stock_data, dict):  # Multiple stocks
+        for idx, (symbol, data) in enumerate(stock_data.items()):
+            # Check for required columns
+            if not all(col in data.columns for col in ['Open', 'High', 'Low', 'Close']):
+                print(f"Error: Data for {symbol} is missing necessary columns. Skipping...")
+                continue
+
+            # Add candlestick trace
+            colors = color_palette[idx % len(color_palette)]
+            fig.add_trace(go.Candlestick(
+                x=data.index,
+                open=data['Open'],
+                high=data['High'],
+                low=data['Low'],
+                close=data['Close'],
+                name=symbol,
+                increasing_line_color=colors["increasing"],
+                decreasing_line_color=colors["decreasing"]
+            ))
+
+            # Generate summary for each stock
+            start_price = data['Close'].iloc[0]
+            end_price = data['Close'].iloc[-1]
+            percentage_change = ((end_price - start_price) / start_price) * 100
+            trend = "upward" if percentage_change > 0 else "downward" if percentage_change < 0 else "stable"
+            summary = (
+                f"{symbol}: {trend.capitalize()} trend with a {percentage_change:.2f}% change "
+                f"(from ${start_price:.2f} to ${end_price:.2f})."
+            )
+            summaries.append(summary)
+
+            # Add annotation for this stock
+            annotations.append(dict(
+                x=data.index[-1],  # Add annotation near the last data point
+                y=end_price,
+                text=f"{symbol}: {trend.capitalize()} ({percentage_change:.2f}%)",
+                showarrow=True,
+                arrowhead=2,
+                ax=50,  # Horizontal shift for arrow
+                ay=-40,  # Vertical shift for arrow
+                font=dict(size=12, color=colors["increasing"])
+            ))
+
+        # Title for multiple stocks
+        title = f"Stock Price Movements ({'& '.join(stock_data.keys())}) ({time_period.capitalize()} Trend)"
+
+    else:  # Single stock
+        # Check if it's a DataFrame
+        if not all(col in stock_data.columns for col in ['Open', 'High', 'Low', 'Close']):
+            print("Error: Missing necessary columns for the data. Unable to generate plot.")
+            return
+
+        # Add candlestick trace
+        fig.add_trace(go.Candlestick(
+            x=stock_data.index,
+            open=stock_data['Open'],
+            high=stock_data['High'],
+            low=stock_data['Low'],
+            close=stock_data['Close'],
+            name="Stock",
+            increasing_line_color="green",
+            decreasing_line_color="red"
+        ))
+
+        # Generate summary
+        start_price = stock_data['Close'].iloc[0]
+        end_price = stock_data['Close'].iloc[-1]
+        percentage_change = ((end_price - start_price) / start_price) * 100
+        trend = "upward" if percentage_change > 0 else "downward" if percentage_change < 0 else "stable"
+        summary = (
+            f"Stock: {trend.capitalize()} trend with a {percentage_change:.2f}% change "
+            f"(from ${start_price:.2f} to ${end_price:.2f})."
+        )
+        summaries.append(summary)
+
+        # Add annotation for the stock
+        annotations.append(dict(
+            x=stock_data.index[-1],
+            y=end_price,
+            text=f"Stock: {trend.capitalize()} ({percentage_change:.2f}%)",
+            showarrow=True,
+            arrowhead=2,
+            ax=50,
+            ay=-40,
+            font=dict(size=12, color="green" if trend == "upward" else "red")
+        ))
+
+        # Title for a single stock
+        stock_name = stock_data.index.name or "Stock"  # Use index name as a fallback for stock name
+        title = f"Stock Price Movement of {stock_name} over ({time_period.capitalize()} Period)"
+
+    # Update layout
+    fig.update_layout(
+        title=dict(
+            text=title,
+            x=0.5,  # Center align
+            xanchor="center",
+            font=dict(size=18)
+        ),
+        xaxis_title="Date",
+        yaxis_title="Price",
+        xaxis_rangeslider_visible=False,
+        template="plotly_dark",  # plotly_white for Lighter background & plotly_dark for dark background
+        legend=dict(
+            orientation="h",
+            x=0.5, y=-0.2,
+            xanchor="center",
+            font=dict(size=12)
+        ),
+        annotations=annotations  # Add annotations to the layout
+    )
+
+    # Show the plot
+    fig.show()
+
+    # Print summaries
+    print("Summary of Trends:")
+    for summary in summaries:
+        print(summary)
+
+
+
+
+
+
+
 
 def fetch_stock_summary(stock_symbol):
     stock = yf.Ticker(stock_symbol)
@@ -238,23 +399,21 @@ def fetch_stock_summary(stock_symbol):
     }
 # Main query handling function
 def handle_query(query):
-    specific_date, time_period = extract_dates(query)
+    specific_date, time_period = extract_dates(query)   
     company_names = extract_company_names(query)
 
     if company_names:
         stock_symbols = [get_stock_symbol(company) for company in company_names]
 
         if stock_symbols:
-            #print(f"Question: {query}")
-
-            # Special handling for summaries
+           
             if "summary" in query.lower() or "52 week range" in query.lower():
                 for symbol in stock_symbols:
                     summary = fetch_stock_summary(symbol)
                     print(f"Answer: Summary for {symbol}: {summary}")
                 return
 
-            # Load models only once to avoid reloading per query
+            
             intent_model = BertForSequenceClassification.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_intent_model1")
             intent_tokenizer = BertTokenizer.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_intent_model1")
             price_model = BertForSequenceClassification.from_pretrained("C:/Users/karth/OneDrive - Michigan Technological University/Desktop/AutoProphet my folder/fine_tuned_price_type_model")
@@ -272,18 +431,31 @@ def handle_query(query):
             predicted_price_type = predict_class(query, price_model, price_tokenizer, price_labels)
             predicted_time_period = time_period or predict_class(query, time_model, time_tokenizer, time_labels)
 
-            # Handle specific date queries as price_inquiry for volume and prices
+            # Handle price inquiries
             if predicted_intent == "price_inquiry" or (predicted_intent == "stock_trend" and specific_date):
                 for symbol in stock_symbols:
                     stock_data = fetch_stock_data(symbol, predicted_price_type, time_period=predicted_time_period, specific_date=specific_date)
                     if stock_data is not None:
+                        if isinstance(stock_data, pd.DataFrame):
+                            # Extract aggregated value (e.g., max for high price)
+                            if predicted_price_type == "high":
+                                stock_data = stock_data['High'].max()
+                            elif predicted_price_type == "low":
+                                stock_data = stock_data['Low'].min()
+                            elif predicted_price_type == "open":
+                                stock_data = stock_data['Open'].iloc[0]
+                            elif predicted_price_type == "close":
+                                stock_data = stock_data['Close'].iloc[-1]
+                            elif predicted_price_type == "volume":
+                                stock_data = stock_data['Volume'].sum()
+                        
                         date_display = specific_date.strftime('%B %d, %Y') if specific_date else "the specified period"
                         print(f"Answer: The {predicted_price_type} of {symbol} on {date_display} is {stock_data}.")
                     else:
                         print(f"Answer: No data available for {symbol} on {date_display}.")
                 return
 
-            # Handle stock trend without a specific date
+            # Handle stock trends (candlestick for single stock)
             elif predicted_intent == "stock_trend" and not specific_date:
                 stock_data_dict = {}
                 for symbol in stock_symbols:
@@ -293,8 +465,12 @@ def handle_query(query):
                     else:
                         print(f"Answer: No trend data available for {symbol}.")
 
-                if stock_data_dict:
-                    plot_multiple_trends(stock_data_dict, predicted_price_type, predicted_time_period)
+                
+            
+                plot_candlestick_interactive(stock_data if len(stock_symbols) == 1 else stock_data_dict, predicted_time_period)
+
+
+    
                 return
 
             # Handle stock comparison
@@ -303,13 +479,26 @@ def handle_query(query):
                 for symbol in stock_symbols:
                     stock_data = fetch_stock_data(symbol, predicted_price_type, time_period=predicted_time_period)
                     if stock_data is not None:
-                        print(f"Answer: The {predicted_price_type} price of {symbol} over the specified period is {stock_data}.")
+                        if isinstance(stock_data, pd.DataFrame):
+                            # Extract aggregated value (e.g., max for high price)
+                            if predicted_price_type == "high":
+                                stock_data = stock_data['High'].max()
+                            elif predicted_price_type == "low":
+                                stock_data = stock_data['Low'].min()
+                            elif predicted_price_type == "open":
+                                stock_data = stock_data['Open'].iloc[0]
+                            elif predicted_price_type == "close":
+                                stock_data = stock_data['Close'].iloc[-1]
+                            elif predicted_price_type == "volume":
+                                stock_data = stock_data['Volume'].sum()
+
                         stock_prices.append(stock_data)
+                        print(f"Answer: The {predicted_price_type} price of {symbol} over the specified period is {stock_data}.")
                     else:
                         stock_prices.append(None)
                         print(f"Answer: No data available for {symbol} during the specified period.")
 
-                # Ask if the user wants a comparison plot when multiple stocks are involved
+                # Ask if the user wants a comparison plot 
                 if len(stock_symbols) > 1 and any(stock_prices):
                     visualize_input = input("Would you like to see a comparison plot? (Yes/No): ").strip().lower()
                     if visualize_input == "yes":
@@ -320,7 +509,8 @@ def handle_query(query):
                         else:
                             print("Answer: Insufficient data to generate a comparison plot.")
                 return
-
+            
+            
             # Handle summary
             elif predicted_intent == "summary":
                 for symbol in stock_symbols:
@@ -335,6 +525,8 @@ def handle_query(query):
     else:
         print("Answer: No company names detected in the query.")
 
+
+            
 
 # Run the query loop
 while True:
