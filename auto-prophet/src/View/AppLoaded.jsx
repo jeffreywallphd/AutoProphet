@@ -34,6 +34,7 @@ import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
 import InvestmentPool from "./InvestmentPool";
 import StockAnalysis from "./StockAnalysis";
+import { StockChart } from "./StockChart";
 
 // Scrolls to the top of a page after every route change
 function ScrollToTop() {
@@ -87,6 +88,7 @@ class AppLoaded extends Component {
               <div className="tools sidebar-padding">
                 <h5 className="mt-1">Tools</h5>
                 <ul>
+                  <li><NavLink to="/stockchart"><span className="material-icons">candlestick_chart</span> Stock Charts</NavLink></li>
                   <li><NavLink to="/forecast"><span className="material-icons">timeline</span> Forecast</NavLink></li>
                   <li><NavLink to="/news"><span className="material-icons">article</span> News</NavLink></li>
                   <li><NavLink to="/learn"><span className="material-icons">school</span> Learn</NavLink></li>
@@ -115,6 +117,7 @@ class AppLoaded extends Component {
                 <Route path="/sec-report" element={<SecReport />} />
                 <Route path="/investment-pool" element={<InvestmentPool />} /> 
                 <Route path="/StockAnalysis" element={<StockAnalysis />} />
+                <Route path="/stockchart" element={<StockChart/>} />
               </Routes>
               <footer>
                 This software is licensed under the GPL-3.0 license.

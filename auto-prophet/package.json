@@ -11,6 +11,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "ajv": "^8.12.0",
+    "concurrently": "^9.1.0",
     "file-saver": "^2.0.5",
     "howler": "^2.2.4",
     "node-html-parser": "^6.1.13",
@@ -53,7 +54,10 @@
     "typescript": "^5.4.2"
   },
   "scripts": {
-    "start": "npm run build && electron .",
+    "start": "concurrently \"npm run start-chart\" \"npm run start-api\" \"npm run start-electron\" -k",
+    "start-chart": "cd src/api && python stock_charts.py",
+    "start-api": "uvicorn src.api.main:app --reload --host 127.0.0.1 --port 8000",
+    "start-electron": "npm run build && electron .",
     "build": "webpack --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
