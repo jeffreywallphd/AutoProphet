@@ -1249,6 +1249,76 @@ nav ul li a:hover {
   margin-top: 20px;
 }
 
+.faq-page {
+  font-family: Arial, sans-serif;
+}
+
+.faq-page h1 {
+  font-size: 32px;
+  color: #2d2d7d ;
+  text-align: center; 
+  margin: 0 auto;
+}
+
+.faq-page h2 {
+  font-size: 24px;
+  color: #2d2d7d ;
+  text-align: center; 
+  margin: 0 auto;
+}
+
+.search-box {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+}
+
+.faq-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.faq-card {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  margin: 10px 0;
+  box-sizing: border-box;
+}
+
+.faq-card h3 {
+  font-size: 20px;
+  color: #2d2d7d;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.faq-card h4 {
+  cursor: pointer;
+  color: #2d2d7d;
+}
+
+.faq-question {
+  cursor: pointer;
+  color: #007bff;
+}
+
+.faq-question:hover {
+  text-decoration: underline;
+}
+
+.faq-card p {
+  margin: 10px 0;
+  transition: all 0.3s ease;
+}
+=======
 /* updated /
 / StockAnalysis.css */
 
@@ -1799,3 +1869,4 @@ nav ul li a:hover {
 .btn-danger-sm:hover {
   background-color: #c82333;
 }
+
