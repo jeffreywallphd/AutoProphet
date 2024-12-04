@@ -30,25 +30,8 @@ def speak(text):
     engine.say(text)  # Convert text to speech
     engine.runAndWait()   
     
-# Function to extract ticker from the question
-#from fuzzywuzzy import process
-###Text to Audio
-'''from newspaper import Article
-#from bs4 import BeautifulSoup
-import nltk
-import lxml_html_clean
-from gtts import gTTS
-import os
-from TTS.api import TTS
-article= response
-article.download()
-article.parse()
-article.nlp()
-mytext=article.text
-language="en"
-myobj=gTTS(text=mytext,lang=language,slow=False)
-myobj.save("AMAZON_Stock.mp3")
-os.system("start AMAZON_Stock.mp3") '''
+
+
 
 def extract_ticker(question):
     # Convert the question to uppercase for case-insensitive matching
