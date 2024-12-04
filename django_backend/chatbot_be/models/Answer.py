@@ -6,10 +6,10 @@ from .Question import Question as QuestionTable
 class Answer(models.Model):
     Answer_ID = models.IntegerField(primary_key=True)
     Link = models.CharField(max_length=255, null=True)
-    PageNum = models.IntegerField()
+    PageNum = models.IntegerField(null=True, blank=True)
     Answer = models.CharField(max_length=255)
     LastDayScraped = models.DateField()
-    CopyrightDate = models.DateField()
+    CopyrightDate = models.DateField(null=True, blank=True)
     
     # Define as IntegerFields since IntegerChoices isn't suitable without defined options
     OutdatedFlag = models.IntegerField(null=True, blank=True)
