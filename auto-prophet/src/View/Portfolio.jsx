@@ -9,6 +9,10 @@
 import React, { useState } from "react";
 import "../index.css";
 
+
+
+
+
 const Portfolio = () => {
   const [search, setSearch] = useState("");
   const [stocks, setStocks] = useState([]);
