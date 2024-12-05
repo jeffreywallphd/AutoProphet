@@ -1,89 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Scraper</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .top-panel {
-            background-color: #333;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .side-panel {
-            height: 100vh;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            padding-top: 20px;
-        }
-        .side-panel a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-        }
-        .side-panel a:hover {
-            background-color: #575757;
-        }
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        label, input {
-            display: block;
-            margin: 10px 0;
-        }
-        input[type="text"] {
-            padding: 8px;
-            width: calc(100% - 16px);  /* Make input fields responsive */
-            box-sizing: border-box;
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #575757;
-        }
-        #result {
-            margin-top: 20px;
-        }
-        #scrapedData {
-            display: none;  /* Hide scraped data section initially */
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'backend.css'%}">
+    <link rel="stylesheet" href="{% static 'backendScrape.css'%}">
 </head>
 <body>
      <!-- Top Panel -->
@@ -96,7 +19,7 @@
         <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
         <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->=
         <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
-        <a href="#">Option 4 (Dummy)</a> <!-- Dummy option -->
+        <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
         <a href="#">Option 5 (Dummy)</a> <!-- Dummy option -->
     </div>
 
@@ -111,11 +34,34 @@
         
         <button id="scrapeBtn">Scrape</button>
         <div id="result"></div>
-    
+        <label for="pdfUpload">Upload PDF:</label>
+        <input type="file" id="pdfUpload" accept="application/pdf" required>
+
+        <label for="output_format">Select Output Format:</label>
+        <select id="output_format">
+            <option value="html">HTML</option>
+            <option value="json">JSON</option>
+        </select>
+
+        <button id="uploadBtn">Upload and Convert</button>
+        <div id="uploadResult"></div>
         <!-- Scraped Data Section - Hidden Initially -->
         <div id="scrapedData">
             <h2>Last Scraped Data</h2>
             <div id="scrapedContent"></div>  <!-- Container for scraped content -->
+            {% if latest_scraped_data %}
+                <h3>Data from {{ latest_scraped_data.url }} ({{ latest_scraped_data.file_type }})</h3>
+
+                {% if latest_scraped_data.file_type == 'html' %}
+                    <div>{{ latest_scraped_data.content|safe }}</div> <!-- Render HTML content safely -->
+
+                {% elif latest_scraped_data.file_type == 'json' %}
+                    <pre>{{ latest_scraped_data.content }}</pre> <!-- Render JSON content -->
+
+                {% endif %}
+            {% else %}
+                <p>No data available.</p>
+            {% endif %}
         </div>
     </div>
     
@@ -179,6 +125,61 @@
                     console.error('An error occurred:', error);
                     document.getElementById('result').innerHTML = `<p style="color: red;">An error occurred: ${error.message}</p>`;
                 });
+        });
+        document.getElementById('uploadBtn').addEventListener('click', () => {
+            const pdfFile = document.getElementById('pdfUpload').files[0];
+            const outputFormat = document.getElementById('output_format').value;
+
+            if (!pdfFile) {
+                alert('Please upload a PDF file.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('pdf_file', pdfFile);
+            formData.append('output_format', outputFormat);
+
+            fetch('/api/upload_pdf/', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const uploadResultDiv = document.getElementById('uploadResult');
+                if (data.success) {
+                    uploadResultDiv.innerHTML = `<p style="color: green;">${data.success}</p>`;
+                    
+                    const scrapedDataDiv = document.getElementById('scrapedData');
+                    const scrapedContentDiv = document.getElementById('scrapedContent');
+                    let content = '';
+
+                    if (data.file_type === 'html') {
+                        content = `<pre>${escapeHTML(data.content)}</pre>`;
+                    } else if (data.file_type === 'json') {
+                        content = `<pre>${JSON.stringify(data.content, null, 4)}</pre>`; // pretty print JSON
+                    }
+
+                    scrapedContentDiv.innerHTML = `
+                        <h3>Converted PDF Content (${data.file_type.toUpperCase()})</h3>
+                        ${content}
+                    `;
+
+                    // Show the scraped data section
+                    scrapedDataDiv.style.display = 'block';
+
+                } else if (data.error) {
+                    uploadResultDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+                document.getElementById('uploadResult').innerHTML = `<p style="color: red;">An error occurred: ${error.message}</p>`;
+            });
         });
 
         // Helper function to escape HTML special characters
