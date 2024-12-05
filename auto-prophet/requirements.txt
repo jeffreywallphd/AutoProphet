@@ -1,0 +1,5 @@
+yfinance==0.2.44
+fastapi==0.115.4
+dash==2.18.1
+numpy
+pandas
