@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './RiskSurvey.css';
 
 const questionSet1 = [
     {
