@@ -2,9 +2,11 @@
 
 # dependencies
 package-lock.json
+package.json
 /node_modules
 /.pnp
 .pnp.js
+.env
 
 # testing
 /coverage
@@ -25,13 +27,18 @@ package-lock.json
 sec.json
 
 # misc
+.env
 .DS_Store
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+<<<<<<< HEAD
 *.env
 .env
+=======
+
+>>>>>>> ac07a22f9215661d46dc3ee62f34a385b68825ef
 
 npm-debug.log*
 yarn-debug.log*

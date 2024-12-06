@@ -11,7 +11,7 @@ const StockAnalysis = () => {
   const [chartData, setChartData] = useState(null);
   const chartRef = useRef();
 
-  const API_KEY = 'ENIPDF3XPHW9IUUE';
+  const API_KEY = '';
 
   const fetchFinancialOverview = async () => {
     try {
