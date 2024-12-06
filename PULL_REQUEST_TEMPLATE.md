@@ -27,7 +27,7 @@ If this work is associated with a university course, please identify the univers
 - [ ] Documentation addition/update (non-breaking change that adds documentation to the system)
 
 ## Checklist Before Review
-- [ ] Do you want to keep your branch for future changes or delete it once it is reviewed?
+- [ ] Delete this branch after merge
 - [ ] I have followed the git practices outlined [here](GitPractices.md) to ensure code conflicts are minimized
 - [ ] My code follows the style guidelines of this project outlined [here](documentation/StyleGuide.md)
 - [ ] I have performed a self-review of my code. It runs without errors and follows the [Best Coding Practices](BestCodingPractices.md)
