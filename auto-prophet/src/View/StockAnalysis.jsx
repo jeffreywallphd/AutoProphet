@@ -11,7 +11,7 @@ const StockAnalysis = () => {
   const [chartData, setChartData] = useState(null);
   const chartRef = useRef();
 
-  const API_KEY = '';
+  const API_KEY = 'ENIPDF3XPHW9IUUE';
 
   const fetchFinancialOverview = async () => {
     try {
@@ -145,6 +145,22 @@ ${rows.join('\n')}`;
               ))}
             </tbody>
           </table>
+          <div className="metric-selection" style={{ marginTop: '20px', textAlign: 'center' }}>
+            <label>Select Metrics to Compare:</label>
+            <div style={{ marginTop: '10px' }}>
+              {['MarketCapitalization', 'EBITDA', 'PERatio', 'PEGRatio', 'BookValue', 'DividendPerShare', 'EPS'].map(metric => (
+                <div key={metric} style={{ display: 'inline-block', marginRight: '10px' }}>
+                  <input
+                    type="checkbox"
+                    id={metric}
+                    value={metric}
+                    onChange={handleMetricChange}
+                  />
+                  <label htmlFor={metric} style={{ marginLeft: '5px' }}>{metric}</label>
+                </div>
+              ))}
+            </div>
+          </div>
           {chartData && (
             <div className="stock-chart" style={{ marginTop: '40px' }}>
               <Bar data={chartData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
