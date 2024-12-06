@@ -33,6 +33,7 @@ import { ForecastFeature } from "./ForecastFeature";
 import ForecastModel from "./ForecastModel";
 import { SecReport } from "./SecReport";
 import InvestmentPool from "./InvestmentPool";
+import Profile from "./ProfileTab/Profile"
 import StockAnalysis from "./StockAnalysis";
 
 // Scrolls to the top of a page after every route change
@@ -76,6 +77,7 @@ class AppLoaded extends Component {
                 <h5>Main</h5>
                 <ul>
                   <li><NavLink to="/"><span className="material-icons">dashboard</span> Dashboard</NavLink></li>
+                  <li><NavLink to="/user"><span className="material-icons">account_circle</span> Profile</NavLink></li>
                   <li><NavLink to="/portfolio"><span className="material-icons">pie_chart</span> Portfolio</NavLink></li>
                   <li><NavLink to="/price"><span className="material-icons">attach_money</span> Stock & Fund</NavLink></li>
                   <li><NavLink to="/analysis"><span className="material-icons">assessment</span> Risk Analysis</NavLink></li>
@@ -98,6 +100,7 @@ class AppLoaded extends Component {
               <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/user" element={<Profile/>}/>
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/analysis" element={<Analysis />} />
                 <Route path="/buy-report" element={<BuyReport />} />

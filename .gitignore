@@ -55,10 +55,7 @@ __pycache__/
 # OS-specific files
 .DS_Store
 Thumbs.db
-
-# To save data locally
-local_data/
-
+node_backend/node_modules/
 # Trained Models
 trained_models/
 

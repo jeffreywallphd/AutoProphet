@@ -5,6 +5,7 @@
 // The authors of this software disclaim all liability for any damages, including incidental, consequential, special, or indirect damages, arising from the use or inability to use this software.
 
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import profileIcon from "../Asset/Image/profile.jpg";
 import newsImage from "../Asset/Image/news.jpg";
 import tradenow from "../Asset/Image/trade.jpg";
@@ -21,7 +22,9 @@ class Home extends Component {
             <input type="search" placeholder="Search AutoProphet" />
           </div>
           <div className="nav-right">
-            <img src={profileIcon} alt="profile pic" className='profile-picture' />
+            <Link to="/user">
+              <img src={profileIcon} alt="profile pic" className='profile-picture' />
+            </Link>
           </div>
         </header>
         <section className="content-grid">

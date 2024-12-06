@@ -10,6 +10,22 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require("fs");
 const ipcMain = require('electron').ipcMain;
 
+////////////////////////////// Userms Backend /////////////////////////////////
+// Getting file and setting a port for express app of userms backend
+const express = require('express');
+const userRoutes = require('./Userms');
+const PORT = 5000;
+
+// Creating the express app
+const userms = express();
+
+// Populating the express app with file
+userms.use(express.json());
+userms.use('/api', userRoutes);
+
+// Starting server on the port 
+userms.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
 //////////////////////////// Core Electron Section ////////////////////////////
 
 // TODO: try to remove nodeIntegration, as it may create security vulnerabilities

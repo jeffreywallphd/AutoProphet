@@ -1,0 +1,119 @@
+.profile-page {
+  background: linear-gradient(to bottom, #001f56, #2B388F); 
+  padding: 0;
+  max-width: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color-light);
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%; 
+  max-width: 1300px; 
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--text-color-light);
+  margin-bottom: 30px;
+}
+
+.profile-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-color-light);
+}
+
+.logout-button {
+  background-color: #e74c3c;
+  color: var(--text-color-light);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+}
+
+.profile-card {
+  background: var(--background-color);
+  width: 95%;
+  max-width: 1200px;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 15px;
+}
+
+.profile-card h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  width: 100%;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.profile-label {
+  font-weight: 600;
+  color: var(--text-color-medium);
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+.profile-value {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-color-dark);
+  text-align: right;
+  word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  .profile-info {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-label {
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+
+  .profile-value {
+    text-align: left;
+    font-size: 16px;
+  }
+}

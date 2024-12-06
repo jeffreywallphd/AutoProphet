@@ -1,0 +1,107 @@
+.signup {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--row-primary-color);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.signup h2, p {
+    text-align: center;
+}
+
+.signup h2 {
+    color: var(--primary-color); 
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.0rem;
+}
+
+.form-grid div {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--text-color-medium);
+}
+
+.required {
+    color: red;
+    margin-left: 0.25rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: var(--text-color-dark);
+}
+
+.error {
+    color: red;
+    font-size: 0.875rem;
+    height: 1em;
+    line-height: 1.2;
+    margin-bottom: 0.5em;
+}
+
+.button-container {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
+
+button {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    grid-column: span 2;
+    margin-top: 0.5rem;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.login-link {
+    font-size: 0.875rem;
+    text-align: left;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}  
