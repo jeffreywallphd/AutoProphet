@@ -41,5 +41,9 @@ Only to be used after doing Django Setup Steps
 
 3. move to ...\AutoProphet\django_backend. run "python manage.py runserver"
 
-# When adding new dependacys
+# When adding new dependencies
 Whenever you need to run pip install make sure to add the library to the requirements.txt [file](requirements.txt)
+
+This was a common problem because when a new person would install the repository they would have to manuely reinstall most of the dependencies.
+
+Please ensure that this remains updated
