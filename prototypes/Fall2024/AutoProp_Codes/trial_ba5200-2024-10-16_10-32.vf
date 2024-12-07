@@ -1,0 +1,4565 @@
+{
+  "version": {
+    "_version": 12,
+    "autoSaveFromRestore": false,
+    "canvasTemplates": [],
+    "components": [],
+    "creatorID": 1087473,
+    "manualSave": false,
+    "name": "Initial Version",
+    "platformData": {
+      "slots": [
+        {
+          "key": "670dbe6d5beeda08f724b765",
+          "name": "stock_name",
+          "color": "#5B9FD7",
+          "inputs": [],
+          "type": {
+            "value": "VF.NAME"
+          }
+        }
+      ],
+      "intents": [
+        {
+          "key": "66e9f738cc90326d546e9b63",
+          "name": "Submit a ticket",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "Need help with submitting a ticket",
+              "slots": []
+            },
+            {
+              "text": "Is there a way to submit a ticket?",
+              "slots": []
+            },
+            {
+              "text": "I want to create a ticket",
+              "slots": []
+            },
+            {
+              "text": "Need help with submitting a ticket",
+              "slots": []
+            },
+            {
+              "text": "How do I submit a ticket?",
+              "slots": []
+            },
+            {
+              "text": "Create a ticket",
+              "slots": []
+            },
+            {
+              "text": "Submit a ticket",
+              "slots": []
+            }
+          ],
+          "noteID": "dv1c4z0t6f",
+          "description": "Trigger this intent when the user is asking to submit a ticket or report a bug."
+        },
+        {
+          "key": "VF.YES",
+          "name": "VF.YES",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "Of course",
+              "slots": []
+            },
+            {
+              "text": "Definitely",
+              "slots": []
+            },
+            {
+              "text": "You bet",
+              "slots": []
+            },
+            {
+              "text": "Okay",
+              "slots": []
+            },
+            {
+              "text": "Sure",
+              "slots": []
+            },
+            {
+              "text": "Yes",
+              "slots": []
+            },
+            {
+              "text": "Certainly",
+              "slots": []
+            },
+            {
+              "text": "Absolutely",
+              "slots": []
+            }
+          ],
+          "noteID": "dv1c500td8",
+          "description": "Trigger this intent when the user says yes, or responds in the affirmative."
+        },
+        {
+          "key": "VF.NO",
+          "name": "VF.NO",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "Not at all",
+              "slots": []
+            },
+            {
+              "text": "Negative",
+              "slots": []
+            },
+            {
+              "text": "Absolutely not",
+              "slots": []
+            },
+            {
+              "text": "I'm afraid not",
+              "slots": []
+            },
+            {
+              "text": "No way",
+              "slots": []
+            },
+            {
+              "text": "Definitely not",
+              "slots": []
+            },
+            {
+              "text": "Nope",
+              "slots": []
+            },
+            {
+              "text": "No",
+              "slots": []
+            }
+          ],
+          "noteID": "dv1c510tgj",
+          "description": "Trigger this intent when the user says no, or responds in the negative."
+        },
+        {
+          "key": "None",
+          "name": "None",
+          "slots": [],
+          "inputs": [],
+          "noteID": null
+        },
+        {
+          "key": "66e999d72d5420af16162e99",
+          "name": "Book a demo",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "book a demo",
+              "slots": []
+            },
+            {
+              "text": "I want to book a demo",
+              "slots": []
+            },
+            {
+              "text": "I want to talk to sales",
+              "slots": []
+            },
+            {
+              "text": "How can I reserve a demo?",
+              "slots": []
+            },
+            {
+              "text": "I'm looking to arrange a demo",
+              "slots": []
+            },
+            {
+              "text": "Is it possible to book a demonstration?",
+              "slots": []
+            },
+            {
+              "text": "I'd like to set up a demo",
+              "slots": []
+            },
+            {
+              "text": "Can I schedule a demo?",
+              "slots": []
+            }
+          ],
+          "noteID": "dv1c520t13",
+          "description": "Trigger this intent when the user wants to book a demo. However, don't trigger this intent if the user asks about pricing."
+        }
+      ],
+      "settings": {
+        "restart": true,
+        "repeat": 100,
+        "locales": [
+          "en-US"
+        ],
+        "globalNoMatch": {
+          "type": "static",
+          "prompt": {
+            "id": "cm1s5ni5y002n357qsk9kcbp1",
+            "content": [
+              {
+                "children": [
+                  {
+                    "text": "Sorry, I didn’t get that. Please try again."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "messageDelay": {
+          "durationMilliseconds": 500
+        },
+        "defaultVoice": "Alexa"
+      },
+      "publishing": {
+        "avatar": "https://cdn.voiceflow.com/assets/logo.png",
+        "color": "#397DFF",
+        "description": "Hi, how can I help you today?",
+        "feedback": false,
+        "image": "https://cdn.voiceflow.com/assets/logo.png",
+        "persistence": "localStorage",
+        "position": "right",
+        "spacing": {
+          "side": 24,
+          "bottom": 24
+        },
+        "title": "BA 5200 agent",
+        "watermark": false,
+        "audioInterface": true
+      },
+      "platform": "webchat"
+    },
+    "programResources": {
+      "messages": {
+        "66e4658c97035e0f16ac4caa": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "Sorry. I didn't quite get that, can you please try asking the question in a different way?"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "66e880a4ee916c66659cd5ee": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": ""
+                        },
+                        {
+                          "text": "{clarifying_question}"
+                        },
+                        {
+                          "text": "  "
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "66fc8d518a2cba0cbf77fd8a": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "hi, welcome, how can I help you today?"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              },
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "hello, how can i be of assistance?"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "66fd883656f888df5b8471b4": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "I can seem to find that answer"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "66fd88c956f888df5b8471f3": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "Did this answer your question?"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "66fd896c56f888df5b847277": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "lets submit a ticket to our support team."
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "66fd895156f888df5b84724b": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "awesome."
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              },
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "great"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "66fdd2f4d6989d0b2de85310": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "anything else I can help you with?"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "66fdd633d6989d0b2de8541b": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "ok goodbye for now, have fun trading."
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    "prototype": {
+      "type": "chat",
+      "data": {
+        "name": "trial_ba5200",
+        "locales": [
+          "en-US"
+        ]
+      },
+      "model": {
+        "intents": [
+          {
+            "key": "VF.YES",
+            "name": "VF.YES",
+            "slots": [],
+            "inputs": [
+              {
+                "text": "yes"
+              },
+              {
+                "text": "yea"
+              },
+              {
+                "text": "ok"
+              },
+              {
+                "text": "okay"
+              },
+              {
+                "text": "yup"
+              },
+              {
+                "text": "ya"
+              },
+              {
+                "text": "sure"
+              },
+              {
+                "text": "Of course",
+                "slots": []
+              },
+              {
+                "text": "Definitely",
+                "slots": []
+              },
+              {
+                "text": "You bet",
+                "slots": []
+              },
+              {
+                "text": "Okay",
+                "slots": []
+              },
+              {
+                "text": "Sure",
+                "slots": []
+              },
+              {
+                "text": "Yes",
+                "slots": []
+              },
+              {
+                "text": "Certainly",
+                "slots": []
+              },
+              {
+                "text": "Absolutely",
+                "slots": []
+              }
+            ],
+            "noteID": "dv1c500td8",
+            "description": "Trigger this intent when the user says yes, or responds in the affirmative."
+          },
+          {
+            "key": "VF.NO",
+            "name": "VF.NO",
+            "slots": [],
+            "inputs": [
+              {
+                "text": "no"
+              },
+              {
+                "text": "nope"
+              },
+              {
+                "text": "nay"
+              },
+              {
+                "text": "nah"
+              },
+              {
+                "text": "no way"
+              },
+              {
+                "text": "negative"
+              },
+              {
+                "text": "Not at all",
+                "slots": []
+              },
+              {
+                "text": "Negative",
+                "slots": []
+              },
+              {
+                "text": "Absolutely not",
+                "slots": []
+              },
+              {
+                "text": "I'm afraid not",
+                "slots": []
+              },
+              {
+                "text": "No way",
+                "slots": []
+              },
+              {
+                "text": "Definitely not",
+                "slots": []
+              },
+              {
+                "text": "Nope",
+                "slots": []
+              },
+              {
+                "text": "No",
+                "slots": []
+              }
+            ],
+            "noteID": "dv1c510tgj",
+            "description": "Trigger this intent when the user says no, or responds in the negative."
+          },
+          {
+            "key": "None",
+            "name": "None",
+            "slots": [],
+            "inputs": [
+              {
+                "text": "None"
+              }
+            ],
+            "noteID": null
+          }
+        ],
+        "slots": [
+          {
+            "key": "670dbe6d5beeda08f724b765",
+            "name": "stock_name",
+            "color": "#5B9FD7",
+            "inputs": [],
+            "type": {
+              "value": "VF.NAME"
+            },
+            "description": null
+          }
+        ]
+      },
+      "context": {
+        "stack": [
+          {
+            "diagramID": "64dbb6696a8fab0013dba194",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "nonDraftResponsesMap": {},
+        "responseMessagesByDiscriminatorIDMap": {},
+        "responseDiscriminatorsByResponseIDMap": {},
+        "functionDefinitions": {},
+        "referencedResponseIDs": [
+          "66e880a4ee916c66659cd5ee",
+          "66e4658c97035e0f16ac4caa",
+          "66fc8d518a2cba0cbf77fd8a",
+          "66fd883656f888df5b8471b4",
+          "66fd88c956f888df5b8471f3",
+          "66fd895156f888df5b84724b",
+          "66fd896c56f888df5b847277",
+          "66fdd2f4d6989d0b2de85310",
+          "66fdd633d6989d0b2de8541b"
+        ],
+        "slotsMap": {
+          "670dbe6d5beeda08f724b765": {
+            "key": "670dbe6d5beeda08f724b765",
+            "name": "stock_name",
+            "color": "#5B9FD7",
+            "inputs": [],
+            "type": {
+              "value": "VF.NAME"
+            }
+          }
+        },
+        "platform": "webchat",
+        "products": {},
+        "extraSlots": [],
+        "interfaces": [],
+        "permissions": [],
+        "projectType": "chat",
+        "extraIntents": [],
+        "usedEventsSet": [],
+        "usedIntentsSet": [
+          "VF.YES",
+          "VF.NO"
+        ],
+        "goToIntentsSet": [],
+        "cmsVariables": {
+          "sessions": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "user_id": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "timestamp": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "platform": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "locale": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "KB_response": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "output_correctness": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "rewrite_counter": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "intent_confidence": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "last_response": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "last_event": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "last_utterance": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "vf_memory": {
+            "isSystem": true,
+            "defaultValue": null
+          },
+          "optimized_question": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "clarifying_question_check_counter": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "clarifying_question_check": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "clarifying_question": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "language_JSON": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "chunks": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          },
+          "agent_persona": {
+            "isSystem": false,
+            "defaultValue": null,
+            "datatype": "any",
+            "isArray": false
+          }
+        },
+        "entitiesMap": {},
+        "variableMap": {},
+        "intentsMap": {},
+        "requiredEntitiesMap": {}
+      },
+      "settings": {},
+      "platform": "webchat"
+    },
+    "settings": {
+      "intentClassification": {
+        "type": "llm",
+        "params": {
+          "model": "claude-3-haiku",
+          "temperature": 0.1
+        },
+        "promptWrapper": null
+      }
+    },
+    "topics": [
+      {
+        "type": "DIAGRAM",
+        "sourceID": "64dbb6696a8fab0013dba194"
+      }
+    ],
+    "variables": [
+      "sessions",
+      "user_id",
+      "timestamp",
+      "platform",
+      "locale",
+      "chunks",
+      "KBOutput",
+      "outputCorrectness",
+      "rewriteCounter",
+      "sourceContent2",
+      "sourceTitle2",
+      "sourceTitle1",
+      "sourceContent1",
+      "sourceContent",
+      "sourceTitle",
+      "userQuestion",
+      "conversation_history",
+      "user_question",
+      "intent_confidence",
+      "last_response",
+      "last_event",
+      "last_utterance",
+      "vf_memory",
+      "optimizedQuestion",
+      "clarifyingQuestionCheckCounter",
+      "clarifyingQuestionCheck",
+      "clarifyingQuestion",
+      "languageJSON",
+      "AgentPersona",
+      "agentPersona",
+      "KB_output",
+      "output_correctness",
+      "rewrite_counter",
+      "optimized_question",
+      "clarifying_question_check_counter",
+      "clarifying_question_check",
+      "clarifying_question",
+      "language_JSON",
+      "agent_persona",
+      "KB_response"
+    ],
+    "_id": "66fc8cf18a2cba0cbf77fd63",
+    "updatedAt": "2024-10-15T01:06:54.644Z",
+    "publishedAt": "2024-10-03T23:27:44.941Z",
+    "domains": [
+      {
+        "id": "cla06iyr900b206pkh8d4ap8n",
+        "name": "Home",
+        "live": true,
+        "topicIDs": [
+          "64dbb6696a8fab0013dba194"
+        ],
+        "rootDiagramID": "64dbb6696a8fab0013dba194",
+        "updatedBy": 1087473,
+        "updatedAt": "2024-10-01T23:59:45.297Z"
+      }
+    ],
+    "projectID": "66fc8cf18a2cba0cbf77fd62",
+    "rootDiagramID": "64dbb6696a8fab0013dba194",
+    "templateDiagramID": "64dbb6696a8fab0013dba195"
+  },
+  "diagrams": {
+    "66e88257ee916c66659cd5f1": {
+      "name": "Ask Clarifying Question",
+      "type": "COMPONENT",
+      "zoom": 100,
+      "nodes": {
+        "66e8825792b2e568c9bba293": {
+          "type": "start",
+          "data": {
+            "name": "Continue",
+            "color": "#56b365",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "id": "66e8825792b2e568c9bba294",
+                  "type": "next",
+                  "target": "66e880a492b2e568c9bba1fc",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          580.32,
+                          101.98
+                        ]
+                      },
+                      {
+                        "point": [
+                          635.16,
+                          101.98
+                        ]
+                      },
+                      {
+                        "point": [
+                          635.16,
+                          54.27
+                        ]
+                      },
+                      {
+                        "point": [
+                          690,
+                          54.27
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "steps": [],
+            "triggers": []
+          },
+          "nodeID": "66e8825792b2e568c9bba293",
+          "coords": [
+            513.8511454442935,
+            79.97518523364788
+          ]
+        },
+        "66e880a492b2e568c9bba1fc": {
+          "type": "block",
+          "data": {
+            "name": "Clarifying question check counter",
+            "color": "#A1ADBA",
+            "steps": [
+              "66e880a492b2e568c9bba206"
+            ]
+          },
+          "nodeID": "66e880a492b2e568c9bba1fc",
+          "coords": [
+            855,
+            27.271658254172344
+          ]
+        },
+        "66e880a492b2e568c9bba1fe": {
+          "type": "block",
+          "data": {
+            "name": "Check if clarifying question required",
+            "color": "#A1ADBA",
+            "steps": [
+              "66e880a492b2e568c9bba20a",
+              "66e880a492b2e568c9bba20d"
+            ]
+          },
+          "nodeID": "66e880a492b2e568c9bba1fe",
+          "coords": [
+            1293.0558989668436,
+            28.730767052348323
+          ]
+        },
+        "66e880a492b2e568c9bba200": {
+          "type": "block",
+          "data": {
+            "name": "Create clarifying question",
+            "color": "#A1ADBA",
+            "steps": [
+              "66e880a492b2e568c9bba211",
+              "66e880a492b2e568c9bba214",
+              "66e880a492b2e568c9bba217",
+              "66e880a492b2e568c9bba21a"
+            ]
+          },
+          "nodeID": "66e880a492b2e568c9bba200",
+          "coords": [
+            1729.4458352194883,
+            28.686482196403716
+          ]
+        },
+        "66e880a492b2e568c9bba206": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "Clarifying question check = 1 or fewer",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "less",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "66e880de517bf2228b6c8664"
+                      },
+                      {
+                        "type": "value",
+                        "value": "1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "Else"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "66e880a492b2e568c9bba207",
+                  "data": {}
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "66e880a492b2e568c9bba1fe",
+                  "id": "66e880a492b2e568c9bba208",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          1021,
+                          115.77
+                        ]
+                      },
+                      {
+                        "point": [
+                          1074.53,
+                          115.77
+                        ]
+                      },
+                      {
+                        "point": [
+                          1074.53,
+                          55.73
+                        ]
+                      },
+                      {
+                        "point": [
+                          1128.06,
+                          55.73
+                        ],
+                        "allowedToTop": true
+                      }
+                    ],
+                    "color": "#A1ADBA",
+                    "event": {
+                      "type": "Clarifying question check = 1 or fewer"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "66e880a492b2e568c9bba206"
+        },
+        "66e880a492b2e568c9bba20a": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Check if Clarifying Question Needed",
+            "sets": [
+              {
+                "mode": "prompt",
+                "prompt": "# Clarification Assessment Prompt Template\n\nYou are an expert AI assistant trained to analyze customer inquiries and determine if they require clarification. Your role is to ensure efficient and accurate responses by identifying when additional information is needed from the customer.\n\n## Instructions:\n1. Carefully analyze the 'user's question' for specific details such as product or service types, policy names, or other relevant specifics that provide clear context.\n2. Review the 'chunks' to see if they contain information that directly addresses the specific details in the user's question.\n3. Output '~' if:\n   - The user's question contains specific details that are clearly addressed in the 'chunks'.\n   - The query aligns well with a specific part of the 'chunks' that provides a comprehensive answer.\n4. Output '#' only if:\n   - The query is genuinely broad or vague, lacking specific details that would allow for a direct answer from the 'chunks'.\n   - The 'chunks' contain multiple categories or types of information that could potentially answer the question, but the user's intent is unclear.\n   - There's a crucial piece of information missing from the user's question that is necessary to provide an accurate answer, and this information is not implied or obvious from the context given.\n5. If outputting '#', specify the type of information or category that would help better address their question, based on the 'chunks'.\n\n## Output format:\n[Decision: '~' or '#', (if '#') then clarification is required. Specify the type of information or category that would help better address their question.]\n\n## Important:\n- Focus on whether the available information in the chunks is sufficient to answer the user's specific question accurately.\n- Consider whether the user's question is too broad or vague to be answered comprehensively with the information provided in the chunks.\n- Assess if there are multiple possible interpretations of the user's question that would lead to significantly different answers based on the information in the chunks.\n\n## Input data:\n1. User's question: \n{{[last_utterance].last_utterance}}\n\n  2. Chunks: \n{{[chunks].chunks}}\n\nNow, take a deep breath and provide your assessment based on the instructions above.",
+                "variable": "66e8813c517bf2228b6c8665"
+              }
+            ],
+            "system": "You are an AI support agent. Here is more information about your goals and objectives: {{[agent_persona].66ea0deccc90326d546ea764}}.",
+            "maxTokens": 128,
+            "overrideParams": false,
+            "model": "claude-3-haiku",
+            "temperature": 0,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e880a492b2e568c9bba20b"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e880a492b2e568c9bba20a"
+        },
+        "66e880a492b2e568c9bba20d": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "We need to ask a clarifying question",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "contains",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "66e8813c517bf2228b6c8665"
+                      },
+                      {
+                        "type": "value",
+                        "value": "#"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "Else"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "66e880a492b2e568c9bba20e",
+                  "data": {
+                    "caption": null,
+                    "points": [
+                      {
+                        "point": [
+                          992.0321289601084,
+                          1053.8137056012195
+                        ]
+                      },
+                      {
+                        "point": [
+                          1069.1821289601085,
+                          1053.8137056012195
+                        ]
+                      },
+                      {
+                        "point": [
+                          1069.1821289601085,
+                          1236.4337056012193
+                        ]
+                      },
+                      {
+                        "point": [
+                          1146.3321289601083,
+                          1236.4337056012193
+                        ],
+                        "allowedToTop": true
+                      }
+                    ],
+                    "color": "#56b365"
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "66e880a492b2e568c9bba200",
+                  "id": "66e880a492b2e568c9bba20f",
+                  "data": {
+                    "color": "#A1ADBA",
+                    "points": [
+                      {
+                        "point": [
+                          1459.06,
+                          196.23
+                        ]
+                      },
+                      {
+                        "point": [
+                          1511.75,
+                          196.23
+                        ]
+                      },
+                      {
+                        "point": [
+                          1511.75,
+                          55.69
+                        ]
+                      },
+                      {
+                        "point": [
+                          1564.45,
+                          55.69
+                        ],
+                        "allowedToTop": true
+                      }
+                    ],
+                    "event": {
+                      "type": "We need to ask a clarifying question"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "66e880a492b2e568c9bba20d"
+        },
+        "66e880a492b2e568c9bba211": {
+          "type": "set-v3",
+          "data": {
+            "name": "",
+            "items": [
+              {
+                "id": "cm0o3uc6c1p9l06l70qqo7785",
+                "label": "Clarifying question check counter",
+                "variableID": "66e880de517bf2228b6c8664",
+                "type": "script",
+                "value": [
+                  "Number=(clarifying_question_check_counter)+1"
+                ]
+              }
+            ],
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e880a492b2e568c9bba212",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          805.1807214711368,
+                          1073.8064037014876
+                        ]
+                      },
+                      {
+                        "point": [
+                          964.4307214711368,
+                          1076.8064037014876
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e880a492b2e568c9bba211"
+        },
+        "66e880a492b2e568c9bba214": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Create a clarifying question",
+            "sets": [
+              {
+                "mode": "prompt",
+                "prompt": "You are an AI Support Agent. Your task is to create a brief, friendly clarifying question that fits naturally into an ongoing conversation. You will be given the following data: 'guidelines for the question', the 'user's question' that needs a response, and the 'information retrieved from a knowledge base'.\n\n## Instructions:\n1. Analyze the user's question and the provided information.\n2. Identify the key ambiguity or missing detail in the user's query.\n3. Construct a single, clear, and concise clarifying question related to providing support.\n4. Use a friendly tone, but prioritize brevity and directness.\n5. You may use one appropriate emoji if it adds value without increasing length significantly.\n6. Guide the user towards a precise response.\n7. Avoid multiple questions or unnecessary explanations.\n8. Focus on the single most important aspect that requires clarification.\n9. Begin with a very brief acknowledgment, then ask your clarifying question.\n10. Aim for a total response length of 15-20 words maximum.\n\n## Example Responses:\n- \"Sure. Are you a  guest or host? The cancellation process differs for each.\"\n- \"Uh-huh, okay. Can you tell me which  plan are you asking about?\"\n- \"Sure. And is this for a domestic or international  rental? \"\n\n## Input data:\nGuidelines for the question: $\"{{[unknown].66e8813c517bf2228b6c8665}}\"\n \nThe user's question: $\"{{[last_utterance].last_utterance}}\"\n Information from knowledge base: $\"{{[chunks].chunks}}\"\nThe user's language: $\"{{[unknown].66e8821d517bf2228b6c8667}}\"\n \nNow, create your brief, friendly clarifying question in the user's language that fits naturally into the ongoing dialogue:",
+                "variable": "66e881bb517bf2228b6c8666"
+              }
+            ],
+            "system": "",
+            "maxTokens": 200,
+            "overrideParams": false,
+            "model": "claude-3-haiku",
+            "temperature": 0.25,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "",
+                  "target": null,
+                  "id": "66e880a492b2e568c9bba215"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e880a492b2e568c9bba214"
+        },
+        "66e880a492b2e568c9bba217": {
+          "type": "message",
+          "data": {
+            "name": "Text",
+            "messageID": "66e880a4ee916c66659cd5ee",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e880a492b2e568c9bba218"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e880a492b2e568c9bba217"
+        },
+        "66e880a492b2e568c9bba21a": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [],
+            "intentScope": "GLOBAL",
+            "noMatch": {
+              "types": [],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": []
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e880a492b2e568c9bba21a",
+          "coords": [
+            0,
+            0
+          ]
+        }
+      },
+      "offsetX": 148.91908364456523,
+      "offsetY": 236.0198518130817,
+      "modified": 1726513751,
+      "creatorID": 1087473,
+      "variables": [],
+      "_id": "66fc8cf18a2cba0cbf77fd66",
+      "diagramID": "66e88257ee916c66659cd5f1",
+      "versionID": "66fc8cf18a2cba0cbf77fd63"
+    },
+    "66e4660897035e0f16ac4cb3": {
+      "name": "Reduce Hallucinations",
+      "type": "COMPONENT",
+      "zoom": 100,
+      "nodes": {
+        "66e466070d92adb723366dcb": {
+          "type": "start",
+          "data": {
+            "name": "Continue",
+            "color": "#56b365",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "id": "66e466070d92adb723366dcc",
+                  "type": "next",
+                  "target": "66e4658c0d92adb723366d13",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          630.69,
+                          -22.18
+                        ]
+                      },
+                      {
+                        "point": [
+                          688.1,
+                          -22.18
+                        ]
+                      },
+                      {
+                        "point": [
+                          688.1,
+                          -96.03
+                        ]
+                      },
+                      {
+                        "point": [
+                          745.52,
+                          -96.03
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "steps": [],
+            "triggers": []
+          },
+          "nodeID": "66e466070d92adb723366dcb",
+          "coords": [
+            564.2180329602702,
+            -44.18027661277194
+          ]
+        },
+        "66e4658c0d92adb723366d13": {
+          "type": "block",
+          "data": {
+            "name": "Check response correctness",
+            "color": "#A1ADBA",
+            "steps": [
+              "66e4658c0d92adb723366d2e",
+              "66e4658c0d92adb723366d31"
+            ]
+          },
+          "nodeID": "66e4658c0d92adb723366d13",
+          "coords": [
+            910.5180955871368,
+            -123.03164251349274
+          ]
+        },
+        "66e4658c0d92adb723366d15": {
+          "type": "block",
+          "data": {
+            "name": "Decision | Rewrite counter",
+            "color": "#A1ADBA",
+            "steps": [
+              "66e4658c0d92adb723366d35",
+              "66e4658c0d92adb723366d38"
+            ]
+          },
+          "nodeID": "66e4658c0d92adb723366d15",
+          "coords": [
+            1331.272348195048,
+            101.015202344462
+          ]
+        },
+        "66e465c60d92adb723366dc3": {
+          "type": "block",
+          "data": {
+            "name": "Reset rewrite counter",
+            "color": "",
+            "steps": [
+              "66e4658c0d92adb723366d3f"
+            ]
+          },
+          "nodeID": "66e465c60d92adb723366dc3",
+          "coords": [
+            1338.149142331326,
+            -88.0016277029613
+          ]
+        },
+        "66e4658c0d92adb723366d17": {
+          "type": "block",
+          "data": {
+            "name": "Rewrite message with GPT 4o-mini",
+            "color": "#56b365",
+            "steps": [
+              "66e4658c0d92adb723366d3c"
+            ]
+          },
+          "nodeID": "66e4658c0d92adb723366d17",
+          "coords": [
+            1763.3254557612527,
+            136.9653763410471
+          ]
+        },
+        "66e4658c0d92adb723366d1d": {
+          "type": "block",
+          "data": {
+            "name": "Couldn't verify information",
+            "color": "#CB627B",
+            "steps": [
+              "66e4658c0d92adb723366d4f",
+              "66e4658c0d92adb723366d52",
+              "66e98968b82687b7cfd6cdab"
+            ]
+          },
+          "nodeID": "66e4658c0d92adb723366d1d",
+          "coords": [
+            1761.0235580787871,
+            336.9398769847525
+          ]
+        },
+        "66e4658c0d92adb723366d2e": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Verify correctness",
+            "sets": [
+              {
+                "mode": "prompt",
+                "prompt": "Utilizing the provided information in \"chunks\": \"{{[chunks].chunks}}\" And the user's query in \"last_utterance\": “{{[last_utterance].last_utterance}}” Verify the accuracy and completeness given in \"outputMessage\": \"{{[KBOutput].KBOutput}}\". \n\nTo verify its accuracy and consistency with the provided \"outputMessage\" while addressing the user's question. Ensure the response doesn't introduce any additional information not present in the \"chunks\".\n\n---\n\nStep-by-step Reasoning:\n\n1. Identification: Identify the key pieces of information provided in the `chunks` that directly address the user's question. \n2. Comparison: Compare these key pieces of information with the details provided in the `outputMessage`.\n3. Consistency Check: Determine if the `outputMessage` is consistent with the `chunks` in addressing the user's question without adding new information.\n4. Accuracy Check: Ensure that the `outputMessage` accurately reflects the `chunks` without any misrepresentation.\n5. New Information Check: Check for any new information in the `outputMessage` that wasn't provided in the `chunks`.\n\n---\n\nEXAMPLE:\n\nTrue Case:\n'chunks' = You can change your credit card via the account page.\nResponse = You can change your credit card via the account page by logging into your account.\n---\n\nFalse Case:\n'chunks' = You can change your credit card via the account page.\nResponse = You can change your credit card by following these steps:\n1. Go to the billing page.\n2. Select change account.\n3. Update your details\n---\n\nEvaluation:\n\nIn the True Case, following the COT reasoning:\n1. Identification: The key piece of information is changing the credit card via the account page.\n2. Comparison: The `outputMessage` mentions the same.\n3. Consistency Check: The `outputMessage` is consistent with the `chunks`.\n4. Accuracy Check: The `outputMessage` accurately reflects the `chunks`.\n5. New Information Check: No new information is introduced.\n\n `1`\n\nIn the False Case, following the COT reasoning:\n1. Identification: The key piece of information is changing the credit card via the account page.\n2. Comparison: The `outputMessage` introduces different steps and a new page.\n3. Consistency Check: The `outputMessage` is not consistent with the `chunks`.\n4. Accuracy Check: The `outputMessage` does not accurately reflect the `chunks`.\n5. New Information Check: New information is introduced.\n\n`0`\n\n\nYou must only output '1' or '0'. Do not print your reasoning. Do not print \"Output\".",
+                "variable": "outputCorrectness"
+              }
+            ],
+            "system": "You are acting as an impartial judge to evaluate the consistency and accuracy of the AI assistant's response to the user's query. Your evaluation should focus on the relevance, accuracy, and completeness of the response in light of the provided KBOutput. Your task is to ensure that the response is aligned with the KBOutput and does not introduce any new or extraneous information. It's crucial to maintain a binary evaluation to ascertain the consistency between the provided information and the response generated.",
+            "maxTokens": 10,
+            "overrideParams": false,
+            "model": "claude-3-haiku",
+            "temperature": 0.1,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e4658c0d92adb723366d2f",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          841.2424253057432,
+                          -22.227544503117485
+                        ]
+                      },
+                      {
+                        "point": [
+                          955.2324253057432,
+                          -23.617544503117585
+                        ]
+                      }
+                    ],
+                    "color": "#56b365"
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e4658c0d92adb723366d2e"
+        },
+        "66e4658c0d92adb723366d31": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "Output is true",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "contains",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "outputCorrectness"
+                      },
+                      {
+                        "type": "value",
+                        "value": "1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "Else"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "66e4658c0d92adb723366d15",
+                  "id": "66e4658c0d92adb723366d32",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          1076.52,
+                          71.22
+                        ]
+                      },
+                      {
+                        "point": [
+                          1121.4,
+                          71.22
+                        ]
+                      },
+                      {
+                        "point": [
+                          1121.4,
+                          128.01
+                        ]
+                      },
+                      {
+                        "point": [
+                          1166.27,
+                          128.01
+                        ],
+                        "allowedToTop": true
+                      }
+                    ],
+                    "color": "#A1ADBA"
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "66e465c60d92adb723366dc3",
+                  "id": "66e4658c0d92adb723366d33",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          1076.52,
+                          16.72
+                        ]
+                      },
+                      {
+                        "point": [
+                          1124.83,
+                          16.72
+                        ]
+                      },
+                      {
+                        "point": [
+                          1124.83,
+                          -61
+                        ]
+                      },
+                      {
+                        "point": [
+                          1173.15,
+                          -61
+                        ],
+                        "allowedToTop": true
+                      }
+                    ],
+                    "event": {
+                      "type": "Output is true"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "66e4658c0d92adb723366d31"
+        },
+        "66e4658c0d92adb723366d35": {
+          "type": "set-v3",
+          "data": {
+            "name": "",
+            "items": [
+              {
+                "id": "cm0vkkczy47kl07ju2vw6flna",
+                "label": "Rewrite Counter",
+                "variableID": "rewriteCounter",
+                "type": "script",
+                "value": [
+                  "Number(",
+                  {
+                    "variableID": "rewriteCounter"
+                  },
+                  ")+1"
+                ]
+              }
+            ],
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e4658c0d92adb723366d36"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e4658c0d92adb723366d35"
+        },
+        "66e4658c0d92adb723366d38": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "If Rewrite Counter = 1",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "equals",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "rewriteCounter"
+                      },
+                      {
+                        "type": "value",
+                        "value": "1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "Else"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "66e4658c0d92adb723366d1d",
+                  "id": "66e4658c0d92adb723366d39",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          1497.27,
+                          295.27
+                        ]
+                      },
+                      {
+                        "point": [
+                          1546.65,
+                          295.27
+                        ]
+                      },
+                      {
+                        "point": [
+                          1546.65,
+                          363.94
+                        ]
+                      },
+                      {
+                        "point": [
+                          1596.02,
+                          363.94
+                        ],
+                        "allowedToTop": true
+                      }
+                    ],
+                    "color": "#CB627B"
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "66e4658c0d92adb723366d17",
+                  "id": "66e4658c0d92adb723366d3a",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          1497.27,
+                          240.77
+                        ]
+                      },
+                      {
+                        "point": [
+                          1547.8,
+                          240.77
+                        ]
+                      },
+                      {
+                        "point": [
+                          1547.8,
+                          163.97
+                        ]
+                      },
+                      {
+                        "point": [
+                          1598.33,
+                          163.97
+                        ],
+                        "allowedToTop": true
+                      }
+                    ],
+                    "color": "#56b365",
+                    "event": {
+                      "type": "If Rewrite Counter = 1"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "66e4658c0d92adb723366d38"
+        },
+        "66e4658c0d92adb723366d3f": {
+          "type": "set-v3",
+          "data": {
+            "name": "",
+            "items": [
+              {
+                "id": "cm0vkkczy47kn07juhd0k7q9v",
+                "label": "Set rewrite counter to 0",
+                "variableID": "rewriteCounter",
+                "type": "script",
+                "value": [
+                  "'0'"
+                ]
+              }
+            ],
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e4658c0d92adb723366d40"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e4658c0d92adb723366d3f"
+        },
+        "66e4658c0d92adb723366d3c": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Rewrite message",
+            "sets": [
+              {
+                "mode": "prompt",
+                "prompt": "Given the original user query in 'last_utterance': “{{[last_utterance].last_utterance}}\n\" the provided information in 'chunks': \"{{[chunks].chunks}}\" and the initial AI-generated response in 'outputMessage': \"{{[KBOutput].KBOutput}}\"\n\n---\n\nRevise 'outputMessage' to eliminate any hallucinations or inaccurate information. Ensure that the revised message contains only truthful information that is directly supported by 'chunks'. Follow the guidelines below for accuracy and adherence to KBOutput.\n\nStep-by-step Reasoning:\n\n1. **Comparison and Identification:** Compare the \"outputMessage\" with the 'chunks'. Identify any part of the 'outputMessage' that is not directly supported by or contradicts the 'KBOutput'.\n\n2. **Revision:** Remove or modify parts of the 'outputMessage' that contain hallucinations or inaccuracies. Ensure that every piece of information in the revised message can be directly traced back to \"chunks\".\n\n3. **Consistency Check:** Ensure that the revised message still addresses the user's query in 'last_utterance' accurately and completely, based on the information available in 'chunks'.\n\n4. **Clarity and Conciseness:** Maintain clarity and conciseness in the revised message. Avoid adding any new information or interpretations not present in 'chunks'.\n\n5. **Final Verification:** Double-check that the revised message aligns perfectly with 'chunks' and provides a clear, accurate answer to the user's query.\n\nNote: Output only the revised message text. Do not include any labels or prefixes like \"Revised 'outputMessage':\".",
+                "variable": "KBOutput"
+              }
+            ],
+            "system": "You are a friendly AI Support chatbot, here to make your banking experience as seamless as possible. \n\nHere is more information about your goals and objectives: {{[agent_persona].66ea0deccc90326d546ea764}}\n\n When customers reach out with questions, remember to:\n\n1. (THIS IS IMPORTANT) Be Direct and Personal: Answer in a conversational tone, using \"I\" and \"we\".\n2. Be Organized: Break down steps or instructions into an easy-to-follow list.\n3. Be Clear: Use simple language that's easy to understand, avoiding jargon.\n4. Be Concise: Stick to the necessary details without overwhelming with too much information.\n5. Be Accessible: Format responses with Markdown where appropriate for emphasis and clarity, and ensure it's accessible to everyone.\n\nIf there's no information to answer a question, let the customer know kindly with a message like, \"I'm here to help with what I can, but I don't have information on that topic right now.\"\n\nYour goal is to provide a friendly, helpful service that makes customers feel supported and valued at every step. Keep the conversation light, informative, and to the point, and let's show our customers how easy getting support can be.",
+            "maxTokens": 350,
+            "overrideParams": false,
+            "model": "gpt-4o-mini",
+            "temperature": 0.1,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e4658c0d92adb723366d3d",
+                  "data": {}
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e4658c0d92adb723366d3c"
+        },
+        "66e4658c0d92adb723366d4f": {
+          "type": "set-v3",
+          "data": {
+            "name": "",
+            "items": [
+              {
+                "id": "cm0vkkczy47km07judfkecup0",
+                "label": "Set rewrite counter to 0",
+                "variableID": "rewriteCounter",
+                "type": "script",
+                "value": [
+                  "'0'"
+                ]
+              }
+            ],
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e4658c0d92adb723366d50"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e4658c0d92adb723366d4f"
+        },
+        "66e4658c0d92adb723366d52": {
+          "type": "message",
+          "data": {
+            "name": "Text",
+            "messageID": "66e4658c97035e0f16ac4caa",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66e4658c0d92adb723366d53"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e4658c0d92adb723366d52"
+        },
+        "66e98968b82687b7cfd6cdab": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [],
+            "intentScope": "GLOBAL",
+            "noMatch": {
+              "types": [],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": []
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66e98968b82687b7cfd6cdab"
+        },
+        "66eaf5a2516a7166a48a4d39": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 0.8096051052756578,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "color": {
+                      "r": 59,
+                      "g": 64,
+                      "b": 66,
+                      "a": 1
+                    },
+                    "text": "This step re-writes the response and exits the component."
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 324.81962799626467,
+            "backgroundColor": {
+              "r": 244,
+              "g": 227,
+              "b": 134,
+              "a": 1
+            }
+          },
+          "nodeID": "66eaf5a2516a7166a48a4d39",
+          "coords": [
+            1598.7494093760406,
+            -65.96578212028052
+          ]
+        },
+        "66eaf5a2516a7166a48a4d3a": {
+          "type": "markup_image",
+          "data": {
+            "name": "Block",
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1726671922707-frame-3.png",
+            "width": 22.904472946450912,
+            "height": 120.24848296886731,
+            "rotate": 3.1358047210252815
+          },
+          "nodeID": "66eaf5a2516a7166a48a4d3a",
+          "coords": [
+            1750.3495125280006,
+            69.85180491502895
+          ]
+        },
+        "66eaf5dd516a7166a48a4daf": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 0.8280447266030794,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "The counter is necessary to stop an indefinite loop."
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 274.13897750371905,
+            "backgroundColor": {
+              "r": 244,
+              "g": 227,
+              "b": 134,
+              "a": 1
+            }
+          },
+          "nodeID": "66eaf5dd516a7166a48a4daf",
+          "coords": [
+            1186.7575832041596,
+            488.89813152031303
+          ]
+        },
+        "66eaf5dd516a7166a48a4db0": {
+          "type": "markup_image",
+          "data": {
+            "name": "Block",
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1726671922707-frame-3.png",
+            "width": 27.933119444317636,
+            "height": 146.6488770826676,
+            "rotate": 0
+          },
+          "nodeID": "66eaf5dd516a7166a48a4db0",
+          "coords": [
+            1329.1061809810292,
+            415.5337015321349
+          ]
+        }
+      },
+      "offsetX": 108.62557363178385,
+      "offsetY": 335.34422129021755,
+      "modified": 1726244359,
+      "creatorID": 1087473,
+      "variables": [],
+      "_id": "66fc8cf18a2cba0cbf77fd67",
+      "diagramID": "66e4660897035e0f16ac4cb3",
+      "versionID": "66fc8cf18a2cba0cbf77fd63"
+    },
+    "64dbb6696a8fab0013dba195": {
+      "name": "Template Diagram",
+      "type": "TEMPLATE",
+      "zoom": 100,
+      "nodes": {},
+      "offsetX": 0,
+      "offsetY": 0,
+      "modified": 1701833501,
+      "creatorID": 1087473,
+      "variables": [],
+      "menuItems": [],
+      "_id": "66fc8cf18a2cba0cbf77fd69",
+      "diagramID": "64dbb6696a8fab0013dba195",
+      "versionID": "66fc8cf18a2cba0cbf77fd63"
+    },
+    "64dbb6696a8fab0013dba194": {
+      "name": "ROOT",
+      "type": "TOPIC",
+      "zoom": 100,
+      "nodes": {
+        "start00000000000000000000": {
+          "type": "start",
+          "data": {
+            "name": "Start",
+            "color": "#56b365",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "66fc8d4ab35a03604b93dc7c",
+                  "id": "6032afcf359e8c14c06c0319",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -330.06,
+                          -2200.36
+                        ]
+                      },
+                      {
+                        "point": [
+                          -306.06,
+                          -2200.36
+                        ]
+                      },
+                      {
+                        "point": [
+                          -306.06,
+                          -1959.92
+                        ]
+                      },
+                      {
+                        "point": [
+                          -370.38,
+                          -1959.92
+                        ]
+                      },
+                      {
+                        "point": [
+                          -370.38,
+                          -1719.48
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "label": "Start"
+          },
+          "nodeID": "start00000000000000000000",
+          "coords": [
+            -394.7074689976677,
+            -2222.3576625328483
+          ]
+        },
+        "66fc8d4ab35a03604b93dc7a": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": "66fdd481e7811a87112ad8e2",
+                  "id": "66fc8d4ab35a03604b93dc7b",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -536.38,
+                          -1608.08
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          -560.38,
+                          -1608.08
+                        ]
+                      },
+                      {
+                        "point": [
+                          -560.38,
+                          -1486.79
+                        ]
+                      },
+                      {
+                        "point": [
+                          -397.55,
+                          -1486.79
+                        ]
+                      },
+                      {
+                        "point": [
+                          -397.55,
+                          -1365.51
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "messageID": "66fc8d518a2cba0cbf77fd8a"
+          },
+          "nodeID": "66fc8d4ab35a03604b93dc7a"
+        },
+        "66fc8d4ab35a03604b93dc7c": {
+          "type": "block",
+          "data": {
+            "name": "Welcome block",
+            "steps": [
+              "66fc8d4ab35a03604b93dc7a"
+            ],
+            "color": ""
+          },
+          "nodeID": "66fc8d4ab35a03604b93dc7c",
+          "coords": [
+            -370.3826517155047,
+            -1719.475418433075
+          ]
+        },
+        "66fc94d6b35a03604b93dc86": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "gpm43jzm",
+                "name": "",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": {
+              "types": [
+                "path"
+              ],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": []
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "id": "66fd8668b22b82337ab6438a",
+                  "type": "else",
+                  "target": "66fd868eb22b82337ab6438f",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -563.55,
+                          -1229.81
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          -587.55,
+                          -1229.81
+                        ]
+                      },
+                      {
+                        "point": [
+                          -587.55,
+                          -1171.63
+                        ]
+                      },
+                      {
+                        "point": [
+                          -403.14,
+                          -1171.63
+                        ]
+                      },
+                      {
+                        "point": [
+                          -403.14,
+                          -1147.63
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": null,
+                  "id": "66fc94d6b35a03604b93dc87"
+                }
+              ]
+            }
+          },
+          "nodeID": "66fc94d6b35a03604b93dc86"
+        },
+        "66fd868eb22b82337ab6438c": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "mode": "prompt",
+            "prompt": "{{[last_utterance].last_utterance}} ",
+            "system": "You are an FAQ AI agent. Information will be provided to help answer the user's questions. Answer the question in a detailed manner and use markdowns to format the output.",
+            "maxTokens": 187,
+            "model": "claude-3-haiku",
+            "temperature": 0.7,
+            "notFoundPath": true,
+            "overrideParams": true,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "66fd88c2b22b82337ab643b3",
+                  "id": "66fd868eb22b82337ab6438d",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -237.14,
+                          -1066.38
+                        ]
+                      },
+                      {
+                        "point": [
+                          -168.06,
+                          -1066.38
+                        ]
+                      },
+                      {
+                        "point": [
+                          -168.06,
+                          -1718.53
+                        ]
+                      },
+                      {
+                        "point": [
+                          -98.98,
+                          -1718.53
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": "66fd8815b22b82337ab643aa",
+                  "id": "66fd868eb22b82337ab6438e",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -237.14,
+                          -1011.93
+                        ]
+                      },
+                      {
+                        "point": [
+                          -145.89,
+                          -1011.93
+                        ]
+                      },
+                      {
+                        "point": [
+                          -145.89,
+                          -1450.12
+                        ]
+                      },
+                      {
+                        "point": [
+                          -54.63,
+                          -1450.12
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "source": "knowledge_base",
+            "instruction": "Make sure you use markdown to format your preview appropriately."
+          },
+          "nodeID": "66fd868eb22b82337ab6438c"
+        },
+        "66fd868eb22b82337ab6438f": {
+          "type": "block",
+          "data": {
+            "name": "response AI with KB",
+            "steps": [
+              "66fd868eb22b82337ab6438c"
+            ],
+            "color": ""
+          },
+          "nodeID": "66fd868eb22b82337ab6438f",
+          "coords": [
+            -403.1433742096688,
+            -1147.6296820354316
+          ]
+        },
+        "66fd8815b22b82337ab643a8": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": "66fd894bb22b82337ab643d6",
+                  "id": "66fd8815b22b82337ab643a9",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          276.37,
+                          -1395.92
+                        ]
+                      },
+                      {
+                        "point": [
+                          309.68,
+                          -1395.92
+                        ]
+                      },
+                      {
+                        "point": [
+                          309.68,
+                          -1798.45
+                        ]
+                      },
+                      {
+                        "point": [
+                          342.99,
+                          -1798.45
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "messageID": "66fd883656f888df5b8471b4"
+          },
+          "nodeID": "66fd8815b22b82337ab643a8"
+        },
+        "66fd8815b22b82337ab643aa": {
+          "type": "block",
+          "data": {
+            "name": "cannot find",
+            "steps": [
+              "66fd8815b22b82337ab643a8"
+            ],
+            "color": ""
+          },
+          "nodeID": "66fd8815b22b82337ab643aa",
+          "coords": [
+            110.37108188846305,
+            -1477.1225848337592
+          ]
+        },
+        "66fd88c2b22b82337ab643b1": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66fd88c2b22b82337ab643b2"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "messageID": "66fd88c956f888df5b8471f3"
+          },
+          "nodeID": "66fd88c2b22b82337ab643b1"
+        },
+        "66fd88c2b22b82337ab643b3": {
+          "type": "block",
+          "data": {
+            "name": "Confirmation",
+            "steps": [
+              "66fd88c2b22b82337ab643b1",
+              "66fd88efb22b82337ab643ba"
+            ],
+            "color": ""
+          },
+          "nodeID": "66fd88c2b22b82337ab643b3",
+          "coords": [
+            66.01983267578072,
+            -1745.5290513464588
+          ]
+        },
+        "66fd88efb22b82337ab643ba": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "8bdt3q78",
+                "name": "yes",
+                "actions": []
+              },
+              {
+                "id": "gceg3qa9",
+                "name": "no",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": {
+              "types": [],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": []
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "66fd88efb22b82337ab643bc"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "66fd8938b22b82337ab643cb",
+                  "id": "66fd88efb22b82337ab643bb",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          232.02,
+                          -1603.88
+                        ]
+                      },
+                      {
+                        "point": [
+                          329.68,
+                          -1603.88
+                        ]
+                      },
+                      {
+                        "point": [
+                          329.68,
+                          -1499.25
+                        ]
+                      },
+                      {
+                        "point": [
+                          427.34,
+                          -1499.25
+                        ],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "66fd88f7b22b82337ab643bf",
+                  "type": "",
+                  "target": "66fd894bb22b82337ab643d4",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          232.02,
+                          -1549.44
+                        ]
+                      },
+                      {
+                        "point": [
+                          287.01,
+                          -1549.44
+                        ]
+                      },
+                      {
+                        "point": [
+                          287.01,
+                          -1744.45
+                        ]
+                      },
+                      {
+                        "point": [
+                          341.99,
+                          -1744.45
+                        ],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "66fd88efb22b82337ab643ba"
+        },
+        "66fd8938b22b82337ab643cb": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66fd8938b22b82337ab643cc"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "messageID": "66fd895156f888df5b84724b"
+          },
+          "nodeID": "66fd8938b22b82337ab643cb"
+        },
+        "66fd8938b22b82337ab643cd": {
+          "type": "block",
+          "data": {
+            "name": "yes",
+            "steps": [
+              "66fd8938b22b82337ab643cb",
+              "66fdd2f4e7811a87112ad8cf",
+              "66fdd329e7811a87112ad8d4"
+            ],
+            "color": ""
+          },
+          "nodeID": "66fd8938b22b82337ab643cd",
+          "coords": [
+            593.3416568242955,
+            -1580.247284206467
+          ]
+        },
+        "66fd894bb22b82337ab643d4": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66fd894bb22b82337ab643d5"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "messageID": "66fd896c56f888df5b847277"
+          },
+          "nodeID": "66fd894bb22b82337ab643d4"
+        },
+        "66fd894bb22b82337ab643d6": {
+          "type": "block",
+          "data": {
+            "name": "no",
+            "steps": [
+              "66fd894bb22b82337ab643d4",
+              "66fddca6e7811a87112ad99c"
+            ],
+            "color": ""
+          },
+          "nodeID": "66fd894bb22b82337ab643d6",
+          "coords": [
+            507.99151647353034,
+            -1825.4518237342581
+          ]
+        },
+        "66fd8e0bb22b82337ab643e7": {
+          "type": "api",
+          "data": {
+            "name": "",
+            "url": "https://general-runtime.voiceflow.com/knowledge-base/query",
+            "body": [
+              {
+                "key": "",
+                "val": ""
+              }
+            ],
+            "params": [],
+            "method": "POST",
+            "headers": [
+              {
+                "key": "Authorization",
+                "val": "VF.DM.66fd9098cd657ae0755576c3.uxNvdczNEgbh6ouS"
+              },
+              {
+                "key": "accept",
+                "val": "application/json"
+              },
+              {
+                "key": "content-type",
+                "val": "application/json"
+              }
+            ],
+            "content": "{\n  \"chunkLimit\": 5,\n  \"synthesis\": false,\n  \"settings\": {\n    \"model\": \"claude-instant-v1\",\n    \"temperature\": 0.1,\n    \"system\": \"You are an AI FAQ assistant. Information will be provided to help answer the user's questions. Always summarize your response to be as brief as possible and be extremely concise. Your responses should be fewer than a couple of sentences. Do not reference the material provided in your response.\"\n  },\n  \"question\": \"{last_utterance}\"\n}",
+            "mappings": [
+              {
+                "path": "response.chunks",
+                "var": "chunks"
+              }
+            ],
+            "bodyType": "rawInput",
+            "selectedAction": "Make a POST Request",
+            "selectedIntegration": "Custom API",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "66fd9d14b22b82337ab6445a",
+                  "id": "66fd8e0bb22b82337ab643e8",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          173.84,
+                          -4738.04
+                        ]
+                      },
+                      {
+                        "point": [
+                          439.09,
+                          -4738.04
+                        ]
+                      },
+                      {
+                        "point": [
+                          439.09,
+                          -4725.19
+                        ]
+                      },
+                      {
+                        "point": [
+                          704.35,
+                          -4725.19
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "66fd8e0bb22b82337ab643e9"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "66fd8e0bb22b82337ab643e7"
+        },
+        "66fd8e0bb22b82337ab643ea": {
+          "type": "block",
+          "data": {
+            "name": "New Block 7",
+            "steps": [
+              "66fd8e0bb22b82337ab643e7"
+            ]
+          },
+          "nodeID": "66fd8e0bb22b82337ab643ea",
+          "coords": [
+            7.838904827192691,
+            -4915.267338383942
+          ]
+        },
+        "66fd9d14b22b82337ab6445a": {
+          "type": "block",
+          "data": {
+            "name": "New Block 8",
+            "steps": [
+              "66fd9df1b22b82337ab64461",
+              "66fd9ec2b22b82337ab64467"
+            ]
+          },
+          "nodeID": "66fd9d14b22b82337ab6445a",
+          "coords": [
+            869.3492187009339,
+            -4752.193769796649
+          ]
+        },
+        "66fd9df1b22b82337ab64461": {
+          "type": "set-v3",
+          "data": {
+            "name": "",
+            "items": [
+              {
+                "id": "cm1s9b0io01ih357q3rxcjcdw",
+                "type": "value",
+                "label": null,
+                "value": [
+                  {
+                    "text": [
+                      "JSON.stringify(",
+                      {
+                        "variableID": "chunks"
+                      },
+                      " )"
+                    ]
+                  }
+                ],
+                "variableID": "chunks"
+              }
+            ],
+            "label": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66fd9df1b22b82337ab64462"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66fd9df1b22b82337ab64461"
+        },
+        "66fd9ec2b22b82337ab64467": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "mode": "prompt",
+            "prompt": "Answer the customers questions accurately. Use only the reference information provided.\n\nUser Question: {{[last_utterance].last_utterance}} \n\nReference Information:{{[chunks].chunks}} ",
+            "system": "",
+            "maxTokens": 128,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "notFoundPath": true,
+            "overrideParams": false,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66fd9ec2b22b82337ab64468"
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "66fd9ec2b22b82337ab64469"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "66fd9ec2b22b82337ab64467"
+        },
+        "66fdd2f4e7811a87112ad8cf": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "messageID": "66fdd2f4d6989d0b2de85310",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66fdd2f4e7811a87112ad8d0",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          628.03,
+                          -1602.41
+                        ]
+                      },
+                      {
+                        "point": [
+                          652.03,
+                          -1602.41
+                        ]
+                      },
+                      {
+                        "point": [
+                          652.03,
+                          -1344.84
+                        ]
+                      },
+                      {
+                        "point": [
+                          514.36,
+                          -1344.84
+                        ]
+                      },
+                      {
+                        "point": [
+                          514.36,
+                          -1087.27
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66fdd2f4e7811a87112ad8cf"
+        },
+        "66fdd329e7811a87112ad8d4": {
+          "type": "choice-v2",
+          "data": {
+            "name": "Choice",
+            "items": [
+              {
+                "id": "cm1shfftc008w357jelhil8bd",
+                "intentID": "VF.YES",
+                "button": {
+                  "label": [
+                    {
+                      "text": [
+                        "yes"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "cm1shh7pp00ag357jpwch662y",
+                "intentID": "VF.NO",
+                "button": {
+                  "label": [
+                    {
+                      "text": [
+                        "no"
+                      ]
+                    },
+                    {
+                      "text": [
+                        {
+                          "text": [
+                            ""
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "listenForOtherTriggers": true,
+            "portsV2": {
+              "byKey": {
+                "cm1shfftc008w357jelhil8bd": {
+                  "id": "66fdd33fe7811a87112ad8da",
+                  "target": "66fdd481e7811a87112ad8e2",
+                  "type": "",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          427.34,
+                          -1340.21
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          -232.55,
+                          -1338.51
+                        ],
+                        "reversed": true
+                      }
+                    ]
+                  }
+                },
+                "cm1shh7pp00ag357jpwch662y": {
+                  "id": "66fdd392e7811a87112ad8dd",
+                  "target": "66fdd608e7811a87112ad8ee",
+                  "type": "",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          427.34,
+                          -1285.76
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          334.67,
+                          -1285.76
+                        ]
+                      },
+                      {
+                        "point": [
+                          334.67,
+                          -1229.22
+                        ]
+                      },
+                      {
+                        "point": [
+                          241.99,
+                          -1229.22
+                        ],
+                        "reversed": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66fdd329e7811a87112ad8d4"
+        },
+        "66fdd481e7811a87112ad8e2": {
+          "type": "block",
+          "data": {
+            "name": "waiting for initial user response",
+            "steps": [
+              "66fc94d6b35a03604b93dc86"
+            ],
+            "color": ""
+          },
+          "nodeID": "66fdd481e7811a87112ad8e2",
+          "coords": [
+            -397.5462408033278,
+            -1365.5078008804026
+          ]
+        },
+        "66fdd608e7811a87112ad8ed": {
+          "type": "exit",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66fdd608e7811a87112ad8ed"
+        },
+        "66fdd608e7811a87112ad8ee": {
+          "type": "block",
+          "data": {
+            "name": "end block",
+            "steps": [
+              "66fdd633e7811a87112ad8f4",
+              "66fdd608e7811a87112ad8ed"
+            ],
+            "color": ""
+          },
+          "nodeID": "66fdd608e7811a87112ad8ee",
+          "coords": [
+            76.98944863466062,
+            -1256.2156676929847
+          ]
+        },
+        "66fdd633e7811a87112ad8f4": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "messageID": "66fdd633d6989d0b2de8541b",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "66fdd633e7811a87112ad8f5"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66fdd633e7811a87112ad8f4"
+        },
+        "66fddca6e7811a87112ad99c": {
+          "type": "exit",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "66fddca6e7811a87112ad99c"
+        },
+        "670d90718f7a93516d62a7e1": {
+          "type": "api",
+          "data": {
+            "name": "",
+            "url": "",
+            "body": [],
+            "params": [],
+            "method": "GET",
+            "headers": [],
+            "content": "",
+            "mappings": [],
+            "bodyType": "formData",
+            "selectedAction": "Make a GET Request",
+            "selectedIntegration": "Custom API",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "670d90718f7a93516d62a7e2"
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "670d90718f7a93516d62a7e3"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "670d90718f7a93516d62a7e1"
+        },
+        "670d90718f7a93516d62a7e4": {
+          "type": "block",
+          "data": {
+            "name": "New Block 11",
+            "steps": [
+              "670d90718f7a93516d62a7e1"
+            ]
+          },
+          "nodeID": "670d90718f7a93516d62a7e4",
+          "coords": [
+            -407.0143064581311,
+            -923.5446000398307
+          ]
+        }
+      },
+      "offsetX": 875.7659751981342,
+      "offsetY": 2077.886130026279,
+      "modified": 1701833501,
+      "creatorID": 1087473,
+      "variables": [],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "start00000000000000000000"
+        }
+      ],
+      "menuNodeIDs": [],
+      "intentStepIDs": [],
+      "_id": "66fc8cf18a2cba0cbf77fd6a",
+      "diagramID": "64dbb6696a8fab0013dba194",
+      "versionID": "66fc8cf18a2cba0cbf77fd63"
+    }
+  },
+  "flows": [
+    {
+      "id": "66e88257517bf2228b6c8668",
+      "name": "Ask clarifying question",
+      "createdByID": 1087473,
+      "folderID": null,
+      "diagramID": "66e88257ee916c66659cd5f1",
+      "description": "This component is intended to be used in the KB response. It uses AI to determine if we need to ask a clarifying question to provide a better response to the user.",
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e4660871bd2282b82d38e1",
+      "name": "Reduce hallucinations",
+      "createdByID": 1087473,
+      "folderID": null,
+      "diagramID": "66e4660897035e0f16ac4cb3",
+      "description": "This component reduces hallucinations by having the AI analyze the generated response and check for any hallucinations.",
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    }
+  ],
+  "entities": [
+    {
+      "id": "670dbe6d5beeda08f724b765",
+      "name": "stock_name",
+      "createdByID": 1087473,
+      "folderID": null,
+      "description": null,
+      "color": "#5B9FD7",
+      "classifier": "VF.NAME",
+      "isArray": false,
+      "createdAt": "2024-10-15T00:59:26.000Z",
+      "updatedAt": "2024-10-15T00:59:26.000Z",
+      "updatedByID": 1087473
+    }
+  ],
+  "entityVariants": [],
+  "intents": [
+    {
+      "id": "66e9f738cc90326d546e9b63",
+      "name": "Submit a ticket",
+      "createdByID": 1087473,
+      "folderID": null,
+      "description": "Trigger this intent when the user is asking to submit a ticket or report a bug.",
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "automaticRepromptSettings": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "VF.YES",
+      "name": "VF.YES",
+      "createdByID": 1087473,
+      "folderID": null,
+      "description": "Trigger this intent when the user says yes, or responds in the affirmative.",
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "automaticRepromptSettings": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "VF.NO",
+      "name": "VF.NO",
+      "createdByID": 1087473,
+      "folderID": null,
+      "description": "Trigger this intent when the user says no, or responds in the negative.",
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "automaticRepromptSettings": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "None",
+      "name": "None",
+      "createdByID": 1087473,
+      "folderID": null,
+      "description": null,
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "automaticRepromptSettings": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e999d72d5420af16162e99",
+      "name": "Book a demo",
+      "createdByID": 1087473,
+      "folderID": null,
+      "description": "Trigger this intent when the user wants to book a demo. However, don't trigger this intent if the user asks about pricing.",
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "automaticRepromptSettings": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    }
+  ],
+  "utterances": [
+    {
+      "id": "66e9f2c5cc90326d546e9978",
+      "text": [
+        {
+          "text": [
+            "Of course"
+          ]
+        }
+      ],
+      "intentID": "VF.YES",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f2c5cc90326d546e9979",
+      "text": [
+        {
+          "text": [
+            "Definitely"
+          ]
+        }
+      ],
+      "intentID": "VF.YES",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f2c5cc90326d546e997a",
+      "text": [
+        {
+          "text": [
+            "You bet"
+          ]
+        }
+      ],
+      "intentID": "VF.YES",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f2c5cc90326d546e997b",
+      "text": [
+        {
+          "text": [
+            "Okay"
+          ]
+        }
+      ],
+      "intentID": "VF.YES",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f2c5cc90326d546e997c",
+      "text": [
+        {
+          "text": [
+            "Sure"
+          ]
+        }
+      ],
+      "intentID": "VF.YES",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f2c5cc90326d546e997d",
+      "text": [
+        {
+          "text": [
+            "Yes"
+          ]
+        }
+      ],
+      "intentID": "VF.YES",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f2c5cc90326d546e9977",
+      "text": [
+        {
+          "text": [
+            "Certainly"
+          ]
+        }
+      ],
+      "intentID": "VF.YES",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f287cc90326d546e9949",
+      "text": [
+        {
+          "text": [
+            "Not at all"
+          ]
+        }
+      ],
+      "intentID": "VF.NO",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f287cc90326d546e9944",
+      "text": [
+        {
+          "text": [
+            "Negative"
+          ]
+        }
+      ],
+      "intentID": "VF.NO",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e999d72d5420af16162e9a",
+      "text": [
+        {
+          "text": [
+            "book a demo"
+          ]
+        }
+      ],
+      "intentID": "66e999d72d5420af16162e99",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e999d72d5420af16162e9b",
+      "text": [
+        {
+          "text": [
+            "I want to book a demo"
+          ]
+        }
+      ],
+      "intentID": "66e999d72d5420af16162e99",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e999d72d5420af16162e9c",
+      "text": [
+        {
+          "text": [
+            "I want to talk to sales"
+          ]
+        }
+      ],
+      "intentID": "66e999d72d5420af16162e99",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e999d72d5420af16162e9d",
+      "text": [
+        {
+          "text": [
+            "How can I reserve a demo?"
+          ]
+        }
+      ],
+      "intentID": "66e999d72d5420af16162e99",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e999d72d5420af16162e9e",
+      "text": [
+        {
+          "text": [
+            "I'm looking to arrange a demo"
+          ]
+        }
+      ],
+      "intentID": "66e999d72d5420af16162e99",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e999d72d5420af16162e9f",
+      "text": [
+        {
+          "text": [
+            "Is it possible to book a demonstration?"
+          ]
+        }
+      ],
+      "intentID": "66e999d72d5420af16162e99",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e999d72d5420af16162ea0",
+      "text": [
+        {
+          "text": [
+            "I'd like to set up a demo"
+          ]
+        }
+      ],
+      "intentID": "66e999d72d5420af16162e99",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e999d72d5420af16162ea1",
+      "text": [
+        {
+          "text": [
+            "Can I schedule a demo?"
+          ]
+        }
+      ],
+      "intentID": "66e999d72d5420af16162e99",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f287cc90326d546e9946",
+      "text": [
+        {
+          "text": [
+            "Absolutely not"
+          ]
+        }
+      ],
+      "intentID": "VF.NO",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f287cc90326d546e9947",
+      "text": [
+        {
+          "text": [
+            "I'm afraid not"
+          ]
+        }
+      ],
+      "intentID": "VF.NO",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f287cc90326d546e9948",
+      "text": [
+        {
+          "text": [
+            "No way"
+          ]
+        }
+      ],
+      "intentID": "VF.NO",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f287cc90326d546e994b",
+      "text": [
+        {
+          "text": [
+            "Definitely not"
+          ]
+        }
+      ],
+      "intentID": "VF.NO",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f287cc90326d546e994c",
+      "text": [
+        {
+          "text": [
+            "Nope"
+          ]
+        }
+      ],
+      "intentID": "VF.NO",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f287cc90326d546e994d",
+      "text": [
+        {
+          "text": [
+            "No"
+          ]
+        }
+      ],
+      "intentID": "VF.NO",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f2c5cc90326d546e9976",
+      "text": [
+        {
+          "text": [
+            "Absolutely"
+          ]
+        }
+      ],
+      "intentID": "VF.YES",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66eaf6511996156a0678cf6e",
+      "text": [
+        {
+          "text": [
+            "Need help with submitting a ticket"
+          ]
+        }
+      ],
+      "intentID": "66e9f738cc90326d546e9b63",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66eaf65a1996156a0678cf79",
+      "text": [
+        {
+          "text": [
+            "Is there a way to submit a ticket?"
+          ]
+        }
+      ],
+      "intentID": "66e9f738cc90326d546e9b63",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66eaf65a1996156a0678cf7a",
+      "text": [
+        {
+          "text": [
+            "I want to create a ticket"
+          ]
+        }
+      ],
+      "intentID": "66e9f738cc90326d546e9b63",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66eaf6491996156a0678cf64",
+      "text": [
+        {
+          "text": [
+            "Need help with submitting a ticket"
+          ]
+        }
+      ],
+      "intentID": "66e9f738cc90326d546e9b63",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66eaf6491996156a0678cf65",
+      "text": [
+        {
+          "text": [
+            "How do I submit a ticket?"
+          ]
+        }
+      ],
+      "intentID": "66e9f738cc90326d546e9b63",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66f59814917d70188b120edf",
+      "text": [
+        {
+          "text": [
+            "Create a ticket"
+          ]
+        }
+      ],
+      "intentID": "66e9f738cc90326d546e9b63",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66f59819917d70188b120ee0",
+      "text": [
+        {
+          "text": [
+            "Submit a ticket"
+          ]
+        }
+      ],
+      "intentID": "66e9f738cc90326d546e9b63",
+      "language": "en-us",
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    }
+  ],
+  "requiredEntities": [],
+  "folders": [],
+  "responses": [
+    {
+      "id": "66e4658c97035e0f16ac4caa",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e4658c97035e0f16ac4cad",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e495882c6dde44b3c05728",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e880a4ee916c66659cd5ee",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e9ed3ecc90326d546e95e6",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e9f4e4cc90326d546e9a90",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66fc8d518a2cba0cbf77fd8a",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-02T00:01:22.000Z",
+      "updatedAt": "2024-10-02T00:02:26.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66fd9d1456f888df5b848338",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-02T19:20:53.000Z",
+      "updatedAt": "2024-10-02T19:21:22.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66fd883656f888df5b8471b4",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-02T17:51:51.000Z",
+      "updatedAt": "2024-10-02T17:52:03.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66fd88c956f888df5b8471f3",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-02T17:54:17.000Z",
+      "updatedAt": "2024-10-02T17:54:40.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66fd896c56f888df5b847277",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-02T17:57:00.000Z",
+      "updatedAt": "2024-10-02T17:57:56.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66fd895156f888df5b84724b",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-02T17:56:33.000Z",
+      "updatedAt": "2024-10-02T17:56:48.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66fdd2f4d6989d0b2de85310",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-02T23:10:44.000Z",
+      "updatedAt": "2024-10-02T23:11:35.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66fdd633d6989d0b2de8541b",
+      "name": "",
+      "createdByID": 1087473,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2024-10-02T23:24:35.000Z",
+      "updatedAt": "2024-10-02T23:25:28.000Z",
+      "updatedByID": 1087473
+    }
+  ],
+  "responseMessages": [
+    {
+      "id": "66e9f4e4cc90326d546e9a92",
+      "discriminatorID": "66e9f4e4cc90326d546e9a91",
+      "text": [
+        {
+          "text": [
+            "This workflow hasn't been built yet."
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e4658c97035e0f16ac4cac",
+      "discriminatorID": "66e4658c97035e0f16ac4cab",
+      "text": [
+        {
+          "text": [
+            "Sorry. I didn't quite get that, can you please try asking the question in a different way?"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e4658c97035e0f16ac4caf",
+      "discriminatorID": "66e4658c97035e0f16ac4cae",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "KBOutput"
+            },
+            " "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e880a4ee916c66659cd5f0",
+      "discriminatorID": "66e880a4ee916c66659cd5ef",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "66e881bb517bf2228b6c8666"
+            },
+            "  "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9ed3ecc90326d546e95e8",
+      "discriminatorID": "66e9ed3ecc90326d546e95e7",
+      "text": [
+        {
+          "text": [
+            "Ask a question, and I'll use the knowledge you provided to respond."
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e495882c6dde44b3c0572a",
+      "discriminatorID": "66e495882c6dde44b3c05729",
+      "text": [
+        {
+          "text": [
+            "Hi there, I'm your new AI agent!"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66fc8d518a2cba0cbf77fd8c",
+      "discriminatorID": "66fc8d518a2cba0cbf77fd8b",
+      "text": [
+        {
+          "text": [
+            "hi, welcome, how can I help you today?"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T00:01:22.000Z"
+    },
+    {
+      "id": "66fc92038a2cba0cbf77ffbb",
+      "discriminatorID": "66fc8d518a2cba0cbf77fd8b",
+      "text": [
+        {
+          "text": [
+            "hello, how can i be of assistance?"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T00:21:24.000Z"
+    },
+    {
+      "id": "66fdd633d6989d0b2de8541d",
+      "discriminatorID": "66fdd633d6989d0b2de8541c",
+      "text": [
+        {
+          "text": [
+            "ok goodbye for now, have fun trading."
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T23:24:35.000Z"
+    },
+    {
+      "id": "66fd88c956f888df5b8471f5",
+      "discriminatorID": "66fd88c956f888df5b8471f4",
+      "text": [
+        {
+          "text": [
+            "Did this answer your question?"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T17:54:17.000Z"
+    },
+    {
+      "id": "66fd896c56f888df5b847279",
+      "discriminatorID": "66fd896c56f888df5b847278",
+      "text": [
+        {
+          "text": [
+            "lets submit a ticket to our support team."
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T17:57:00.000Z"
+    },
+    {
+      "id": "66fd896056f888df5b847268",
+      "discriminatorID": "66fd895156f888df5b84724c",
+      "text": [
+        {
+          "text": [
+            "great"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T17:56:49.000Z"
+    },
+    {
+      "id": "66fd895156f888df5b84724d",
+      "discriminatorID": "66fd895156f888df5b84724c",
+      "text": [
+        {
+          "text": [
+            "awesome."
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T17:56:33.000Z"
+    },
+    {
+      "id": "66fdd2f4d6989d0b2de85312",
+      "discriminatorID": "66fdd2f4d6989d0b2de85311",
+      "text": [
+        {
+          "text": [
+            "anything else I can help you with?"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T23:10:44.000Z"
+    },
+    {
+      "id": "66fd883656f888df5b8471b6",
+      "discriminatorID": "66fd883656f888df5b8471b5",
+      "text": [
+        {
+          "text": [
+            "I can seem to find that answer"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T17:51:51.000Z"
+    },
+    {
+      "id": "66fd9d1456f888df5b84833a",
+      "discriminatorID": "66fd9d1456f888df5b848339",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "chunks"
+            },
+            " "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2024-10-02T19:20:53.000Z"
+    }
+  ],
+  "responseDiscriminators": [
+    {
+      "id": "66fd883656f888df5b8471b5",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66fd883656f888df5b8471b4",
+      "variantOrder": [
+        "66fd883656f888df5b8471b6"
+      ],
+      "createdAt": "2024-10-02T17:51:51.000Z"
+    },
+    {
+      "id": "66fd88c956f888df5b8471f4",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66fd88c956f888df5b8471f3",
+      "variantOrder": [
+        "66fd88c956f888df5b8471f5"
+      ],
+      "createdAt": "2024-10-02T17:54:17.000Z"
+    },
+    {
+      "id": "66fd896c56f888df5b847278",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66fd896c56f888df5b847277",
+      "variantOrder": [
+        "66fd896c56f888df5b847279"
+      ],
+      "createdAt": "2024-10-02T17:57:00.000Z"
+    },
+    {
+      "id": "66fd895156f888df5b84724c",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66fd895156f888df5b84724b",
+      "variantOrder": [
+        "66fd895156f888df5b84724d",
+        "66fd896056f888df5b847268"
+      ],
+      "createdAt": "2024-10-02T17:56:33.000Z"
+    },
+    {
+      "id": "66fd9d1456f888df5b848339",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66fd9d1456f888df5b848338",
+      "variantOrder": [
+        "66fd9d1456f888df5b84833a"
+      ],
+      "createdAt": "2024-10-02T19:20:53.000Z"
+    },
+    {
+      "id": "66fdd2f4d6989d0b2de85311",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66fdd2f4d6989d0b2de85310",
+      "variantOrder": [
+        "66fdd2f4d6989d0b2de85312"
+      ],
+      "createdAt": "2024-10-02T23:10:44.000Z"
+    },
+    {
+      "id": "66fdd633d6989d0b2de8541c",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66fdd633d6989d0b2de8541b",
+      "variantOrder": [
+        "66fdd633d6989d0b2de8541d"
+      ],
+      "createdAt": "2024-10-02T23:24:35.000Z"
+    },
+    {
+      "id": "66e4658c97035e0f16ac4cab",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66e4658c97035e0f16ac4caa",
+      "variantOrder": [
+        "66e4658c97035e0f16ac4cac"
+      ],
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e4658c97035e0f16ac4cae",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66e4658c97035e0f16ac4cad",
+      "variantOrder": [
+        "66e4658c97035e0f16ac4caf"
+      ],
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e495882c6dde44b3c05729",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66e495882c6dde44b3c05728",
+      "variantOrder": [
+        "66e495882c6dde44b3c0572a"
+      ],
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e880a4ee916c66659cd5ef",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66e880a4ee916c66659cd5ee",
+      "variantOrder": [
+        "66e880a4ee916c66659cd5f0"
+      ],
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9ed3ecc90326d546e95e7",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66e9ed3ecc90326d546e95e6",
+      "variantOrder": [
+        "66e9ed3ecc90326d546e95e8"
+      ],
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66e9f4e4cc90326d546e9a91",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66e9f4e4cc90326d546e9a90",
+      "variantOrder": [
+        "66e9f4e4cc90326d546e9a92"
+      ],
+      "createdAt": "2024-10-01T23:59:45.000Z"
+    },
+    {
+      "id": "66fc8d518a2cba0cbf77fd8b",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66fc8d518a2cba0cbf77fd8a",
+      "variantOrder": [
+        "66fc8d518a2cba0cbf77fd8c",
+        "66fc92038a2cba0cbf77ffbb"
+      ],
+      "createdAt": "2024-10-02T00:01:22.000Z"
+    }
+  ],
+  "variables": [
+    {
+      "id": "sessions",
+      "name": "sessions",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "number",
+      "description": "The number of times a particular user has opened the app.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "user_id",
+      "name": "user_id",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The user's unique ID.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "timestamp",
+      "name": "timestamp",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "UNIX timestamp (number of seconds since January 1st, 1970 at UTC).",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "platform",
+      "name": "platform",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The platform your agent is running on (e.g. \"voiceflow\").",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "locale",
+      "name": "locale",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...).",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "KBOutput",
+      "name": "KB_response",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "The final answer formed by the AI to be shown to the user.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "outputCorrectness",
+      "name": "output_correctness",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "This measured how accurate the AI answer is. Specifically used in the 'prevent hallucinations' components.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "rewriteCounter",
+      "name": "rewrite_counter",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "How many times the AI has rewritten the answer. Specifically used in the 'prevent hallucinations' components.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "intent_confidence",
+      "name": "intent_confidence",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "number",
+      "description": "The confidence interval (measured as a value from 0 to 100) for the most recently matched intent.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "last_response",
+      "name": "last_response",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The agent's last response (text/speak) in a string.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "last_event",
+      "name": "last_event",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "any",
+      "description": "The object containing the last event that the user client has triggered.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "last_utterance",
+      "name": "last_utterance",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The user's last utterance in a text string.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "vf_memory",
+      "name": "vf_memory",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "Last 10 user inputs and agent responses in a string (e.g. \"agent: How can i help?\"\nuser: What's the weather today?).",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e87e79517bf2228b6c8657",
+      "name": "optimized_question",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "Optimized version of the users question for the AI to answer. It stores a reformatted question that uses memory.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e880de517bf2228b6c8664",
+      "name": "clarifying_question_check_counter",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "How many times the AI has asked a clarifying question. This is used so it doesnt ask too many clarifying questions.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e8813c517bf2228b6c8665",
+      "name": "clarifying_question_check",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "Determine if the AI needs to ask a clarifying question.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e881bb517bf2228b6c8666",
+      "name": "clarifying_question",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "Clarifying question asked by the AI",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66e8821d517bf2228b6c8667",
+      "name": "language_JSON",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "Information about the users language. Generated by AI",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "chunks",
+      "name": "chunks",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "Information received from the knowledge base - also known as 'chunks'.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    },
+    {
+      "id": "66ea0deccc90326d546ea764",
+      "name": "agent_persona",
+      "createdByID": 1087473,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "Use this variable to set your agent persona. This variable will be used in prompts within your agent to give the LLM more context about your business, and the agents goal.",
+      "defaultValue": null,
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-01T23:59:45.000Z",
+      "updatedByID": 1087473
+    }
+  ],
+  "workflows": [
+    {
+      "id": "66df755be937eb000784abb2",
+      "name": "Home",
+      "createdByID": 1087473,
+      "folderID": null,
+      "status": null,
+      "isStart": true,
+      "diagramID": "64dbb6696a8fab0013dba194",
+      "assigneeID": null,
+      "description": "This is the main menu of your agent. We recommend keeping it simple and using it to prompt a question from the user.",
+      "createdAt": "2024-10-01T23:59:45.000Z",
+      "updatedAt": "2024-10-15T01:06:50.000Z",
+      "updatedByID": 1087473
+    }
+  ],
+  "attachments": [],
+  "cardButtons": [],
+  "functions": [],
+  "functionPaths": [],
+  "functionVariables": [],
+  "project": {
+    "type": "chat",
+    "name": "trial_ba5200",
+    "image": "",
+    "teamID": "VwjrBebXj5",
+    "members": [],
+    "privacy": "private",
+    "platform": "webchat",
+    "_version": 1.2,
+    "linkType": "STRAIGHT",
+    "creatorID": 1087473,
+    "updatedBy": 1087473,
+    "apiPrivacy": "private",
+    "platformData": {
+      "invocationName": "template project general"
+    },
+    "customThemes": [],
+    "aiAssistSettings": {
+      "aiPlayground": true
+    },
+    "_id": "66fc8cf18a2cba0cbf77fd62",
+    "updatedAt": "2024-10-15T00:57:03.685Z",
+    "knowledgeBase": {
+      "tags": {},
+      "settings": {
+        "summarization": {
+          "mode": "prompt",
+          "model": "claude-3-haiku",
+          "prompt": "",
+          "system": "You are an FAQ AI agent. Information will be provided to help answer the user's questions. Answer the question in a detailed manner and use markdowns to format the output.",
+          "temperature": 0.1
+        },
+        "chunkStrategy": {
+          "size": 1200,
+          "type": "recursive_text_splitter",
+          "overlap": 200
+        },
+        "search": {
+          "limit": 7,
+          "metric": "IP"
+        },
+        "embeddingModel": {
+          "size": 1024,
+          "model": "text-embedding-3-large"
+        }
+      },
+      "faqSets": {},
+      "documents": {
+        "67046a86bb257ca9b84b3ca6": {
+          "status": {
+            "type": "SUCCESS"
+          },
+          "data": {
+            "type": "text",
+            "name": "investment_faq_answers (2).txt",
+            "canEdit": false,
+            "refreshRate": "daily"
+          },
+          "updatedAt": "2024-10-07T23:11:02.764Z",
+          "creatorID": 1087473,
+          "documentID": "67046a86bb257ca9b84b3ca6",
+          "tags": [],
+          "s3ObjectRef": "66fc8cf18a2cba0cbf77fd62/investment_faq_answers (2).txt",
+          "version": 0
+        },
+        "6709a98ba1cb11ea4d614f37": {
+          "status": {
+            "type": "SUCCESS"
+          },
+          "data": {
+            "type": "text",
+            "name": "compiled_kb.txt",
+            "canEdit": false
+          },
+          "updatedAt": "2024-10-11T22:41:15.889Z",
+          "creatorID": 1087473,
+          "documentID": "6709a98ba1cb11ea4d614f37",
+          "tags": [],
+          "s3ObjectRef": "66fc8cf18a2cba0cbf77fd62/compiled_kb.txt",
+          "version": 0
+        }
+      }
+    },
+    "devVersion": "66fc8cf18a2cba0cbf77fd63"
+  },
+  "_version": "1.2",
+  "secrets": [],
+  "variableStates": []
+}
