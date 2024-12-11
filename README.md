@@ -104,7 +104,7 @@ To contribute to the software project, you will need to set up the project envir
    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/c383754a-63c0-4745-a8a0-1c7a57f8603a)     
 4. After the install and startup finishes, you should see the desktop interface for the application.
 
-    ![image]("https://github.com/jeffreywallphd/AutoProphet/assets/3d3593bf-783c-4eee-bb9e-28a1102166cf")
+    <img alt="Main_page" src="https://github.com/user-attachments/assets/5cb61bc6-a346-4093-8a66-290f82da69f4">
 
 5. With the application open, you now need to configure the environment settings. Once the application installs necessary data and loads the menu sidebar, click the **Settings** option. 
 
