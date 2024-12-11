@@ -116,7 +116,8 @@ To contribute to the software project, you will need to set up the project envir
 6. Whenever you want to start the project to view what your code changes did to the software, simply use the terminal to get to the auto-prophet folder and run: **npm start**
 
    * If you need to start over at any point by re-cloning the GitHub project, you may also need to repeat these steps. 
-      
+
+### For further help and instructions on how to use git please refer to [GIT USAGE](GITUSAGE.md)
 ## Disclaimers
 
 ### No Warranty
