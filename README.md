@@ -117,7 +117,7 @@ To contribute to the software project, you will need to set up the project envir
 
    * If you need to start over at any point by re-cloning the GitHub project, you may also need to repeat these steps. 
 
-NOTE: For further help and instructions on how to use git please refer to [GIT USAGE](GITUSAGE.md)
+NOTE: For further help and instructions on how to use git please refer to [Git Usage](GITUSAGE.md)
 ## Disclaimers
 
 ### No Warranty
