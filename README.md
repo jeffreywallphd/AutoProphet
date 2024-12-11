@@ -68,7 +68,7 @@ To contribute to the software project, you will need to set up the project envir
 
 2. Once you clone the repository, you will need to rename a folder. For security and other reasons, some files should not exist on a public GitHub repository. 
 
-   a. You will need to rename a folder that is used to store configuration information. The AutoProphet project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
+   You will need to rename a folder that is used to store configuration information. The AutoProphet project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
 
       * In the auto-prophet folder, locate the folder named: config_DEFAULT
       * rename the folder to: config
@@ -103,8 +103,8 @@ To contribute to the software project, you will need to set up the project envir
 
    ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/c383754a-63c0-4745-a8a0-1c7a57f8603a)     
 4. After the install and startup finishes, you should see the desktop interface for the application.
-    
-   ![image](https://github.com/jeffreywallphd/AutoProphet/assets/148374675/49f89a90-80a7-4131-b29c-1da810177050)
+
+    <img width="1918" alt="Main_page" src="https://github.com/user-attachments/assets/3d3593bf-783c-4eee-bb9e-28a1102166cf">
 
 5. With the application open, you now need to configure the environment settings. Once the application installs necessary data and loads the menu sidebar, click the **Settings** option. 
 
