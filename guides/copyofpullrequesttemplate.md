@@ -30,7 +30,6 @@ If this work is associated with a university course, please identify the univers
 - [ ] Do you want to keep your branch for future changes or delete it once it is reviewed?
 - [ ] I have followed the git practices outlined [here](GitPractices.md) to ensure code conflicts are minimized
 - [ ] My code follows the style guidelines of this project outlined [here](documentation/StyleGuide.md)
-- [ ] Update any dependency files. eg.(requirements.txt)
 - [ ] I have performed a self-review of my code. It runs without errors and follows the [Best Coding Practices](BestCodingPractices.md)
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation

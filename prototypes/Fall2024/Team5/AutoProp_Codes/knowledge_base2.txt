@@ -1,0 +1,17 @@
+Stocks represent ownership in a single company, while ETFs (Exchange-Traded Funds) are collections of multiple stocks or assets in one fund, offering more diversification. ETFs can track specific sectors, indices, or themes, and they trade like stocks on exchanges.
+
+To start investing in stocks, you need to create an account with a brokerage platform. Once registered, you can deposit funds, research stocks, and place buy orders for shares. It’s also helpful to have a strategy in mind, whether it’s long-term investing or short-term trading.
+
+Choosing the best stocks depends on your investment goals, risk tolerance, and market research. Some investors focus on growth stocks, while others may prefer dividend-paying or value stocks. Always consider diversification and consult a financial advisor if unsure.
+
+You can track your portfolio’s performance on the platform by viewing your account dashboard, which displays your holdings, the current market value, gains/losses, and portfolio diversification. Many platforms also offer charts and analytical tools to help you monitor trends.
+
+The minimum amount varies by platform and stock. Some platforms allow you to buy fractional shares, meaning you can invest with as little as a few dollars. Check the stock price and any platform-specific minimums for more details
+
+Diversification involves investing in a mix of stocks across different sectors, industries, and asset classes to reduce risk. You can invest in individual stocks, ETFs, or mutual funds to spread out your investments and avoid putting all your money in one place.
+
+there is risk in that stock prices can fluctuate based on market conditions, company performance, economic factors, and other variables. This can lead to potential losses, especially in the short term. However, historically, stocks have provided long-term growth. It’s important to assess your risk tolerance before investing.
+
+You can research a company by looking at its financial statements, earnings reports, analyst ratings, and recent news. Tools on our platform, such as stock analysis reports and historical performance charts, can also help you make informed investment decisions.
+
+AutoProphet is an open source financial analytics tool designed to provide financial analytics capabilities at a low cost. The tool is meant to provide novice investors with the opportunity to learn and explore financial analytics capabilities, beginning with a simple set of analytics tools and gradually learning more complex tools and models.
