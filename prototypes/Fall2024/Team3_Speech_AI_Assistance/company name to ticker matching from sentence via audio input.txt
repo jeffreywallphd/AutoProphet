@@ -1,0 +1,79 @@
+import speech_recognition as sr
+import csv
+import re
+
+def load_companies(filename):
+    companies = {}
+    try:
+        with open(filename, mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                # Normalize company names for matching
+                companies[row['Company Name'].strip().lower()] = row['Ticker']
+    except FileNotFoundError:
+        print(f"Error: The file {filename} was not found.")
+    return companies
+
+def extract_keywords(text):
+    # Simple keyword extraction: split by spaces and filter out non-alphabetic characters
+    words = re.findall(r'\b\w+\b', text.lower())
+    return set(words)  # Return unique words as a set for matching
+
+def main():
+    # Load company data from CSV
+    companies = load_companies('File Directory')  # used correct company names files directory
+
+    # Initialize recognizer
+    recognizer = sr.Recognizer()
+
+    while True:
+        # Use the microphone as source for input
+        with sr.Microphone() as source:
+            print("Please speak a sentence with a company name... (say 'i am done' to stop)")
+            # Adjust for ambient noise and record audio
+            recognizer.adjust_for_ambient_noise(source)
+            audio_data = recognizer.listen(source)
+            print("Recognizing...")
+
+            try:
+                # Convert audio to text
+                text = recognizer.recognize_google(audio_data)
+                print("You said: " + text)
+
+                # Normalize the spoken text
+                spoken_text = text.lower()
+                
+                # Split spoken text into keywords
+                keywords = extract_keywords(spoken_text)
+
+                # Initialize best match variables
+                best_match = None
+                best_match_ticker = None
+
+                # Find and print matches
+                for keyword in keywords:
+                    for company_name in companies.keys():
+                        if keyword in company_name:
+                            # If a match is found, store it as the best match
+                            best_match = company_name.title()
+                            best_match_ticker = companies[company_name]
+                            break  # Exit inner loop after finding the first match
+
+                # Output the best match if found
+                if best_match:
+                    print(f"Company: {best_match}, Ticker: {best_match_ticker}")
+                else:
+                    print("No matching companies found.")
+
+                # Check if the user wants to exit
+                if "i am done" in spoken_text:
+                    print("Exiting program.")
+                    break
+            
+            except sr.UnknownValueError:
+                print("Sorry, I could not understand the audio.")
+            except sr.RequestError as e:
+                print(f"Could not request results from Google Speech Recognition service; {e}")
+
+if __name__ == "__main__":
+    main()

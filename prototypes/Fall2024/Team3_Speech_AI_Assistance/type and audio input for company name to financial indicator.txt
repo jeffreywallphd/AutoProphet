@@ -1,0 +1,123 @@
+import speech_recognition as sr
+import csv
+import re
+import requests
+
+# Replace with your Alpha Vantage API key
+ALPHA_VANTAGE_API_KEY = ''
+
+def load_companies(filename):
+    companies = {}
+    try:
+        with open(filename, mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                companies[row['Company Name'].strip().lower()] = row['Ticker']
+    except FileNotFoundError:
+        print(f"Error: The file {filename} was not found.")
+    return companies
+
+def extract_keywords(text):
+    words = re.findall(r'\b\w+\b', text.lower())
+    return set(words)
+
+def fetch_financials(ticker):
+    url = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={ALPHA_VANTAGE_API_KEY}'
+    response = requests.get(url)
+    if response.status_code != 200:
+        print(f"Error fetching data from Alpha Vantage: Status code {response.status_code}")
+        return None
+
+    data = response.json()
+    if 'Note' in data:
+        print("API request limit reached.")
+        return None
+
+    indicators = {
+        'Market Cap': data.get('MarketCapitalization', 'N/A'),
+        'P/E Ratio': data.get('PERatio', 'N/A'),
+        'Dividend Yield': data.get('DividendYield', 'N/A'),
+        'Revenue': data.get('RevenueTTM', 'N/A'),
+        'Earnings Per Share (EPS)': data.get('EPS', 'N/A'),
+        'Gross Profit Margin': data.get('GrossProfitMargin', 'N/A'),
+        'Operating Margin': data.get('OperatingMarginTTM', 'N/A'),
+        'Net Profit Margin': data.get('NetProfitMargin', 'N/A'),
+        'Return on Equity (ROE)': data.get('ReturnOnEquityTTM', 'N/A'),
+        'Return on Assets (ROA)': data.get('ReturnOnAssetsTTM', 'N/A'),
+        'Debt to Equity Ratio': data.get('DebtToEquity', 'N/A'),
+        'Current Ratio': data.get('CurrentRatio', 'N/A'),
+        'Quick Ratio': data.get('QuickRatio', 'N/A'),
+        'Book Value per Share': data.get('BookValuePerShare', 'N/A'),
+        'Free Cash Flow': data.get('FreeCashFlow', 'N/A'),
+        'Beta': data.get('Beta', 'N/A'),
+        '52-Week High': data.get('52WeekHigh', 'N/A'),
+        '52-Week Low': data.get('52WeekLow', 'N/A'),
+    }
+
+    return indicators
+
+def main():
+    companies = load_companies('C:/Users/Smart Laptops/Desktop/pythonscripts/companies.csv')
+    recognizer = sr.Recognizer()
+
+    while True:
+        input_method = input("Would you like to use audio input or type your query? (audio/type/exit): ").strip().lower()
+        
+        if input_method == 'exit':
+            print("Exiting program.")
+            break
+        
+        spoken_text = ""
+        if input_method == 'audio':
+            with sr.Microphone() as source:
+                print("Please speak a sentence with a company name...")
+                recognizer.adjust_for_ambient_noise(source)
+                audio_data = recognizer.listen(source)
+                print("Recognizing...")
+
+                try:
+                    spoken_text = recognizer.recognize_google(audio_data)
+                    print("You said: " + spoken_text)
+                except sr.UnknownValueError:
+                    print("Sorry, I could not understand the audio.")
+                    continue
+                except sr.RequestError as e:
+                    print(f"Could not request results from Google Speech Recognition service; {e}")
+                    continue
+        
+        elif input_method == 'type':
+            spoken_text = input("Please type your sentence with a company name: ")
+
+        else:
+            print("Invalid option. Please type 'audio', 'type', or 'exit'.")
+            continue
+
+        keywords = extract_keywords(spoken_text)
+        best_match = None
+        best_match_ticker = None
+
+        for keyword in keywords:
+            for company_name in companies.keys():
+                if keyword in company_name:
+                    best_match = company_name.title()
+                    best_match_ticker = companies[company_name]
+                    break
+
+        if best_match:
+            print(f"Company: {best_match}, Ticker: {best_match_ticker}")
+
+            # Fetch financial data from Alpha Vantage
+            financial_data = fetch_financials(best_match_ticker)
+
+            if financial_data:
+                print("\nFinancial Indicators:")
+                for indicator, value in financial_data.items():
+                    print(f"Indicator: {indicator}, Value: {value}")
+            else:
+                print("Could not fetch financial data.")
+
+        else:
+            print("No matching companies found.")
+
+if __name__ == "__main__":
+    main()

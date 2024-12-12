@@ -1,102 +1,103 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autoprophet Chatbot Conversation</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
+    <link rel="stylesheet" href="{% static 'backend.css'%}">
+</head>
+<script>
+    function handleEnter(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
         }
-        .top-panel {
-            background-color: #333;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .side-panel {
-            height: 100vh;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            padding-top: 20px;
-        }
-        .side-panel a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-        }
-        .side-panel a:hover {
-            background-color: #575757;
-        }
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-    </style>
-    <script>
-        async function getSessionId() {
-            let sessionId = localStorage.getItem('session_id');
+    }
 
-            if (!sessionId) {
-                // Create a new session if it does not exist
-                const response = await fetch('/api/chatbot/', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-                if (response.ok) {
-                    const data = await response.json();
-                    sessionId = data.session_id;
-                    localStorage.setItem('session_id', sessionId);
-                } else {
-                    console.error('Failed to create session');
-                }
+    async function getSessionId() {
+        let sessionId = localStorage.getItem('session_id');
+
+        if (!sessionId) {
+            // Create a new session if it does not exist
+            const response = await fetch('/api/chatbot/', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+            if (response.ok) {
+                const data = await response.json();
+                sessionId = data.session_id;
+                localStorage.setItem('session_id', sessionId);
+            } else {
+                console.error('Failed to create session');
             }
-
-            return sessionId;
         }
 
-        async function sendMessage() {
-            const message = document.getElementById('message').value;
-            const sessionId = await getSessionId();
+        return sessionId;
+    }
 
-            const response = await fetch(`/api/chatbot/${sessionId}/add/`, {
+    async function sendMessage() {
+        const message = document.getElementById('message').value;
+        const maxLength = document.getElementById('max_length').value || 200;
+        const minLength = document.getElementById('min_length').value || 100;
+        const topK = document.getElementById('top_k').value || 50;
+        const topP = document.getElementById('top_p').value || 0.95;
+        const sessionId = await getSessionId();
+
+        // Ensure the message is not empty
+        if (message.trim() === "") {
+            console.error("Message cannot be empty");
+            return;
+        }
+
+        // Add user's message to the database
+        const userResponse = await fetch(`/api/chatbot/${sessionId}/add/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message, is_user: true })
+        });
+
+        if (userResponse.ok) {
+            // Fetch GPT-2 response
+            const chatbotResponse = await fetch(`/api/chatbot/${sessionId}/response/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message, is_user: true })
+                body: JSON.stringify({ 
+                    message: message,
+                    max_length: parseInt(maxLength),
+                    min_length: parseInt(minLength),
+                    top_k: parseInt(topK),
+                    top_p: parseFloat(topP),
+                })  // Ensure message is passed correctly
             });
 
-            if (response.ok) {
+            if (chatbotResponse.ok) {
                 displayMessages();
                 document.getElementById('message').value = ''; // Clear the input field
             } else {
-                console.error('Failed to send message');
+                console.error('Failed to get GPT-2 response');
             }
+        } else {
+            console.error('Failed to send user message');
         }
+    }
 
-        async function displayMessages() {
-            const sessionId = await getSessionId();
+    async function displayMessages() {
+        const sessionId = await getSessionId();
 
-            const response = await fetch(`/api/chatbot/${sessionId}/`);
-            const messages = await response.json();
+        const response = await fetch(`/api/chatbot/${sessionId}/`);
+        const messages = await response.json();
 
-            const messageContainer = document.getElementById('messages');
-            messageContainer.innerHTML = '';  // Clear previous messages
+        const messageContainer = document.getElementById('messages');
+        messageContainer.innerHTML = '';  // Clear previous messages
 
-            messages.forEach(msg => {
-                const messageElement = document.createElement('div');
-                messageElement.textContent = `${msg.is_user ? 'User' : 'Chatbot'}: ${msg.message}`;
-                messageContainer.appendChild(messageElement);
-            });
-        }
+        messages.forEach(msg => {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = `${msg.is_user ? 'User' : 'Chatbot'}: ${msg.message}`;
+            messageElement.classList.add(msg.is_user ? 'user-message' : 'chatbot-message');
+            messageContainer.appendChild(messageElement);
+        });
+    }
 
-        document.addEventListener('DOMContentLoaded', displayMessages);
-    </script>
-</head>
+    document.addEventListener('DOMContentLoaded', displayMessages);
+</script>
+
 <body>
      <!-- Top Panel -->
     <div class="top-panel">
@@ -108,15 +109,29 @@
         <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
         <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->=
         <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
-        <a href="#">Option 4 (Dummy)</a> <!-- Dummy option -->
+        <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
         <a href="#">Option 5 (Dummy)</a> <!-- Dummy option -->
     </div>
 
     <!-- Main Content Area -->
     <div class="content">
         <h1>Chatbot Conversation</h1>
+        <div class="config-options">
+            <h2>Configuration Options</h2>
+            <label for="max_length">Max Length:</label>
+            <input type="number" id="max_length" placeholder="Default: 200">
+            <br>
+            <label for="min_length">Min Length:</label>
+            <input type="number" id="min_length" placeholder="Default: 100">
+            <br>
+            <label for="top_k">Top K:</label>
+            <input type="number" id="top_k" placeholder="Default: 50">
+            <br>
+            <label for="top_p">Top P:</label>
+            <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
+        </div>
         <div id="messages"></div>
-        <input type="text" id="message" placeholder="Type your message...">
+        <input type="text" id="message" placeholder="Type your message..." onkeydown="handleEnter(event)">
         <button onclick="sendMessage()">Send</button>
     </div>
 </body>
