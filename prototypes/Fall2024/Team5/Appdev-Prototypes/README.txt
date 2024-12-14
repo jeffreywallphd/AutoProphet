@@ -1,1 +1,0 @@
-This is the location for 2024 fall app dev team prototypes
