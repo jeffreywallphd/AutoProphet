@@ -27,6 +27,16 @@
         <h1>Configure Model Training</h1>
         <form method="POST" action="">
             {% csrf_token %}
+            <form id="training-form">
+            <label for="model_name">Model Name</label>
+            <select id="model_name" name="model_name">
+                <option value="gpt2">GPT-2</option>
+                <option value="HuggingFaceTB/SmolLM2-360M-Instruct">SmolLM2-360M-Instruct</option>
+                <option value="EleutherAI/gpt-neo-125M">GPT-NEO-125M</option>
+                <option value="facebook/opt-350m">FACEBOOK-OPT-350M</option>
+            </select>
+            <br>
+
             <label for="learning_rate">Learning Rate:</label>
             <input type="number" step="0.00001" name="learning_rate" value="2e-5">
             <br>
@@ -45,6 +55,18 @@
 
             <label for="project_name">W&B Project Name:</label>
             <input type="text" name="project_name" value="your_project_name">
+            <br>
+
+            <label>
+                W&B API Key (Leave blank to use default):
+                <input type="text" name="wandb_key" />
+            </label>
+            <br>
+
+            <label>
+                Hugging Face API Key (Leave blank to use default):
+                <input type="text" name="hf_key" />
+            </label>
             <br>
 
             <label for="fp16">Use FP16:</label>
