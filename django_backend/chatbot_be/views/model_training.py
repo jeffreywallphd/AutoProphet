@@ -26,7 +26,10 @@ def train_model_view(request):
             num_epochs = int(request.POST.get("num_epochs", 3))
             batch_size = int(request.POST.get("batch_size", 1))
             project_name = request.POST.get("project_name", "your_project_name")
+            gradient_checkpointing = request.POST.get("gradient_checkpointing") == "on"
+            max_grad_norm = float(request.POST.get("max_grad_norm", 1.0))
             fp16 = request.POST.get("fp16") == "off"
+            bf16 = request.POST.get("bf16") == "off"
             weight_decay = float(request.POST.get("weight_decay", 0.01))
             model_repo = request.POST.get("model_repo", "OpenFinAL/your-model-name")
 
@@ -97,8 +100,10 @@ def train_model_view(request):
                 load_best_model_at_end=True,
                 save_strategy="epoch",
                 report_to="wandb",
-                gradient_checkpointing=True,
+                gradient_checkpointing=gradient_checkpointing,
+                max_grad_norm=max_grad_norm,
                 fp16=fp16,
+                bf16=bf16,
             )
 
             # Trainer

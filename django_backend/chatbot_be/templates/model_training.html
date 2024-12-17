@@ -53,6 +53,22 @@
             <input type="number" step="0.00001" name="weight_decay" value="0.01">
             <br>
 
+            <label for="gradient_checkpointing">Use Gradient Checkpointing:</label> 
+            <input type="checkbox" name="gradient_checkpointing" checked>
+            <br>
+
+            <label for="max_grad_norm">Max Gradient Norm:</label>
+            <input type="number" name="max_grad_norm" value="1.0">
+            <br>
+
+            <label for="fp16">Use FP16:</label>
+            <input type="checkbox" name="fp16">
+            <br>
+
+            <label for="bf16">Use BF16:</label>
+            <input type="checkbox" name="bf16">
+            <br>
+
             <label for="project_name">W&B Project Name:</label>
             <input type="text" name="project_name" value="your_project_name">
             <br>
@@ -67,10 +83,6 @@
                 Hugging Face API Key (Leave blank to use default):
                 <input type="text" name="hf_key" />
             </label>
-            <br>
-
-            <label for="fp16">Use FP16:</label>
-            <input type="checkbox" name="fp16">
             <br>
 
             <label for="model_repo">Model Repository Name:</label>
