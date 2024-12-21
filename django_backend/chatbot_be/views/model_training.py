@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from transformers import AutoModelForCausalLM, AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer, LlamaForCausalLM, LlamaTokenizer
 from datasets import load_dataset
 import os
 import wandb
@@ -9,13 +9,14 @@ import torch
 from decouple import config
 from huggingface_hub import login
 
+# Set environment variables for CUDA debugging
+os.environ["CUDA_LAUNCH_BLOCKING"] = "1"  # Ensures synchronous error reporting
 
 # Retrieve API keys from environment variables
 DEFAULT_WANDB_API_KEY = config("WANDB_API_KEY", default="")
 DEFAULT_HF_API_KEY = config("HF_API_KEY", default="")
 
 print(f"CUDA available: {torch.cuda.is_available()}")
-
 
 def train_model_view(request):
     if request.method == "POST":
@@ -63,10 +64,16 @@ def train_model_view(request):
             dataset = dataset.rename_column("input", "Question").rename_column("output", "Answer")
             dataset = dataset.remove_columns([col for col in dataset.column_names["train"] if col not in ["Question", "Answer"]])
 
-            # Load model and tokenizer dynamically
-            tokenizer = AutoTokenizer.from_pretrained(model_name)
-            model = AutoModelForCausalLM.from_pretrained(model_name)
-
+            # Load model and tokenizer dynamically with Meta and OpenELM support
+            if "llama" in model_name.lower() or "meta" in model_name.lower() or "openelm" in model_name.lower():
+                tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B-Instruct",trust_remote_code=True)
+                tokenizer.add_bos_token = True
+                model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+            else:
+                # Default to Hugging Face Auto classes
+                tokenizer = AutoTokenizer.from_pretrained(model_name)
+                model = AutoModelForCausalLM.from_pretrained(model_name)
+                
             # Set padding token
             tokenizer.pad_token = tokenizer.eos_token
             model.to(device)
@@ -86,6 +93,9 @@ def train_model_view(request):
             train_test_split = dataset["train"].train_test_split(test_size=0.1)
             train_dataset = train_test_split['train'].map(tokenize_function, batched=True)
             eval_dataset = train_test_split['test'].map(tokenize_function, batched=True)
+
+            # Debugging tensor shapes
+            print("Sample tokenized data:", train_dataset[0])
 
             # Training arguments
             training_args = TrainingArguments(
