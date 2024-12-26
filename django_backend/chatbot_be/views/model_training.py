@@ -10,7 +10,7 @@ from decouple import config
 from huggingface_hub import login
 
 # Set environment variables for CUDA debugging
-os.environ["CUDA_LAUNCH_BLOCKING"] = "1"  # Ensures synchronous error reporting
+# os.environ["CUDA_LAUNCH_BLOCKING"] = "1"  # Ensures synchronous error reporting
 
 # Retrieve API keys from environment variables
 DEFAULT_WANDB_API_KEY = config("WANDB_API_KEY", default="")
@@ -66,16 +66,23 @@ def train_model_view(request):
 
             # Load model and tokenizer dynamically with Meta and OpenELM support
             if "llama" in model_name.lower() or "meta" in model_name.lower() or "openelm" in model_name.lower():
-                tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B-Instruct",trust_remote_code=True)
+                # tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B-Instruct",trust_remote_code=True)
+                tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=False, trust_remote_code=True)
                 tokenizer.add_bos_token = True
                 model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
             else:
                 # Default to Hugging Face Auto classes
                 tokenizer = AutoTokenizer.from_pretrained(model_name)
-                model = AutoModelForCausalLM.from_pretrained(model_name)
+                if bf16:
+                    model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16)
+                elif fp16:
+                    model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16)
+                else:
+                    model = AutoModelForCausalLM.from_pretrained(model_name)
                 
             # Set padding token
             tokenizer.pad_token = tokenizer.eos_token
+            model.resize_token_embeddings(len(tokenizer))
             model.to(device)
             
             # Tokenization function
@@ -114,6 +121,7 @@ def train_model_view(request):
                 max_grad_norm=max_grad_norm,
                 fp16=fp16,
                 bf16=bf16,
+                # use_cache=False,
             )
 
             # Trainer
