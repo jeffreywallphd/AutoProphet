@@ -61,12 +61,14 @@
             <input type="number" name="max_grad_norm" value="1.0">
             <br>
 
-            <label for="fp16">Use FP16:</label>
-            <input type="checkbox" name="fp16">
-            <br>
-
-            <label for="bf16">Use BF16:</label>
-            <input type="checkbox" name="bf16">
+            <label for="precision">Precision:</label>
+            <select id="precision" name="precision">
+                <option value="fp32" selected>FP32 (Default)</option>
+                <option value="fp16">FP16</option>
+                <option value="bf16">BF16</option>
+            </select>
+            <input type="hidden" id="fp16" name="fp16" value="off">
+            <input type="hidden" id="bf16" name="bf16" value="off">
             <br>
 
             <label for="project_name">W&B Project Name:</label>
@@ -92,5 +94,11 @@
             <button type="submit">Start Training</button>
         </form>
     </div>
+    <script>
+        document.getElementById('precision').addEventListener('change', function () {
+            document.getElementById('fp16').value = this.value === 'fp16' ? 'on' : 'off';
+            document.getElementById('bf16').value = this.value === 'bf16' ? 'on' : 'off';
+        });
+    </script>
 </body>
 </html>
