@@ -95,10 +95,29 @@
         </form>
     </div>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize hidden fields for FP32
+            document.getElementById('fp16').value = 'off';
+            document.getElementById('bf16').value = 'off';
+        });
+    
         document.getElementById('precision').addEventListener('change', function () {
-            document.getElementById('fp16').value = this.value === 'fp16' ? 'on' : 'off';
-            document.getElementById('bf16').value = this.value === 'bf16' ? 'on' : 'off';
+            const precision = this.value;
+            const fp16Field = document.getElementById('fp16');
+            const bf16Field = document.getElementById('bf16');
+    
+            if (precision === 'fp16') {
+                fp16Field.value = 'on';
+                bf16Field.value = 'off';
+            } else if (precision === 'bf16') {
+                fp16Field.value = 'off';
+                bf16Field.value = 'on';
+            } else { // FP32 case
+                fp16Field.value = 'off';
+                bf16Field.value = 'off';
+            }
         });
     </script>
+      
 </body>
 </html>

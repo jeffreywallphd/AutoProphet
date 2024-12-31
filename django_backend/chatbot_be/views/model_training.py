@@ -29,8 +29,8 @@ def train_model_view(request):
             project_name = request.POST.get("project_name", "your_project_name")
             gradient_checkpointing = request.POST.get("gradient_checkpointing") == "on"
             max_grad_norm = float(request.POST.get("max_grad_norm", 1.0))
-            fp16 = request.POST.get("fp16") == "off"
-            bf16 = request.POST.get("bf16") == "off"
+            fp16 = request.POST.get("fp16") == "on"
+            bf16 = request.POST.get("bf16") == "on"
             weight_decay = float(request.POST.get("weight_decay", 0.01))
             model_repo = request.POST.get("model_repo", "OpenFinAL/your-model-name")
 
