@@ -27,17 +27,19 @@ def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=
     """
     try:
         # Load tokenizer dynamically
-        if "llama" in model_name.lower() or "meta" in model_name.lower():
-            tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False, trust_remote_code=True)
+        if "llama" in model_name.lower() or "meta" in model_name.lower() or "openelm" in model_name.lower():
+            tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=False, trust_remote_code=True)
             tokenizer.add_bos_token = True
+            model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)    
         else:
             tokenizer = AutoTokenizer.from_pretrained(model_name)
+            model = AutoModelForCausalLM.from_pretrained(model_name)
 
         # Set pad_token for compatibility
         tokenizer.pad_token = tokenizer.eos_token
 
         # Load the model
-        model = AutoModelForCausalLM.from_pretrained(model_name)
+        # model = AutoModelForCausalLM.from_pretrained(model_name)
         model.resize_token_embeddings(len(tokenizer))  # Adjust token embeddings for tokenizer size
         model.to(device)
 
