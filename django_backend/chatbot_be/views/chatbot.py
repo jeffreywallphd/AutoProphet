@@ -1,31 +1,46 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from ..models import Conversation
 from ..serializers import ConversationSerializer
 import uuid
 from django.shortcuts import render
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from django.conf import settings
 from django.conf.urls.static import static
 import torch
 
 # Load the GPT-2 model and tokenizer once during server initialization
-MODEL_PATH = "OpenFinAL/GPT2_FINGPT_QA"
+# MODEL_PATH = "OpenFinAL/GPT2_FINGPT_QA"
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# tokenizer = GPT2Tokenizer.from_pretrained(MODEL_PATH)
+# model = GPT2LMHeadModel.from_pretrained(MODEL_PATH)
+# model.to(device)
+
+# # Ensure pad_token_id is set
+# if tokenizer.pad_token_id is None:
+#     tokenizer.pad_token = tokenizer.eos_token
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-tokenizer = GPT2Tokenizer.from_pretrained(MODEL_PATH)
-model = GPT2LMHeadModel.from_pretrained(MODEL_PATH)
-model.to(device)
-
-# Ensure pad_token_id is set
-if tokenizer.pad_token_id is None:
-    tokenizer.pad_token = tokenizer.eos_token
-
-def generate_gpt2_response(prompt, max_length=200, min_length=100, top_k=50, top_p=0.95):
+def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95):
     """
     Generate a response from the GPT-2 model based on the input prompt.
     """
     try:
+        # Load tokenizer dynamically
+        if "llama" in model_name.lower() or "meta" in model_name.lower():
+            tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False, trust_remote_code=True)
+            tokenizer.add_bos_token = True
+        else:
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+        # Set pad_token for compatibility
+        tokenizer.pad_token = tokenizer.eos_token
+
+        # Load the model
+        model = AutoModelForCausalLM.from_pretrained(model_name)
+        model.resize_token_embeddings(len(tokenizer))  # Adjust token embeddings for tokenizer size
+        model.to(device)
+
         # Tokenize the input prompt
         inputs = tokenizer(
             prompt,
@@ -107,6 +122,7 @@ class ChatbotGenerateResponseView(APIView):
             return Response({'error': 'Message is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Extract configurable parameters from the request or set defaults
+        model_name = request.data.get('model_name')
         max_length = request.data.get('max_length', 200)
         min_length = request.data.get('min_length', 100)
         top_k = request.data.get('top_k', 50)
@@ -114,6 +130,7 @@ class ChatbotGenerateResponseView(APIView):
 
         # Validate parameters
         try:
+            model_name = str(model_name)
             max_length = int(max_length)
             min_length = int(min_length)
             top_k = int(top_k)
@@ -131,8 +148,9 @@ class ChatbotGenerateResponseView(APIView):
 
         # Generate GPT-2 response with configurable parameters
         try:
-            bot_response = generate_gpt2_response(
+            bot_response = generate_response(
                 user_message,
+                model_name=model_name,
                 max_length=max_length,
                 min_length=min_length,
                 top_k=top_k,
@@ -169,6 +187,7 @@ class ChatbotGenerateResponseView(APIView):
             'user_message': user_message, 
             'bot_response': bot_response,
             'generation_params': {
+                'model_name': model_name,
                 'max_length': max_length,
                 'min_length': min_length,
                 'top_k': top_k,
