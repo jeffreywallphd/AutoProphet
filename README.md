@@ -1,5 +1,5 @@
-# AutoProphet
-AutoProphet is an open source financial analytics tool designed to provide financial analytics capabilties at a low cost. The tool is meant to provide novice investors with the opportunity to learn and explore financial analytics capabilities, beginning with a simple set of analytics tools and gradually learning more complex tools and models.
+# 
+OpenFinAL is an open source financial analytics tool designed to provide financial analytics capabilties at a low cost. The tool is meant to provide novice investors with the opportunity to learn and explore financial analytics capabilities, beginning with a simple set of analytics tools and gradually learning more complex tools and models.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ To contribute to the software project, you will need to set up the project envir
 
 2. Once you clone the repository, you will need to rename a folder. For security and other reasons, some files should not exist on a public GitHub repository. 
 
-   You will need to rename a folder that is used to store configuration information. The AutoProphet project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
+   You will need to rename a folder that is used to store configuration information. The OpenFinAL project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
 
       * In the auto-prophet folder, locate the folder named: config_DEFAULT
       * rename the folder to: config
