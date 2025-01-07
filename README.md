@@ -1,4 +1,4 @@
-# 
+# OpenFinAL
 OpenFinAL is an open source financial analytics tool designed to provide financial analytics capabilties at a low cost. The tool is meant to provide novice investors with the opportunity to learn and explore financial analytics capabilities, beginning with a simple set of analytics tools and gradually learning more complex tools and models.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -10,7 +10,7 @@ To begin contributing to the repository follow the instructions below. If you ar
 1. Ensure you have a version of git installed on your computer appropriate for your operating system
 2. Download and install NodeJS: https://nodejs.org/en/download
 3. Clone the repository: https://github.com/jeffreywallphd/AutoProphet.git
-4. In the auto-prophet folder, rename the config_DEFAULT folder to: config
+4. In the OpenFinAL folder, rename the config_DEFAULT folder to: config
    * The folder should containa a file named: default.json
    * The file should look something like this: 
    ```
@@ -70,7 +70,7 @@ To contribute to the software project, you will need to set up the project envir
 
    You will need to rename a folder that is used to store configuration information. The OpenFinAL project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
 
-      * In the auto-prophet folder, locate the folder named: config_DEFAULT
+      * In the OpenFinAL folder, locate the folder named: config_DEFAULT
       * rename the folder to: config
       * Once the folder is renamed, ensure that the folder contains a file named: **default.json**. This file will store information about which data sources to use.
       * Open the default.json file and ensure that it contains information that looks something like this:
@@ -87,11 +87,11 @@ To contribute to the software project, you will need to set up the project envir
 3. With the repository cloned and the config folder renamed, you are now ready to start the program. If you haven't already done so, you will need to install NodeJS mentioned earlier. To run the program, open the terminal/command line. 
 
    * VS Code has a terminal built in. To access the terminal in VS Code, Click the View -> Terminal option from the top menu bar. 
-   * You will need to point the terminal to the auto-prophet folder. This can be done with the **cd** command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd auto-prophet**
+   * You will need to point the terminal to the OpenFinAL folder. This can be done with the **cd** command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd auto-prophet**
 
    <img width="407" alt="step3ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/55c7f90e-c12d-4eb0-8aae-d558c90e670e">
 
-   * Now that the terminal is pointed to the auto-prophet directory, you can install the code resources (i.e., dependencies) the project uses. To do this, type the following command into the terminal: **npm install**
+   * Now that the terminal is pointed to the OpenFinAL directory, you can install the code resources (i.e., dependencies) the project uses. To do this, type the following command into the terminal: **npm install**
 
    <img width="465" alt="step5ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/111363a0-903b-4fc7-a921-41024a63d9a4">
 
@@ -113,7 +113,7 @@ To contribute to the software project, you will need to set up the project envir
       * If you choose from the AlphaVantage API's, a free key can be obtained here: https://www.alphavantage.co/support/#api-key. Premium keys may be availabe through your professor for free.
       * If you choose to use Financial Modeling Prep API's, a free key can be obtained through account signup here: https://site.financialmodelingprep.com/. After signup, the key can be found in the Dashboard.
 
-6. Whenever you want to start the project to view what your code changes did to the software, simply use the terminal to get to the auto-prophet folder and run: **npm start**
+6. Whenever you want to start the project to view what your code changes did to the software, simply use the terminal to get to the OpenFinAL folder and run: **npm start**
 
    * If you need to start over at any point by re-cloning the GitHub project, you may also need to repeat these steps. 
 
@@ -146,6 +146,6 @@ All gratitude to the Michigan Tech students who worked on this project to develo
 * Students at Michigan Technological University in MIS 3200 - Systems Analysis and Design: Spring 2024
 
 ### Dependencies
-Please see the package.json file in the auto-prophet folder for a list of the dependencies used in this project.
+Please see the package.json file in the OpenFinAL folder for a list of the dependencies used in this project.
 
 
