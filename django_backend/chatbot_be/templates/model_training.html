@@ -27,6 +27,16 @@
         <h1>Configure Model Training</h1>
         <form method="POST" action="">
             {% csrf_token %}
+            <form id="training-form">
+            <label for="model_name">Model Name</label>
+            <select id="model_name" name="model_name">
+                <option value="gpt2">GPT-2</option>
+                <option value="HuggingFaceTB/SmolLM2-360M-Instruct">SmolLM2-360M-Instruct</option>
+                <option value="apple/OpenELM-270M-Instruct">apple/OpenELM-270M-Instruct</option>
+                <option value="facebook/opt-350m">FACEBOOK-OPT-350M</option>
+            </select>
+            <br>
+
             <label for="learning_rate">Learning Rate:</label>
             <input type="number" step="0.00001" name="learning_rate" value="2e-5">
             <br>
@@ -43,12 +53,38 @@
             <input type="number" step="0.00001" name="weight_decay" value="0.01">
             <br>
 
+            <label for="gradient_checkpointing">Use Gradient Checkpointing:</label> 
+            <input type="checkbox" name="gradient_checkpointing" checked>
+            <br>
+
+            <label for="max_grad_norm">Max Gradient Norm:</label>
+            <input type="number" name="max_grad_norm" value="1.0">
+            <br>
+
+            <label for="precision">Precision:</label>
+            <select id="precision" name="precision">
+                <option value="fp32" selected>FP32 (Default)</option>
+                <option value="fp16">FP16</option>
+                <option value="bf16">BF16</option>
+            </select>
+            <input type="hidden" id="fp16" name="fp16" value="off">
+            <input type="hidden" id="bf16" name="bf16" value="off">
+            <br>
+
             <label for="project_name">W&B Project Name:</label>
             <input type="text" name="project_name" value="your_project_name">
             <br>
 
-            <label for="fp16">Use FP16:</label>
-            <input type="checkbox" name="fp16">
+            <label>
+                W&B API Key (Leave blank to use default):
+                <input type="text" name="wandb_key" />
+            </label>
+            <br>
+
+            <label>
+                Hugging Face API Key (Leave blank to use default):
+                <input type="text" name="hf_key" />
+            </label>
             <br>
 
             <label for="model_repo">Model Repository Name:</label>
@@ -58,5 +94,30 @@
             <button type="submit">Start Training</button>
         </form>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize hidden fields for FP32
+            document.getElementById('fp16').value = 'off';
+            document.getElementById('bf16').value = 'off';
+        });
+    
+        document.getElementById('precision').addEventListener('change', function () {
+            const precision = this.value;
+            const fp16Field = document.getElementById('fp16');
+            const bf16Field = document.getElementById('bf16');
+    
+            if (precision === 'fp16') {
+                fp16Field.value = 'on';
+                bf16Field.value = 'off';
+            } else if (precision === 'bf16') {
+                fp16Field.value = 'off';
+                bf16Field.value = 'on';
+            } else { // FP32 case
+                fp16Field.value = 'off';
+                bf16Field.value = 'off';
+            }
+        });
+    </script>
+      
 </body>
 </html>

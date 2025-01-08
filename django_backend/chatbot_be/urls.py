@@ -1,4 +1,5 @@
 from django.urls import path
+from .views.model_statistics import ModelEvaluationAPIView
 from .views.chatbot import chatbot_view
 from .views.home import home_view
 from .views.model_training import train_model_view
@@ -11,6 +12,7 @@ urlpatterns = [
     path('chatbot/<str:session_id>/', ConversationListView.as_view(), name='get-conversation'),
     path('chatbot/<str:session_id>/add/', ConversationCreateView.as_view(), name='post-message'),
     path('chatbot/<str:session_id>/response/', ChatbotGenerateResponseView.as_view(), name='generate-response'),
+    path("model_statistics/", ModelEvaluationAPIView.as_view(), name="model-statistics"),
     path('chatbot_view/', chatbot_view, name='chatbot-view'),  
     path('home_view/', home_view, name='home-view'),  
     path('scrape_view/', scrape_view, name='scrape-view'),
