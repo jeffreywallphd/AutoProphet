@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Evaluation</title>
+</head>
+<body>
+    <h1>Evaluate Model Performance</h1>
+    <form id="evaluation-form">
+        <label for="model-name">Model Name:</label><br>
+        <input type="text" id="model-name" name="model_name" value="facebook/bart-large-cnn"><br><br>
+
+        <label for="inputs">Input Texts (comma-separated):</label><br>
+        <textarea id="inputs" name="inputs"></textarea><br><br>
+
+        <label for="references">Expected Outputs (comma-separated):</label><br>
+        <textarea id="references" name="references"></textarea><br><br>
+
+        <button type="button" onclick="submitEvaluation()">Evaluate</button>
+    </form>
+
+    <h2>Results:</h2>
+    <div id="results"></div>
+
+    <script>
+        async function submitEvaluation() {
+            const formData = {
+                model_name: document.getElementById("model-name").value,
+                inputs: document.getElementById("inputs").value.split(","),
+                references: document.getElementById("references").value.split(","),
+            };
+
+            const response = await fetch("/api/model-evaluation/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+            document.getElementById("results").innerText = JSON.stringify(result, null, 2);
+        }
+    </script>
+</body>
+</html>
