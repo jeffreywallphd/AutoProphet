@@ -89,11 +89,11 @@ To contribute to the software project, you will need to set up the project envir
    * VS Code has a terminal built in. To access the terminal in VS Code, Click the View -> Terminal option from the top menu bar. 
    * You will need to point the terminal to the open-fin-al folder. This can be done with the **cd** command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd open-fin-al**
 
-   <img width="324" alt="path-open-fin-al" src="https://github.com/user-attachments/assets/b6ec584a-fe2f-49b8-95cf-32c2aff6fa71" />
+   <img width="754" alt="path-open-fin-al" src="https://github.com/user-attachments/assets/8a6dfecc-a327-4fea-89c8-d77124683f8b" />
 
    * Now that the terminal is pointed to the open-fin-al directory, you can install the code resources (i.e., dependencies) the project uses. To do this, type the following command into the terminal: **npm install**
 
-   <img width="381" alt="npm_install" src="https://github.com/user-attachments/assets/ecbf86d2-0ca8-4802-81c9-b0e503f41684" />
+   <img width="829" alt="npm_install" src="https://github.com/user-attachments/assets/1b190a2f-c768-453e-b428-677bc7adea96" />
 
 
    * After the dependency packages have been installed, you can start the software by running the command in the terminal: **npm start**
