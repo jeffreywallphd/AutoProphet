@@ -2,7 +2,7 @@
 A Pull Request is an action in GitHub that involves submitting a file or some form of content to the GitHub repository. Simply put any new content that needs to be incorporated into our class' GitHub repository will have to go through a Pull Request.
 
 ## Utilizing Pull Requests in GitHub
-* To get started with making a pull request navigate to the directory where you would like to make this new file or put some new content. For instance, if I want to make a new page in the "auto-prophet" folder I will begin by clicking on the "auto-prophet" folder.
+* To get started with making a pull request navigate to the directory where you would like to make this new file or put some new content. For instance, if I want to make a new page in the "open-fin-al" folder I will begin by clicking on the "open-fin-al" folder.
 ![Click the folder where content should go](https://github.com/jeffreywallphd/AutoProphet/assets/124594281/7fdfa01a-73d1-4e5b-baab-fa84e431f4ff)
 
 * Next click the "Add File" button in the upper right corner.
