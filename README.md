@@ -98,7 +98,8 @@ To contribute to the software project, you will need to set up the project envir
 
    * After the dependency packages have been installed, you can start the software by running the command in the terminal: **npm start**
 
-   <img width="537" alt="npm_start" src="https://github.com/user-attachments/assets/a56bc24c-3483-4df3-8d3d-6b1d157a8075" />
+   <img width="767" alt="npm_start" src="https://github.com/user-attachments/assets/85d4e2bf-8c53-4fad-87f2-d13b5a785abf" />
+
 
    * Note. If you are using Windows command prompt, you can copy the file path by right clicking on the GitHub folder in your file system and selecting "copy as path". You can paste that after the cd command.
 
