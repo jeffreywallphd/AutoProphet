@@ -1,13 +1,13 @@
 REM Created by tsheets@mtu.edu 4/16/24
-REM Used for installing programs nessesary for AutoProphet development as well as the repository itself. Provides instalation options as well. 
+REM Used for installing programs nessesary for OpenFinAL development as well as the repository itself. Provides instalation options as well. 
 @echo off
 setlocal
 
 REM Ask user install options
-echo Welcome to the AutoProphet Development Installer! There are three options below for intsallation.
+echo Welcome to the OpenFinAL Development Installer! There are three options below for intsallation.
 echo IMPORTANT: Make sure this script is in the location you wan tthe repository to be cloned if applicable
-echo 1. Full Install (Downloads Git, NodeJS, Github) and clones and installs AutoProphet repository. (Will remove and reinstall repository if present)
-echo 2. Clone and Install AutoProphet Repository only. (Will remove and reinstall repository if present)
+echo 1. Full Install (Downloads Git, NodeJS, Github) and clones and installs OpenFinAL repository. (Will remove and reinstall repository if present)
+echo 2. Clone and Install OpenFinAL Repository only. (Will remove and reinstall repository if present)
 echo 3. Choose each option individually. (Will remove and reinstall repository if present)
 set /p userOption="Please pick the option that best suits you: "
 
@@ -38,26 +38,26 @@ start C:\"Program Files (x86)"\"GitHub Desktop Deployment"\GitHubDesktopDeployme
 del "%TEMP%\GitHubDesktopSetup.msi"
 
 REM Repository Cloning and Install
-if exist "%CD%\AutoProphet" (
+if exist "%CD%\OpenFinAL" (
     echo Removing existing directory...
-    rd /s /q "%CD%\AutoProphet"
+    rd /s /q "%CD%\OpenFinAL"
 )
 git clone https://github.com/jeffreywallphd/AutoProphet
-cd AutoProphet
-cd auto-prophet
+cd OpenFinAL
+cd open-fin-al
 npm install
 set /p exit="Process done, select any key to exit"
 exit;
 
 
 :2 REM Repository Cloning and Install
-if exist "%CD%\AutoProphet" (
+if exist "%CD%\OpenFinAL" (
     echo Removing existing directory...
-    rd /s /q "%CD%\AutoProphet"
+    rd /s /q "%CD%\OpenFinAL"
 )
 git clone https://github.com/jeffreywallphd/AutoProphet
-cd AutoProphet
-cd auto-prophet
+cd OpenFinAL
+cd open-fin-al
 npm install
 set /p exit="Process done, select any key to exit"
 exit;
@@ -104,15 +104,15 @@ if /i "%githubPresent%"=="y" (
 )
 
 REM Prompt user for Repository cloning
-set /P cloneChoice="Do you want to clone the AutoProphet repository here? If yes, type y, if not, type n:"
+set /P cloneChoice="Do you want to clone the OpenFinAL repository here? If yes, type y, if not, type n:"
 if /i "%cloneChoice%"=="y" (
-    if exist "%CD%\AutoProphet" (
+    if exist "%CD%\OpenFinAL" (
         echo Removing existing directory...
-        rd /s /q "%CD%\AutoProphet"
+        rd /s /q "%CD%\OpenFinAL"
     )
     git clone https://github.com/jeffreywallphd/AutoProphet
-    cd AutoProphet
-    cd auto-prophet
+    cd OpenFinAL
+    cd open-fin-al
     npm install
 )    
 set /p exit="Process done, select any key to exit"
