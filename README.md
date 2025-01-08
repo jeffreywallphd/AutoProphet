@@ -10,7 +10,7 @@ To begin contributing to the repository follow the instructions below. If you ar
 1. Ensure you have a version of git installed on your computer appropriate for your operating system
 2. Download and install NodeJS: https://nodejs.org/en/download
 3. Clone the repository: https://github.com/jeffreywallphd/AutoProphet.git
-4. In the OpenFinAL folder, rename the config_DEFAULT folder to: config
+4. In the open-fin-al folder, rename the config_DEFAULT folder to: config
    * The folder should containa a file named: default.json
    * The file should look something like this: 
    ```
@@ -70,7 +70,7 @@ To contribute to the software project, you will need to set up the project envir
 
    You will need to rename a folder that is used to store configuration information. The OpenFinAL project is designed to be configurable. For example, you can choose different data providers for stock price and volume data, SEC financial statements, financial news, etc.
 
-      * In the OpenFinAL folder, locate the folder named: config_DEFAULT
+      * In the open-fin-al folder, locate the folder named: config_DEFAULT
       * rename the folder to: config
       * Once the folder is renamed, ensure that the folder contains a file named: **default.json**. This file will store information about which data sources to use.
       * Open the default.json file and ensure that it contains information that looks something like this:
@@ -87,17 +87,19 @@ To contribute to the software project, you will need to set up the project envir
 3. With the repository cloned and the config folder renamed, you are now ready to start the program. If you haven't already done so, you will need to install NodeJS mentioned earlier. To run the program, open the terminal/command line. 
 
    * VS Code has a terminal built in. To access the terminal in VS Code, Click the View -> Terminal option from the top menu bar. 
-   * You will need to point the terminal to the OpenFinAL folder. This can be done with the **cd** command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd auto-prophet**
+   * You will need to point the terminal to the open-fin-al folder. This can be done with the **cd** command (i.e., change directory). If you are in VS Code, simply type the following and press Enter: **cd open-fin-al**
 
-   <img width="407" alt="step3ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/55c7f90e-c12d-4eb0-8aae-d558c90e670e">
+   <img width="754" alt="path-open-fin-al" src="https://github.com/user-attachments/assets/8a6dfecc-a327-4fea-89c8-d77124683f8b" />
 
-   * Now that the terminal is pointed to the OpenFinAL directory, you can install the code resources (i.e., dependencies) the project uses. To do this, type the following command into the terminal: **npm install**
+   * Now that the terminal is pointed to the open-fin-al directory, you can install the code resources (i.e., dependencies) the project uses. To do this, type the following command into the terminal: **npm install**
 
-   <img width="465" alt="step5ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/111363a0-903b-4fc7-a921-41024a63d9a4">
+   <img width="829" alt="npm_install" src="https://github.com/user-attachments/assets/1b190a2f-c768-453e-b428-677bc7adea96" />
+
 
    * After the dependency packages have been installed, you can start the software by running the command in the terminal: **npm start**
 
-   <img width="457" alt="step6ish" src="https://github.com/jeffreywallphd/AutoProphet/assets/148374675/4196753d-345a-4761-98e5-3dbf6ce8b097">
+   <img width="767" alt="npm_start" src="https://github.com/user-attachments/assets/85d4e2bf-8c53-4fad-87f2-d13b5a785abf" />
+
 
    * Note. If you are using Windows command prompt, you can copy the file path by right clicking on the GitHub folder in your file system and selecting "copy as path". You can paste that after the cd command.
 
