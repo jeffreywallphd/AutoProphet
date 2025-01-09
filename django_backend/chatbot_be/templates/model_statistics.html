@@ -1,27 +1,46 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model Evaluation</title>
+    <title>Autoprophet Model Evaluation</title>
+    <link rel="stylesheet" href="{% static 'backend.css'%}">
 </head>
 <body>
+    <!-- Top Panel -->
+    <div class="top-panel">
+        Autoprophet
+    </div>
+
+    <!-- Side Panel -->
+    <div class="side-panel">
+        <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
+        <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->=
+        <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
+        <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
+        <a href="{% url 'model-statistics' %}">Model Statistics</a> <!-- Model Statistics option -->
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content">
     <h1>Evaluate Model Performance</h1>
-    <form id="evaluation-form">
-        <label for="model-name">Model Name:</label><br>
-        <input type="text" id="model-name" name="model_name" value="facebook/bart-large-cnn"><br><br>
+            <form id="evaluation-form">
+                <label for="model-name">Model Name:</label><br>
+                <input type="text" id="model-name" name="model_name" value="facebook/bart-large-cnn"><br><br>
 
-        <label for="inputs">Input Texts (comma-separated):</label><br>
-        <textarea id="inputs" name="inputs"></textarea><br><br>
+                <label for="inputs">Input Texts (comma-separated):</label><br>
+                <textarea id="inputs" name="inputs"></textarea><br><br>
 
-        <label for="references">Expected Outputs (comma-separated):</label><br>
-        <textarea id="references" name="references"></textarea><br><br>
+                <label for="references">Expected Outputs (comma-separated):</label><br>
+                <textarea id="references" name="references"></textarea><br><br>
 
-        <button type="button" onclick="submitEvaluation()">Evaluate</button>
-    </form>
+                <button type="button" onclick="submitEvaluation()">Evaluate</button>
+            </form>
 
-    <h2>Results:</h2>
-    <div id="results"></div>
+            <h2>Results:</h2>
+            <div id="results"></div>
+    </div>
 
     <script>
         async function submitEvaluation() {
