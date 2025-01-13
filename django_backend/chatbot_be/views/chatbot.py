@@ -23,7 +23,7 @@ import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95):
     """
-    Generate a response from the GPT-2 model based on the input prompt.
+    Generate a response from the model based on the input prompt.
     """
     try:
         # Load tokenizer dynamically
@@ -110,6 +110,8 @@ class ConversationCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ChatbotGenerateResponseView(APIView):
+    def get(self, request):
+        return Response({'message': 'This is a GET request. Please use a POST request to generate a chatbot response.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     """
     Handle POST requests to generate a chatbot response using GPT-2
     and save the chat to the database.
@@ -148,7 +150,7 @@ class ChatbotGenerateResponseView(APIView):
         if top_k < 0:
             return Response({'error': 'top_k must be a non-negative integer.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Generate GPT-2 response with configurable parameters
+        # Generate response with configurable parameters
         try:
             bot_response = generate_response(
                 user_message,
@@ -160,9 +162,6 @@ class ChatbotGenerateResponseView(APIView):
             )
         except Exception as e:
             return Response({'error': f'Error during response generation: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        # Generate GPT-2 response
-        # bot_response = generate_gpt2_response(user_message)
 
         # Save user message to the database
         user_message_data = {

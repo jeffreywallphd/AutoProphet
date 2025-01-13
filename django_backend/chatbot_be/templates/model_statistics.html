@@ -4,9 +4,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autoprophet Model Evaluation</title>
-    <link rel="stylesheet" href="{% static 'backend.css'%}">
+    <title>Autoprophet Chatbot and Model Evaluation</title>
+    <link rel="stylesheet" href="{% static 'backend.css' %}">
 </head>
+<script>
+    async function handleEnter(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    async function getSessionId() {
+        let sessionId = localStorage.getItem('session_id');
+
+        if (!sessionId) {
+            try {
+                const response = await fetch('/api/chatbot/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    sessionId = data.session_id;
+                    localStorage.setItem('session_id', sessionId);
+                } else {
+                    console.error('Failed to create session');
+                }
+            } catch (error) {
+                console.error('Error creating session:', error);
+            }
+        }
+        return sessionId;
+    }
+
+    async function sendMessage() {
+        const message = document.getElementById('message').value.trim();
+        const model_name = document.getElementById('model_name').value.trim();
+        const maxLength = document.getElementById('max_length').value || 200;
+        const minLength = document.getElementById('min_length').value || 100;
+        const topK = document.getElementById('top_k').value || 50;
+        const topP = document.getElementById('top_p').value || 0.95;
+        const sessionId = await getSessionId();
+
+        if (!message || !model_name) {
+            alert("Please fill in both the message and model name fields!");
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/chatbot/${sessionId}/response/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: message,
+                    model_name: model_name,
+                    max_length: parseInt(maxLength),
+                    min_length: parseInt(minLength),
+                    top_k: parseInt(topK),
+                    top_p: parseFloat(topP),
+                }),
+            });
+
+            if (response.ok) {
+                displayMessages();
+                document.getElementById('message').value = '';
+            } else {
+                const error = await response.json();
+                console.error('Failed to fetch chatbot response:', error);
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    }
+
+    async function displayMessages() {
+        const sessionId = await getSessionId();
+
+        try {
+            const response = await fetch(`/api/chatbot/${sessionId}/`);
+            const messages = await response.json();
+
+            const messageContainer = document.getElementById('messages');
+            messageContainer.innerHTML = '';
+
+            messages.forEach(msg => {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `${msg.is_user ? 'User' : 'Chatbot'}: ${msg.message}`;
+                messageElement.classList.add(msg.is_user ? 'user-message' : 'chatbot-message');
+                messageContainer.appendChild(messageElement);
+            });
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+        }
+    }
+
+    async function evaluateModel() {
+        const modelName = document.getElementById('eval_model_name').value.trim();
+        const inputs = document.getElementById('eval_inputs').value.trim();
+        const references = document.getElementById('eval_references').value.trim();
+
+        if (!modelName || !inputs || !references) {
+            alert("Please fill in all fields for model evaluation!");
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/model_statistics/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    model_name: modelName,
+                    inputs: inputs.split(","),
+                    references: references.split(","),
+                }),
+            });
+
+            const resultContainer = document.getElementById('model-eval-results');
+
+            if (response.ok) {
+                const results = await response.json();
+                resultContainer.innerHTML = `
+                    <h3>Evaluation Results:</h3>
+                    <p><b>ROUGE Scores:</b> ${JSON.stringify(results.ROUGE)}</p>
+                    <p><b>BERTScore:</b> ${JSON.stringify(results.BERTScore)}</p>
+                    <p><b>F1 Scores:</b> ${JSON.stringify(results.F1)}</p>
+                `;
+            } else {
+                const error = await response.json();
+                resultContainer.innerHTML = `<p style="color: red;">Error: ${error.error || "Unknown error occurred."}</p>`;
+            }
+        } catch (error) {
+            console.error('Error evaluating model:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', displayMessages);
+</script>
+
 <body>
     <!-- Top Panel -->
     <div class="top-panel">
@@ -15,52 +149,52 @@
 
     <!-- Side Panel -->
     <div class="side-panel">
-        <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
-        <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->=
-        <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
-        <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
-        <a href="{% url 'model-statistics' %}">Model Statistics</a> <!-- Model Statistics option -->
+        <a href="{% url 'home-view' %}">Home</a>
+        <a href="{% url 'chatbot-view' %}">Chatbot</a>
+        <a href="{% url 'scrape-view' %}">Scrape Data</a>
+        <a href="{% url 'train-view' %}">Model Training</a>
+        <a href="{% url 'model-statistics' %}">Model Statistics</a>
     </div>
 
     <!-- Main Content Area -->
     <div class="content">
-    <h1>Evaluate Model Performance</h1>
-            <form id="evaluation-form">
-                <label for="model-name">Model Name:</label><br>
-                <input type="text" id="model-name" name="model_name" value="facebook/bart-large-cnn"><br><br>
+        <h1>Chatbot Conversation</h1>
+        <div class="config-options">
+            <h2>Configuration Options</h2>
+            <label for="model_name">Model Name:</label>
+            <input type="text" id="model_name" placeholder="Enter model name (e.g., gpt-2)">
+            <br>
+            <label for="max_length">Max Length:</label>
+            <input type="number" id="max_length" placeholder="Default: 200">
+            <br>
+            <label for="min_length">Min Length:</label>
+            <input type="number" id="min_length" placeholder="Default: 100">
+            <br>
+            <label for="top_k">Top K:</label>
+            <input type="number" id="top_k" placeholder="Default: 50">
+            <br>
+            <label for="top_p">Top P:</label>
+            <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
+        </div>
+        <div id="messages"></div>
+        <input type="text" id="message" placeholder="Type your message..." onkeydown="handleEnter(event)">
+        <button onclick="sendMessage()">Send</button>
 
-                <label for="inputs">Input Texts (comma-separated):</label><br>
-                <textarea id="inputs" name="inputs"></textarea><br><br>
-
-                <label for="references">Expected Outputs (comma-separated):</label><br>
-                <textarea id="references" name="references"></textarea><br><br>
-
-                <button type="button" onclick="submitEvaluation()">Evaluate</button>
-            </form>
-
-            <h2>Results:</h2>
-            <div id="results"></div>
+        <hr>
+        <h1>Model Evaluation</h1>
+        <div>
+            <label for="eval_model_name">Model Name:</label>
+            <input type="text" id="eval_model_name" placeholder="e.g., facebook/bart-large-cnn">
+            <br>
+            <label for="eval_inputs">Input Texts (comma-separated):</label>
+            <textarea id="eval_inputs" placeholder="Enter input texts separated by commas"></textarea>
+            <br>
+            <label for="eval_references">Expected Outputs (comma-separated):</label>
+            <textarea id="eval_references" placeholder="Enter expected outputs separated by commas"></textarea>
+            <br>
+            <button onclick="evaluateModel()">Evaluate Model</button>
+        </div>
+        <div id="model-eval-results" class="results-box"></div>
     </div>
-
-    <script>
-        async function submitEvaluation() {
-            const formData = {
-                model_name: document.getElementById("model-name").value,
-                inputs: document.getElementById("inputs").value.split(","),
-                references: document.getElementById("references").value.split(","),
-            };
-
-            const response = await fetch("/api/model-evaluation/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            const result = await response.json();
-            document.getElementById("results").innerText = JSON.stringify(result, null, 2);
-        }
-    </script>
 </body>
 </html>
