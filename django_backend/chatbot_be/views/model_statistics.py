@@ -62,23 +62,19 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
             raise ValueError("Prediction must be a string.")
 
         # Calculate metrics
-        rouge_metric = load("rouge")
-        f1_metric = load("f1")
+        rouge_metric = load("rouge",trusted_remote_code=True)
+        bertscore_metric = load("bertscore",trusted_remote_code=True)
+        # f1_metric = load("f1")
         # bertscore_metric = pipeline("text-classification", model="google/bert_uncased_L-2_H-128_A-2",device=0 if torch.cuda.is_available() else -1)
 
-        rouge_scores = rouge_metric.compute(
-            predictions=predictions, references=references
-        )
-        f1_scores = f1_metric.compute(
-            predictions=predictions, references=references
-        )
-        # bertscore_scores = bertscore_metric(predictions[0], references[0])
+        rouge_scores = rouge_metric.compute(predictions=predictions, references=references)
+        bertscore_scores = bertscore_metric.compute(predictions=predictions, references=references,lang="en",device=0 if torch.cuda.is_available() else -1)
 
         # Collect and return scores
         results = {
             "ROUGE": rouge_scores,
-            "F1": f1_scores,
-            # "BERTScore": bertscore_scores
+            # "F1": f1_scores,
+            "BERTScore": bertscore_scores
         }
         return results
 

@@ -36,8 +36,8 @@
                 resultContainer.innerHTML = `
                     <h3>Evaluation Results:</h3>
                     <p><b>ROUGE Scores:</b> ${JSON.stringify(results.ROUGE)}</p>
-                    // <p><b>BERTScore:</b> ${JSON.stringify(results.BERTScore)}</p>
-                    <p><b>F1 Scores:</b> ${JSON.stringify(results.F1)}</p>
+                    <p><b>BERTScore:</b> ${JSON.stringify(results.BERTScore)}</p>
+                    // <p><b>F1 Scores:</b> ${JSON.stringify(results.F1)}</p>
                 `;
             } else {
                 const error = await response.json();
