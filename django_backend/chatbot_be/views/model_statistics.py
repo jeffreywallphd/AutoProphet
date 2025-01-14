@@ -5,6 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from evaluate import load
 import torch
 from django.shortcuts import render
+import traceback
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -49,28 +50,42 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
 
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
+        if isinstance(references, str):
+            references = [references]  # Wrap the reference in a list if it's a single string
+        elif not isinstance(references, list):
+            raise ValueError("References must be a string or a list of strings.")
+        
+        # Ensure response is a string
+        if isinstance(response, str):
+            predictions = [response]  # Wrap the prediction in a list if it's a single string
+        else:
+            raise ValueError("Prediction must be a string.")
+
         # Calculate metrics
         rouge_metric = load("rouge")
         f1_metric = load("f1")
-        bertscore_metric = pipeline("text-classification", model="google/bert_uncased_L-2_H-128_A-2")
+        # bertscore_metric = pipeline("text-classification", model="google/bert_uncased_L-2_H-128_A-2",device=0 if torch.cuda.is_available() else -1)
 
         rouge_scores = rouge_metric.compute(
-            predictions=[response], references=references
+            predictions=predictions, references=references
         )
         f1_scores = f1_metric.compute(
-            predictions=[response], references=references
+            predictions=predictions, references=references
         )
-        bertscore_scores = bertscore_metric(response, references)
+        # bertscore_scores = bertscore_metric(predictions[0], references[0])
 
         # Collect and return scores
         results = {
             "ROUGE": rouge_scores,
             "F1": f1_scores,
-            "BERTScore": bertscore_scores
+            # "BERTScore": bertscore_scores
         }
         return results
 
     except Exception as e:
+        # Log the full exception details for debugging
+        print(f"Error in model_stats: {e}")
+        print("".join(traceback.format_exception(None, e, e.__traceback__)))
         raise RuntimeError(f"Error in model_stats: {e}")
 
 
@@ -89,16 +104,14 @@ class ModelStatisticsView(APIView):
         min_length = request.data.get("min_length", 100)
         top_k = request.data.get("top_k", 50)
         top_p = request.data.get("top_p", 0.95)
-        references = request.data.get("references", [])
+        references = request.data.get("references")
 
         # Validate inputs
         if not user_message:
             return Response({"error": "Message is required"}, status=status.HTTP_400_BAD_REQUEST)
         if not model_name:
             return Response({"error": "Model name is required"}, status=status.HTTP_400_BAD_REQUEST)
-        if not isinstance(references, list):
-            return Response({"error": "References must be a list."}, status=status.HTTP_400_BAD_REQUEST)
-
+        
         try:
             max_length = int(max_length)
             min_length = int(min_length)
@@ -120,7 +133,7 @@ class ModelStatisticsView(APIView):
 
         try:
             stats_result = model_stats(
-                user_message,
+                prompt=user_message,
                 model_name=model_name,
                 max_length=max_length,
                 min_length=min_length,
