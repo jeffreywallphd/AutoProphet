@@ -21,7 +21,7 @@ import torch
 # if tokenizer.pad_token_id is None:
 #     tokenizer.pad_token = tokenizer.eos_token
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95):
+def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95, no_repeat_ngram_size=0, max_new_tokens=300):
     """
     Generate a response from the model based on the input prompt.
     """
@@ -61,6 +61,8 @@ def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=
             do_sample=True,
             top_k=top_k,
             top_p=top_p,
+            no_repeat_ngram_size=no_repeat_ngram_size,
+            max_new_tokens=max_new_tokens,
             num_return_sequences=1,
             pad_token_id=tokenizer.pad_token_id
         )
@@ -131,6 +133,8 @@ class ChatbotGenerateResponseView(APIView):
         min_length = request.data.get('min_length', 100)
         top_k = request.data.get('top_k', 50)
         top_p = request.data.get('top_p', 0.95)
+        no_repeat_ngram_size = request.data.get('no_repeat_ngram_size', 0)
+        max_new_tokens = request.data.get('max_new_tokens', 300)
 
         # Validate parameters
         try:
@@ -139,6 +143,8 @@ class ChatbotGenerateResponseView(APIView):
             min_length = int(min_length)
             top_k = int(top_k)
             top_p = float(top_p)
+            no_repeat_ngram_size = int(no_repeat_ngram_size)
+            max_new_tokens = int(max_new_tokens)
         except ValueError:
             return Response({'error': 'Invalid parameters. Ensure max_length, min_length, and top_k are integers, and top_p is a float.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -158,7 +164,9 @@ class ChatbotGenerateResponseView(APIView):
                 max_length=max_length,
                 min_length=min_length,
                 top_k=top_k,
-                top_p=top_p
+                top_p=top_p,
+                no_repeat_ngram_size=no_repeat_ngram_size,
+                max_new_tokens=max_new_tokens
             )
         except Exception as e:
             return Response({'error': f'Error during response generation: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -193,6 +201,8 @@ class ChatbotGenerateResponseView(APIView):
                 'min_length': min_length,
                 'top_k': top_k,
                 'top_p': top_p,
+                'no_repeat_ngram_size': no_repeat_ngram_size,
+                'max_new_tokens': max_new_tokens
             }
             }, status=status.HTTP_200_OK)
 

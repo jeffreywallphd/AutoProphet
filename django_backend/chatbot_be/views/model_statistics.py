@@ -9,7 +9,7 @@ import traceback
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95, references=[]):
+def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95, max_new_tokens=300, no_repeat_ngrams=0, references=[]):
     try:
         # Load tokenizer and model with your logic
         if "llama" in model_name.lower() or "meta" in model_name.lower() or "openelm" in model_name.lower():
@@ -45,6 +45,8 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
             top_k=top_k,
             top_p=top_p,
             num_return_sequences=1,
+            max_new_tokens=max_new_tokens,
+            no_repeat_ngram_size=no_repeat_ngrams,
             pad_token_id=tokenizer.pad_token_id
         )
 
@@ -68,19 +70,22 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
         rouge_scores = rouge_metric.compute(predictions=predictions, references=references)
         bertscore_scores = bertscore_metric.compute(predictions=predictions, references=references,lang="en",device=0 if torch.cuda.is_available() else -1)
         
+        rouge1 = rouge_scores.get("rouge1",0)
+        rouge2 = rouge_scores.get("rouge2",0)
+        rougel = rouge_scores.get("rougel",0)
+        rougelsum = rouge_scores.get("rougelsum",0)
+        bertscore_f1 = bertscore_scores["f1"][0]
+        bertscore_precision = bertscore_scores["precision"][0]
+        bertscore_recall = bertscore_scores["recall"][0]
         # Collect and return scores
         results = {
-            "ROUGE":{
-                "ROUGE1": rouge_scores.get("rouge1",0),
-                "ROUGE2": rouge_scores.get("rouge2",0),
-                "ROUGEL": rouge_scores.get("rougel",0),
-                "ROUGELSUM" : rouge_scores.get("rougelsum",0),
-                },
-            "BERTScore": {
-                "BERTScoreF1": bertscore_scores["f1"][0],
-                "BERTScorePrecision": bertscore_scores["precision"][0],
-                "BERTScoreRecall": bertscore_scores["recall"][0],
-            },
+            "ROUGE1": rouge1,
+            "ROUGE2": rouge2,
+            "ROUGEL": rougel,
+            "ROUGELSUM" : rougelsum,
+            "BERTScoreF1": bertscore_f1,
+            "BERTScorePrecision": bertscore_precision,
+            "BERTScoreRecall": bertscore_recall,
         }
         return results
 
@@ -107,6 +112,8 @@ class ModelStatisticsView(APIView):
         top_k = request.data.get("top_k", 50)
         top_p = request.data.get("top_p", 0.95)
         references = request.data.get("references")
+        max_new_tokens = request.data.get("max_new_tokens", 300)
+        no_repeat_ngrams = request.data.get("no_repeat_ngrams", 0)
 
         # Validate inputs
         if not user_message:
@@ -119,6 +126,8 @@ class ModelStatisticsView(APIView):
             min_length = int(min_length)
             top_k = int(top_k)
             top_p = float(top_p)
+            max_new_tokens = int(max_new_tokens)
+            no_repeat_ngrams = int(no_repeat_ngrams)
         except ValueError:
             return Response(
                 {"error": "Invalid parameters. Ensure max_length, min_length, and top_k are integers, and top_p is a float."},
@@ -141,6 +150,8 @@ class ModelStatisticsView(APIView):
                 min_length=min_length,
                 top_k=top_k,
                 top_p=top_p,
+                max_new_tokens=max_new_tokens,
+                no_repeat_ngrams=no_repeat_ngrams,
                 references=references
             )
             return Response(stats_result, status=status.HTTP_200_OK)
