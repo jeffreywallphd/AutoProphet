@@ -1,5 +1,5 @@
 {
-  "name": "auto-prophet",
+  "name": "open-fin-al",
   "version": "0.1.0",
   "description": "An open-source application to democratize financial analytics",
   "main": "./src/main.js",
