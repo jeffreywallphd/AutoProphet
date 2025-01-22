@@ -51,7 +51,7 @@ let db;
 
 const initDatabase = async () => {
   try {
-    db = new sqlite3.Database('./src/Asset/DB/AutoProphet.db');
+    db = new sqlite3.Database('./src/Asset/DB/OpenFinAL.db');
     const schema = await fs.promises.readFile('./src/Asset/DB/schema.sql', 'utf-8');
     await db.exec(schema);
   } catch (error) {
