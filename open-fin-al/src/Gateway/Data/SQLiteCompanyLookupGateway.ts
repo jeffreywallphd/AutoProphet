@@ -9,7 +9,7 @@ declare global {
 }
 
 export class SQLiteCompanyLookupGateway implements ISqlDataGateway {
-    databasePath = "./src/Asset/DB/AutoProphet.db";
+    databasePath = "./src/Asset/DB/OpenFinAL.db";
     connection: any = null;
     sourceName: string = "SQLite Database";
 

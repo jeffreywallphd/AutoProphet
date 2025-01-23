@@ -70,7 +70,7 @@ class AppLoaded extends Component {
           <div className="main">
             <aside className={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
               <div className="logo sidebar-padding">
-                <img src={logo} alt="AutoProphet Logo" />
+                <img src={logo} alt="OpenFinAL Logo" />
               </div>
               <nav className="sidebar-padding">
                 <h5>Main</h5>

@@ -18,7 +18,7 @@ class Home extends Component {
           </div>
           <div className="nav-center">
             <span className="material-icons search-icon">search</span>
-            <input type="search" placeholder="Search AutoProphet" />
+            <input type="search" placeholder="Search OpenFinAL" />
           </div>
           <div className="nav-right">
             <img src={profileIcon} alt="profile pic" className='profile-picture' />
@@ -57,7 +57,7 @@ class Home extends Component {
             </div>
             <div className="promo">
               <div className="promo-text">
-                <h2>Try AutoProphet Now!</h2>
+                <h2>Try OpenFinAL Now!</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 <button className="trade-button">Trade Now</button>
               </div>
