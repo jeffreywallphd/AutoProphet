@@ -10,21 +10,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 import torch
 
-# Load the GPT-2 model and tokenizer once during server initialization
-# MODEL_PATH = "OpenFinAL/GPT2_FINGPT_QA"
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# tokenizer = GPT2Tokenizer.from_pretrained(MODEL_PATH)
-# model = GPT2LMHeadModel.from_pretrained(MODEL_PATH)
-# model.to(device)
-
-# # Ensure pad_token_id is set
-# if tokenizer.pad_token_id is None:
-#     tokenizer.pad_token = tokenizer.eos_token
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95, no_repeat_ngram_size=0, max_new_tokens=300):
+
+model_cache = {} 
+def get_model_and_tokenizer(model_name):    
     """
     Generate a response from the model based on the input prompt.
     """
+    if model_name in model_cache:
+        return model_cache[model_name]
     try:
         # Load tokenizer dynamically
         if "llama" in model_name.lower() or "meta" in model_name.lower() or "openelm" in model_name.lower():
@@ -33,16 +27,24 @@ def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=
             model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)    
         else:
             tokenizer = AutoTokenizer.from_pretrained(model_name)
-            model = AutoModelForCausalLM.from_pretrained(model_name)
+            model = AutoModelForCausalLM.from_pretrained(model_name,trust_remote_code=True)
 
         # Set pad_token for compatibility
         tokenizer.pad_token = tokenizer.eos_token
-
-        # Load the model
-        # model = AutoModelForCausalLM.from_pretrained(model_name)
-        model.resize_token_embeddings(len(tokenizer))  # Adjust token embeddings for tokenizer size
+        model.resize_token_embeddings(len(tokenizer)) 
         model.to(device)
 
+        model_cache[model_name] = (model, tokenizer)
+        return model, tokenizer
+    except Exception as e:
+        raise ValueError(f"Error loading model '{model_name}' and tokenizer: {str(e)}")                    
+
+def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95, no_repeat_ngram_size=0, max_new_tokens=300):
+    """
+    Generate a response dynamically using the specified model and tokenizer.
+    """
+    try:
+        model, tokenizer = get_model_and_tokenizer(model_name)
         # Tokenize the input prompt
         inputs = tokenizer(
             prompt,
@@ -120,15 +122,12 @@ class ChatbotGenerateResponseView(APIView):
     """
     def post(self, request, session_id):
         # Ensure that 'message' exists in the request body
-        if 'message' not in request.data:
-            return Response({'error': 'Message is required'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        user_message = request.data['message']  # Access the message directly
-        if not user_message:
-            return Response({'error': 'Message is required'}, status=status.HTTP_400_BAD_REQUEST)
+        user_message = request.data.get('message')
+        model_name = request.data.get('model_name')
+        if not user_message or not model_name:
+            return Response({'error': 'Both "message" and "model_name" are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Extract configurable parameters from the request or set defaults
-        model_name = request.data.get('model_name')
         max_length = request.data.get('max_length', 200)
         min_length = request.data.get('min_length', 100)
         top_k = request.data.get('top_k', 50)

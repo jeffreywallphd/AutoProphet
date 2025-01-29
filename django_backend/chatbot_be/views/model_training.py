@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer, LlamaForCausalLM, LlamaTokenizer
-from datasets import load_dataset
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
+from datasets import load_dataset, DatasetDict
 import os
+import sys
 import wandb
 import gc
 import torch
 from decouple import config
 from huggingface_hub import login
+import subprocess
+from django.http import StreamingHttpResponse
 
 # Set environment variables for CUDA debugging
 # os.environ["CUDA_LAUNCH_BLOCKING"] = "1"  # Ensures synchronous error reporting
@@ -18,8 +21,37 @@ DEFAULT_HF_API_KEY = config("HF_API_KEY", default="")
 
 print(f"CUDA available: {torch.cuda.is_available()}")
 
+def stream_training_output(request):
+    # Start subprocess to run model training and capture terminal output
+    def event_stream():
+        env = os.environ.copy()
+        env['PYTHONUNBUFFERED'] = '1'  # Ensure real-time output
+
+        process = subprocess.Popen(
+            [r"C:\Users\dpatel21\Desktop\OpenFinAL\django_backend\venv\Scripts\python.exe", "manage.py", "runserver"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+            env=env
+        )
+
+        for line in process.stdout:
+            yield f"data: {line.strip()}\n\n"  # SSE format
+            sys.stdout.flush()
+
+        for line in process.stderr:
+            yield f"data: [ERROR] {line.strip()}\n\n"
+            sys.stdout.flush()
+
+        process.stdout.close()
+        process.stderr.close()
+
+    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
+
 def train_model_view(request):
     if request.method == "POST":
+
         try:
             # Parse user-configurable parameters from the request
             model_name = request.POST.get("model_name", "gpt2")
@@ -33,6 +65,9 @@ def train_model_view(request):
             bf16 = request.POST.get("bf16") == "on"
             weight_decay = float(request.POST.get("weight_decay", 0.01))
             model_repo = request.POST.get("model_repo", "OpenFinAL/your-model-name")
+            dataset_name = request.POST.get("dataset_name", "FinGPT/fingpt-fiqa_qa")  # User-specified dataset
+            train_test_split_ratio = float(request.POST.get("train_test_split_ratio", 0.1))  # Split ratio
+
 
             # Retrieve API keys from the form or fall back to .env values
             wandb_key = request.POST.get("wandb_key") or DEFAULT_WANDB_API_KEY
@@ -60,26 +95,40 @@ def train_model_view(request):
             login(token=hf_key)
 
             # Load dataset
-            dataset = load_dataset("FinGPT/fingpt-fiqa_qa")
+            dataset = load_dataset(dataset_name)
             dataset = dataset.rename_column("input", "Question").rename_column("output", "Answer")
             dataset = dataset.remove_columns([col for col in dataset.column_names["train"] if col not in ["Question", "Answer"]])
 
+            # Split dataset based on user-provided ratio
+            train_test_split = dataset["train"].train_test_split(test_size=train_test_split_ratio)
+            train_dataset = train_test_split["train"]
+            eval_dataset = train_test_split["test"]
+
+            # Save split datasets to HF hub
+            split_dataset = DatasetDict({"train": train_dataset, "test": eval_dataset})
+            split_dataset.push_to_hub(f"{model_repo}-split-dataset", token=hf_key)
+
             # Load model and tokenizer dynamically with Meta and OpenELM support
             if "llama" in model_name.lower() or "meta" in model_name.lower() or "openelm" in model_name.lower():
-                # tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B-Instruct",trust_remote_code=True)
+                # If model is Llama, Meta, or OpenELM, use a special configuration
                 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=False, trust_remote_code=True)
-                tokenizer.add_bos_token = True
-                model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
-            else:
-                # Default to Hugging Face Auto classes
-                tokenizer = AutoTokenizer.from_pretrained(model_name)
+                tokenizer.add_bos_token = True  
                 if bf16:
-                    model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16)
+                    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, trust_remote_code=True)
                 elif fp16:
-                    model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16)
+                    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, trust_remote_code=True)
                 else:
-                    model = AutoModelForCausalLM.from_pretrained(model_name)
-                
+                    model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+            else:
+                # Default to Hugging Face Auto classes for other models
+                tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+                if bf16:
+                    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, trust_remote_code=True)
+                elif fp16:
+                    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, trust_remote_code=True)
+                else:
+                    model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+
             # Set padding token
             tokenizer.pad_token = tokenizer.eos_token
             model.resize_token_embeddings(len(tokenizer))
