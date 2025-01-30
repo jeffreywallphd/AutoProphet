@@ -1,12 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenFinAL Home</title>
     <link rel="stylesheet" href="{% static 'backend.css'%}">
 </head>
+
 <body>
 
     <!-- Top Panel -->
@@ -17,18 +19,17 @@
     <!-- Side Panel -->
     <div class="side-panel">
         <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
-        <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->
+        <a href="{% url 'chatbot-view' %}">Chatbot</a> <!-- Chatbot option -->
         <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
         <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
         <a href="{% url 'generate_q_and_a' %}">Generate Q&A</a> <!-- Model Training option -->
         <a href="#">Option 5 (Dummy)</a> <!-- Dummy option -->
     </div>
 
-    <!-- Main Content Area -->
     <div class="content">
-        <h1>Welcome to OpenFinAL</h1>
-        <p>This is the home page of the project. Use the side panel to navigate to the chatbot and other options.</p>
+        <h1>Generate Q&A</h1>
     </div>
 
 </body>
+
 </html>

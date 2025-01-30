@@ -4,6 +4,7 @@ from .views.home import home_view
 from .views.model_training import train_model_view
 from .views.scrape import ScrapeDataView, UploadPDFView, scrape_view
 from .views import SessionCreateView, ConversationListView, ConversationCreateView, SessionListView, ChatbotGenerateResponseView
+from .views.generate_q_and_a import generate_q_and_a
 
 urlpatterns = [
     path('chatbot/', SessionCreateView.as_view(), name='create-session'),
@@ -17,4 +18,5 @@ urlpatterns = [
     path("train_model/", train_model_view, name="train-view"),
     path('scrape/', ScrapeDataView.as_view(), name='scrape-data'),
     path('upload_pdf/', UploadPDFView.as_view(), name='upload-pdf'),
+    path('generate_q_and_a/', generate_q_and_a, name='generate_q_and_a'),
 ]
