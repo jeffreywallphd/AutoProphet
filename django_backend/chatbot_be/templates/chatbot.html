@@ -1,12 +1,10 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenFinAL Chatbot Conversation</title>
-    <link rel="stylesheet" href="{% static 'backend.css'%}">
-</head>
+
+
+{% block title %}OpenFinAL Chatbot Conversation | OpenFinAL{% endblock %}
+
+{% block content %}
 <script>
     function handleEnter(event) {
         if (event.key === 'Enter') {
@@ -58,7 +56,7 @@
             const chatbotResponse = await fetch(`/api/chatbot/${sessionId}/response/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     message: message,
                     max_length: parseInt(maxLength),
                     min_length: parseInt(minLength),
@@ -98,41 +96,24 @@
     document.addEventListener('DOMContentLoaded', displayMessages);
 </script>
 
-<body>
-     <!-- Top Panel -->
-    <div class="top-panel">
-        OpenFinAL
-    </div>
 
-    <!-- Side Panel -->
-    <div class="side-panel">
-        <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
-        <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->=
-        <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
-        <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
-        <a href="#">Option 5 (Dummy)</a> <!-- Dummy option -->
-    </div>
+<h1>Chatbot Conversation</h1>
+<div class="config-options">
+    <h2>Configuration Options</h2>
+    <label for="max_length">Max Length:</label>
+    <input type="number" id="max_length" placeholder="Default: 200">
+    <br>
+    <label for="min_length">Min Length:</label>
+    <input type="number" id="min_length" placeholder="Default: 100">
+    <br>
+    <label for="top_k">Top K:</label>
+    <input type="number" id="top_k" placeholder="Default: 50">
+    <br>
+    <label for="top_p">Top P:</label>
+    <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
+</div>
+<div id="messages"></div>
+<input type="text" id="message" placeholder="Type your message..." onkeydown="handleEnter(event)">
+<button onclick="sendMessage()">Send</button>
 
-    <!-- Main Content Area -->
-    <div class="content">
-        <h1>Chatbot Conversation</h1>
-        <div class="config-options">
-            <h2>Configuration Options</h2>
-            <label for="max_length">Max Length:</label>
-            <input type="number" id="max_length" placeholder="Default: 200">
-            <br>
-            <label for="min_length">Min Length:</label>
-            <input type="number" id="min_length" placeholder="Default: 100">
-            <br>
-            <label for="top_k">Top K:</label>
-            <input type="number" id="top_k" placeholder="Default: 50">
-            <br>
-            <label for="top_p">Top P:</label>
-            <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
-        </div>
-        <div id="messages"></div>
-        <input type="text" id="message" placeholder="Type your message..." onkeydown="handleEnter(event)">
-        <button onclick="sendMessage()">Send</button>
-    </div>
-</body>
-</html>
+{% endblock %}

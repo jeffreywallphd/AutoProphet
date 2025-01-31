@@ -44,6 +44,10 @@ class ScrapeDataView(APIView):
             file_type = 'xml'
             scraped_content = response.content.decode('utf-8')  # Decode XML content
 
+        elif 'text/plain' in content_type:
+            file_type = 'text'
+            scraped_content = response.content.decode('utf-8')  # Decode plain text content
+
         elif 'text/html' in content_type:
             file_type = 'html'
             scraped_content = BeautifulSoup(response.content, 'html.parser').prettify()  # Clean up HTML
@@ -114,6 +118,10 @@ class UploadPDFView(APIView):
                 json_content = {"content": extracted_text.strip().split('\n')}
                 converted_content = json_content
                 file_type = 'json'
+
+            elif output_format == 'text':
+                converted_content = extracted_text.strip()
+                file_type = 'text'
 
             else:
                 return Response({'error': 'Unsupported output format.'}, status=status.HTTP_400_BAD_REQUEST)

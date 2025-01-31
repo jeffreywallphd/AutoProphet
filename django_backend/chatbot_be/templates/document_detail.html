@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Document details | OpenFinAL{% endblock %}
+
+{% block content %}
+<h1>Document Details</h1>
+<p><strong>ID:</strong> {{ document.id }}</p>
+<p><strong>Created At:</strong> {{ document.created_at }}</p>
+<p><strong>PDF File:</strong>
+    {% if document.pdf_file %}
+    <a href="{{ document.pdf_file.url }}" target="_blank">View PDF</a>
+    {% else %}
+    N/A
+    {% endif %}
+</p>
+<p><strong>Large Text:</strong></p>
+<p>{{ document.content|linebreaks }}</p>
+
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}OpenFinAL{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'backend.css'%}">
+</head>
+<body>
+
+    <!-- Top Panel -->
+    <div class="top-panel">
+        OpenFinAL
+    </div>
+
+    <!-- Side Panel -->
+    <div class="side-panel">
+        <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
+        <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->
+        <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
+        <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
+        <a href="{% url 'generate_q_and_a' %}">Generate Q&A</a> <!-- Model Training option -->
+        <a href="#">Option 5 (Dummy)</a> <!-- Dummy option -->
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+</body>
+</html>
