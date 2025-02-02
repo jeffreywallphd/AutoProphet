@@ -129,7 +129,8 @@ class UploadPDFView(APIView):
             # Save the converted HTML or JSON to the database
             scraped_data = ScrapedData.objects.create(
                 file_type=file_type,
-                content=converted_content if file_type == 'html' else str(converted_content)
+                content=converted_content if file_type == 'html' else str(converted_content),
+                # pdf_file=pdf_file  
             )
 
             # Fetch the latest scraped data after saving
@@ -142,7 +143,8 @@ class UploadPDFView(APIView):
                 'latest_scraped_data': {
                     'url': latest_scraped_data.url,
                     'file_type': latest_scraped_data.file_type,
-                    'content': latest_scraped_data.content
+                    'content': latest_scraped_data.content,
+                    # 'pdf_file_url': latest_scraped_data.pdf_file.url if latest_scraped_data.pdf_file else None  
                 }
             }, status=status.HTTP_200_OK)
 
@@ -159,3 +161,25 @@ def scrape_view(request):
 
     # Pass the latest data to the template
     return render(request, 'scrape.html', {'latest_scraped_data': latest_scraped_data})
+
+class SaveManualTextView(APIView):
+    def post(self, request):
+        text = request.data.get('text')
+
+        if not text:
+            return Response({'error': 'Please provide text.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Save the manually entered text to the database
+        scraped_data = ScrapedData.objects.create(
+            file_type='text',
+            content=text
+        )
+
+        # Fetch the latest scraped data after saving
+        latest_scraped_data = ScrapedData.objects.latest('created_at')
+
+        return Response({
+            'success': 'Successfully saved manually entered text.',
+            'file_type': latest_scraped_data.file_type,
+            'content': latest_scraped_data.content
+        }, status=status.HTTP_200_OK)

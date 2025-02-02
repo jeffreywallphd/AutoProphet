@@ -5,7 +5,7 @@
 
 {% block content %}
 <h1>Document Details</h1>
-<p><strong>ID:</strong> {{ document.id }}</p>
+<!-- <p><strong>ID:</strong> {{ document.id }}</p> -->
 <p><strong>Created At:</strong> {{ document.created_at }}</p>
 <p><strong>PDF File:</strong>
     {% if document.pdf_file %}
@@ -14,8 +14,43 @@
     N/A
     {% endif %}
 </p>
-<p><strong>Large Text:</strong></p>
-<p>{{ document.content|linebreaks }}</p>
 
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-3">
+            Number of paragraphs
+            {{ form.num_paragraphs }}
+        </div>
+        <div class="col-3">
+            Number of Questions
+            {{ form.num_questions }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 1vh;">Submit</button>
+</form>
+
+<div class="row">
+    <div class="col-6">
+        <p><strong>Text</strong></p>
+        <p>{{ document.content|linebreaks }}</p>
+    </div>
+    <div class="col-6">
+        {% if fake_json_data %}
+        <p><strong>JSON Output</strong></p>
+        <a href="{% url 'download_json' document.id %}" class="btn btn-success mt-3">
+            Download JSON
+        </a>
+        <pre>{{ fake_json_data|json_script:"jsonData" }}</pre>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var jsonData = JSON.parse(document.getElementById("jsonData").textContent);
+                document.getElementById("jsonOutput").textContent = JSON.stringify(jsonData, null, 4);
+            });
+        </script>
+        <pre id="jsonOutput"></pre>
+        {% endif %}
+    </div>
+</div>
 
 {% endblock %}

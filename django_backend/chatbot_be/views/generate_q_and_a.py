@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
-from ..forms.forms import DocumentForm
+from ..forms.forms import DocumentForm, DocumentProcessingForm
 from ..models.scraped_data import ScrapedData
 from PyPDF2 import PdfReader
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+import json
+from django.http import JsonResponse, HttpResponse
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 def generate_q_and_a(request):
     documents = ScrapedData.objects.all()[::-1]
@@ -33,4 +37,47 @@ def generate_q_and_a(request):
 
 def document_detail(request, document_id):
     document = get_object_or_404(ScrapedData, id=document_id)
-    return render(request, "document_detail.html", {"document": document})
+    fake_json_data = None
+
+    if request.method == "POST":
+        form = DocumentProcessingForm(request.POST)
+        if form.is_valid():
+            # Load fake JSON data from file
+            with open("F:/Github_Cloned_Branches/AutoProphet/AutoProphet/django_backend/media/JSON/Introduction to Text Segmentation.json", 'r', encoding='utf-8') as file:
+                fake_json_data = json.load(file)
+    else:
+        form = DocumentProcessingForm()
+
+    return render(request, 'document_detail.html', {
+        'document': document,
+        'form': form,
+        'fake_json_data': fake_json_data
+    })
+
+def download_json(request, document_id):
+    """Serve the fake JSON data as a downloadable file."""
+    try:
+        with open("F:/Github_Cloned_Branches/AutoProphet/AutoProphet/django_backend/media/JSON/Introduction to Text Segmentation.json", 'r', encoding='utf-8') as file:
+            fake_json_data = json.load(file)
+
+        response = HttpResponse(
+            json.dumps(fake_json_data, indent=4),
+            content_type="application/json"
+        )
+        response['Content-Disposition'] = f'attachment; filename="document_{document_id}.json"'
+        return response
+
+    except FileNotFoundError:
+        return JsonResponse({"error": "JSON file not found"}, status=404)
+    
+
+
+def delete_document(request, document_id):
+    document = get_object_or_404(ScrapedData, id=document_id)
+    if request.method == "POST":
+        document.delete()
+        messages.success(request, 'The document has been deleted successfully!')
+        return redirect('generate_q_and_a')
+    else:
+        # If the request is not POST, redirect to the generate_q_and_a page
+        return redirect('generate_q_and_a')
