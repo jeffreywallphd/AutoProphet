@@ -69,3 +69,27 @@ button:hover {
     background-color: #ede7f6;
     border-radius: 8px;
 }
+
+/* Terminal Log Container */
+#log-container {
+    background-color: #1e1e1e; /* Dark background */
+    color: #ffffff; /* White text */
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Remove white background from pre elements */
+#log-container pre {
+    margin: 0;
+    padding: 2px 0;
+    background: transparent !important; /* Ensure transparency */
+    color: inherit; /* Inherit text color */
+    border: none;
+}
