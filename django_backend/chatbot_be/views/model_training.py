@@ -28,7 +28,7 @@ def stream_training_output(request):
         env['PYTHONUNBUFFERED'] = '1'  # Ensure real-time output
 
         process = subprocess.Popen(
-            [r"C:\Users\dpatel21\Desktop\OpenFinAL\django_backend\venv\Scripts\python.exe", "manage.py", "runserver"],
+            [sys.executable, "manage.py", "runserver"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
