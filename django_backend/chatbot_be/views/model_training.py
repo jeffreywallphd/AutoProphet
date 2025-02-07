@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from transformers import TrainingArguments, Trainer
+from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
 from datasets import load_dataset, DatasetDict
 import os
@@ -78,7 +80,6 @@ def train_model_view(request):
                     "status": "error",
                     "message": "Both W&B and Hugging Face API keys are required either in the .env file or via the form."
                 })
-
             # Check for GPU
             device = "cuda" if torch.cuda.is_available() else "cpu"
             if device == "cpu":
@@ -98,7 +99,6 @@ def train_model_view(request):
             dataset = load_dataset(dataset_name)
             dataset = dataset.rename_column("input", "Question").rename_column("output", "Answer")
             dataset = dataset.remove_columns([col for col in dataset.column_names["train"] if col not in ["Question", "Answer"]])
-
             # Split dataset based on user-provided ratio
             train_test_split = dataset["train"].train_test_split(test_size=train_test_split_ratio)
             train_dataset = train_test_split["train"]
@@ -136,21 +136,20 @@ def train_model_view(request):
             
             # Tokenization function
             def tokenize_function(examples):
-               inputs = tokenizer(
+                inputs = tokenizer(
                     [f"{q} {a}" for q, a in zip(examples["Question"], examples["Answer"])],
                     padding="max_length",
                     truncation=True,
                     max_length=128  # Adjust max_length as needed
                 )
-               inputs["labels"] = inputs["input_ids"]
-               return inputs
-                
+                inputs["labels"] = inputs["input_ids"]
+                return inputs
+
             # Split dataset and preprocess
             train_test_split = dataset["train"].train_test_split(test_size=0.1)
             train_dataset = train_test_split['train'].map(tokenize_function, batched=True)
             eval_dataset = train_test_split['test'].map(tokenize_function, batched=True)
 
-            # Debugging tensor shapes
             print("Sample tokenized data:", train_dataset[0])
 
             # Training arguments
@@ -170,7 +169,6 @@ def train_model_view(request):
                 max_grad_norm=max_grad_norm,
                 fp16=fp16,
                 bf16=bf16,
-                # use_cache=False,
             )
 
             # Trainer
@@ -197,5 +195,5 @@ def train_model_view(request):
 
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)})
-
+    
     return render(request, "model_training.html")

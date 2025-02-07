@@ -5,6 +5,7 @@ class ScrapedData(models.Model):
     file_type = models.CharField(max_length=50)
     content = models.TextField(null=True, blank=True)  # For non-binary content
     binary_content = models.BinaryField(null=True, blank=True)  # For binary content
+    pdf_file = models.FileField(upload_to='uploads/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
