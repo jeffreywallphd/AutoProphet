@@ -1,4 +1,5 @@
 from django.urls import path
+from .views.settings import settings_view
 from .views.model_statistics import ModelStatisticsView
 from .views.chatbot import chatbot_view
 from .views.home import home_view
@@ -18,6 +19,7 @@ urlpatterns = [
     path('scrape_view/', scrape_view, name='scrape-view'),
     path("train_model/", train_model_view, name="train-view"),
     path("stream-training/",stream_training_output, name="stream-training"),
+    path('settings_view/', settings_view, name='settings-view'),
     path('scrape/', ScrapeDataView.as_view(), name='scrape-data'),
     path('upload_pdf/', UploadPDFView.as_view(), name='upload-pdf'),
 ]
