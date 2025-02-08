@@ -160,6 +160,7 @@ class ChatbotGenerateResponseView(APIView):
         try:
             bot_response = generate_response(
                 user_message,
+                model_name=model_name,
                 max_length=max_length,
                 min_length=min_length,
                 top_k=top_k,
