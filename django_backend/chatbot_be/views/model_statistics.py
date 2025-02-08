@@ -19,8 +19,8 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
             tokenizer.add_bos_token = True
             model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
         else:
-            tokenizer = AutoTokenizer.from_pretrained(model_name)
-            model = AutoModelForCausalLM.from_pretrained(model_name)
+            tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+            model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
 
         tokenizer.pad_token = tokenizer.eos_token
         model.resize_token_embeddings(len(tokenizer))
@@ -56,7 +56,7 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
             references = [references]  # Wrap the reference in a list if it's a single string
         elif not isinstance(references, list):
             raise ValueError("References must be a string or a list of strings.")
-        
+
         # Ensure response is a string
         if isinstance(response, str):
             predictions = [response]  # Wrap the prediction in a list if it's a single string
@@ -68,8 +68,8 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
         bertscore_metric = load("bertscore",trusted_remote_code=True)
 
         rouge_scores = rouge_metric.compute(predictions=predictions, references=references)
-        bertscore_scores = bertscore_metric.compute(predictions=predictions, references=references,lang="en",device=0 if torch.cuda.is_available() else -1)
-        
+        bertscore_scores = bertscore_metric.compute(predictions=predictions, references=references,lang="en",device=0 if torch.cuda.is_available() else "cpu")
+
         rouge1 = rouge_scores.get("rouge1",0)
         rouge2 = rouge_scores.get("rouge2",0)
         rougel = rouge_scores.get("rougel",0)
@@ -100,7 +100,7 @@ class ModelStatisticsView(APIView):
 
     def get(self, request):
         return render(request, 'model_statistics.html')
-    
+
     """
     API endpoint to generate a chatbot response and compute metrics.
     """
@@ -120,7 +120,7 @@ class ModelStatisticsView(APIView):
             return Response({"error": "Message is required"}, status=status.HTTP_400_BAD_REQUEST)
         if not model_name:
             return Response({"error": "Model name is required"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         try:
             max_length = int(max_length)
             min_length = int(min_length)

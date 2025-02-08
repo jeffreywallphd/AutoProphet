@@ -1,33 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenFinAL Home</title>
-    <link rel="stylesheet" href="{% static 'backend.css'%}">
-</head>
-<body>
+{% extends 'base.html' %}
 
-    <!-- Top Panel -->
-    <div class="top-panel">
-        OpenFinAL
-    </div>
-
-    <!-- Side Panel -->
-    <div class="side-panel">
-        <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
-        <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->
-        <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
-        <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
-        <a href="{% url 'model-statistics' %}">Model Statistics</a> <!-- Model Statistics option -->
-    </div>
-
-    <!-- Main Content Area -->
-    <div class="content">
-        <h1>Welcome to OpenFinAL</h1>
-        <p>This is an under development software aimed to create datasets, train large language models and evaluate trained models.</p>
-    </div>
-
-</body>
-</html>
+{% block content %}
+<h1>Welcome to OpenFinAL</h1>
+<p>This is an under development software aimed to create datasets, train large language models and evaluate trained models.</p>
+{% endblock %}
