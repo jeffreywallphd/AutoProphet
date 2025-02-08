@@ -75,28 +75,32 @@
         }
     }
 </script>
-
-
 <h1>Model Statistics</h1>
-<div>
-    <label for="eval_model_name">Model Name:</label>
-    <input type="text" id="eval_model_name" placeholder="e.g., facebook/bart-large-cnn">
-    <label for="eval_message">Input Text:</label>
-    <textarea id="eval_message" placeholder="Enter the input text"></textarea>
-    <label for="eval_references">Expected Outputs:</label>
-    <textarea id="eval_references" placeholder="Enter expected output"></textarea>
-    <label for="top_k">Top K:</label>
-    <input type="number" id="top_k" placeholder="Default: 50">
-    <label for="top_p">Top P:</label>
-    <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
-    <label for="no_repeat_ngram">No Repeat Ngram Size:</label>
-    <input type="number" id="no_repeat_ngram" placeholder="Default: 0">
-    <label for="max_new_tokens">Max New Tokens:</label>
-    <input type="number" id="max_new_tokens" placeholder="Default: 300">
-    <br>
-
-    <button onclick="evaluateModel()">Evaluate Model</button>
-</div>
+        <div>
+            <label for="eval_model_name">Model Name:</label>
+            <input type="text" id="eval_model_name" placeholder="e.g., facebook/bart-large-cnn">
+            <label for="dataset_url">Dataset URL:</label>
+            <input type="text" id="dataset_url" placeholder="Enter the dataset URL">
+            <label for="dataset_file">Dataset File (CSV):</label>
+            <input type="file" id="dataset_file" accept=".csv">
+            <label for="num_questions">Number of Questions:</label>
+            <input type="number" id="num_questions" placeholder="Default: 10">
+            <!-- <label for="eval_message">Input Text:</label>
+            <textarea id="eval_message" placeholder="Enter the input text"></textarea>
+            <label for="eval_references">Expected Outputs:</label>
+            <textarea id="eval_references" placeholder="Enter expected output"></textarea> -->
+            <label for="top_k">Top K:</label>
+            <input type="number" id="top_k" placeholder="Default: 50">
+            <label for="top_p">Top P:</label>
+            <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
+            <label for="no_repeat_ngram">No Repeat Ngram Size:</label>
+            <input type="number" id="no_repeat_ngram" placeholder="Default: 0">
+            <label for="max_new_tokens">Max New Tokens:</label>
+            <input type="number" id="max_new_tokens" placeholder="Default: 300">
+            <br>
+            
+            <button onclick="evaluateModel()">Evaluate Model</button>
+        </div>
 <div id="model-eval-results" class="results-box"></div>
 
 
