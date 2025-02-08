@@ -1,14 +1,10 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenFinAL Chatbot Conversation</title>
-    <link rel="stylesheet" href="{% static 'backend.css'%}">
-    <link rel="stylesheet" href="{% static 'baseUI.css' %}">
 
-</head>
+
+{% block title %}OpenFinAL Chatbot Conversation{% endblock %}
+
+{% block content %}
 <script>
     function handleEnter(event) {
         if (event.key === 'Enter') {
@@ -142,45 +138,27 @@
     document.addEventListener('DOMContentLoaded', displayMessages);
 </script>
 
-<body>
-    <!-- Top Panel -->
-    <div class="top-panel">
-        OpenFinAL
-    </div>
 
-    <!-- Side Panel -->
-    <div class="side-panel">
-        <a href="{% url 'home-view' %}">Home</a> <!-- Home option -->
-        <a href="{% url 'chatbot-view' %}">Chatbot</a>  <!-- Chatbot option -->=
-        <a href="{% url 'scrape-view' %}">Scrape Data</a> <!-- Scraping option -->
-        <a href="{% url 'train-view' %}">Model Training</a> <!-- Model Training option -->
-        <a href="{% url 'model-statistics' %}">Model Statistics</a> <!-- Model Statistics option -->
-        <a href="{% url 'settings-view' %}">Settings</a> <!-- Settings option -->
-    </div>
+<h1>Chatbot Conversation</h1>
+<div class="config-options">
+    <h2>Configuration Options</h2>
+    <label for="model_name">Model Name:</label>
+    <input type="text" id="model_name" placeholder="Enter model name (e.g., gpt-2)">
+    <label for="max_length">Max Length:</label>
+    <input type="number" id="max_length" placeholder="Default: 200">
+    <label for="min_length">Min Length:</label>
+    <input type="number" id="min_length" placeholder="Default: 100">
+    <label for="top_k">Top K:</label>
+    <input type="number" id="top_k" placeholder="Default: 50">
+    <label for="top_p">Top P:</label>
+    <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
+    <label for="no_repeat_ngram_size">No Repeat Ngram Size:</label>
+    <input type="number" id="no_repeat_ngram_size" placeholder="Default: 0">
+    <label for="max_new_tokens">Max New Tokens:</label>
+    <input type="number" id="max_new_tokens" placeholder="Default: 300">
+</div>
+<div id="messages"></div>
+<input type="text" id="message" placeholder="Type your message..." onkeydown="handleEnter(event)">
+<button onclick="sendMessage()">Send</button>
 
-    <!-- Main Content Area -->
-    <div class="content">
-        <h1>Chatbot Conversation</h1>
-        <div class="config-options">
-            <h2>Configuration Options</h2>
-            <label for="model_name">Model Name:</label>
-            <input type="text" id="model_name" placeholder="Enter model name (e.g., gpt-2)">
-            <label for="max_length">Max Length:</label>
-            <input type="number" id="max_length" placeholder="Default: 200">
-            <label for="min_length">Min Length:</label>
-            <input type="number" id="min_length" placeholder="Default: 100">
-            <label for="top_k">Top K:</label>
-            <input type="number" id="top_k" placeholder="Default: 50">
-            <label for="top_p">Top P:</label>
-            <input type="number" step="0.01" id="top_p" placeholder="Default: 0.95">
-            <label for="no_repeat_ngram_size">No Repeat Ngram Size:</label>
-            <input type="number" id="no_repeat_ngram_size" placeholder="Default: 0">
-            <label for="max_new_tokens">Max New Tokens:</label>
-            <input type="number" id="max_new_tokens" placeholder="Default: 300">
-        </div>
-        <div id="messages"></div>
-        <input type="text" id="message" placeholder="Type your message..." onkeydown="handleEnter(event)">
-        <button onclick="sendMessage()">Send</button>
-    </div>
-</body>
-</html>
+{% endblock %}

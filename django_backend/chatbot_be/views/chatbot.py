@@ -10,6 +10,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 import torch
 
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model_cache = {} 
@@ -37,7 +38,7 @@ def get_model_and_tokenizer(model_name):
         model_cache[model_name] = (model, tokenizer)
         return model, tokenizer
     except Exception as e:
-        raise ValueError(f"Error loading model '{model_name}' and tokenizer: {str(e)}")                    
+        raise ValueError(f"Error loading model '{model_name}' and tokenizer: {str(e)}")   
 
 def generate_response(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95, no_repeat_ngram_size=0, max_new_tokens=300):
     """
@@ -115,7 +116,7 @@ class ConversationCreateView(APIView):
 
 class ChatbotGenerateResponseView(APIView):
     def get(self, request):
-        return Response({'message': 'This is a GET request. Please use a POST request to generate a chatbot response.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response({'message': 'This is a GET request. Please use a POST request to generate a chatbot response.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)  
     """
     Handle POST requests to generate a chatbot response using GPT-2
     and save the chat to the database.
@@ -169,6 +170,7 @@ class ChatbotGenerateResponseView(APIView):
             )
         except Exception as e:
             return Response({'error': f'Error during response generation: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
         # Save user message to the database
         user_message_data = {
