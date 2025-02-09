@@ -6,6 +6,8 @@ from django.conf import settings
 def settings_view(request):
     env_file = os.path.join(settings.BASE_DIR, 'django_backend', '.env')
     existing_values = {}
+    message = None  # Initialize message to avoid UnboundLocalError
+    message_type = None  # Initialize message type
 
     # Load existing values if the file exists
     if os.path.exists(env_file):
@@ -32,9 +34,15 @@ def settings_view(request):
                 for key, value in env_data.items():
                     f.write(f"{key}={value}\n")
 
-            return JsonResponse({"status": "success", "message": "Settings updated successfully!"})
+            message = "Settings updated successfully!"
+            message_type = "success"
 
         except Exception as e:
-            return JsonResponse({"status": "error", "message": f"Failed to update .env file: {e}"})
+            message = f"Failed to update .env file: {e}"
+            message_type = "error"
 
-    return render(request, 'settings.html', {"existing_values": existing_values})
+    return render(request, 'settings.html', {
+        "existing_values": existing_values,
+        "message": message,
+        "message_type": message_type
+    })
