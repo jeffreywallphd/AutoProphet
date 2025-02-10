@@ -14,8 +14,6 @@ import random
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# model_cache = {}
-
 def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, top_p=0.95, max_new_tokens=300, no_repeat_ngrams=0, references=[]):
     try:
         # Load tokenizer and model with your logic
@@ -46,8 +44,6 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
         outputs = model.generate(
             inputs['input_ids'],
             attention_mask=inputs['attention_mask'],
-            # max_length=max_length,
-            # min_length=min_length,
             do_sample=True,
             top_k=top_k,
             top_p=top_p,
@@ -65,7 +61,7 @@ def model_stats(prompt, model_name, max_length=200, min_length=100, top_k=50, to
         bertscore_metric = load("bertscore",trusted_remote_code=True)
 
         rouge_scores = rouge_metric.compute(predictions=predictions, references=references)
-        bertscore_scores = bertscore_metric.compute(predictions=predictions, references=references,lang="en",device=0 if torch.cuda.is_available() else -1) 
+        bertscore_scores = bertscore_metric.compute(predictions=predictions, references=references,lang="en",device=device) 
 
         print(f"ROUGE scores: {rouge_scores}")
         print(f"BERTScore scores: {bertscore_scores}")
@@ -158,8 +154,6 @@ class ModelStatisticsView(APIView):
                     scores = model_stats(
                         prompt=question,
                         model_name=model_name,
-                        # max_length=max_length,
-                        # min_length=min_length,
                         top_k=top_k,
                         top_p=top_p,
                         max_new_tokens=max_new_tokens,
