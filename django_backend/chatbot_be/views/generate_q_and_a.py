@@ -9,7 +9,7 @@ from django.http import JsonResponse, HttpResponse
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 import openai
-from openai import OpenAI
+from openai import OpenAI, OpenAIError
 import tiktoken
 from decouple import config
 from django.db.models import F, Func, Value
@@ -79,11 +79,20 @@ def extract_qa(text, model="gpt-4", questions_num=5):
         )
 
         try:
-            print(results)
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.5
+            )
+
             json_data = json.loads(response.choices[0].message.content.strip())
             results.append(json_data)
+
         except json.JSONDecodeError:
             results.append({"part": i + 1, "error": "Invalid JSON response"})
+        
+        except OpenAIError as e:
+            return json.dumps({"error": f"OpenAI API Error: {str(e)}"}, indent=4)
 
     return json.dumps(results, indent=4)
 
@@ -119,7 +128,6 @@ def generate_q_and_a(request):
     return render(request, "generate_q_and_a.html", {"form": form, "documents":documents})
 
 
-
 def document_detail(request, document_id):
     document = get_object_or_404(ScrapedData, id=document_id)
     generated_json_data = None
@@ -129,10 +137,9 @@ def document_detail(request, document_id):
         if form.is_valid():
             test_type = form.cleaned_data['test_type']
             num_questions = form.cleaned_data['num_questions']
-            print(test_type)
+
             if test_type == 'mockup':
-                # Load the static JSON file
-                json_file_path = 'media\JSON\Introduction to Text Segmentation.json'
+                json_file_path = 'media/JSON/Introduction to Text Segmentation.json'
                 try:
                     with open(json_file_path, 'r', encoding='utf-8') as file:
                         generated_json_text = file.read()
@@ -142,13 +149,15 @@ def document_detail(request, document_id):
                     generated_json_data = {"error": "Mock-up JSON file not found or invalid"}
 
             else:
-                # Real test: Use OpenAI API
-                generated_json_text = extract_qa(text=document.content, questions_num=num_questions)
                 try:
+                    generated_json_text = extract_qa(text=document.content, questions_num=num_questions)
                     generated_json_data = json.loads(generated_json_text)
                     request.session[f'generated_json_{document_id}'] = generated_json_text
-                except json.JSONDecodeError:
-                    generated_json_data = {"error": "Invalid JSON response from OpenAI"}
+
+                except OpenAIError as e:
+                    # messages.error(request, "OpenAI API Error: You have exceeded your quota. Please check your billing.")
+                    generated_json_data = "{ error OpenAI API quota exceeded }"
+                    request.session[f'generated_json_{document_id}'] = generated_json_data
 
     else:
         form = DocumentProcessingForm()
