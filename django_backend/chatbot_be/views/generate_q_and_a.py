@@ -132,7 +132,7 @@ def document_detail(request, document_id):
             print(test_type)
             if test_type == 'mockup':
                 # Load the static JSON file
-                json_file_path = 'F:/Github_Cloned_Branches/AutoProphet/AutoProphet/django_backend/chatbot_be/local_data/Introduction to Text Segmentation.json'
+                json_file_path = 'media\JSON\Introduction to Text Segmentation.json'
                 try:
                     with open(json_file_path, 'r', encoding='utf-8') as file:
                         generated_json_text = file.read()
