@@ -52,7 +52,7 @@
             <tbody>
                 {% for document in documents %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
+                    <td>{{ documents.start_index|add:forloop.counter0 }}</td>
                     <td>{{ document.created_at }}</td>
                     <td>
                         {% if document.file_type %}

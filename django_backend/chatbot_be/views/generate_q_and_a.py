@@ -127,13 +127,28 @@ def document_detail(request, document_id):
     if request.method == "POST":
         form = DocumentProcessingForm(request.POST)
         if form.is_valid():
+            test_type = form.cleaned_data['test_type']
             num_questions = form.cleaned_data['num_questions']
-            generated_json_text = extract_qa(text=document.content, questions_num=num_questions)
-            try:
-                generated_json_data = json.loads(generated_json_text)  # Convert string to JSON
-                request.session[f'generated_json_{document_id}'] = generated_json_text  # Store in session
-            except json.JSONDecodeError:
-                generated_json_data = {"error": "Invalid JSON response from OpenAI"}
+            print(test_type)
+            if test_type == 'mockup':
+                # Load the static JSON file
+                json_file_path = 'F:/Github_Cloned_Branches/AutoProphet/AutoProphet/django_backend/chatbot_be/local_data/Introduction to Text Segmentation.json'
+                try:
+                    with open(json_file_path, 'r', encoding='utf-8') as file:
+                        generated_json_text = file.read()
+                    generated_json_data = json.loads(generated_json_text)
+                    request.session[f'generated_json_{document_id}'] = generated_json_text
+                except (FileNotFoundError, json.JSONDecodeError):
+                    generated_json_data = {"error": "Mock-up JSON file not found or invalid"}
+
+            else:
+                # Real test: Use OpenAI API
+                generated_json_text = extract_qa(text=document.content, questions_num=num_questions)
+                try:
+                    generated_json_data = json.loads(generated_json_text)
+                    request.session[f'generated_json_{document_id}'] = generated_json_text
+                except json.JSONDecodeError:
+                    generated_json_data = {"error": "Invalid JSON response from OpenAI"}
 
     else:
         form = DocumentProcessingForm()

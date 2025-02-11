@@ -15,6 +15,7 @@
     {% endif %}
 </p>
 
+
 <form method="post" id="documentForm">
     {% csrf_token %}
     <div class="row">
@@ -26,6 +27,12 @@
             Number of Questions
             {{ form.num_questions }}
         </div>
+
+        <div class="col-3">
+            Test type
+            {{ form.test_type }}
+        </div>
+
     </div>
 
     <button type="submit" class="btn btn-primary" id="submitBtn" style="margin-top: 1vh;">
@@ -37,6 +44,16 @@
         <span class="sr-only">Loading...</span>
     </div>
 </form>
+
+
+<script>
+    function toggleTestMode() {
+        let selectedMode = document.getElementById("test_mode").value;
+        let url = new URL(window.location.href);
+        url.searchParams.set("test_mode", selectedMode);
+        window.location.href = url.toString();  // Reload page with selected mode
+    }
+</script>
 
 <div class="row">
     <div class="col-6">

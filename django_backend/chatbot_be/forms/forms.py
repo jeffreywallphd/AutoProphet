@@ -10,6 +10,17 @@ class DocumentForm(forms.ModelForm):
 
 
 class DocumentProcessingForm(forms.Form):
+    TEST_CHOICES = [
+        ('real', 'Real Test'),
+        ('mockup', 'Mock-up Test'),
+    ]
+
+    test_type = forms.ChoiceField(
+        choices=TEST_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Test Type"
+    )
+
     num_paragraphs = forms.IntegerField(
         label="Number of Paragraphs",
         min_value=1,
