@@ -10,3 +10,14 @@ class ScrapedData(models.Model):
 
     def __str__(self):
         return f'Scraped from {self.url} ({self.file_type})'
+    
+class ScrapedDataMeta(models.Model):
+    scraped_data = models.OneToOneField(ScrapedData, on_delete=models.CASCADE, related_name='metadata')
+    url = models.URLField(max_length=500)
+    file_type = models.CharField(max_length=50)
+    pdf_file = models.FileField(upload_to='uploads/', null=True, blank=True)
+    created_at = models.DateTimeField()
+    content_preview = models.CharField(max_length=100, blank=True, null=True)  # Store a short preview
+
+    def __str__(self):
+        return f'Metadata for {self.url} ({self.file_type})'

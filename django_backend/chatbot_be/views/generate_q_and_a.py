@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from ..forms.forms import DocumentForm, DocumentProcessingForm
-from ..models.scraped_data import ScrapedData
+from ..models.scraped_data import ScrapedData, ScrapedDataMeta
 from PyPDF2 import PdfReader
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -9,77 +9,123 @@ from django.http import JsonResponse, HttpResponse
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 import openai
-from openai import OpenAI
-
+from openai import OpenAI, OpenAIError
+import tiktoken
 from decouple import config
+from django.db.models import F, Func, Value
+from django.core.paginator import Paginator
 
 client = OpenAI(
     api_key=config('OPENAI_API_KEY'),
 )
-def extract_qa(text, model="gpt-4", paragraph_size = 1, questions_num = 5):
-    prompt = f"""
-    I would like to generate some questions and answers from the following text and turn it into a JSON format. 
-    so I would like to have {paragraph_size} parts, those parts are going to based on the number of paragraphs, and generate {questions_num} questions from them
-    here is how I would like the format to be: 
-    [
+
+# Tokenizer function (GPT-4 uses "cl100k_base" tokenizer)
+def count_tokens(text):
+    enc = tiktoken.get_encoding("cl100k_base")
+    return len(enc.encode(text))
+
+
+# Function to split text into segments while respecting token limits
+def split_text(text, max_tokens=1000):
+    paragraphs = text.split("\n\n")  # Split by paragraph
+    chunks = []
+    current_chunk = []
+    current_tokens = 0
+
+    for paragraph in paragraphs:
+        para_tokens = count_tokens(paragraph)
+        if current_tokens + para_tokens > max_tokens:
+            chunks.append("\n\n".join(current_chunk))
+            current_chunk = [paragraph]
+            current_tokens = para_tokens
+        else:
+            current_chunk.append(paragraph)
+            current_tokens += para_tokens
+
+    if current_chunk:
+        chunks.append("\n\n".join(current_chunk))
+
+    return chunks
+
+
+def extract_qa(text, model="gpt-4", questions_num=5):
+    text_chunks = split_text(text, max_tokens=1000)  # Adjust chunk size
+    results = []
+
+    for i, chunk in enumerate(text_chunks):
+        prompt = f"""
+        I would like to generate some questions and answers from the following text and return them in JSON format. 
+        Generate {questions_num} questions based on this text segment.
+        
+        Text Segment ({i+1}/{len(text_chunks)}):
+        {chunk}
+
+        Response Format:
         {{
-            "part": [
-                {{
-                    "question": "",
-                    "answer": ""
-                }}
-            ]
-        }},
-        {{
-            "part": [
-                {{
-                    "question": "",
-                    "answer": ""
-                }}
+            "part": {i+1},
+            "questions": [
+                {{"question": "", "answer": ""}},
+                {{"question": "", "answer": ""}}
             ]
         }}
-    ]
-    part: is going to represent the combined paragraphs 
 
-    
-    Text:
-    {text}
+        Return ONLY valid JSON output.
+        """
 
-    I need you to only return the JSON response without anything else. 
-    """
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.5
+        )
 
-    print(prompt)
-    response = client.chat.completions.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.5  # Adjust for more or less creativity
-    )
-    return response.choices[0].message.content.strip()
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.5
+            )
+
+            json_data = json.loads(response.choices[0].message.content.strip())
+            results.append(json_data)
+
+        except json.JSONDecodeError:
+            results.append({"part": i + 1, "error": "Invalid JSON response"})
+        
+        except OpenAIError as e:
+            return json.dumps({"error": f"OpenAI API Error: {str(e)}"}, indent=4)
+
+    return json.dumps(results, indent=4)
 
 def generate_q_and_a(request):
-    documents = ScrapedData.objects.all()[::-1]
-    if request.method == "POST":
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            document = form.save(commit=False)
+    documents_list = ScrapedDataMeta.objects.all().order_by('-created_at')  # Order by latest entries
 
-            if 'pdf_file' in request.FILES:
-                pdf_file = request.FILES['pdf_file']
-                reader = PdfReader(pdf_file)
-                pdf_text = ""
-                for page in reader.pages:
-                    pdf_text += page.extract_text()
+    # Apply pagination (10 documents per page)
+    paginator = Paginator(documents_list, 10)
+    page_number = request.GET.get('page')
+    documents = paginator.get_page(page_number)
+
+
+    # if request.method == "POST":
+    #     form = DocumentForm(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         document = form.save(commit=False)
+
+    #         if 'pdf_file' in request.FILES:
+    #             pdf_file = request.FILES['pdf_file']
+    #             reader = PdfReader(pdf_file)
+    #             pdf_text = ""
+    #             for page in reader.pages:
+    #                 pdf_text += page.extract_text()
                 
-                document.large_text = pdf_text  
+    #             document.large_text = pdf_text  
 
-            document.save()
-            messages.success(request, 'The document has been submitted successfully!')
-            return redirect('generate_q_and_a')
-    else:
-        form = DocumentForm()
+    #         document.save()
+    #         messages.success(request, 'The document has been submitted successfully!')
+    #         return redirect('generate_q_and_a')
+    # else:
+    form = DocumentForm()
 
     return render(request, "generate_q_and_a.html", {"form": form, "documents":documents})
-
 
 
 def document_detail(request, document_id):
@@ -89,15 +135,29 @@ def document_detail(request, document_id):
     if request.method == "POST":
         form = DocumentProcessingForm(request.POST)
         if form.is_valid():
-            num_paragraphs = form.cleaned_data['num_paragraphs']
+            test_type = form.cleaned_data['test_type']
             num_questions = form.cleaned_data['num_questions']
-            generated_json_text = extract_qa(text=document.content[:3000], paragraph_size=num_paragraphs, questions_num=num_questions)
-            print(generated_json_text)
-            try:
-                generated_json_data = json.loads(generated_json_text)  # Convert string to JSON
-                request.session[f'generated_json_{document_id}'] = generated_json_text  # Store in session
-            except json.JSONDecodeError:
-                generated_json_data = {"error": "Invalid JSON response from OpenAI"}
+
+            if test_type == 'mockup':
+                json_file_path = 'media/JSON/Introduction to Text Segmentation.json'
+                try:
+                    with open(json_file_path, 'r', encoding='utf-8') as file:
+                        generated_json_text = file.read()
+                    generated_json_data = json.loads(generated_json_text)
+                    request.session[f'generated_json_{document_id}'] = generated_json_text
+                except (FileNotFoundError, json.JSONDecodeError):
+                    generated_json_data = {"error": "Mock-up JSON file not found or invalid"}
+
+            else:
+                try:
+                    generated_json_text = extract_qa(text=document.content, questions_num=num_questions)
+                    generated_json_data = json.loads(generated_json_text)
+                    request.session[f'generated_json_{document_id}'] = generated_json_text
+
+                except OpenAIError as e:
+                    # messages.error(request, "OpenAI API Error: You have exceeded your quota. Please check your billing.")
+                    generated_json_data = "{ error OpenAI API quota exceeded }"
+                    request.session[f'generated_json_{document_id}'] = generated_json_data
 
     else:
         form = DocumentProcessingForm()
