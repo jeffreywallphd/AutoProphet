@@ -94,7 +94,8 @@ class ModelStatisticsView(APIView):
         dataset_url = request.data.get("dataset_url")
         dataset_file = request.FILES.get("dataset_file") # Optional
         num_questions = int(request.data.get("num_questions", 10))
-        model_name = request.data.get("model_name")
+        # model_name = request.data.get("model_name")
+        models = request.data.get("models")
         max_length = int(request.data.get("max_length", 200))
         min_length = int(request.data.get("min_length", 100))
         top_k = int(request.data.get("top_k", 50))
@@ -103,15 +104,17 @@ class ModelStatisticsView(APIView):
         no_repeat_ngrams = int(request.data.get("no_repeat_ngrams", 0))
 
         # Validate inputs
-        if not model_name:
-            return Response({"error": "Model name is required"}, status=status.HTTP_400_BAD_REQUEST)
+        if not models:
+            return Response({"error": "At least one model name is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        model_list =  [model.strip() for model in models.split(",")]
 
         try:
             
             if dataset_url:
                     dataset = load_dataset(dataset_url) 
             elif dataset_file:
-                dataset = self.load_dataset_from_file(dataset_file)
+                dataset = self.handle_uploaded_file(dataset_file)
             else:
                 return Response({"error": "Provide either dataset URL or file."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -122,7 +125,17 @@ class ModelStatisticsView(APIView):
             print(f"Dataset loaded: {df}")
             print(f"Dataset loaded: {df}")
 
+            if "input" not in df.columns or "output" not in df.columns:
+                return Response({"error": "Dataset must contain 'input' and 'output' columns."}, status=status.HTTP_400_BAD_REQUEST)
+
+            df.dropna(subset=["input", "output"], inplace=True)
+
+            if df.empty:
+                return Response({"error": "Dataset is empty after filtering."}, status=status.HTTP_400_BAD_REQUEST)
+
+
             # Randomly sample N questions
+            num_questions = min(num_questions, len(df))
             sampled_data = df.sample(n=num_questions, random_state = 42)
             questions = sampled_data["input"].tolist()
             references = sampled_data["output"].tolist()
@@ -130,51 +143,57 @@ class ModelStatisticsView(APIView):
         except Exception as e:
             return Response({"error": f"Error loading dataset: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
+        results = {}
+
         # Compute scores for multiple questions
-        total_scores = {
-            "ROUGE1": 0,
-            "ROUGE2": 0,
-            "ROUGEL": 0,
-            "ROUGELSUM": 0,
-            "BERTScoreF1": 0,
-            "BERTScorePrecision": 0,
-            "BERTScoreRecall": 0,
-        }
+        for model_name in model_list:
+            
+            total_scores = {
+                "ROUGE1": 0,
+                "ROUGE2": 0,
+                "ROUGEL": 0,
+                "ROUGELSUM": 0,
+                "BERTScoreF1": 0,
+                "BERTScorePrecision": 0,
+                "BERTScoreRecall": 0,
+            }
 
-        # Constraints validation
-        if not (1 <= min_length <= max_length <= 1024):
-            return Response({"error": "min_length must be <= max_length and within valid range."}, status=status.HTTP_400_BAD_REQUEST)
-        if not (0 <= top_p <= 1):
-            return Response({"error": "top_p must be between 0 and 1."}, status=status.HTTP_400_BAD_REQUEST)
-        if top_k < 0:
-            return Response({"error": "top_k must be a non-negative integer."}, status=status.HTTP_400_BAD_REQUEST)
+            # Constraints validation
+            if not (1 <= min_length <= max_length <= 1024):
+                return Response({"error": "min_length must be <= max_length and within valid range."}, status=status.HTTP_400_BAD_REQUEST)
+            if not (0 <= top_p <= 1):
+                return Response({"error": "top_p must be between 0 and 1."}, status=status.HTTP_400_BAD_REQUEST)
+            if top_k < 0:
+                return Response({"error": "top_k must be a non-negative integer."}, status=status.HTTP_400_BAD_REQUEST)
 
-        for question, reference in zip(questions, references):
-            try:
-                    scores = model_stats(
-                        prompt=question,
-                        model_name=model_name,
-                        top_k=top_k,
-                        top_p=top_p,
-                        max_new_tokens=max_new_tokens,
-                        no_repeat_ngrams=no_repeat_ngrams,
-                        references=[reference]
-                    )
+            for question, reference in zip(questions, references):
+                try:
+                        scores = model_stats(
+                            prompt=question,
+                            model_name=model_name,
+                            top_k=top_k,
+                            top_p=top_p,
+                            max_new_tokens=max_new_tokens,
+                            no_repeat_ngrams=no_repeat_ngrams,
+                            references=[reference]
+                        )
+                        
+                        # Sum up scores
+                        for key in total_scores:
+                            total_scores[key] += scores[key] 
+                        
+                        # print(f"Scores for question '{question}': {scores}")
                     
-                    # Sum up scores
-                    for key in total_scores:
-                        total_scores[key] += scores[key] 
-                    
-                    # print(f"Scores for question '{question}': {scores}")
-                
-            except Exception as e:
-                return Response({"error": f"Error processing question '{question}': {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                except Exception as e:
+                    return Response({"error": f"Error processing question '{question}': {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        # Compute average scores
-        avg_scores = {key: total / num_questions for key, total in total_scores.items()}
-        print(f"Average scores: {avg_scores}")
+            # Compute average scores
+            avg_scores = {key: total / num_questions for key, total in total_scores.items()}
+            results[model_name] = avg_scores
+            print(f"Average scores: {avg_scores}")
 
-        return Response(avg_scores, status=status.HTTP_200_OK)
+        print(f"Results: {results}")
+        return Response(results, status=status.HTTP_200_OK)
     
     def handle_uploaded_file(self, file):
         # Convert CSV to Hugging Face Dataset

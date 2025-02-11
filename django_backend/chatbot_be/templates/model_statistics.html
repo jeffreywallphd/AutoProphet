@@ -4,11 +4,10 @@
 {% block title %} Model Evaluation {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'baseUI.css' %}">
 
 <script>
     async function evaluateModel() {
-        const modelName = document.getElementById('eval_model_name').value.trim();
+        const modelsInput = document.getElementById('eval_model_name').value.trim();
         const datasetUrl = document.getElementById('dataset_url').value.trim();
         const datasetFile = document.getElementById('dataset_file').files[0];
         const numQuestions = document.getElementById('num_questions').value || 10;
@@ -19,8 +18,8 @@
         const no_repeat_ngram = document.getElementById('no_repeat_ngram').value || 0;
         const max_new_tokens = document.getElementById('max_new_tokens').value || 300;
 
-        if (!modelName ) {
-            alert("Please fill in all fields for model evaluation!");
+        if (!modelsInput ) {
+            alert("Please enter at least one model name!");
             return;
         }
 
@@ -29,8 +28,15 @@
             return;
         }
 
+        // Convert models input into a proper list format
+        const models = modelsInput.split(',').map(m => m.trim()).filter(m => m.length > 0);
+        if (models.length === 0) {
+            alert("Please enter valid model names!");
+            return;
+        }
+
         const formData = new FormData();
-        formData.append('model_name', modelName);
+        formData.append('models', modelsInput);
         // formData.append('dataset_url', datasetUrl);
         // formData.append('dataset_file', datasetFile);
         formData.append('num_questions', parseInt(numQuestions));
@@ -45,6 +51,9 @@
             formData.append('dataset_url', datasetUrl);
         }
 
+        const resultContainer = document.getElementById('model-eval-results');
+        resultContainer.innerHTML = '<p>Evaluating models..., please wait...</p>';
+
         try {
             const response = await fetch('/api/model_statistics/', {
                 method: 'POST',
@@ -52,33 +61,61 @@
                 body: formData // Using FormData for file uploads
             });
 
-            const resultContainer = document.getElementById('model-eval-results');
-
             if (response.ok) {
                 const results = await response.json();
-                resultContainer.innerHTML = `
-                    <h3>Average Evaluation Results:</h3>
-                    <p><b>ROUGE1 Scores:</b> ${results.ROUGE1.toFixed(4)}</p>
-                    <p><b>ROUGE2 Scores:</b> ${results.ROUGE2.toFixed(4)}</p>
-                    <p><b>ROUGE-L Scores:</b> ${results.ROUGEL.toFixed(4)}</p>
-                    <p><b>ROGUE-LSum Scores:</b> ${results.ROUGELSUM.toFixed(4)}</p>
-                    <p><b>BERTScoreF1:</b> ${results.BERTScoreF1.toFixed(4)}</p>
-                    <p><b>BERTScorePrecision:</b> ${results.BERTScorePrecision.toFixed(4)}</p>
-                    <p><b>BERTScoreRecall:</b> ${results.BERTScoreRecall.toFixed(4)}</p>
+                resultContainer.innerHTML = '';
+
+                // Create the table header
+                let tableHtml = `
+                    <h3>Model Evaluation Results</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>ROUGE1</th>
+                                <th>ROUGE2</th>
+                                <th>ROUGE-L</th>
+                                <th>ROUGE-LSum</th>
+                                <th>BERTScoreF1</th>
+                                <th>BERTScorePrecision</th>
+                                <th>BERTScoreRecall</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                 `;
+
+                Object.keys(results).forEach(model => {
+                    const modelResults = results[model];
+                    tableHtml += `
+                        <tr>
+                            <td>${model}</td>
+                            <td>${modelResults.ROUGE1.toFixed(4)}</td>
+                            <td>${modelResults.ROUGE2.toFixed(4)}</td>
+                            <td>${modelResults.ROUGEL.toFixed(4)}</td>
+                            <td>${modelResults.ROUGELSUM.toFixed(4)}</td>
+                            <td>${modelResults.BERTScoreF1.toFixed(4)}</td>
+                            <td>${modelResults.BERTScorePrecision.toFixed(4)}</td>
+                            <td>${modelResults.BERTScoreRecall.toFixed(4)}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHtml += '</tbody></table>';
+                resultContainer.innerHTML = tableHtml;
             } else {
-                const error = await response.json();
-                resultContainer.innerHTML = `<p style="color: red;">Error: ${error.error || "Unknown error occurred."}</p>`;
+                const error = await response.text();
+                resultContainer.innerHTML = `<p style="color: red;">Error: ${errorMessage}</p>`;
             }
         } catch (error) {
             console.error('Error evaluating model:', error);
+            resultContainer.innerHTML = `<p style="color: red;">Error: ${error.message || "Unknown error occurred."}</p>`;
         }
     }
 </script>
 <h1>Model Statistics</h1>
         <div>
-            <label for="eval_model_name">Model Name:</label>
-            <input type="text" id="eval_model_name" placeholder="e.g., facebook/bart-large-cnn">
+            <label for="eval_model_name">Model Names (comma-separated):</label>
+            <input type="text" id="eval_model_name" placeholder="e.g., OpenFinAL/FINGPT_QA_OPENELM, OpenFinAL/FINGPT_QA_SmolLlm2">
             <label for="dataset_url">Dataset URL:</label>
             <input type="text" id="dataset_url" placeholder="Enter the dataset URL">
             <label for="dataset_file">Dataset File (CSV):</label>
@@ -99,7 +136,8 @@
             <input type="number" id="max_new_tokens" placeholder="Default: 300">
             <br>
             
-            <button onclick="evaluateModel()">Evaluate Model</button>
+            <button onclick="evaluateModel()">Evaluate Models</button>
+            <br>
         </div>
 <div id="model-eval-results" class="results-box"></div>
 
