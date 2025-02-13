@@ -1,3 +1,7 @@
+h1 {
+    color: #721c24;
+}
+
 pre {
     background-color: #f4f4f4;
     padding: 10px;
@@ -111,50 +115,54 @@ button:hover {
     color: #721c24;
 }
 
-/* Table styling */
-table {
+/* Target only the Model Evaluation table */
+#model-eval-table {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin-top: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Enables horizontal scrolling on small screens */
 }
 
-th, td {
-    padding: 12px 15px;
+/* Header & Cell Styling */
+#model-eval-table th, 
+#model-eval-table td {
+    padding: 8px 12px; /* Adjust padding for compact design */
     text-align: center;
     border: 1px solid #ddd;
+    font-size: 14px; /* Keep text readable */
+    white-space: nowrap; /* Prevents line breaks in columns */
 }
 
-th {
-    background-color: #4CAF50;
+/* Header Row */
+#model-eval-table th {
+    background-color: #4c8baf;
     color: white;
-    font-weight: bold;
 }
 
-td {
-    background-color: #f9f9f9;
-}
-
-tr:nth-child(even) td {
+/* Alternating Row Colors */
+#model-eval-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-tr:hover td {
+#model-eval-table tr:hover {
     background-color: #eaeaea;
 }
 
-/* Styling for the table container */
+/* Make the Table Responsive */
 .results-box {
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+    overflow-x: auto; /* Enables horizontal scrolling for smaller screens */
     margin-top: 20px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
 }
 
-/* For the "Model Evaluation" title */
-h1 {
-    font-family: 'Arial', sans-serif;
-    color: #333;
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    #model-eval-table th, 
+    #model-eval-table td {
+        padding: 5px;
+        font-size: 12px;
+    }
 }
