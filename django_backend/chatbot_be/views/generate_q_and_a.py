@@ -48,52 +48,72 @@ def split_text(text, max_tokens=1000):
     return chunks
 
 
-def extract_qa(text, model="gpt-4", questions_num=5):
+def extract_qa(request ,text, model="gpt-4", questions_num=5, mock=True):
     text_chunks = split_text(text, max_tokens=1000)  # Adjust chunk size
     results = []
+    total_chunks = len(text_chunks)
+
+    request.session['qa_progress'] = {"total": total_chunks, "current": 0}
+    request.session.modified = True  
 
     for i, chunk in enumerate(text_chunks):
-        prompt = f"""
-        I would like to generate some questions and answers from the following text and return them in JSON format. 
-        Generate {questions_num} questions based on this text segment.
-        
-        Text Segment ({i+1}/{len(text_chunks)}):
-        {chunk}
+        request.session['qa_progress'] = {"total": total_chunks, "current": i + 1}
+        request.session.modified = True  
 
-        Response Format:
-        {{
-            "part": {i+1},
-            "questions": [
-                {{"question": "", "answer": ""}},
-                {{"question": "", "answer": ""}}
-            ]
-        }}
+        if mock:
+            mock_response = {
+                "part": i + 1,
+                "questions": [
+                    {"question": f"Mock Question {j+1} for part {i+1}", "answer": "Mock Answer"}
+                    for j in range(5)
+                ]
+            }
+            results.append(mock_response)
+        else:
+            prompt = f"""
+            I would like to generate some questions and answers from the following text and return them in JSON format. 
+            Generate {questions_num} questions based on this text segment.
+            
+            Text Segment ({i+1}/{len(text_chunks)}):
+            {chunk}
 
-        Return ONLY valid JSON output.
-        """
+            Response Format:
+            {{
+                "part": {i+1},
+                "questions": [
+                    {{"question": "", "answer": ""}},
+                    {{"question": "", "answer": ""}}
+                ]
+            }}
 
-        response = client.chat.completions.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.5
-        )
+            Return ONLY valid JSON output.
+            """
 
-        try:
             response = client.chat.completions.create(
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.5
             )
 
-            json_data = json.loads(response.choices[0].message.content.strip())
-            results.append(json_data)
+            try:
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.5
+                )
 
-        except json.JSONDecodeError:
-            results.append({"part": i + 1, "error": "Invalid JSON response"})
-        
-        except OpenAIError as e:
-            return json.dumps({"error": f"OpenAI API Error: {str(e)}"}, indent=4)
+                json_data = json.loads(response.choices[0].message.content.strip())
+                results.append(json_data)
 
+            except json.JSONDecodeError:
+                results.append({"part": i + 1, "error": "Invalid JSON response"})
+            
+            except OpenAIError as e:
+                return json.dumps({"error": f"OpenAI API Error: {str(e)}"}, indent=4)
+
+
+    request.session['qa_progress'] = {"total": total_chunks, "current": total_chunks}
+    request.session.modified = True  
     return json.dumps(results, indent=4)
 
 def generate_q_and_a(request):
@@ -150,7 +170,7 @@ def document_detail(request, document_id):
 
             else:
                 try:
-                    generated_json_text = extract_qa(text=document.content, questions_num=num_questions)
+                    generated_json_text = extract_qa(request,text=document.content, questions_num=num_questions)
                     generated_json_data = json.loads(generated_json_text)
                     request.session[f'generated_json_{document_id}'] = generated_json_text
 
@@ -194,3 +214,8 @@ def delete_document(request, document_id):
     else:
         # If the request is not POST, redirect to the generate_q_and_a page
         return redirect('generate_q_and_a')
+
+def track_progress(request):
+    """API endpoint to return progress from session."""
+    progress = request.session.get('qa_progress', {"total": 0, "current": 0})
+    return JsonResponse(progress)

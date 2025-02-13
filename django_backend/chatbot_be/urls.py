@@ -6,7 +6,7 @@ from .views.home import home_view
 from .views.model_training import train_model_view, stream_training_output
 from .views.scrape import ScrapeDataView, UploadPDFView, scrape_view, SaveManualTextView
 from .views import SessionCreateView, ConversationListView, ConversationCreateView, SessionListView, ChatbotGenerateResponseView
-from .views.generate_q_and_a import generate_q_and_a, document_detail, download_json, delete_document
+from .views.generate_q_and_a import generate_q_and_a, document_detail, download_json, delete_document, track_progress
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -32,6 +32,7 @@ urlpatterns = [
     path("documents/<int:document_id>/", document_detail, name="document_detail"),
     path('document/<int:document_id>/download_json/', download_json, name='download_json'),
     path('delete_document/<int:document_id>/', delete_document, name='delete_document'),
+    path('track-progress/', track_progress, name='track_progress'), 
 ]
 
 

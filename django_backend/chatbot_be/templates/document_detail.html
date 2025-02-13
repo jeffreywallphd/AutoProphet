@@ -15,6 +15,38 @@
     {% endif %}
 </p>
 
+<script>
+    function fetchProgress() {
+        fetch("{% url 'track_progress' %}")  // Call Django API
+            .then(response => response.json())
+            .then(data => {
+                let progressElement = document.getElementById("progress-bar");
+                let textElement = document.getElementById("progress-text");
+
+                if (data.total > 0) {
+                    let percentage = Math.round((data.current / data.total) * 100);
+                    progressElement.style.width = percentage + "%";
+                    textElement.innerText = `Processing Paragraph ${data.current} of ${data.total}`;
+                }
+
+                if (data.current < data.total) {
+                    setTimeout(fetchProgress, 1000); // Poll every 1 second
+                }
+            })
+            .catch(error => console.error("Error fetching progress:", error));
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        fetchProgress(); // Start polling when page loads
+    });
+</script>
+
+<!-- Progress Bar UI -->
+<div class="progress mt-3">
+    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<p id="progress-text" class="mt-2">Processing...</p>
+
 
 <form method="post" id="documentForm">
     {% csrf_token %}
