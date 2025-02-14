@@ -8,7 +8,7 @@ Welcome to the  documentation for *OpenFinAL*. This documentation is structured 
 - [How to Use This Documentation](#how-to-use-this-documentation)
 - [Maintaining Documentation](#maintaining-documentation)
 - [Best Practices for Writing Documentation](#best-practices-for-writing-documentation)
-- [Additional Resources](#additional-resources)
+- [Additional Resources Used](#additional-resources-used)
 
 ___
 ## Introduction
@@ -94,4 +94,17 @@ ___
 - Documentation should be updated with every change in the project.
 - Review the documentation regularly to ensure it reflects the current state of the project.
 
+## Additional Resources Used
+
+### For Project Management:
+- **[Taiga](https://tree.taiga.io/)**  
+  Taiga is a project management tool that allows teams to set features as Epics and link user stories to Epics. User stories provide a description of what the team is working on during a sprint. You can also assign points in the system to estimate time and track progress.
+
+### For Planning:
+- **[Planning Poker](https://planningpokeronline.com/)**  
+  Planning Poker is an online tool for agile teams to estimate the time or effort required to complete a task, story, or feature. Teams can use it during sprint planning to achieve consensus on the time estimates for user stories.
+
+### For Milestone Planning:
+- **[Miro](https://miro.com/)**  
+  Miro is a Program Increment Planning software that helps teams plan milestones well ahead of their current sprint. It allows for comprehensive planning and collaboration across teams to ensure smooth execution over longer timelines.
 
