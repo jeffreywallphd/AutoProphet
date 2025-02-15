@@ -1,3 +1,7 @@
+h1 {
+    color: #721c24;
+}
+
 pre {
     background-color: #f4f4f4;
     padding: 10px;
@@ -109,4 +113,56 @@ button:hover {
 .alert-error {
     background-color: #f8d7da;
     color: #721c24;
+}
+
+/* Target only the Model Evaluation table */
+#model-eval-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+    overflow-x: auto; /* Enables horizontal scrolling on small screens */
+}
+
+/* Header & Cell Styling */
+#model-eval-table th, 
+#model-eval-table td {
+    padding: 8px 12px; /* Adjust padding for compact design */
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 14px; /* Keep text readable */
+    white-space: nowrap; /* Prevents line breaks in columns */
+}
+
+/* Header Row */
+#model-eval-table th {
+    background-color: #4c8baf;
+    color: white;
+}
+
+/* Alternating Row Colors */
+#model-eval-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#model-eval-table tr:hover {
+    background-color: #eaeaea;
+}
+
+/* Make the Table Responsive */
+.results-box {
+    overflow-x: auto; /* Enables horizontal scrolling for smaller screens */
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    #model-eval-table th, 
+    #model-eval-table td {
+        padding: 5px;
+        font-size: 12px;
+    }
 }
